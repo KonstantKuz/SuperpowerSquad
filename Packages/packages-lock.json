@@ -32,6 +32,12 @@
       },
       "hash": "642d11d496b2af351c58e110b79f44da4741c460"
     },
+    "com.google.external-dependency-manager": {
+      "version": "file:../GooglePackages/com.google.external-dependency-manager-1.2.169.tgz",
+      "depth": 0,
+      "source": "local-tarball",
+      "dependencies": {}
+    },
     "com.madsbangh.easybuttons": {
       "version": "1.3.0",
       "depth": 0,
