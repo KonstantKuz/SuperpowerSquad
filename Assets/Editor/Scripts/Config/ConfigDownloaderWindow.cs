@@ -11,7 +11,7 @@ namespace Editor.Scripts.Config
         private const int MAIN_SHEET_ID_LIST = 515831250; //id of sheet that contains list of all other sheets
         private const string MAIN_CONFIG_PATH = "Resources/Configs";
 
-        [MenuItem("LM/Download Configs")]
+        [MenuItem("Survivors/Download Configs")]
         public static void ShowWindow()
         {
             GetWindow(typeof(ConfigDownloaderWindow));
