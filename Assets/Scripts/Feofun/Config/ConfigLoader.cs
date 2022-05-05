@@ -2,6 +2,7 @@
 using System.IO;
 using Feofun.Config.Serializers;
 using JetBrains.Annotations;
+using SuperMaxim.Core.Extensions;
 using UnityEngine;
 using Zenject;
 
