@@ -22,9 +22,9 @@ namespace Survivors.App
             RegisterConfigs(Container);
         }
 
-        private static void RegisterConfigs(DiContainer container, string configOverrideFolder = null)
+        private static void RegisterConfigs(DiContainer container)
         {
-            new ConfigLoader(container, new CsvConfigDeserializer(), configOverrideFolder)
+            new ConfigLoader(container, new CsvConfigDeserializer())
                 .RegisterSingle<LocalizationConfig>(Configs.LOCALIZATION);
         }
     }

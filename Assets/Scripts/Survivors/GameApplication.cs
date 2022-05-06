@@ -1,5 +1,5 @@
 ﻿using Feofun.App;
-using Feofun.App.Loadable;
+using Feofun.App.Init;
 using JetBrains.Annotations;
 using Survivors.App;
 using UnityEditor;
@@ -33,9 +33,9 @@ namespace Survivors
         }
         private void RunLoadableChains()
         {
-            var loadableChain = gameObject.AddComponent<AppLoadableChain>();
-            loadableChain.AddLoadable<StartGameLoadable>();
-            loadableChain.Next();
+            var initSequence = gameObject.AddComponent<AppInitSequence>();
+            initSequence.AddStep<StartGameInitStep>();
+            initSequence.Next();
         }
     }
 }

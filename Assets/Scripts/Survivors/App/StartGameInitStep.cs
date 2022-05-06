@@ -1,12 +1,12 @@
-using Feofun.App.Loadable;
+using Feofun.App.Init;
 using JetBrains.Annotations;
 
 namespace Survivors.App
 {
     [PublicAPI]
-    public class StartGameLoadable : AppLoadable
+    public class StartGameInitStep : AppInitStep
     {
-        public StartGameLoadable()
+        public StartGameInitStep()
         {
         }
 

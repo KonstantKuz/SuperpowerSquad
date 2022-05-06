@@ -1,8 +1,8 @@
 using System;
 
-namespace Feofun.App.Loadable
+namespace Feofun.App.Init
 {
-    public abstract class AppLoadable
+    public abstract class AppInitStep
     {
         private Action _onNext;
         
