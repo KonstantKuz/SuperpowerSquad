@@ -120,8 +120,8 @@ pipeline {
                 UNITY_PATH = '/Applications/Unity/Hub/Editor/2020.3.17f1/Unity.app/Contents/MacOS/Unity'
                 LANG='en_US.UTF-8'
                 KEYCHAIN_PATH='/Users/jenkins/Library/Keychains/jenkins.keychain-db'
-                DEVELOPMENT_PROFILE_ID='a6eecfdb-c136-4628-ba13-d4996281d095'
-                DISTRIBUTION_PROFILE_ID='8ae34770-5ef3-480a-b6a1-aba3a89b400f'
+                DEVELOPMENT_PROFILE_ID='81b6c60f-221b-4a49-985b-1ccbf66305a9'
+                DISTRIBUTION_PROFILE_ID='f3bf7e3c-649d-43a9-a118-cb3519a6452c'
                 DEVELOPMENT_CODE_SIGN_IDENTITY='Apple Development: Ludd Ludd (NR2QZ5TJDW)'
                 DISTRIBUTION_CODE_SIGN_IDENTITY='Apple Distribution: Feofun Limited (8Y9KH6XT49)'
                 IPA_NAME='Survivors'  //Alas, it is not taken from OUTPUT_FILE_NAME. But from module name in project...
