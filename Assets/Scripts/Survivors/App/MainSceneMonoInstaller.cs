@@ -3,6 +3,7 @@ using Feofun.Config.Serializers;
 using Feofun.Localization.Config;
 using SuperMaxim.Messaging;
 using Survivors.Config;
+using Survivors.Units;
 using UnityEngine;
 using Zenject;
 
@@ -23,6 +24,7 @@ namespace Survivors.App
             Container.Bind<Joystick>().FromInstance(_joystick).AsSingle();
 
             RegisterConfigs(Container);
+            UnitServicesInstaller.Install(Container);            
         }
 
         private static void RegisterConfigs(DiContainer container)

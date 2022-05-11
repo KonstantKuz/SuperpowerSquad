@@ -2,7 +2,7 @@
 using UnityEngine.AI;
 using Zenject;
 
-namespace Survivors.PlayerUnit
+namespace Survivors.Units.Player
 {
     [RequireComponent(typeof(NavMeshAgent))]
     public class MovementController : MonoBehaviour
