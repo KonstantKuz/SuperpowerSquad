@@ -1,6 +1,6 @@
-﻿using UnityEditor;
+﻿using Facebook.Unity.Editor.iOS.Xcode;
+using UnityEditor;
 using UnityEditor.Callbacks;
-using UnityEditor.iOS.Xcode;
 
 #if UNITY_EDITOR
 namespace Editor
