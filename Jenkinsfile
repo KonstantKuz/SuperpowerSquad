@@ -154,7 +154,7 @@ pipeline {
                     }                  
                     steps {
                         withCredentials([usernamePassword(credentialsId: 'UnityUser', usernameVariable: 'UNITY_USER_NAME', passwordVariable: 'UNITY_USER_PASSWORD'), string(credentialsId: 'UnityLicenseKey', variable: 'UNITY_LICENSE')]) {                                   
-                            sh '$UNITY_PATH -batchmode -nographics -quit -serial $UNITY_LICENSE -username $UNITY_USER_NAME -password $UNITY_USER_PASSWORD -projectPath ./../.. -logFile -'               
+                            sh '$UNITY_PATH -batchmode -nographics -quit -serial $UNITY_LICENSE -username $UNITY_USER_NAME -password $UNITY_USER_PASSWORD -projectPath . -logFile -'               
                         }           
                         script {
                             UNITY_PARAMS=''
@@ -168,7 +168,7 @@ pipeline {
                     }
                     post {
                         always {
-                            sh script: '$UNITY_PATH -batchmode -nographics -returnlicense -projectPath ./../.. -logFile -', label: "ReturnLicense"
+                            sh script: '$UNITY_PATH -batchmode -nographics -returnlicense -projectPath . -logFile -', label: "ReturnLicense"
                         }
                     }                     
                 } 
