@@ -224,11 +224,11 @@ PlayerSettings:
   iOSRenderExtraFrameOnPause: 0
   iosCopyPluginsCodeInsteadOfSymlink: 0
   appleDeveloperTeamID: 
-  iOSManualSigningProvisioningProfileID: 
+  iOSManualSigningProvisioningProfileID: 81b6c60f-221b-4a49-985b-1ccbf66305a9
   tvOSManualSigningProvisioningProfileID: 
-  iOSManualSigningProvisioningProfileType: 0
+  iOSManualSigningProvisioningProfileType: 1
   tvOSManualSigningProvisioningProfileType: 0
-  appleEnableAutomaticSigning: 0
+  appleEnableAutomaticSigning: 2
   iOSRequireARKit: 0
   iOSAutomaticallyDetectAndAddCapabilities: 1
   appleEnableProMotion: 0
