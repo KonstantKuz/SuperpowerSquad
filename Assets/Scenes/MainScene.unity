@@ -237,6 +237,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _gameApplication: {fileID: 876315364}
   _joystick: {fileID: 1042008005}
+  _locationWorld: {fileID: 8746036833688596026}
+  _locationObjectFactory: {fileID: 8746036833688596025}
+  _enemyWavesSpawner: {fileID: 8746036833688596027}
 --- !u!114 &876315364
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -480,3 +483,36 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d6eb7c9c829425d47a84bcef4eeb0c9e, type: 3}
+--- !u!114 &8746036833688596025 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8743563882573435223, guid: d6eb7c9c829425d47a84bcef4eeb0c9e, type: 3}
+  m_PrefabInstance: {fileID: 8746036833688596024}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 61e45434f953e624e9dbc234500e6ad7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8746036833688596026 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3088611838475355998, guid: d6eb7c9c829425d47a84bcef4eeb0c9e, type: 3}
+  m_PrefabInstance: {fileID: 8746036833688596024}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 930f96095e096c5418d455cc7265968d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8746036833688596027 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5187163413563012715, guid: d6eb7c9c829425d47a84bcef4eeb0c9e, type: 3}
+  m_PrefabInstance: {fileID: 8746036833688596024}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 482cd254e84aa264d99532c3d24818e5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
