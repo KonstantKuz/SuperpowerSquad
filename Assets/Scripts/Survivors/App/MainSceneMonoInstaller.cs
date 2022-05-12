@@ -4,6 +4,7 @@ using Feofun.Localization.Config;
 using SuperMaxim.Messaging;
 using Survivors.Config;
 using Survivors.Units;
+using Survivors.Units.Installer;
 using Survivors.Units.Player.Config;
 using UnityEngine;
 using Zenject;

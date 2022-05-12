@@ -1,22 +1,28 @@
 ﻿using ModestTree;
 using Survivors.Units.Damageable;
+using Survivors.Units.Player.Model;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon;
 using UnityEngine;
 
 namespace Survivors.Units.Player.Attack
 {
-    public class PlayerAttack : MonoBehaviour
+    public class PlayerAttack : MonoBehaviour, IUnitInitialization
     {
         private BaseWeapon _weapon;
+        private AttackModel _attackModel;
 
+        public void Init(Unit unit)
+        {
+            _attackModel = unit.UnitModel.AttackModel;
+        }
         public void Awake()
         {
             _weapon = GetComponentInChildren<BaseWeapon>();
             Assert.IsNotNull(_weapon, "Unit prefab is missing BaseWeapon component in hierarchy");
         }
 
-        public void Fire(ITarget target)
+        private void Fire(ITarget target)
         {
             Assert.IsNotNull(_weapon, "BaseWeapon is missing");
             _weapon.Fire(target, DoDamage);
@@ -28,5 +34,7 @@ namespace Survivors.Units.Player.Attack
             Assert.IsNotNull(damageable, $"IDamageable is null, gameObject:= {target.name}");
             damageable.TakeDamage(10);
         }
+
+      
     }
 }
