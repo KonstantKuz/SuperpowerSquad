@@ -136,6 +136,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 482cd254e84aa264d99532c3d24818e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _outOfViewHorizontalOffset: 0.2
+  _outOfViewVerticalTopOffset: 0.02
+  _outOfViewVerticalBottomOffset: 0.2
   _timerStep: 1
 --- !u!1 &3506170360856201296
 GameObject:
@@ -396,6 +399,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 930f96095e096c5418d455cc7265968d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _player: {fileID: 8746036834079535760}
   _spawnContainer: {fileID: 3506170360856201296}
 --- !u!114 &8743563882573435223
 MonoBehaviour:
