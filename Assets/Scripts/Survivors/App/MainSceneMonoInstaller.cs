@@ -4,6 +4,7 @@ using Feofun.Localization.Config;
 using SuperMaxim.Messaging;
 using Survivors.Config;
 using Survivors.Units;
+using Survivors.Units.Player.Config;
 using UnityEngine;
 using Zenject;
 
@@ -30,7 +31,8 @@ namespace Survivors.App
         private static void RegisterConfigs(DiContainer container)
         {
             new ConfigLoader(container, new CsvConfigDeserializer())
-                .RegisterSingle<LocalizationConfig>(Configs.LOCALIZATION);
+                    .RegisterSingle<LocalizationConfig>(Configs.LOCALIZATION)
+                    .RegisterStringKeyedCollection<PlayerUnitConfig>(Configs.PLAYER_UNIT);
         }
     }
 }
