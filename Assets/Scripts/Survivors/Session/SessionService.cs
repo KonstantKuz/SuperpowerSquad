@@ -1,4 +1,5 @@
-﻿using Survivors.Location.EnemySpawn;
+﻿using Survivors.EnemySpawn;
+using Survivors.EnemySpawn.Config;
 using Zenject;
 
 namespace Survivors.Session

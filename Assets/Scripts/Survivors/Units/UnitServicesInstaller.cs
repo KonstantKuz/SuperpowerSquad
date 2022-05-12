@@ -1,4 +1,5 @@
-﻿using Survivors.Units.Target;
+﻿using Survivors.Units.Service;
+using Survivors.Units.Target;
 using Zenject;
 
 namespace Survivors.Units
@@ -8,6 +9,7 @@ namespace Survivors.Units
         public static void Install(DiContainer container)
         {
             container.Bind<TargetService>().AsSingle();
+            container.Bind<UnitFactory>().AsSingle();
         }
     }
 }

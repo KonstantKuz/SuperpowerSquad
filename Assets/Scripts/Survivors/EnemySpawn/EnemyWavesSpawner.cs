@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Survivors.EnemySpawn.Config;
+using Survivors.Location;
 using Survivors.Session;
 using Survivors.Units.Service;
 using UniRx;
@@ -7,7 +9,7 @@ using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
 
-namespace Survivors.Location.EnemySpawn
+namespace Survivors.EnemySpawn
 {
     public class EnemyWavesSpawner : MonoBehaviour
     {
