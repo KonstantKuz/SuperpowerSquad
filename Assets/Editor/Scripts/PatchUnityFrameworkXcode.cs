@@ -1,6 +1,7 @@
 ﻿using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEditor.iOS.Xcode;
+using UnityEngine;
 
 #if UNITY_EDITOR
 namespace Editor
@@ -17,6 +18,7 @@ namespace Editor
 
         private static void SetUnityFrameworkCodeSignToManual(string pathToBuiltProject)
         {
+            Debug.Log("Patching xcode project to set manual signing");
             var projectPath = PBXProject.GetPBXProjectPath(pathToBuiltProject);
             var project = new PBXProject();
             project.ReadFromFile(projectPath);
@@ -25,6 +27,7 @@ namespace Editor
             FixFirebase(project);
 
             project.WriteToFile(projectPath);
+            Debug.Log("Xcode project is patched");
         }
 
         private static void FixCodeSign(PBXProject project)
