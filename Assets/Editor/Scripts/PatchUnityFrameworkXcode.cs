@@ -46,7 +46,7 @@ namespace Editor
 
         private static void FixFirebase(PBXProject project)
         {
-            var target = project.TargetGuidByName("Unity-iPhone");
+            var target = project.GetUnityMainTargetGuid();
             project.SetBuildProperty(target, "OTHER_LDFLAGS", "$(inherited)");
             project.AddBuildProperty(target, "LIBRARY_SEARCH_PATHS", "$(inherited)");
         }
