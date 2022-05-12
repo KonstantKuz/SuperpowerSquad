@@ -32,7 +32,7 @@ namespace Editor
 
         private static void FixCodeSign(PBXProject project)
         {
-            var unityFrameworkTarget = project.TargetGuidByName("UnityFramework");
+            var unityFrameworkTarget = project.GetUnityFrameworkTargetGuid();
             project.SetBuildProperty(unityFrameworkTarget, "CODE_SIGN_STYLE", "Manual");
             project.SetBuildProperty(unityFrameworkTarget, "CODE_SIGNING_REQUIRED", "NO");
             project.SetBuildProperty(unityFrameworkTarget, "CODE_SIGNING_ALLOWED", "NO");
@@ -40,7 +40,7 @@ namespace Editor
             project.SetBuildProperty(unityFrameworkTarget, "EXPANDED_CODE_SIGN_IDENTITY", "");
             project.SetBuildProperty(unityFrameworkTarget, "PROVISIONING_PROFILE_SPECIFIER", "");
 
-            var target = project.TargetGuidByName("Unity-iPhone");
+            var target = project.GetUnityMainTargetGuid();
             project.SetBuildProperty(target, "CODE_SIGN_STYLE", "Manual");
         }
 
