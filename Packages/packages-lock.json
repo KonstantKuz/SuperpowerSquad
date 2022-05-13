@@ -1,14 +1,5 @@
 {
   "dependencies": {
-    "appsflyer-unity-plugin": {
-      "version": "https://github.com/AppsFlyerSDK/appsflyer-unity-plugin.git#upm",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {
-        "com.google.external-dependency-manager": "1.2.144"
-      },
-      "hash": "dadb214ac41e40ee640d21b3ede589a7b959c91b"
-    },
     "com.bgtools.playerprefseditor": {
       "version": "https://github.com/Dysman/bgTools-playerPrefsEditor.git#upm",
       "depth": 0,
