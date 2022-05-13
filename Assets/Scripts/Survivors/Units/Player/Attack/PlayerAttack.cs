@@ -20,7 +20,7 @@ namespace Survivors.Units.Player.Attack
         private AttackModel _attackModel;
         private Animator _animator;
         private float _lastAttackTime;
-        private bool IsReady => Time.time >= _lastAttackTime + _attackModel.AttackInterval;
+        private bool IsAttackReady => Time.time >= _lastAttackTime + _attackModel.AttackInterval;
         public void Init(PlayerUnit playerUnit)
         {
             _attackModel = playerUnit.UnitModel.AttackModel;
@@ -36,7 +36,7 @@ namespace Survivors.Units.Player.Attack
 
         public void OnTick()
         {
-            if (!IsReady) {
+            if (!IsAttackReady) {
                 return;
             }
             FindTargetAndAttack();
@@ -78,8 +78,7 @@ namespace Survivors.Units.Player.Attack
         
         private void Fire(ITarget target)
         {
-            Debug.Log($"Damage applied, target:= {target.TargetId}");
-            //_weapon.Fire(target, DoDamage);
+            _weapon.Fire(target, DoDamage);
         }
 
         private void DoDamage(GameObject target)

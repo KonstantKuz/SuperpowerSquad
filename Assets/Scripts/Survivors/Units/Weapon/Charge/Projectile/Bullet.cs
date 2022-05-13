@@ -18,9 +18,7 @@ namespace Survivors.Units.Weapon.Charge.Projectile
 
         [Inject]
         private LocationObjectFactory _objectFactory;
-
-        protected Rigidbody Rigidbody { get; private set; }
-
+        
         private float _timeLeft;
 
         public override void Launch(ITarget target, Action<GameObject> hitCallback)
@@ -29,12 +27,9 @@ namespace Survivors.Units.Weapon.Charge.Projectile
             SetupBullet();
         }
 
-        protected void SetupBullet()
+        private void SetupBullet()
         {
             _timeLeft = _maxLifeTime;
-            Rigidbody = GetComponent<Rigidbody>();
-            Rigidbody.velocity = transform.forward * _speed;
-            Rigidbody.angularVelocity = Vector3.zero;
         }
 
         protected override void TryHit(GameObject target, Vector3 hitPos, Vector3 collisionNorm)
@@ -47,20 +42,24 @@ namespace Survivors.Units.Weapon.Charge.Projectile
         private void Update()
         {
             _timeLeft -= Time.deltaTime;
+            UpdatePosition();
             if (_timeLeft > 0) {
                 return;
             }
             Destroy();
         }
-
-        public void Destroy()
+        private void UpdatePosition()
+        {
+            transform.position += transform.forward * _speed * Time.deltaTime;
+        }
+        private void Destroy()
         {
             gameObject.SetActive(false);
             HitCallback = null;
             Destroy(gameObject);
         }
 
-        protected void PlayVfx(Vector3 pos, Vector3 up)
+        private void PlayVfx(Vector3 pos, Vector3 up)
         {
             if (_hitVfx == null) return;
             var vfx = _objectFactory.CreateObject(_hitVfx);
