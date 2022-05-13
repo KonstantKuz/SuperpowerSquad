@@ -1,4 +1,5 @@
-﻿using ModestTree;
+﻿using EasyButtons;
+using ModestTree;
 using Survivors.Units.Damageable;
 using Survivors.Units.Player.Model;
 using Survivors.Units.Target;
@@ -49,9 +50,16 @@ namespace Survivors.Units.Player.Attack
             var target = FindTarget();
             if (target == null) {
                 return;
-            }
+            } 
             Attack(target);
         }
+
+        [Button]
+        private void EditorAttack()
+        {
+            _animator.SetTrigger(_attackHash);
+        }
+
         private void Attack(ITarget target)
         {
            // RotateTo(target.Root.position);
@@ -70,7 +78,8 @@ namespace Survivors.Units.Player.Attack
         
         private void Fire(ITarget target)
         {
-            _weapon.Fire(target, DoDamage);
+            Debug.Log($"Damage applied, target:= {target.TargetId}");
+            //_weapon.Fire(target, DoDamage);
         }
 
         private void DoDamage(GameObject target)
