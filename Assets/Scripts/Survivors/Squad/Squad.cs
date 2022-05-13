@@ -83,6 +83,8 @@ namespace Survivors.Squad
         {
             var delta = _movementSpeed * joystickDirection * Time.deltaTime;
             transform.position += delta;
+            
+            //keep unit positions same as before
             foreach (var unit in _units)
             {
                 unit.transform.position -= delta;
