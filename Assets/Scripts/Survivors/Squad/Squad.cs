@@ -2,7 +2,9 @@
 using SuperMaxim.Core.Extensions;
 using Survivors.Units.Player;
 using UnityEngine;
+using UnityEngine.Assertions;
 using Zenject;
+using EasyButtons;
 
 namespace Survivors.Squad
 {
@@ -16,11 +18,23 @@ namespace Survivors.Squad
         
         [Inject] 
         private Joystick _joystick;
+        [Inject] 
+        private DiContainer _container;
 
         public void AddUnit(MovementController unit)
         {
             AddUnitInner(unit);
             UpdateUnitDestinations();
+        }
+
+        [Button]
+        private void SpawnUnit()
+        {
+            Assert.IsTrue(_units.Count > 0);
+            var newUnit = _container.InstantiatePrefabForComponent<MovementController>(_units[0]);
+            newUnit.transform.SetParent(transform);
+            newUnit.transform.position = GetSpawnPos();
+            AddUnit(newUnit);
         }
 
         private void AddUnitInner(MovementController unit)
@@ -39,7 +53,7 @@ namespace Survivors.Squad
         {
             for (int unitIdx = 0; unitIdx < _units.Count; unitIdx++)
             {
-                _units[unitIdx].transform.position = transform.position + GetUnitOffset(unitIdx);
+                _units[unitIdx].transform.position = transform.position + GetUnitOffset(unitIdx, _units.Count);
             }
         }
 
@@ -67,15 +81,20 @@ namespace Survivors.Squad
         {
             for (int unitIdx = 0; unitIdx < _units.Count; unitIdx++)
             {
-                _units[unitIdx].MoveTo(transform.position + GetUnitOffset(unitIdx));
+                _units[unitIdx].MoveTo(transform.position + GetUnitOffset(unitIdx, _units.Count));
             }
         }
 
-        private Vector3 GetUnitOffset(int unitIdx)
+        private Vector3 GetUnitOffset(int unitIdx, int unitCount)
         {
-            var radius = _units.Count == 1 ? 0 : _units.Count * _unitSize / Mathf.PI / 2;
-            var angle = 360 * unitIdx / _units.Count;
+            var radius = unitCount == 1 ? 0 : unitCount * _unitSize / Mathf.PI / 2;
+            var angle = 360 * unitIdx / unitCount;
             return Quaternion.AngleAxis(angle, Vector3.up) * Vector3.right * radius;
+        }
+
+        private Vector3 GetSpawnPos()
+        {
+            return transform.position + (_units.Count == 1 ? GetUnitOffset(1, 2) : Vector3.zero);
         }
     }
 }
