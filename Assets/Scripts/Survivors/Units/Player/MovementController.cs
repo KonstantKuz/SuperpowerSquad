@@ -13,28 +13,23 @@ namespace Survivors.Units.Player
         private NavMeshAgent _agent;
         private Animator _animator;
 
-        [Inject] 
-        private Joystick _joystick;
-
         private void Awake()
         {
             _agent = GetComponent<NavMeshAgent>();
             _animator = GetComponentInChildren<Animator>();
         }
 
-        private void Update()
+        public void MoveTo(Vector3 destination)
         {
-            if (_joystick.Direction.sqrMagnitude > 0)
-            {
-                _agent.isStopped = false;
-                _agent.destination = transform.position + new Vector3(_joystick.Horizontal, 0, _joystick.Vertical);
-                _animator.Play(_runHash);
-            }
-            else
-            {
-                _agent.isStopped = true;
-                _animator.Play(_idleHash);
-            }
+            _agent.isStopped = false;
+            _agent.destination = destination;
+            _animator.Play(_runHash);
+        }
+
+        public void Stop()
+        {
+            _agent.isStopped = true;
+            _animator.Play(_idleHash);
         }
     }
 }
