@@ -3,6 +3,7 @@ using Feofun.Config.Serializers;
 using Feofun.Localization.Config;
 using Survivors.Config;
 using Survivors.EnemySpawn.Config;
+using Survivors.Units.Config;
 using Zenject;
 
 namespace Survivors.App
@@ -13,7 +14,8 @@ namespace Survivors.App
         {
             new ConfigLoader(container, new CsvConfigDeserializer())
                 .RegisterSingle<LocalizationConfig>(Configs.LOCALIZATION)
-                .RegisterSingle<MatchEnemyWavesConfig>(Configs.ENEMY_WAVES);
+                .RegisterSingle<MatchEnemyWavesConfig>(Configs.ENEMY_WAVES)
+                .RegisterSingle<EnemyUnitConfigs>(Configs.ENEMY_UNIT);
         }
     }
 }
