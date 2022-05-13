@@ -9,7 +9,7 @@ using Zenject;
 
 namespace Survivors.Location.Service
 {
-    public class LocationObjectFactory : MonoBehaviour
+    public class LocationObjectFactory
     {
         private const string OBJECT_PREFABS_PATH_ROOT = "Content/Location/";
 
@@ -61,7 +61,7 @@ namespace Survivors.Location.Service
         public void DestroyAllObjects()
         {
             foreach (var gameObject in _createdObjects) {
-                Destroy(gameObject);
+                Object.Destroy(gameObject);
             }
         }
 

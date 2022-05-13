@@ -3,6 +3,7 @@ using System.Linq;
 using Feofun.Config;
 using JetBrains.Annotations;
 using Survivors.Location.Service;
+using Survivors.Units.Player;
 using Survivors.Units.Player.Config;
 using Survivors.Units.Player.Model;
 using Zenject;
@@ -18,19 +19,19 @@ namespace Survivors.Units.Service
         [Inject]
         private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
         
-        public Unit LoadPlayerUnit()
+        public PlayerUnit LoadPlayerUnit()
         {
             var unitId = _playerUnitConfigs.First().Id;
             var unitObj = _locationObjectFactory.CreateObject(unitId);
-            var unit = unitObj.GetComponentInChildren<Unit>()
+            var unit = unitObj.GetComponentInChildren<PlayerUnit>()
                        ?? throw new NullReferenceException($"Unit is null, objectId:= {unitId}, gameObject:= {unitObj.name}");
             Configure(unit);
             return unit;
         }
-        private void Configure(Unit unit)
+        private void Configure(PlayerUnit playerUnit)
         {
-            var model = new PlayerUnitModel(_playerUnitConfigs.Get(unit.ObjectId));
-            unit.Init(model);
+            var model = new PlayerUnitModel(_playerUnitConfigs.Get(playerUnit.ObjectId));
+            playerUnit.Init(model);
         }
     }
 }

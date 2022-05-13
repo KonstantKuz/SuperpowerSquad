@@ -16,7 +16,9 @@ namespace Survivors.App
         [SerializeField]
         private GameApplication _gameApplication;
         [SerializeField]
-        private Joystick _joystick;
+        private Joystick _joystick;     
+        [SerializeField]
+        private Location.Location _location;
 
         public override void InstallBindings()
         {
@@ -26,7 +28,7 @@ namespace Survivors.App
             Container.Bind<Joystick>().FromInstance(_joystick).AsSingle();
 
             RegisterConfigs(Container);
-            UnitServicesInstaller.Install(Container);            
+            UnitServicesInstaller.Install(Container, _location);            
         }
 
         private static void RegisterConfigs(DiContainer container)

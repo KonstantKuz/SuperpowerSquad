@@ -12,8 +12,7 @@ namespace Survivors.Units.Target
 
         public void Add(ITarget target)
         {
-            if (!_targets.ContainsKey(target.UnitType))
-            {
+            if (!_targets.ContainsKey(target.UnitType)) {
                 _targets[target.UnitType] = new HashSet<ITarget>();
             }
             _targets[target.UnitType].Add(target);
@@ -24,13 +23,22 @@ namespace Survivors.Units.Target
             _targets[target.UnitType].Remove(target);
         }
 
-        public IEnumerable<ITarget> AllTargetsOfType(UnitType unitType) => 
-            _targets.ContainsKey(unitType) ? _targets[unitType] : Enumerable.Empty<ITarget>();
-        
+        public IEnumerable<ITarget> AllTargetsOfType(UnitType unitType) =>
+                _targets.ContainsKey(unitType) ? _targets[unitType] : Enumerable.Empty<ITarget>();
+
+        [CanBeNull]
         public ITarget FindClosestTargetOfType(UnitType unitType, Vector3 pos)
         {
+            return AllTargetsOfType(unitType).OrderBy(it => Vector3.Distance(it.Root.position, pos)).FirstOrDefault();
+        }
+
+        [CanBeNull]
+        public ITarget FindClosestTargetOfTypeByDistance(UnitType unitType, Vector3 pos, float distance)
+        {
             return AllTargetsOfType(unitType)
-                .OrderBy(it => Vector3.Distance(it.Root.position, pos)).FirstOrDefault();
+                   .Where(it => Vector3.Distance(it.Root.position, pos) <= distance)
+                   .OrderBy(it => Vector3.Distance(it.Root.position, pos))
+                   .FirstOrDefault();
         }
     }
 }
