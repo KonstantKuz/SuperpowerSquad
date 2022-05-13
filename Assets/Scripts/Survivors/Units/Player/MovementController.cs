@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using UnityEngine.AI;
-using Zenject;
 
 namespace Survivors.Units.Player
 {
@@ -13,23 +12,42 @@ namespace Survivors.Units.Player
         private NavMeshAgent _agent;
         private Animator _animator;
 
+        private NavMeshAgent Agent => _agent ??= GetComponent<NavMeshAgent>();
+
         private void Awake()
         {
-            _agent = GetComponent<NavMeshAgent>();
             _animator = GetComponentInChildren<Animator>();
         }
 
         public void MoveTo(Vector3 destination)
         {
-            _agent.isStopped = false;
-            _agent.destination = destination;
+            if (Vector3.Distance(destination, transform.position) < _agent.stoppingDistance)
+            {
+                Stop();
+                return;
+            }
+            Agent.isStopped = false;
+            Agent.destination = destination;
             _animator.Play(_runHash);
         }
 
         public void Stop()
         {
-            _agent.isStopped = true;
+            Agent.isStopped = true;
             _animator.Play(_idleHash);
+        }
+
+        public void SetSpeed(float speed)
+        {
+            Agent.speed = speed;
+        }
+
+        private void Update()
+        {
+            if (!_agent.isStopped && _agent.remainingDistance < _agent.stoppingDistance)
+            {
+                Stop();
+            }
         }
     }
 }
