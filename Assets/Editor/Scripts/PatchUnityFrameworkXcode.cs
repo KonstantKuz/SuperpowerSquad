@@ -23,14 +23,14 @@ namespace Editor
             var project = new PBXProject();
             project.ReadFromFile(projectPath);
 
-            FixCodeSign(project);
-            FixFirebase(project);
+            SetManualCodeSign(project);
+            FixLibrarySearchPath(project);
 
             project.WriteToFile(projectPath);
             Debug.Log("Xcode project is patched");
         }
 
-        private static void FixCodeSign(PBXProject project)
+        private static void SetManualCodeSign(PBXProject project)
         {
             var unityFrameworkTarget = project.GetUnityFrameworkTargetGuid();
             project.SetBuildProperty(unityFrameworkTarget, "CODE_SIGN_STYLE", "Manual");
@@ -44,7 +44,7 @@ namespace Editor
             project.SetBuildProperty(target, "CODE_SIGN_STYLE", "Manual");
         }
 
-        private static void FixFirebase(PBXProject project)
+        private static void FixLibrarySearchPath(PBXProject project)
         {
             var target = project.GetUnityMainTargetGuid();
             project.SetBuildProperty(target, "OTHER_LDFLAGS", "$(inherited)");
