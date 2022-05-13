@@ -40,6 +40,13 @@ namespace Survivors.Squad
             AddUnit(newUnit);
         }
 
+        [Button]
+        private void SwitchSquadCenterVisibility()
+        {
+            var meshRenderer = GetComponent<MeshRenderer>();
+            meshRenderer.enabled = !meshRenderer.enabled;
+        }
+
         private void AddUnitInner(MovementController unit)
         {
             _units.Add(unit);
