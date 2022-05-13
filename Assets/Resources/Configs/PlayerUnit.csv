@@ -1,2 +1,2 @@
-Id,AttackDistance,AttackRadius,AttackDamage,AttackInterval,AttackTime,AttackSpeed,AttackCount
-StandardUnit,20,0,100,5,0.8,2,3
+Id,AttackDistance,AttackRadius,AttackDamage,AttackInterval,AttackTime,AttackSpeed,AttackCount,AttackAngle
+StandardUnit,20,0,100,5,0.8,2,3,90

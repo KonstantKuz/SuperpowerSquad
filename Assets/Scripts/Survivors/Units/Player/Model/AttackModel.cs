@@ -23,6 +23,7 @@ namespace Survivors.Units.Player.Model
 
         public float AttackSpeed => _config.AttackSpeed;
 
-        public int AttackCount => _config.AttackCount;
+        public int AttackCount => _config.AttackCount;    
+        public int AttackAngle => _config.AttackAngle;
     }
 }

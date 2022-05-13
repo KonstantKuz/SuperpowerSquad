@@ -32,13 +32,6 @@ namespace Survivors.Units.Target
             return AllTargetsOfType(unitType).OrderBy(it => Vector3.Distance(it.Root.position, pos)).FirstOrDefault();
         }
 
-        [CanBeNull]
-        public ITarget FindClosestTargetOfTypeByDistance(UnitType unitType, Vector3 pos, float distance)
-        {
-            return AllTargetsOfType(unitType)
-                   .Where(it => Vector3.Distance(it.Root.position, pos) <= distance)
-                   .OrderBy(it => Vector3.Distance(it.Root.position, pos))
-                   .FirstOrDefault();
-        }
+     
     }
 }

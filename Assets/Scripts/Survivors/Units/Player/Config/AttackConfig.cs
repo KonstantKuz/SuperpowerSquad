@@ -24,7 +24,10 @@ namespace Survivors.Units.Player.Config
         private float _attackSpeed;
 
         [DataMember(Name = "AttackCount")]
-        private int _attackCount;
+        private int _attackCount;      
+        
+        [DataMember(Name = "AttackAngle")]
+        private int _attackAngle;
 
         public float AttackDistance => _attackDistance;
         
@@ -39,5 +42,6 @@ namespace Survivors.Units.Player.Config
         public float AttackSpeed => _attackSpeed;
 
         public int AttackCount => _attackCount;
+        public int AttackAngle => _attackAngle;
     }
 }
