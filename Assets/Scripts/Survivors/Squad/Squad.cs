@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using Zenject;
 using EasyButtons;
+using Survivors.Squad.Formation;
 
 namespace Survivors.Squad
 {
@@ -15,6 +16,7 @@ namespace Survivors.Squad
         [SerializeField] private float _unitSize;
 
         private readonly List<MovementController> _units = new List<MovementController>();
+        private readonly ISquadFormation _formation = new CircleFormation();
         
         [Inject] 
         private Joystick _joystick;
@@ -63,7 +65,7 @@ namespace Survivors.Squad
         {
             for (int unitIdx = 0; unitIdx < _units.Count; unitIdx++)
             {
-                _units[unitIdx].transform.position = transform.position + GetUnitOffset(unitIdx, _units.Count);
+                _units[unitIdx].transform.position = transform.position + _formation.GetUnitOffset(unitIdx, _unitSize, _units.Count);
             }
         }
 
@@ -91,20 +93,13 @@ namespace Survivors.Squad
         {
             for (int unitIdx = 0; unitIdx < _units.Count; unitIdx++)
             {
-                _units[unitIdx].MoveTo(transform.position + GetUnitOffset(unitIdx, _units.Count));
+                _units[unitIdx].MoveTo(transform.position + _formation.GetUnitOffset(unitIdx, _unitSize, _units.Count));
             }
-        }
-
-        private Vector3 GetUnitOffset(int unitIdx, int unitCount)
-        {
-            var radius = unitCount == 1 ? 0 : unitCount * _unitSize / Mathf.PI / 2;
-            var angle = 360 * unitIdx / unitCount;
-            return Quaternion.AngleAxis(angle, Vector3.up) * Vector3.right * radius;
         }
 
         private Vector3 GetSpawnPos()
         {
-            return transform.position + (_units.Count == 1 ? GetUnitOffset(1, 2) : Vector3.zero);
+            return transform.position + _formation.GetSpawnOffset(_unitSize, _units.Count);
         }
     }
 }
