@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Timers;
+using LegionMaster.Extension;
 using Survivors.EnemySpawn.Config;
 using Survivors.Location;
 using Survivors.Session;
@@ -19,9 +20,7 @@ namespace Survivors.EnemySpawn
         [SerializeField] private float _minOutOfViewOffset = 1f;
         [SerializeField] private float _outOfViewOffsetMultiplier = 0.3f;
 
-        private EnemyWavesConfig _wavesConfig;
-        private Queue<EnemyWaveConfig> _currentMatchWaves;
-        private EnemyWaveConfig _currentWave;
+        private List<EnemyWaveConfig> _waves;
         private Coroutine _spawnCoroutine;
         
         [Inject] private UnitFactory _unitFactory;
@@ -29,57 +28,48 @@ namespace Survivors.EnemySpawn
 
         public void StartSpawn(EnemyWavesConfig enemyWavesConfig)
         {
-            _wavesConfig = enemyWavesConfig;
-            _currentMatchWaves = new Queue<EnemyWaveConfig>(enemyWavesConfig.EnemySpawns);
-            _currentWave = _currentMatchWaves.Dequeue();
+            if (_spawnCoroutine != null)
+            {
+                Dispose();
+            }
+
+            var orderedConfigs = enemyWavesConfig.EnemySpawns.OrderBy(it => it.SpawnTime);
+            _waves = new List<EnemyWaveConfig>(orderedConfigs);
             _spawnCoroutine = StartCoroutine(SpawnWaves());
         }
 
         private IEnumerator SpawnWaves()
         {
-            while (true)
+            var currentTime = 0;
+            foreach (var wave in _waves)
             {
-                if (_currentMatchWaves.Count == 0)
-                {
-                    Dispose();
-                    yield break;
-                }
-
-                var nextWave = _currentMatchWaves.Peek();
-                var waitTime = _currentMatchWaves.Count == _wavesConfig.EnemySpawns.Count 
-                    ? _currentWave.SpawnTime 
-                    : nextWave.SpawnTime - _currentWave.SpawnTime;
-                
-                yield return new WaitForSeconds(waitTime);
-                SpawnNextWave(_currentWave.Count);
-            }
+                yield return new WaitForSeconds(wave.SpawnTime - currentTime);
+                currentTime = wave.SpawnTime; 
+                SpawnNextWave(wave.Count);
+            } 
+            Dispose();
         }
         
         private void SpawnNextWave(int spawnCount)
         {
-            var place = GetRandomPlaceForWave(spawnCount);
+            var place = GetRandomPlaceForWave(spawnCount * _outOfViewOffsetMultiplier);
             for (int i = 0; i < spawnCount; i++) 
             {
                 SpawnEnemy(place);
             }
-
-            if (_currentMatchWaves.Count > 0) {
-                _currentWave = _currentMatchWaves.Dequeue();
-            }
         }
         
-        private Vector3 GetRandomPlaceForWave(int waveCount)
+        private Vector3 GetRandomPlaceForWave(float waveRadius)
         {
             var camera = UnityEngine.Camera.main;
-            var randomViewportPoint = GetRandomPointOnViewportEdge(out var spawnSide);
+            var spawnSide = EnumExt.GetRandom<SpawnSide>();
+            var randomViewportPoint = GetRandomPointOnViewportEdge(spawnSide);
             var pointRay =  camera.ViewportPointToRay(randomViewportPoint);
             var plane = new Plane(_world.Player.up, _world.Player.position);
             plane.Raycast(pointRay, out var intersectionDist);
             var place = pointRay.GetPoint(intersectionDist);
-            var forwardOffset = Vector3.ProjectOnPlane(camera.transform.forward, plane.normal)
-                                * (_minOutOfViewOffset + _outOfViewOffsetMultiplier * waveCount);
-            var rightOffset = Vector3.ProjectOnPlane(camera.transform.right, plane.normal) 
-                              * (_minOutOfViewOffset + _outOfViewOffsetMultiplier * waveCount);
+            var forwardOffset = GetWaveSpawnOffset(camera.transform.forward, plane.normal, waveRadius);
+            var rightOffset = GetWaveSpawnOffset(camera.transform.right, plane.normal, waveRadius);
           
             place += spawnSide switch
             {
@@ -93,12 +83,11 @@ namespace Survivors.EnemySpawn
             return place;
         }
 
-        private Vector2 GetRandomPointOnViewportEdge(out SpawnSide spawnSide)
+        private Vector2 GetRandomPointOnViewportEdge(SpawnSide spawnSide)
         {
-            var placeAlongVertical = Random.value > 0.5f;
+            var placeAlongVertical = spawnSide == SpawnSide.Top || spawnSide == SpawnSide.Bottom;
             var verticalValue = placeAlongVertical ? Random.Range(0f, 1f) : GetRandomViewportEdge();
             var horizontalValue = placeAlongVertical ? GetRandomViewportEdge() : Random.Range(0f, 1f);
-            spawnSide = GetSpawnSide(placeAlongVertical, verticalValue, horizontalValue);
             return new Vector2(horizontalValue,verticalValue);
         }
 
@@ -107,11 +96,9 @@ namespace Survivors.EnemySpawn
             return Random.value > 0.5f ? 1f : 0f;
         }
 
-        private SpawnSide GetSpawnSide(bool placeAlongVertical, float verticalValue, float horizontalValue)
+        private Vector3 GetWaveSpawnOffset(Vector3 vector, Vector3 normal, float waveRadius)
         {
-            return placeAlongVertical 
-                ? horizontalValue > 0.5f ? SpawnSide.Right : SpawnSide.Left 
-                : verticalValue > 0.5f ? SpawnSide.Top : SpawnSide.Bottom;
+            return Vector3.ProjectOnPlane(vector, normal) * (_minOutOfViewOffset + waveRadius);
         }
 
         private void SpawnEnemy(Vector3 place)
