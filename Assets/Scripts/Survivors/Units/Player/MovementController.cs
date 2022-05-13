@@ -21,13 +21,13 @@ namespace Survivors.Units.Player
 
         public void MoveTo(Vector3 destination)
         {
-            if (Vector3.Distance(destination, transform.position) < _agent.stoppingDistance)
+            Agent.destination = destination;
+            if (_agent.remainingDistance < _agent.stoppingDistance)
             {
                 Stop();
                 return;
             }
             Agent.isStopped = false;
-            Agent.destination = destination;
             _animator.Play(_runHash);
         }
 
