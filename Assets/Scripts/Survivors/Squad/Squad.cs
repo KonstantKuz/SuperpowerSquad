@@ -28,6 +28,9 @@ namespace Survivors.Squad
         }
 
         [Button]
+        /*
+         * This functions just tests formation change when new units are added
+         */
         private void SpawnUnit()
         {
             Assert.IsTrue(_units.Count > 0);
