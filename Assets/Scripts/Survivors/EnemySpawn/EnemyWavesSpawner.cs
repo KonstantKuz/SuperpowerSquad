@@ -85,15 +85,22 @@ namespace Survivors.EnemySpawn
 
         private Vector2 GetRandomPointOnViewportEdge(SpawnSide spawnSide)
         {
-            var placeAlongVertical = spawnSide == SpawnSide.Top || spawnSide == SpawnSide.Bottom;
-            var verticalValue = placeAlongVertical ? Random.Range(0f, 1f) : GetRandomViewportEdge();
-            var horizontalValue = placeAlongVertical ? GetRandomViewportEdge() : Random.Range(0f, 1f);
-            return new Vector2(horizontalValue,verticalValue);
+            switch (spawnSide)
+            {
+                case SpawnSide.Top:
+                case SpawnSide.Bottom:
+                    return new Vector2(Random.Range(0f, 1f), GetViewportEdge(spawnSide));
+                case SpawnSide.Right:
+                case SpawnSide.Left:
+                    return new Vector2(GetViewportEdge(spawnSide), Random.Range(0f, 1f));
+                default:
+                    throw new ArgumentException("Unexpected spawn side");
+            }
         }
 
-        private float GetRandomViewportEdge()
+        private float GetViewportEdge(SpawnSide spawnSide)
         {
-            return Random.value > 0.5f ? 1f : 0f;
+            return (spawnSide == SpawnSide.Top || spawnSide == SpawnSide.Right) ? 1f : 0f;
         }
 
         private Vector3 GetWaveSpawnOffset(Vector3 vector, Vector3 normal, float waveRadius)
