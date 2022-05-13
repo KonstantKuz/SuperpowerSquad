@@ -5,7 +5,7 @@ namespace Survivors.EnemySpawn.Config
     public class EnemyWaveConfig
     {
         [DataMember]
-        public int Second;
+        public int SpawnTime;
         [DataMember]
         public int Count;
     }

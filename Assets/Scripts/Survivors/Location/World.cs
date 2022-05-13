@@ -2,7 +2,7 @@ using UnityEngine;
 
 namespace Survivors.Location
 {
-    public class LocationWorld : MonoBehaviour
+    public class World : MonoBehaviour
     {
         [SerializeField] private Transform _player;
         [SerializeField] private GameObject _spawnContainer;

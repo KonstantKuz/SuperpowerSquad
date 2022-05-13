@@ -13,7 +13,7 @@ namespace Survivors.App
         {
             new ConfigLoader(container, new CsvConfigDeserializer())
                 .RegisterSingle<LocalizationConfig>(Configs.LOCALIZATION)
-                .RegisterSingle<MatchEnemyWavesConfig>(Configs.ENEMY_WAVES);
+                .RegisterSingle<EnemyWavesConfig>(Configs.ENEMY_WAVES);
         }
     }
 }

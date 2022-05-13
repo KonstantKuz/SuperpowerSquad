@@ -7,11 +7,11 @@ namespace Survivors.Session
     public class SessionService
     {
         [Inject] private EnemyWavesSpawner _enemyWavesSpawner;
-        [Inject] private MatchEnemyWavesConfig _matchEnemyWavesConfig;
+        [Inject] private EnemyWavesConfig _enemyWavesConfig;
 
         public void Start()
         {
-            _enemyWavesSpawner.Init(_matchEnemyWavesConfig);
+            _enemyWavesSpawner.StartSpawn(_enemyWavesConfig);
         }
     }
 }

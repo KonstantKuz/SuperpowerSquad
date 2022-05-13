@@ -9,12 +9,12 @@ namespace Survivors.Units.Service
     {
         private const string SIMPLE_ENEMY_ID = "SimpleEnemy";
         
-        [Inject] private LocationWorld _locationWorld;
-        [Inject] private LocationObjectFactory _locationObjectFactory;
+        [Inject] private World _world;
+        [Inject] private WorldObjectFactory _worldObjectFactory;
         
         public GameObject CreateEnemy()
         {
-            return _locationObjectFactory.CreateObject(SIMPLE_ENEMY_ID, _locationWorld.SpawnContainer);
+            return _worldObjectFactory.CreateObject(SIMPLE_ENEMY_ID, _world.SpawnContainer);
         }
     }
 }
