@@ -52,7 +52,7 @@ namespace Survivors.Units.Player
             if (signedAngle > 0) {
                 Mathf.Min(1, FORWARD_DIRECTION_ANIMATION_PARAM + animationOffsetValue);
             }
-            return 0.5f;
+            return FORWARD_DIRECTION_ANIMATION_PARAM;
         }
     }
 }

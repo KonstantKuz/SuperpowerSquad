@@ -7,12 +7,12 @@ namespace Survivors.Units.Player
     public class PlayerUnit : MonoBehaviour, IWorldObject
     {
         private IUpdatableUnitComponent[] _updatables;
-        public PlayerUnitModel UnitModel { get; private set; }
+        public PlayerUnitModel Model { get; private set; }
         public string ObjectId => GetComponent<WorldObject>().ObjectId;
         public GameObject GameObject => gameObject;
         public void Init(PlayerUnitModel model)
         {
-            UnitModel = model;
+            Model = model;
             _updatables = GetComponentsInChildren<IUpdatableUnitComponent>();
             foreach (var component in GetComponentsInChildren<IUnitInitialization>()) {
                 component.Init(this);
