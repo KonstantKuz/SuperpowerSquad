@@ -15,13 +15,12 @@ namespace Survivors.Squad
         [SerializeField] private float _unitSpeedScale;
         [SerializeField] private float _unitSize;
 
+        private SquadDestination _destination;
         private readonly List<MovementController> _units = new List<MovementController>();
         private readonly ISquadFormation _formation = new CircleFormation();
-        
-        [Inject] 
-        private Joystick _joystick;
-        [Inject] 
-        private DiContainer _container;
+
+        [Inject] private Joystick _joystick;
+        [Inject] private DiContainer _container;
 
         public void AddUnit(MovementController unit)
         {
@@ -45,12 +44,12 @@ namespace Survivors.Squad
         [Button]
         private void SwitchSquadCenterVisibility()
         {
-            var meshRenderer = GetComponent<MeshRenderer>();
-            meshRenderer.enabled = !meshRenderer.enabled;
+            _destination.SwitchVisibility();
         }
 
         private void Awake()
         {
+            _destination = GetComponentInChildren<SquadDestination>();
             GetComponentsInChildren<MovementController>().ForEach(AddUnit);
             SetUnitPositions();
         }
@@ -65,7 +64,7 @@ namespace Survivors.Squad
 
         private Vector3 GetUnitPosition(int unitIdx)
         {
-            return transform.position + _formation.GetUnitOffset(unitIdx, _unitSize, _units.Count);
+            return _destination.transform.position + _formation.GetUnitOffset(unitIdx, _unitSize, _units.Count);
         }
 
         private void Update()
@@ -81,13 +80,7 @@ namespace Survivors.Squad
         private void Move(Vector3 joystickDirection)
         {
             var delta = _movementSpeed * joystickDirection * Time.deltaTime;
-            transform.position += delta;
-            
-            //keep unit positions same as before
-            foreach (var unit in _units)
-            {
-                unit.transform.position -= delta;
-            }
+            _destination.transform.position += delta;
         }
 
         private void UpdateUnitDestinations()
@@ -100,7 +93,7 @@ namespace Survivors.Squad
 
         private Vector3 GetSpawnPosition()
         {
-            return transform.position + _formation.GetSpawnOffset(_unitSize, _units.Count);
+            return _destination.transform.position + _formation.GetSpawnOffset(_unitSize, _units.Count);
         }
     }
 }
