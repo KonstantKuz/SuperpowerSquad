@@ -13,7 +13,8 @@ namespace Survivors.Squad.Formation
 
         public Vector3 GetSpawnOffset(float unitSize, int squadSize)
         {
-            return squadSize == 1 ? GetUnitOffset(1, unitSize, 2) : Vector3.zero;
+            var isUnitInCenter = squadSize == 1; //the only squad size when there is a unit right in center
+            return isUnitInCenter ? GetUnitOffset(1, unitSize, 2) : Vector3.zero;
         }
     }
 }

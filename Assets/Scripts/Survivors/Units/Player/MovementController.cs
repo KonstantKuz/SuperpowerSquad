@@ -22,7 +22,7 @@ namespace Survivors.Units.Player
         public void MoveTo(Vector3 destination)
         {
             Agent.destination = destination;
-            if (_agent.remainingDistance < _agent.stoppingDistance)
+            if (IsDestinationReached)
             {
                 Stop();
                 return;
@@ -30,6 +30,8 @@ namespace Survivors.Units.Player
             Agent.isStopped = false;
             _animator.Play(_runHash);
         }
+
+        private bool IsDestinationReached => _agent.remainingDistance < _agent.stoppingDistance;
 
         public void Stop()
         {
@@ -44,7 +46,7 @@ namespace Survivors.Units.Player
 
         private void Update()
         {
-            if (!_agent.isStopped && _agent.remainingDistance < _agent.stoppingDistance)
+            if (!_agent.isStopped && IsDestinationReached)
             {
                 Stop();
             }

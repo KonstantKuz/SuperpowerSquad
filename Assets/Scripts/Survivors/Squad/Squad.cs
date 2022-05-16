@@ -25,8 +25,8 @@ namespace Survivors.Squad
 
         public void AddUnit(MovementController unit)
         {
-            AddUnitInner(unit);
-            UpdateUnitDestinations();
+            _units.Add(unit);
+            unit.SetSpeed(_movementSpeed * _unitSpeedScale);
         }
 
         [Button]
@@ -38,7 +38,7 @@ namespace Survivors.Squad
             Assert.IsTrue(_units.Count > 0);
             var newUnit = _container.InstantiatePrefabForComponent<MovementController>(_units[0]);
             newUnit.transform.SetParent(transform);
-            newUnit.transform.position = GetSpawnPos();
+            newUnit.transform.position = GetSpawnPosition();
             AddUnit(newUnit);
         }
 
@@ -49,15 +49,9 @@ namespace Survivors.Squad
             meshRenderer.enabled = !meshRenderer.enabled;
         }
 
-        private void AddUnitInner(MovementController unit)
-        {
-            _units.Add(unit);
-            unit.SetSpeed(_movementSpeed * _unitSpeedScale);
-        }
-
         private void Awake()
         {
-            GetComponentsInChildren<MovementController>().ForEach(AddUnitInner);
+            GetComponentsInChildren<MovementController>().ForEach(AddUnit);
             SetUnitPositions();
         }
 
@@ -65,8 +59,13 @@ namespace Survivors.Squad
         {
             for (int unitIdx = 0; unitIdx < _units.Count; unitIdx++)
             {
-                _units[unitIdx].transform.position = transform.position + _formation.GetUnitOffset(unitIdx, _unitSize, _units.Count);
+                _units[unitIdx].transform.position = GetUnitPosition(unitIdx);
             }
+        }
+
+        private Vector3 GetUnitPosition(int unitIdx)
+        {
+            return transform.position + _formation.GetUnitOffset(unitIdx, _unitSize, _units.Count);
         }
 
         private void Update()
@@ -95,11 +94,11 @@ namespace Survivors.Squad
         {
             for (int unitIdx = 0; unitIdx < _units.Count; unitIdx++)
             {
-                _units[unitIdx].MoveTo(transform.position + _formation.GetUnitOffset(unitIdx, _unitSize, _units.Count));
+                _units[unitIdx].MoveTo(GetUnitPosition(unitIdx));
             }
         }
 
-        private Vector3 GetSpawnPos()
+        private Vector3 GetSpawnPosition()
         {
             return transform.position + _formation.GetSpawnOffset(_unitSize, _units.Count);
         }
