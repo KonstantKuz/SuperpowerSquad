@@ -17,13 +17,13 @@ namespace Survivors.Units.Player.Model
 
         public int AttackDamage => _config.AttackDamage;
 
-        public float AttackInterval => _config.AttackInterval;
+        public float RechargeTime => _config.RechargeTime;
 
         public float AttackTime => _config.AttackTime;
 
         public float AttackSpeed => _config.AttackSpeed;
 
-        public int AttackCount => _config.AttackCount;    
+        public int ChargeCount => _config.ChargeCount;    
         public int AttackAngle => _config.AttackAngle;
     }
 }

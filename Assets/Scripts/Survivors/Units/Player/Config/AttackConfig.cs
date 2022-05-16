@@ -14,8 +14,8 @@ namespace Survivors.Units.Player.Config
         [DataMember(Name = "AttackDamage")]
         private int _attackDamage;
 
-        [DataMember(Name = "AttackInterval")]
-        private float _attackInterval;
+        [DataMember(Name = "RechargeTime")]
+        private float _rechargeTime;
 
         [DataMember(Name = "AttackTime")]
         private float _attackTime;
@@ -23,8 +23,8 @@ namespace Survivors.Units.Player.Config
         [DataMember(Name = "AttackSpeed")]
         private float _attackSpeed;
 
-        [DataMember(Name = "AttackCount")]
-        private int _attackCount;      
+        [DataMember(Name = "ChargeCount")]
+        private int _chargeCount;      
         
         [DataMember(Name = "AttackAngle")]
         private int _attackAngle;
@@ -35,13 +35,13 @@ namespace Survivors.Units.Player.Config
         
         public int AttackDamage => _attackDamage;
         
-        public float AttackInterval => _attackInterval;
+        public float RechargeTime => _rechargeTime;
         
         public float AttackTime => _attackTime;
         
         public float AttackSpeed => _attackSpeed;
 
-        public int AttackCount => _attackCount;
+        public int ChargeCount => _chargeCount;
         public int AttackAngle => _attackAngle;
     }
 }

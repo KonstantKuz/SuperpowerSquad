@@ -1,5 +1,5 @@
-﻿using System.Linq;
-using EasyButtons;
+﻿using System;
+using System.Linq;
 using JetBrains.Annotations;
 using ModestTree;
 using Survivors.Extension;
@@ -15,57 +15,70 @@ namespace Survivors.Units.Player.Attack
     public class PlayerAttack : MonoBehaviour, IUnitInitialization, IUpdatableUnitComponent
     {
         private readonly int _attackHash = Animator.StringToHash("Attack");
-
         [Inject]
         private TargetService _targetService;
 
         private BaseWeapon _weapon;
         private AttackModel _attackModel;
         private Animator _animator;
-        private float _lastAttackTime;
+        private MovementController _movementController;
+        
+        private float _rechargerCompletionTime;
+        private bool IsAttackProcess;
+        
+        [CanBeNull]
         private WeaponAnimationHandler _weaponAnimationHandler;
-
-        private bool IsTargetInvalid => !(_target is {IsAlive: true});
-
+        [CanBeNull]
+        private Recharger _recharger;
+        [CanBeNull]
         private ITarget _target;
-        private bool IsAttackReady => Time.time >= _lastAttackTime + _attackModel.AttackInterval;
+        private bool IsTargetInvalid => !(_target is {IsAlive: true});
+        private bool Recharged => Time.time >= _rechargerCompletionTime + _attackModel.RechargeTime;
         private bool HasWeaponAnimationHandler => _weaponAnimationHandler != null;
 
         public void Init(PlayerUnit playerUnit)
         {
             _attackModel = playerUnit.UnitModel.AttackModel;
             if (HasWeaponAnimationHandler) {
-                _weaponAnimationHandler.FireEvent += Fire;
+                _weaponAnimationHandler.OnFireEvent += Fire;
+                _weaponAnimationHandler.OnFireCompleted += FireCompleted;
             }
+        }
+
+        private void FireCompleted()
+        {
+            _movementController.PlayUnitRotateAnimation(0);
         }
 
         public void Awake()
         {
-            _weapon = GetComponentInChildren<BaseWeapon>();
-            _animator = GetComponentInChildren<Animator>();
+            _weapon = GetComponentInChildren<BaseWeapon>().IsNotNullComponent(this);
+            _animator = GetComponentInChildren<Animator>().IsNotNullComponent(this);
             _weaponAnimationHandler = GetComponentInChildren<WeaponAnimationHandler>();
-            Assert.IsNotNull(_animator, "Unit prefab is missing Animator component in hierarchy");
-            Assert.IsNotNull(_weapon, "Unit prefab is missing BaseWeapon component in hierarchy");
+            _movementController = GetComponent<MovementController>().IsNotNullComponent(this);
         }
 
         public void OnTick()
         {
-            DrawDirection();
-            if (!IsAttackReady) {
+            _recharger?.OnTick();
+
+            if (_recharger != null) {
                 return;
             }
-            FindTargetAndAttack();
+            if (Recharged) {
+                CreateRecharger();
+            }
         }
 
-        private void DrawDirection()
+        private void CreateRecharger()
         {
-            var it = _targetService.AllTargetsOfType(UnitType.ENEMY).First();
-            var direction = it.Root.position - transform.position;
-            DrawDebugRay(direction, Color.red);
-            DrawDebugRay(transform.forward, Color.yellow);
+            _recharger = new Recharger(this, _attackModel.ChargeCount, _attackModel.AttackTime, OnRechargerCompleted);
+        }
 
-            var angle = Vector2.Angle(transform.forward.ToVector2XZ(), direction.ToVector2XZ());
-            Debug.Log($"Angle:= {angle}");
+        private void OnRechargerCompleted()
+        {
+            _rechargerCompletionTime = Time.time;
+            _recharger = null;
         }
 
         [CanBeNull]
@@ -75,55 +88,35 @@ namespace Survivors.Units.Player.Attack
                                  .Where(it => Vector3.Distance(it.Root.position, transform.position) <= _attackModel.AttackDistance)
                                  .Where(it => {
                                      var direction = it.Root.position - transform.position;
-                                     return Vector2.Angle(transform.forward.ToVector2XZ(), direction.ToVector2XZ()) <= _attackModel.AttackAngle * 0.5f;
+                                     return Vector2.Angle(transform.forward.ToVector2XZ(), direction.ToVector2XZ())
+                                            <= _attackModel.AttackAngle * 0.5f;
                                  })
                                  .OrderBy(it => Vector3.Distance(it.Root.position, transform.position))
                                  .FirstOrDefault();
         }
 
-        private void DrawDebugRay(Vector3 rayDirection, Color color)
+        private void Attack(ITarget target)
         {
-            Vector3 debugRay = rayDirection * 10;
-            Debug.DrawRay(transform.position, debugRay, color, .1f, false);
-        }
-
-        private void FindTargetAndAttack()
-        {
-            _target = FindTarget();
-            if (_target == null) {
-                return;
-            }
-            Attack();
-        }
-
-        [Button]
-        private void EditorAttack()
-        {
-            _animator.SetTrigger(_attackHash);
-        }
-
-        private void Attack()
-        {
-            _lastAttackTime = Time.time;
+            IsAttackProcess = true;
+            _target = target;
             if (!HasWeaponAnimationHandler) {
                 Fire();
             }
-
             _animator.SetTrigger(_attackHash);
+            RotateUnitToTarget(target);
         }
 
-        /*private void RotateTo(Vector3 targetPos)
+        private void RotateUnitToTarget(ITarget target)
         {
-            var transform = gameObject.transform;
-            var lookAtDirection = (targetPos - transform.position).XZ().normalized;
-            var lookAt = Quaternion.LookRotation(lookAtDirection, transform.up);
-            transform.rotation = Quaternion.Lerp(transform.rotation, lookAt, Time.deltaTime * 20);
-        }*/
+            var targetDirection = target.Root.position - transform.position;
+            var angle = Vector2.SignedAngle(transform.forward.ToVector2XZ(), targetDirection.ToVector2XZ());
+            _movementController.PlayUnitRotateAnimation(angle);
+        }
 
         private void Fire()
         {
+            IsAttackProcess = false;
             if (IsTargetInvalid) {
-                _lastAttackTime = 0;
                 return;
             }
             _weapon.Fire(_target, DoDamage);
@@ -139,7 +132,56 @@ namespace Survivors.Units.Player.Attack
 
         private void OnDestroy()
         {
-            _weaponAnimationHandler.FireEvent -= Fire;
+            if (_weaponAnimationHandler != null) {
+                _weaponAnimationHandler.OnFireEvent -= Fire;
+                _weaponAnimationHandler.OnFireCompleted -= FireCompleted;
+            }
+            _recharger = null;
+        }
+
+        private class Recharger
+        {
+            private readonly PlayerAttack _attack;
+            private readonly float _attackInterval;
+
+            private int _chargeCount;
+            private float _lastAttackTime;
+            private Action _onCompleted;
+            private bool IsAttackReady => Time.time >= _lastAttackTime + _attackInterval;
+
+            public Recharger(PlayerAttack attack, int chargeCount, float attackTime, Action onCompleted)
+            {
+                _attack = attack;
+                _onCompleted = onCompleted;
+                _chargeCount = chargeCount;
+                _attackInterval = attackTime / chargeCount;
+            }
+
+            public void OnTick()
+            {
+                if (_onCompleted == null) {
+                    return;
+                }
+                if (!IsAttackReady) {
+                    return;
+                }
+                if (_chargeCount <= 0) {
+                    _onCompleted?.Invoke();
+                    _onCompleted = null;
+                    return;
+                }
+                var target = _attack.FindTarget();
+                if (target != null) {
+                    Attack(target);
+                }
+            }
+
+            private void Attack(ITarget target)
+            {
+                _lastAttackTime = Time.time;
+                _chargeCount--;
+                _attack.Attack(target);
+            }
         }
     }
 }
