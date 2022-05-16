@@ -62,18 +62,25 @@ namespace Survivors.Location.Service
             _createdObjects.Remove(obj);
         }
 
-        public void DestroyAllObjects()
-        {
-            foreach (GameObject gameObject in _createdObjects) {
-                Destroy(gameObject);
-            }
-        }
         public List<T> GetObjectComponents<T>()
         {
             return _createdObjects.Where(go => go.GetComponent<T>() != null).Select(go => go.GetComponent<T>()).ToList();
         }
 
+        public void DestroyAllObjects()
+        {
+            foreach (GameObject gameObject in _createdObjects) {
+                Destroy(gameObject);
+            }
+            Dispose();
+        }
+
         private void OnDestroy()
+        {
+            Dispose();
+        }
+
+        private void Dispose()
         {
             _disposable?.Dispose();
             _disposable = null;

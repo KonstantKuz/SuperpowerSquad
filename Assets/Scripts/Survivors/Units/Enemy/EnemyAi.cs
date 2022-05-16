@@ -14,6 +14,8 @@ namespace Survivors.Units.Enemy
         [Inject] 
         private TargetService _targetService;
 
+        public NavMeshAgent NavMeshAgent => _agent;
+
         private void Awake()
         {
             _agent = GetComponent<NavMeshAgent>();
@@ -33,7 +35,5 @@ namespace Survivors.Units.Enemy
                 _agent.isStopped = true;
             }
         }
-
-
     }
 }

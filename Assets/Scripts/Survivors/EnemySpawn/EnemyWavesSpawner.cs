@@ -2,13 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Timers;
 using LegionMaster.Extension;
 using Survivors.EnemySpawn.Config;
 using Survivors.Location;
-using Survivors.Session;
 using Survivors.Units.Service;
-using UniRx;
 using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
@@ -65,22 +62,8 @@ namespace Survivors.EnemySpawn
             var spawnSide = EnumExt.GetRandom<SpawnSide>();
             var randomViewportPoint = GetRandomPointOnViewportEdge(spawnSide);
             var pointRay =  camera.ViewportPointToRay(randomViewportPoint);
-            var plane = new Plane(_world.Player.up, _world.Player.position);
-            plane.Raycast(pointRay, out var intersectionDist);
-            var place = pointRay.GetPoint(intersectionDist);
-            var forwardOffset = GetWaveSpawnOffset(camera.transform.forward, plane.normal, waveRadius);
-            var rightOffset = GetWaveSpawnOffset(camera.transform.right, plane.normal, waveRadius);
-          
-            place += spawnSide switch
-            {
-                SpawnSide.Top => forwardOffset,
-                SpawnSide.Bottom => -forwardOffset,
-                SpawnSide.Right => rightOffset,
-                SpawnSide.Left => -rightOffset,
-                _ => Vector3.zero
-            };
-            
-            return place;
+            var place = _world.GetGroundIntersection(pointRay);
+            return GetSpawnPlaceWithOffset(place, spawnSide, waveRadius);
         }
 
         private Vector2 GetRandomPointOnViewportEdge(SpawnSide spawnSide)
@@ -88,30 +71,41 @@ namespace Survivors.EnemySpawn
             switch (spawnSide)
             {
                 case SpawnSide.Top:
+                    return new Vector2(Random.Range(0f, 1f), 1f);
                 case SpawnSide.Bottom:
-                    return new Vector2(Random.Range(0f, 1f), GetViewportEdge(spawnSide));
+                    return new Vector2(Random.Range(0f, 1f), 0f);
                 case SpawnSide.Right:
+                    return new Vector2(1f, Random.Range(0f, 1f));
                 case SpawnSide.Left:
-                    return new Vector2(GetViewportEdge(spawnSide), Random.Range(0f, 1f));
+                    return new Vector2(0f, Random.Range(0f, 1f));
                 default:
                     throw new ArgumentException("Unexpected spawn side");
             }
         }
 
-        private float GetViewportEdge(SpawnSide spawnSide)
+        private Vector3 GetSpawnPlaceWithOffset(Vector3 place, SpawnSide spawnSide, float waveRadius)
         {
-            return (spawnSide == SpawnSide.Top || spawnSide == SpawnSide.Right) ? 1f : 0f;
-        }
+            var camera = UnityEngine.Camera.main;
+            var spawnOffset = _minOutOfViewOffset + waveRadius;
+            var directionToTopSide = Vector3.ProjectOnPlane(camera.transform.forward, _world.Ground.up);
+            var directionToRightSide = Vector3.ProjectOnPlane(camera.transform.right, _world.Ground.up);
 
-        private Vector3 GetWaveSpawnOffset(Vector3 vector, Vector3 normal, float waveRadius)
-        {
-            return Vector3.ProjectOnPlane(vector, normal) * (_minOutOfViewOffset + waveRadius);
+            place += spawnSide switch
+            {
+                SpawnSide.Top => directionToTopSide * spawnOffset,
+                SpawnSide.Bottom => -directionToTopSide * spawnOffset,
+                SpawnSide.Right => directionToRightSide * spawnOffset,
+                SpawnSide.Left => -directionToRightSide * spawnOffset,
+                _ => Vector3.zero
+            };
+
+            return place;
         }
 
         private void SpawnEnemy(Vector3 place)
         {
             var enemy = _unitFactory.CreateEnemy();
-            enemy.transform.position = place;
+            enemy.NavMeshAgent.Warp(place);
         }
 
         private void Dispose()

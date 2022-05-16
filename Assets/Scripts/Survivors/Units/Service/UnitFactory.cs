@@ -1,5 +1,6 @@
 ﻿using Survivors.Location;
 using Survivors.Location.Service;
+using Survivors.Units.Enemy;
 using UnityEngine;
 using Zenject;
 
@@ -12,9 +13,9 @@ namespace Survivors.Units.Service
         [Inject] private World _world;
         [Inject] private WorldObjectFactory _worldObjectFactory;
         
-        public GameObject CreateEnemy()
+        public EnemyAi CreateEnemy()
         {
-            return _worldObjectFactory.CreateObject(SIMPLE_ENEMY_ID, _world.SpawnContainer);
+            return _worldObjectFactory.CreateObject(SIMPLE_ENEMY_ID, _world.SpawnContainer).GetComponent<EnemyAi>();
         }
     }
 }
