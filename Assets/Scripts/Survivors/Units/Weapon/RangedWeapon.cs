@@ -1,5 +1,5 @@
 ﻿using System;
-using Survivors.Location.Service;
+using Survivors.GameWorld.Service;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Charge.Projectile;
 using UnityEngine;
@@ -14,7 +14,7 @@ namespace Survivors.Units.Weapon
         [SerializeField] 
         private Projectile _ammo;
         [Inject]
-        private LocationObjectFactory _objectFactory;
+        private WorldObjectFactory _objectFactory;
     
         public override void Fire(ITarget target, ChargeParams chargeParams, Action<GameObject> hitCallback)
         {

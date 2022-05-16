@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Survivors.Location.Data
+namespace Survivors.GameWorld.Data
 {
     public class WorldObject : MonoBehaviour, IWorldObject
     {

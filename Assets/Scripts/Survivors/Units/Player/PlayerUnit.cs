@@ -1,4 +1,4 @@
-﻿using Survivors.Location.Data;
+﻿using Survivors.GameWorld.Data;
 using Survivors.Units.Player.Model;
 using UnityEngine;
 

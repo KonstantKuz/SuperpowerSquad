@@ -12,7 +12,7 @@ namespace Survivors.Units.Player
 
         private readonly int _runHash = Animator.StringToHash("Run");
         private readonly int _idleHash = Animator.StringToHash("Idle");
-        private readonly int _turnToSideHash = Animator.StringToHash("TurnToSide");
+        private readonly int _rotateToSideHash = Animator.StringToHash("RotateToSide");
 
         private NavMeshAgent _agent;
         private Animator _animator;
@@ -40,7 +40,7 @@ namespace Survivors.Units.Player
 
         public void PlayUnitRotateAnimation(float signedAngle)
         {
-            _animator.SetFloat(_turnToSideHash, CalculateRotateAnimationParam(signedAngle));
+            _animator.SetFloat(_rotateToSideHash, CalculateRotateAnimationParam(signedAngle));
         }
 
         private float CalculateRotateAnimationParam(float signedAngle)

@@ -1,5 +1,5 @@
 ﻿using System;
-using Survivors.Location.Service;
+using Survivors.GameWorld.Service;
 using Survivors.Units.Target;
 using UnityEngine;
 using Zenject;
@@ -15,7 +15,7 @@ namespace Survivors.Units.Weapon.Charge.Projectile
         private GameObject _hitVfx;
 
         [Inject]
-        private LocationObjectFactory _objectFactory;
+        private WorldObjectFactory _objectFactory;
         
         private float _timeLeft;
 
