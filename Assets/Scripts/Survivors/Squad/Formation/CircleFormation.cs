@@ -4,17 +4,18 @@ namespace Survivors.Squad.Formation
 {
     public class CircleFormation: ISquadFormation
     {
-        public Vector3 GetUnitOffset(int unitIdx, float unitSize, int squadSize)
+        public Vector3 GetUnitOffset(int unitIdx, float unitRadius, int unitsCount)
         {
-            var radius = squadSize == 1 ? 0 : squadSize * unitSize / Mathf.PI / 2;
-            var angle = 360 * unitIdx / squadSize;
-            return Quaternion.AngleAxis(angle, Vector3.up) * Vector3.right * radius;
+            var formationRadius = unitsCount == 1 ? 0 : unitsCount * unitRadius / Mathf.PI / 2;
+            var angle = 360 * unitIdx / unitsCount;
+            return Quaternion.AngleAxis(angle, Vector3.up) * Vector3.right * formationRadius;
         }
 
-        public Vector3 GetSpawnOffset(float unitSize, int squadSize)
+        public Vector3 GetSpawnOffset(float unitRadius, int unitCountBefore)
         {
-            var isUnitInCenter = squadSize == 1; //the only squad size when there is a unit right in center
-            return isUnitInCenter ? GetUnitOffset(1, unitSize, 2) : Vector3.zero;
+            const int singleUnitSquad = 1;
+            var isUnitInCenter = unitCountBefore == singleUnitSquad; //the only squad size when there is a unit right in center
+            return isUnitInCenter ? GetUnitOffset(singleUnitSquad, unitRadius, singleUnitSquad + 1) : Vector3.zero;
         }
     }
 }
