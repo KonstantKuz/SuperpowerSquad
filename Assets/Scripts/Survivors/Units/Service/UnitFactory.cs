@@ -13,7 +13,8 @@ namespace Survivors.Units.Service
 {
     public class UnitFactory
     {
-        private const string SIMPLE_ENEMY_ID = "SimpleEnemy";
+        private const string SIMPLE_ENEMY_ID = "SimpleEnemy";   
+        public const string SIMPLE_PLAYER_ID = "StandardUnit";
 
         [Inject]
         private World _world;
@@ -23,9 +24,8 @@ namespace Survivors.Units.Service
         [Inject]
         private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
 
-        public PlayerUnit LoadPlayerUnit()
+        public PlayerUnit LoadPlayerUnit(string unitId)
         {
-            var unitId = _playerUnitConfigs.First().Id;
             var unitObj = _worldObjectFactory.CreateObject(unitId);
             var unit = unitObj.GetComponentInChildren<PlayerUnit>()
                        ?? throw new NullReferenceException($"Unit is null, objectId:= {unitId}, gameObject:= {unitObj.name}");
@@ -35,6 +35,7 @@ namespace Survivors.Units.Service
 
         private void ConfigurePlayerUnit(PlayerUnit playerUnit)
         {
+            _world.Squad.AddUnit(playerUnit.GetComponent<MovementController>());
             var model = new PlayerUnitModel(_playerUnitConfigs.Get(playerUnit.ObjectId));
             playerUnit.Init(model);
         }

@@ -1,17 +1,17 @@
 ﻿using Survivors.Location.Model;
 using Survivors.Units.Player.Model;
 
-
 namespace Survivors.Units.Player
 {
     public class PlayerUnit : WorldObject
     {
         private IUpdatableUnitComponent[] _updatables;
         public PlayerUnitModel Model { get; private set; }
+        
         public void Init(PlayerUnitModel model)
         {
             Model = model;
-            _updatables = GetComponentsInChildren<IUpdatableUnitComponent>();
+            _updatables = GetComponentsInChildren<IUpdatableUnitComponent>(); 
             foreach (var component in GetComponentsInChildren<IUnitInitialization>()) {
                 component.Init(this);
             }
