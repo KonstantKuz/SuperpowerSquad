@@ -20,10 +20,8 @@ namespace Survivors.App
         private GameApplication _gameApplication;
         [SerializeField]
         private Joystick _joystick;
-        [SerializeField] 
-        private LocationWorld _locationWorld;
         [SerializeField]
-        private LocationObjectFactory _locationObjectFactory;
+        private WorldServicesInstaller _worldServicesInstaller;
         [SerializeField]
         private EnemyWavesSpawner _enemyWavesSpawner;
         
@@ -35,9 +33,10 @@ namespace Survivors.App
             Container.Bind<Joystick>().FromInstance(_joystick).AsSingle();
 
             ConfigsInstaller.Install(Container);
-            LocationServicesInstaller.Install(Container, _locationObjectFactory, _locationWorld);
-            EnemyServicesInstaller.Install(Container, _enemyWavesSpawner);
             UnitServicesInstaller.Install(Container);            
+
+            _worldServicesInstaller.Install(Container);
+            Container.Bind<EnemyWavesSpawner>().FromInstance(_enemyWavesSpawner);
         }
     }
 }

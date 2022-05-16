@@ -1,10 +1,11 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using LegionMaster.Extension;
 using Survivors.EnemySpawn.Config;
 using Survivors.Location;
-using Survivors.Session;
 using Survivors.Units.Service;
-using UniRx;
 using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
@@ -13,91 +14,112 @@ namespace Survivors.EnemySpawn
 {
     public class EnemyWavesSpawner : MonoBehaviour
     {
-        [Range(0.1f, 0.3f)]
-        [SerializeField] private float _outOfViewHorizontalOffset = 0.1f;
-        [Range(0.01f, 0.05f)]
-        [SerializeField] private float _outOfViewVerticalTopOffset = 0.01f;
-        [Range(0.1f, 0.3f)]
-        [SerializeField] private float _outOfViewVerticalBottomOffset = 0.1f;
-        [SerializeField] private float _timerStep = 1f;
+        [SerializeField] private float _minOutOfViewOffset = 1f;
+        [SerializeField] private float _outOfViewOffsetMultiplier = 0.3f;
+
+        private List<EnemyWaveConfig> _waves;
+        private Coroutine _spawnCoroutine;
         
-        private Queue<EnemyWaveConfig> _currentMatchWaves;
-        private EnemyWaveConfig _currentWave;
-
-        [Inject] private SessionService _sessionService;
         [Inject] private UnitFactory _unitFactory;
-        [Inject] private LocationWorld _locationWorld;
+        [Inject] private World _world;
 
-        private void Start()
+        public void StartSpawn(EnemyWavesConfig enemyWavesConfig)
         {
-            _sessionService.Start();
-        }
-
-        public void Init(MatchEnemyWavesConfig enemyWavesConfig)
-        {
-            _currentMatchWaves = new Queue<EnemyWaveConfig>(enemyWavesConfig.EnemySpawns);
-            _currentWave = _currentMatchWaves.Dequeue();
-            Observable.Timer(TimeSpan.Zero, TimeSpan.FromSeconds(_timerStep)).Subscribe(TrySpawnNextWave);
-        }
-
-        private void TrySpawnNextWave(long time)
-        {
-            if (time != _currentWave.Second) {
-                return;
+            if (_spawnCoroutine != null)
+            {
+                Dispose();
             }
-            SpawnNextWave(_currentWave.Count);
+
+            var orderedConfigs = enemyWavesConfig.EnemySpawns.OrderBy(it => it.SpawnTime);
+            _waves = new List<EnemyWaveConfig>(orderedConfigs);
+            _spawnCoroutine = StartCoroutine(SpawnWaves());
         }
 
+        private IEnumerator SpawnWaves()
+        {
+            var currentTime = 0;
+            foreach (var wave in _waves)
+            {
+                yield return new WaitForSeconds(wave.SpawnTime - currentTime);
+                currentTime = wave.SpawnTime; 
+                SpawnNextWave(wave.Count);
+            } 
+            Dispose();
+        }
+        
         private void SpawnNextWave(int spawnCount)
         {
-            var place = GetRandomPlaceForWave();
-            for (int i = 0; i < spawnCount; i++) {
+            var place = GetRandomPlaceForWave(spawnCount * _outOfViewOffsetMultiplier);
+            for (int i = 0; i < spawnCount; i++) 
+            {
                 SpawnEnemy(place);
             }
+        }
+        
+        private Vector3 GetRandomPlaceForWave(float waveRadius)
+        {
+            var camera = UnityEngine.Camera.main;
+            var spawnSide = EnumExt.GetRandom<SpawnSide>();
+            var randomViewportPoint = GetRandomPointOnViewportEdge(spawnSide);
+            var pointRay =  camera.ViewportPointToRay(randomViewportPoint);
+            var place = _world.GetGroundIntersection(pointRay);
+            return GetSpawnPlaceWithOffset(place, spawnSide, waveRadius);
+        }
 
-            if (_currentMatchWaves.Count > 0) {
-                _currentWave = _currentMatchWaves.Dequeue();
+        private Vector2 GetRandomPointOnViewportEdge(SpawnSide spawnSide)
+        {
+            switch (spawnSide)
+            {
+                case SpawnSide.Top:
+                    return new Vector2(Random.Range(0f, 1f), 1f);
+                case SpawnSide.Bottom:
+                    return new Vector2(Random.Range(0f, 1f), 0f);
+                case SpawnSide.Right:
+                    return new Vector2(1f, Random.Range(0f, 1f));
+                case SpawnSide.Left:
+                    return new Vector2(0f, Random.Range(0f, 1f));
+                default:
+                    throw new ArgumentException("Unexpected spawn side");
             }
         }
 
-        private Vector3 GetRandomPlaceForWave()
+        private Vector3 GetSpawnPlaceWithOffset(Vector3 place, SpawnSide spawnSide, float waveRadius)
         {
-            var randomPointOutOfView = GetRandomPointOutOfViewport();
-            var outOfViewRay =  UnityEngine.Camera.main.ViewportPointToRay(randomPointOutOfView);
-            var plane = new Plane(_locationWorld.Player.up, _locationWorld.Player.position);
-            plane.Raycast(outOfViewRay, out var intersectionDist);
-            return outOfViewRay.GetPoint(intersectionDist);
-        }
+            var camera = UnityEngine.Camera.main;
+            var spawnOffset = _minOutOfViewOffset + waveRadius;
+            var directionToTopSide = Vector3.ProjectOnPlane(camera.transform.forward, _world.Ground.up).normalized;
+            var directionToRightSide = Vector3.ProjectOnPlane(camera.transform.right, _world.Ground.up).normalized;
 
-        private Vector2 GetRandomPointOutOfViewport()
-        {
-            var placeAlongVertical = GetRandomSign() > 0;
-            var horizontalValue = GetHorizontalViewportValue(placeAlongVertical);
-            var verticalValue = GetVerticalViewportValue(!placeAlongVertical);
-            return new Vector2(horizontalValue,verticalValue);
-        }
+            place += spawnSide switch
+            {
+                SpawnSide.Top => directionToTopSide * spawnOffset,
+                SpawnSide.Bottom => -directionToTopSide * spawnOffset,
+                SpawnSide.Right => directionToRightSide * spawnOffset,
+                SpawnSide.Left => -directionToRightSide * spawnOffset,
+                _ => Vector3.zero
+            };
 
-        private float GetRandomSign()
-        {
-            return Random.value > 0.5f ? 1 : -1;
-        }
-
-        private float GetHorizontalViewportValue(bool inBounds)
-        {
-            return inBounds ? Random.Range(0f, 1f) : 
-                GetRandomSign() > 0 ? 1f + _outOfViewHorizontalOffset : -_outOfViewHorizontalOffset;
-        }
-
-        private float GetVerticalViewportValue(bool inBounds)
-        {
-            return inBounds ? Random.Range(0f, 1f) : 
-                GetRandomSign() > 0 ? 1f + _outOfViewVerticalTopOffset : -_outOfViewVerticalBottomOffset;
+            return place;
         }
 
         private void SpawnEnemy(Vector3 place)
         {
             var enemy = _unitFactory.CreateEnemy();
-            enemy.transform.position = place;
+            enemy.NavMeshAgent.Warp(place);
+        }
+
+        private void Dispose()
+        {
+            StopCoroutine(_spawnCoroutine);
+            _spawnCoroutine = null;
+        }
+
+        private enum SpawnSide
+        {
+            Top,
+            Bottom,
+            Right,
+            Left,
         }
     }
 }

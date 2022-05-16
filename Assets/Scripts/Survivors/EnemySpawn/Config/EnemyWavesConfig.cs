@@ -6,7 +6,7 @@ using Feofun.Config.Csv;
 
 namespace Survivors.EnemySpawn.Config
 {
-    public class MatchEnemyWavesConfig : ILoadableConfig
+    public class EnemyWavesConfig : ILoadableConfig
     {
         public IReadOnlyCollection<EnemyWaveConfig> EnemySpawns { get; private set; }
         

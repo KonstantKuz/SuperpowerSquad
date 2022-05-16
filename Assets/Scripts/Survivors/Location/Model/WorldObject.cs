@@ -2,7 +2,7 @@
 
 namespace Survivors.Location.Model
 {
-    public class WorldObject : MonoBehaviour, IWorldObject
+    public class WorldObject : MonoBehaviour
     {
         [SerializeField]
         private string _objectId;
