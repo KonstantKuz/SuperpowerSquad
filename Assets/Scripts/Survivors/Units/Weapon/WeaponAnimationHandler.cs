@@ -6,18 +6,12 @@ namespace Survivors.Units.Weapon
 {
     public class WeaponAnimationHandler : MonoBehaviour
     {
-        public Action OnFireEvent;      
-        public Action OnFireCompleted;
-        
+        public Action OnFireEvent;
+
         [UsedImplicitly]
         public void Fire()
         {
             OnFireEvent?.Invoke();
-        } 
-        [UsedImplicitly]
-        public void FireCompleted()
-        {
-            OnFireCompleted?.Invoke();
         }
     }
 }

@@ -16,12 +16,13 @@ namespace Survivors.Units.Player.Attack
 
         [SerializeField]
         private bool _rotateToTarget = true;
+        [SerializeField]
+        private Transform _root;
 
         private BaseWeapon _weapon;
         private AttackModel _attackModel;
         private Animator _animator;
         private ITargetSearcher _targetSearcher;
-        private MovementController _movementController;
 
         private float _rechargerCompletionTime;
 
@@ -41,7 +42,6 @@ namespace Survivors.Units.Player.Attack
             _attackModel = playerUnit.Model.AttackModel;
             if (HasWeaponAnimationHandler) {
                 _weaponAnimationHandler.OnFireEvent += Fire;
-                _weaponAnimationHandler.OnFireCompleted += FireCompleted;
             }
         }
 
@@ -49,7 +49,6 @@ namespace Survivors.Units.Player.Attack
         {
             _weapon = GetComponentInChildren<BaseWeapon>().IsNotNullComponent(this);
             _animator = GetComponentInChildren<Animator>().IsNotNullComponent(this);
-            _movementController = GetComponent<MovementController>().IsNotNullComponent(this);
             _targetSearcher = GetComponent<ITargetSearcher>().IsNotNullComponent(this);
 
             _weaponAnimationHandler = GetComponentInChildren<WeaponAnimationHandler>();
@@ -57,16 +56,13 @@ namespace Survivors.Units.Player.Attack
 
         [CanBeNull]
         private ITarget FindTarget() => _targetSearcher.Find();
-
-        private void FireCompleted()
-        {
-            if (_rotateToTarget) {
-                _movementController.PlayUnitRotateAnimation(0);
-            }
-        }
+        
 
         public void OnTick()
         {
+            var target = FindTarget();
+            UpdateRotation(FindTarget());
+            
             _recharger?.OnTick();
 
             if (_recharger != null) {
@@ -77,6 +73,24 @@ namespace Survivors.Units.Player.Attack
             }
         }
 
+        private void UpdateRotation([CanBeNull] ITarget target)
+        {
+            if (target != null) {
+                if (_rotateToTarget) {
+                    RotateToTarget(target.Center.position);
+                }
+               
+            } else {
+                _root.rotation = Quaternion.Lerp(_root.rotation, Quaternion.LookRotation(transform.forward), Time.deltaTime * 10);
+            }
+        }
+
+        private void RotateToTarget(Vector3 targetPos)
+        {
+            var lookAtDirection = (targetPos - _root.position).XZ().normalized;
+            var lookAt = Quaternion.LookRotation(lookAtDirection, _root.up);
+            _root.rotation = Quaternion.Lerp(_root.rotation, lookAt, Time.deltaTime * 10);
+        }   
         private void CreateRecharger()
         {
             _recharger = new Recharger(this, _attackModel.ChargeCount, _attackModel.AttackTime, OnRechargerCompleted);
@@ -92,23 +106,11 @@ namespace Survivors.Units.Player.Attack
         {
             IsAttackProcess = true;
             _target = target;
-
-            if (_rotateToTarget) {
-                RotateUnitToTarget(target);
-            }
             _animator.SetTrigger(_attackHash);
             if (!HasWeaponAnimationHandler) {
                 Fire();
             }
         }
-
-        private void RotateUnitToTarget(ITarget target)
-        {
-            var targetDirection = target.Root.position - transform.position;
-            var angle = Vector2.SignedAngle(transform.forward.ToVector2XZ(), targetDirection.ToVector2XZ());
-            _movementController.PlayUnitRotateAnimation(angle);
-        }
-
         private void Fire()
         {
             IsAttackProcess = false;
@@ -128,8 +130,7 @@ namespace Survivors.Units.Player.Attack
         private void OnDestroy()
         {
             if (HasWeaponAnimationHandler) {
-                _weaponAnimationHandler.OnFireEvent -= Fire;
-                _weaponAnimationHandler.OnFireCompleted -= FireCompleted;
+                _weaponAnimationHandler.OnFireEvent -= Fire; 
             }
             _recharger = null;
         }

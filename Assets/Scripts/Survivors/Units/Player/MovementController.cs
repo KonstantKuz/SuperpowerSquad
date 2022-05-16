@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Survivors.Extension;
+using UnityEngine;
 using UnityEngine.AI;
 
 namespace Survivors.Units.Player
@@ -7,12 +8,16 @@ namespace Survivors.Units.Player
     public class MovementController : MonoBehaviour
     {
         private const float MAX_ROTATE_ANIMATION_ANGLE = 90;
-        private const float FORWARD_DIRECTION_ANIMATION_PARAM = 0.5f;
+ 
 
         private readonly int _runHash = Animator.StringToHash("Run");
         private readonly int _idleHash = Animator.StringToHash("Idle");
 
-        private readonly int _rotateToSideHash = Animator.StringToHash("RotateToSide");
+        private readonly int _verticalMotionHash = Animator.StringToHash("VerticalMotion");
+        private readonly int _horizontalMotionHash = Animator.StringToHash("HorizontalMotion");
+
+        [SerializeField]
+        private Transform _root;
 
         private NavMeshAgent _agent;
         private Animator _animator;
@@ -24,12 +29,15 @@ namespace Survivors.Units.Player
         {
             _animator = GetComponentInChildren<Animator>();
         }
+
         private void Update()
         {
             if (!Agent.isStopped && IsDestinationReached) {
                 Stop();
             }
+            UpdateAnimationRotation();
         }
+
         public void MoveTo(Vector3 destination)
         {
             Agent.destination = destination;
@@ -52,21 +60,51 @@ namespace Survivors.Units.Player
             Agent.speed = speed;
         }
 
-        public void PlayUnitRotateAnimation(float signedAngle)
+        private void UpdateAnimationRotation()
         {
-            _animator.SetFloat(_rotateToSideHash, CalculateRotateAnimationParam(signedAngle));
+            if (IsDestinationReached) {
+                _animator.SetFloat(_horizontalMotionHash, 0);
+                _animator.SetFloat(_verticalMotionHash, 0);
+                return;
+            }
+            DrawDebugRay(transform.forward, Color.red);
+            DrawDebugRay(_root.forward, Color.yellow);
+            var angle = Vector2.SignedAngle(transform.forward.ToVector2XZ(), _root.forward.ToVector2XZ());
+            Debug.Log($"Angle:= {angle}");
+            
+            var animationOffsetValue = Mathf.Abs(angle / MAX_ROTATE_ANIMATION_ANGLE);
+            
+            if (angle >= -90 && angle <= 0) {
+                _animator.SetFloat(_horizontalMotionHash, -animationOffsetValue);
+                _animator.SetFloat(_verticalMotionHash, 1); 
+                return;
+       
+            } 
+            if (angle <= 90 && angle >= 0) {
+                _animator.SetFloat(_horizontalMotionHash, animationOffsetValue);
+                _animator.SetFloat(_verticalMotionHash, 1);
+                return;
+
+            }
+            if (angle <= -90 && angle >= -180) {
+                _animator.SetFloat(_horizontalMotionHash, -(2 - animationOffsetValue));
+                _animator.SetFloat(_verticalMotionHash, -1);
+                return;
+
+            } 
+            if (angle >= 90 && angle <= 180) {
+                _animator.SetFloat(_horizontalMotionHash, 2 - animationOffsetValue);
+                _animator.SetFloat(_verticalMotionHash, -1);
+                return;
+
+            }
         }
 
-        private float CalculateRotateAnimationParam(float signedAngle)
+        private void DrawDebugRay(Vector3 rayDirection, Color color)
         {
-            var animationOffsetValue = Mathf.Abs((signedAngle * FORWARD_DIRECTION_ANIMATION_PARAM) / MAX_ROTATE_ANIMATION_ANGLE);
-            if (signedAngle < 0) {
-                return Mathf.Max(0, FORWARD_DIRECTION_ANIMATION_PARAM - animationOffsetValue);
-            }
-            if (signedAngle > 0) {
-                Mathf.Min(1, FORWARD_DIRECTION_ANIMATION_PARAM + animationOffsetValue);
-            }
-            return FORWARD_DIRECTION_ANIMATION_PARAM;
+            var debugRay = rayDirection * 10;
+            Debug.DrawRay(transform.position, debugRay, color, .1f, false);
         }
+        
     }
 }
