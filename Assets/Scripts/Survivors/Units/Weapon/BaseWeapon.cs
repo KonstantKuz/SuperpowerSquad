@@ -6,6 +6,6 @@ namespace Survivors.Units.Weapon
 {
     public abstract class BaseWeapon : MonoBehaviour
     {
-        public abstract void Fire(ITarget target, Action<GameObject> hitCallback);
+        public abstract void Fire(ITarget target, ChargeParams chargeParams, Action<GameObject> hitCallback);
     }
 }

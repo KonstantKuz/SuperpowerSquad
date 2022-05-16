@@ -8,8 +8,8 @@ namespace Survivors.Units.Player.Config
         [DataMember(Name = "AttackDistance")]
         private float _attackDistance;
 
-        [DataMember(Name = "AttackRadius")]
-        private float _attackRadius;
+        [DataMember(Name = "DamageRadius")]
+        private float _damageRadius;
 
         [DataMember(Name = "AttackDamage")]
         private int _attackDamage;
@@ -20,8 +20,8 @@ namespace Survivors.Units.Player.Config
         [DataMember(Name = "AttackTime")]
         private float _attackTime;
 
-        [DataMember(Name = "AttackSpeed")]
-        private float _attackSpeed;
+        [DataMember(Name = "ChargeSpeed")]
+        private float _chargeSpeed;
 
         [DataMember(Name = "ChargeCount")]
         private int _chargeCount;      
@@ -31,7 +31,7 @@ namespace Survivors.Units.Player.Config
 
         public float AttackDistance => _attackDistance;
         
-        public float AttackRadius => _attackRadius;
+        public float DamageRadius => _damageRadius;
         
         public int AttackDamage => _attackDamage;
         
@@ -39,7 +39,7 @@ namespace Survivors.Units.Player.Config
         
         public float AttackTime => _attackTime;
         
-        public float AttackSpeed => _attackSpeed;
+        public float ChargeSpeed => _chargeSpeed;
 
         public int ChargeCount => _chargeCount;
         public int AttackAngle => _attackAngle;

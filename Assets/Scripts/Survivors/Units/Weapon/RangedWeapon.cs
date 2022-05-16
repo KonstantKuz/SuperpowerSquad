@@ -4,7 +4,6 @@ using Survivors.Units.Target;
 using Survivors.Units.Weapon.Charge.Projectile;
 using UnityEngine;
 using Zenject;
-using Random = UnityEngine.Random;
 
 namespace Survivors.Units.Weapon
 {
@@ -17,16 +16,16 @@ namespace Survivors.Units.Weapon
         [Inject]
         private LocationObjectFactory _objectFactory;
     
-        public override void Fire(ITarget target, Action<GameObject> hitCallback)
+        public override void Fire(ITarget target, ChargeParams chargeParams, Action<GameObject> hitCallback)
         {
             var projectile = CreateProjectile();
             var pos = _barrel.position;
             var rotationToTarget = GetShootRotation(pos, target.Center.position);
             projectile.transform.SetPositionAndRotation(pos, rotationToTarget);
-            projectile.Launch(target, hitCallback);
+            projectile.Launch(target, chargeParams, hitCallback);
         }
         
-        public static Quaternion GetShootRotation(Vector3 shootPos, Vector3 targetPos)
+        private static Quaternion GetShootRotation(Vector3 shootPos, Vector3 targetPos)
         {
             return Quaternion.LookRotation(GetShootDirection(shootPos, targetPos));
         }

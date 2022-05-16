@@ -10,8 +10,6 @@ namespace Survivors.Units.Weapon.Charge.Projectile
     public class Bullet : Projectile
     {
         [SerializeField]
-        private protected float _speed;
-        [SerializeField]
         private float _maxLifeTime;
         [SerializeField]
         private GameObject _hitVfx;
@@ -21,9 +19,9 @@ namespace Survivors.Units.Weapon.Charge.Projectile
         
         private float _timeLeft;
 
-        public override void Launch(ITarget target, Action<GameObject> hitCallback)
+        public override void Launch(ITarget target, ChargeParams chargeParams, Action<GameObject> hitCallback)
         {
-            base.Launch(target, hitCallback);
+            base.Launch(target, chargeParams, hitCallback);
             SetupBullet();
         }
 
@@ -31,10 +29,9 @@ namespace Survivors.Units.Weapon.Charge.Projectile
         {
             _timeLeft = _maxLifeTime;
         }
-
         protected override void TryHit(GameObject target, Vector3 hitPos, Vector3 collisionNorm)
         {
-            HitCallback?.Invoke(target);
+            base.TryHit(target, hitPos, collisionNorm);
             PlayVfx(hitPos, collisionNorm);
             Destroy();
         }
@@ -50,7 +47,7 @@ namespace Survivors.Units.Weapon.Charge.Projectile
         }
         private void UpdatePosition()
         {
-            transform.position += transform.forward * _speed * Time.deltaTime;
+            transform.position += transform.forward * Speed * Time.deltaTime;
         }
         private void Destroy()
         {

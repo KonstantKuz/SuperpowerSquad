@@ -1,2 +1,2 @@
-Id,AttackDistance,AttackRadius,AttackDamage,RechargeTime,AttackTime,AttackSpeed,ChargeCount,AttackAngle
-StandardUnit,20,0,100,5,6,2,3,180
+Id,AttackDistance,DamageRadius,AttackDamage,RechargeTime,AttackTime,ChargeSpeed,ChargeCount,AttackAngle
+StandardUnit,20,0,100,5,6,30,3,180

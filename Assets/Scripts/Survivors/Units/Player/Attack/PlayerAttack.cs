@@ -1,6 +1,5 @@
 ﻿using System;
 using JetBrains.Annotations;
-using ModestTree;
 using Survivors.Extension;
 using Survivors.Units.Damageable;
 using Survivors.Units.Player.Model;
@@ -14,6 +13,9 @@ namespace Survivors.Units.Player.Attack
     public class PlayerAttack : MonoBehaviour, IUnitInitialization, IUpdatableUnitComponent
     {
         private readonly int _attackHash = Animator.StringToHash("Attack");
+
+        [SerializeField]
+        private bool _rotateToTarget = true;
 
         private BaseWeapon _weapon;
         private AttackModel _attackModel;
@@ -58,7 +60,9 @@ namespace Survivors.Units.Player.Attack
 
         private void FireCompleted()
         {
-            _movementController.PlayUnitRotateAnimation(0);
+            if (_rotateToTarget) {
+                _movementController.PlayUnitRotateAnimation(0);
+            }
         }
 
         public void OnTick()
@@ -89,7 +93,9 @@ namespace Survivors.Units.Player.Attack
             IsAttackProcess = true;
             _target = target;
 
-            RotateUnitToTarget(target);
+            if (_rotateToTarget) {
+                RotateUnitToTarget(target);
+            }
             _animator.SetTrigger(_attackHash);
             if (!HasWeaponAnimationHandler) {
                 Fire();
@@ -109,13 +115,12 @@ namespace Survivors.Units.Player.Attack
             if (IsTargetInvalid) {
                 return;
             }
-            _weapon.Fire(_target, DoDamage);
+            _weapon.Fire(_target, _attackModel.CreateChargeParams(), DoDamage);
         }
 
         private void DoDamage(GameObject target)
         {
-            var damageable = target.GetComponent<IDamageable>();
-            Assert.IsNotNull(damageable, $"IDamageable is null, gameObject:= {target.name}");
+            var damageable = target.GetComponent<IDamageable>().IsNotNullComponent(target);
             damageable.TakeDamage(_attackModel.AttackDamage);
             Debug.Log($"Damage applied, target:= {target.name}");
         }

@@ -1,4 +1,5 @@
 ﻿using Survivors.Units.Player.Config;
+using Survivors.Units.Weapon;
 
 namespace Survivors.Units.Player.Model
 {
@@ -13,7 +14,7 @@ namespace Survivors.Units.Player.Model
 
         public float AttackDistance => _config.AttackDistance;
 
-        public float AttackRadius => _config.AttackRadius;
+        public float DamageRadius => _config.DamageRadius;
 
         public int AttackDamage => _config.AttackDamage;
 
@@ -21,9 +22,17 @@ namespace Survivors.Units.Player.Model
 
         public float AttackTime => _config.AttackTime;
 
-        public float AttackSpeed => _config.AttackSpeed;
+        public float ChargeSpeed => _config.ChargeSpeed;
 
         public int ChargeCount => _config.ChargeCount;    
         public int AttackAngle => _config.AttackAngle;
+        
+        public ChargeParams CreateChargeParams()
+        {
+            return new ChargeParams() {
+                    Speed = ChargeSpeed,        
+                    DamageRadius = DamageRadius,
+            };
+        }
     }
 }
