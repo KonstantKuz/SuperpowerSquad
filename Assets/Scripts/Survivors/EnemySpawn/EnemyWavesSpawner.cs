@@ -87,8 +87,8 @@ namespace Survivors.EnemySpawn
         {
             var camera = UnityEngine.Camera.main;
             var spawnOffset = _minOutOfViewOffset + waveRadius;
-            var directionToTopSide = Vector3.ProjectOnPlane(camera.transform.forward, _world.Ground.up);
-            var directionToRightSide = Vector3.ProjectOnPlane(camera.transform.right, _world.Ground.up);
+            var directionToTopSide = Vector3.ProjectOnPlane(camera.transform.forward, _world.Ground.up).normalized;
+            var directionToRightSide = Vector3.ProjectOnPlane(camera.transform.right, _world.Ground.up).normalized;
 
             place += spawnSide switch
             {
