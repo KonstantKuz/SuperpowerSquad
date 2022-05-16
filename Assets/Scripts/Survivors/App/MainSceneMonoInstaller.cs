@@ -1,11 +1,8 @@
-using Feofun.Config;
-using Feofun.Config.Serializers;
-using Feofun.Localization.Config;
 using SuperMaxim.Messaging;
-using Survivors.Config;
-using Survivors.GameWorld;
-using Survivors.Units.Installer;
-using Survivors.Units.Player.Config;
+using Survivors.EnemySpawn;
+using Survivors.Location;
+using Survivors.Units;
+
 using UnityEngine;
 using Zenject;
 
@@ -16,11 +13,12 @@ namespace Survivors.App
         [SerializeField]
         private GameApplication _gameApplication;
         [SerializeField]
-        private Joystick _joystick;      
+        private Joystick _joystick;
         [SerializeField]
-        private WorldServicesInstaller _worldServicesInstaller;     
-
-
+        private WorldServicesInstaller _worldServicesInstaller;
+        [SerializeField]
+        private EnemyWavesSpawner _enemyWavesSpawner;
+        
         public override void InstallBindings()
         {
             Container.BindInterfacesTo<MainSceneMonoInstaller>().FromInstance(this).AsSingle();
@@ -28,17 +26,11 @@ namespace Survivors.App
             Container.Bind<IMessenger>().FromInstance(Messenger.Default).AsSingle();
             Container.Bind<Joystick>().FromInstance(_joystick).AsSingle();
 
-            RegisterConfigs(Container);
+            ConfigsInstaller.Install(Container);
+            UnitServicesInstaller.Install(Container);            
+
             _worldServicesInstaller.Install(Container);
-            UnitServicesInstaller.Install(Container);    
-
-        }
-
-        private static void RegisterConfigs(DiContainer container)
-        {
-            new ConfigLoader(container, new CsvConfigDeserializer())
-                    .RegisterSingle<LocalizationConfig>(Configs.LOCALIZATION)
-                    .RegisterStringKeyedCollection<PlayerUnitConfig>(Configs.PLAYER_UNIT);
+            Container.Bind<EnemyWavesSpawner>().FromInstance(_enemyWavesSpawner);
         }
     }
 }

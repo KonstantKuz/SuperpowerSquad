@@ -1,15 +1,13 @@
-﻿using Survivors.GameWorld.Data;
+﻿using Survivors.Location.Model;
 using Survivors.Units.Player.Model;
-using UnityEngine;
+
 
 namespace Survivors.Units.Player
 {
-    public class PlayerUnit : MonoBehaviour, IWorldObject
+    public class PlayerUnit : WorldObject
     {
         private IUpdatableUnitComponent[] _updatables;
         public PlayerUnitModel Model { get; private set; }
-        public string ObjectId => GetComponent<WorldObject>().ObjectId;
-        public GameObject GameObject => gameObject;
         public void Init(PlayerUnitModel model)
         {
             Model = model;

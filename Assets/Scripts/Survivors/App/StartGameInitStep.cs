@@ -1,6 +1,6 @@
 using Feofun.App.Init;
 using JetBrains.Annotations;
-using Survivors.Units.Service;
+using Survivors.Session;
 using Zenject;
 
 namespace Survivors.App
@@ -8,15 +8,15 @@ namespace Survivors.App
     [PublicAPI]
     public class StartGameInitStep : AppInitStep
     {
-        [Inject]
-        private UnitFactory _unitFactory;
+        [Inject] private SessionService _sessionService;
+        
         public StartGameInitStep()
         {
         }
 
         protected override void Run()
         {
-            _unitFactory.LoadPlayerUnit();
+            _sessionService.Start();
             Next();
         }
     }

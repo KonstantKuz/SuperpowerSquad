@@ -1,5 +1,5 @@
 ﻿using System;
-using Survivors.GameWorld.Service;
+using Survivors.Location.Service;
 using Survivors.Units.Target;
 using UnityEngine;
 using Zenject;
