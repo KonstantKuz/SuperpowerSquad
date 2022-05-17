@@ -122,7 +122,7 @@ namespace Survivors.Units.Player.Attack
 
         private void DoDamage(GameObject target)
         {
-            var damageable = target.GetComponent<IDamageable>().IsNotNullComponent(target);
+            var damageable = target.RequireComponent<IDamageable>();
             damageable.TakeDamage(_attackModel.AttackDamage);
             Debug.Log($"Damage applied, target:= {target.name}");
         }
