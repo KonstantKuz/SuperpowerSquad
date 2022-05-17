@@ -1,7 +1,4 @@
-﻿using System;
-using Survivors.Units.Config;
-using Survivors.Units.Player.Config;
-
+﻿
 namespace Survivors.Units.Model
 {
     public class HealthModel : IUnitHealthModel

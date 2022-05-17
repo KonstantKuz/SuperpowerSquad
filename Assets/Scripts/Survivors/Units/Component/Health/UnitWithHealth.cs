@@ -32,11 +32,10 @@ namespace Survivors.Units.Component.Health
             ChangeHealth(-damage);
             LogDamage(damage);
             
+            OnDamageTaken?.Invoke();
             if (_currentHealth.Value <= 0) {
                 Die();
-                return;
-            }     
-            OnDamageTaken?.Invoke();
+            }
         }
         
         private void Die()
