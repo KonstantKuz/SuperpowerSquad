@@ -15,15 +15,11 @@ namespace Survivors.Units.Service
         [Inject] private World _world;
         [Inject] private WorldObjectFactory _worldObjectFactory;
         
-        public EnemyAi CreateEnemy()
+        public EnemyUnit CreateEnemy()
         {
-            var enemy =_worldObjectFactory.CreateObject(SIMPLE_ENEMY_ID, _world.SpawnContainer).GetComponent<EnemyAi>();
+            var enemy =_worldObjectFactory.CreateObject(SIMPLE_ENEMY_ID, _world.SpawnContainer).GetComponent<EnemyUnit>();
             var config = _enemyUnitConfigs.GetConfig(SIMPLE_ENEMY_ID);
-            var health = new EnemyHealthModel()
-            {
-                MaxHealth = config.Health, 
-                StartingHealth = config.Health,
-            };
+            var health = new EnemyHealthModel(config);
             enemy.Init(health);
             return enemy;
         }

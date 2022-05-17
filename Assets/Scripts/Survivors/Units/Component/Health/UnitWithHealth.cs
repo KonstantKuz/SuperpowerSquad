@@ -16,11 +16,12 @@ namespace Survivors.Units.Component.Health
         
         private IUnitHealthModel _healthConfig;
       
-        public void Init(IUnitHealthModel healthModel)
+        public void Init(IUnitHealthModel healthModel, Action onDeath)
         {
             _healthConfig = healthModel;
             _currentHealth = new FloatReactiveProperty(_healthConfig.StartingHealth);
             DamageEnabled = true;
+            OnDeath += onDeath;
         }
         
         public void TakeDamage(float damage)

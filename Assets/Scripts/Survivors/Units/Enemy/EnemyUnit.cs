@@ -12,7 +12,7 @@ namespace Survivors.Units.Enemy
     [RequireComponent(typeof(NavMeshAgent))]
     [RequireComponent(typeof(UnitWithHealth))]
     [RequireComponent(typeof(EnemyDeath))]
-    public class EnemyAi : MonoBehaviour
+    public class EnemyUnit : MonoBehaviour
     {
         private NavMeshAgent _agent;
         private UnitWithHealth _health;
@@ -33,16 +33,9 @@ namespace Survivors.Units.Enemy
 
         public void Init(IUnitHealthModel healthModel)
         {
-            _health.Init(healthModel);
-            _health.OnDeath += Death;
+            _health.Init(healthModel, _enemyDeath.Die);
         }
-
-        private void Death()
-        {
-            _health.OnDeath -= Death;
-            _enemyDeath.Death();
-        }
-
+        
         private void Update()
         {
             _target ??= _targetService.FindClosestTargetOfType(UnitType.PLAYER, transform.position);

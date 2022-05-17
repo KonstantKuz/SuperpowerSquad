@@ -6,7 +6,7 @@ namespace Survivors.Units.Component.Death
 {
     public class EnemyDeath : MonoBehaviour
     {
-        public void Death()
+        public void Die()
         {
             Destroy(gameObject);
         }
