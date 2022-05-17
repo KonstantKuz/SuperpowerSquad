@@ -19,6 +19,8 @@ namespace Survivors.Units.Player.Attack
         private bool _rotateToTarget = true;
         [SerializeField]
         private Transform _rotationRoot;
+        [SerializeField]
+        private float _rotationSpeed = 10;
 
         private BaseWeapon _weapon;
         private AttackModel _attackModel;
@@ -74,7 +76,7 @@ namespace Survivors.Units.Player.Attack
             if (target != null) {
                 RotateToTarget(target.Center.position);
             } else {
-                _rotationRoot.rotation = Quaternion.Lerp(_rotationRoot.rotation, Quaternion.LookRotation(transform.forward), Time.deltaTime * 10);
+                Rotate(Quaternion.LookRotation(transform.forward));
             }
         }
 
@@ -82,7 +84,12 @@ namespace Survivors.Units.Player.Attack
         {
             var lookAtDirection = (targetPos - _rotationRoot.position).XZ().normalized;
             var lookAt = Quaternion.LookRotation(lookAtDirection, _rotationRoot.up);
-            _rotationRoot.rotation = Quaternion.Lerp(_rotationRoot.rotation, lookAt, Time.deltaTime * 10);
+            Rotate(lookAt);
+        }
+
+        private void Rotate(Quaternion lookAt)
+        {
+            _rotationRoot.rotation = Quaternion.Lerp(_rotationRoot.rotation, lookAt, Time.deltaTime * _rotationSpeed);
         }
 
         public void Attack(ITarget target)
