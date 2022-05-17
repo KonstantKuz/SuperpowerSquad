@@ -1,11 +1,12 @@
 ﻿
+using Survivors.Units.Model;
+
 namespace Survivors.Units
 {
-    public interface IUnit<T>
-            where T : IUnitModel
+    public interface IUnit
     {
-        T Model { get; }
-        public void Init(T model);
+        IUnitModel Model { get; }
+        public void Init(IUnitModel model);
 
     }
 }

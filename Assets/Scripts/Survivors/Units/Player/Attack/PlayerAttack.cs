@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Survivors.Units.Player.Attack
 {
     [RequireComponent(typeof(ITargetSearcher))]
-    public class PlayerAttack : MonoBehaviour, IUnitInitializable<PlayerUnit, PlayerUnitModel>, IUpdatableUnitComponent, IAttack
+    public class PlayerAttack : MonoBehaviour, IUnitInitializable, IUpdatableUnitComponent, IAttack
     {
         private readonly int _attackHash = Animator.StringToHash("Attack");
         public event Action OnAttack;
@@ -23,7 +23,7 @@ namespace Survivors.Units.Player.Attack
         private float _rotationSpeed = 10;
 
         private BaseWeapon _weapon;
-        private AttackModel _attackModel;
+        private PlayerAttackModel _playerAttackModel;
         private Animator _animator;
         private ITargetSearcher _targetSearcher;
         private ClipReloader _clipReloader;
@@ -37,10 +37,10 @@ namespace Survivors.Units.Player.Attack
         private bool IsTargetInvalid => !(_target is {IsAlive: true});
         private bool HasWeaponAnimationHandler => _weaponAnimationHandler != null;
 
-        public void Init(PlayerUnit playerUnit)
+        public void Init(IUnit unit)
         {
-            _attackModel = playerUnit.Model.AttackModel;
-            _clipReloader = new ClipReloader(_attackModel.ClipSize, _attackModel.AttackTime, _attackModel.ClipReloadTime, this);
+            _playerAttackModel = (PlayerAttackModel) unit.Model.AttackModel;
+            _clipReloader = new ClipReloader(_playerAttackModel.ClipSize, _playerAttackModel.AttackTime, _playerAttackModel.ClipReloadTime, this);
             if (HasWeaponAnimationHandler) {
                 _weaponAnimationHandler.OnFireEvent += Fire;
             }
@@ -109,13 +109,13 @@ namespace Survivors.Units.Player.Attack
             if (IsTargetInvalid) {
                 return;
             }
-            _weapon.Fire(_target, _attackModel.CreateProjectileParams(), DoDamage);
+            _weapon.Fire(_target, _playerAttackModel.CreateProjectileParams(), DoDamage);
         }
 
         private void DoDamage(GameObject target)
         {
             var damageable = target.RequireComponent<IDamageable>();
-            damageable.TakeDamage(_attackModel.AttackDamage);
+            damageable.TakeDamage(_playerAttackModel.AttackDamage);
             Debug.Log($"Damage applied, target:= {target.name}");
         }
 

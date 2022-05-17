@@ -1,4 +1,5 @@
-﻿using Survivors.Extension;
+﻿using System;
+using Survivors.Extension;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -20,7 +21,7 @@ namespace Survivors.Units.Player.Movement
 
         private NavMeshAgent _agent;
         private Animator _animator;
-        
+
         private NavMeshAgent Agent => _agent ??= GetComponent<NavMeshAgent>();
         private bool IsDestinationReached => _agent.remainingDistance < _agent.stoppingDistance;
 
@@ -67,29 +68,10 @@ namespace Survivors.Units.Player.Movement
                 return;
             }
             var signedAngle = GetRotateSignedAngle();
-            var animationOffsetValue = Mathf.Abs(signedAngle / MAX_ROTATE_ANIMATION_ANGLE);
-            var quarterCircle = QuarterCircleExt.GetQuarterCircle(signedAngle);
-
-            switch (quarterCircle) {
-                case QuarterCircle.First:
-                    _animator.SetFloat(_horizontalMotionHash, -animationOffsetValue);
-                    _animator.SetFloat(_verticalMotionHash, 1);
-                    return;
-                case QuarterCircle.Second:
-                    _animator.SetFloat(_horizontalMotionHash, animationOffsetValue);
-                    _animator.SetFloat(_verticalMotionHash, 1);
-                    return;
-                case QuarterCircle.Third:
-                    _animator.SetFloat(_horizontalMotionHash, 2 - animationOffsetValue);
-                    _animator.SetFloat(_verticalMotionHash, -1);
-                    return;
-                case QuarterCircle.Fourth:
-                    _animator.SetFloat(_horizontalMotionHash, -(2 - animationOffsetValue));
-                    _animator.SetFloat(_verticalMotionHash, -1);
-                    return;
-            }
+            _animator.SetFloat(_horizontalMotionHash, (float) Math.Sin(GetRadian(signedAngle)));
+            _animator.SetFloat(_verticalMotionHash, (float) Math.Cos(GetRadian(signedAngle)));
         }
-
+        private double GetRadian(float signedAngle) => (Math.PI / 180) * signedAngle;
         private float GetRotateSignedAngle() => Vector2.SignedAngle(transform.forward.ToVector2XZ(), _rotationRoot.forward.ToVector2XZ());
     }
 }

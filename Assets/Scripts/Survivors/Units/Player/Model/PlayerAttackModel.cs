@@ -1,13 +1,14 @@
-﻿using Survivors.Units.Player.Config;
+﻿using Survivors.Units.Model;
+using Survivors.Units.Player.Config;
 using Survivors.Units.Weapon.Projectile;
 
 namespace Survivors.Units.Player.Model
 {
-    public class AttackModel
+    public class PlayerAttackModel : IAttackModel
     {
         private readonly AttackConfig _config;
 
-        public AttackModel(AttackConfig config)
+        public PlayerAttackModel(AttackConfig config)
         {
             _config = config;
         }

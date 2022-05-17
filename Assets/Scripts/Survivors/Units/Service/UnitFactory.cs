@@ -25,20 +25,20 @@ namespace Survivors.Units.Service
         [Inject]
         private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
 
-        public PlayerUnit LoadPlayerUnit(string unitId)
+        public Unit LoadPlayerUnit(string unitId)
         {
             var unitObj = _worldObjectFactory.CreateObject(unitId);
-            var unit = unitObj.GetComponentInChildren<PlayerUnit>()
+            var unit = unitObj.GetComponentInChildren<Unit>()
                        ?? throw new NullReferenceException($"Unit is null, objectId:= {unitId}, gameObject:= {unitObj.name}");
             ConfigurePlayerUnit(unit);
             return unit;
         }
 
-        private void ConfigurePlayerUnit(PlayerUnit playerUnit)
+        private void ConfigurePlayerUnit(Unit unit)
         {
-            _world.Squad.AddUnit(playerUnit.GetComponent<MovementController>());
-            var model = new PlayerUnitModel(_playerUnitConfigs.Get(playerUnit.ObjectId));
-            playerUnit.Init(model);
+            _world.Squad.AddUnit(unit.GetComponent<MovementController>());
+            var model = new PlayerUnitModel(_playerUnitConfigs.Get(unit.ObjectId));
+            unit.Init(model);
         }
         public EnemyAi CreateEnemy()
         {
