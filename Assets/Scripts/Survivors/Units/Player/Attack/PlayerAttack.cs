@@ -37,9 +37,9 @@ namespace Survivors.Units.Player.Attack
         private bool Recharged => Time.time >= _rechargerCompletionTime + _attackModel.RechargeTime;
         private bool HasWeaponAnimationHandler => _weaponAnimationHandler != null;
 
-        public void Init(PlayerUnit playerUnit)
+        public void Init(IUnitModel unitModel)
         {
-            _attackModel = playerUnit.Model.AttackModel;
+            _attackModel = unitModel.AttackModel;
             if (HasWeaponAnimationHandler) {
                 _weaponAnimationHandler.OnFireEvent += Fire;
             }

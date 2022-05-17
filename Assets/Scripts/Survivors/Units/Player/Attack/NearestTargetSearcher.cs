@@ -18,9 +18,9 @@ namespace Survivors.Units.Player.Attack
         
         private float Distance => _attackModel.AttackDistance;
 
-        public void Init(PlayerUnit playerUnit)
+        public void Init(IUnitModel unitModel)
         {
-            _attackModel = playerUnit.Model.AttackModel;
+            _attackModel = unitModel.AttackModel;
             _targetType = GetComponent<ITarget>().UnitType.GetTargetUnitType();
         }
         [CanBeNull]
