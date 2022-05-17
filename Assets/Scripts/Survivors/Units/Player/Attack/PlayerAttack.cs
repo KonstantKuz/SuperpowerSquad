@@ -35,8 +35,7 @@ namespace Survivors.Units.Player.Attack
         private WeaponAnimationHandler _weaponAnimationHandler;
         [CanBeNull]
         private ITarget _target;
-
-        private bool IsAttackProcess { get; set; }
+        
         private bool IsTargetInvalid => !(_target is {IsAlive: true});
         private bool HasWeaponAnimationHandler => _weaponAnimationHandler != null;
 
@@ -86,7 +85,7 @@ namespace Survivors.Units.Player.Attack
             }
         }
 
-        private bool CanAttack([CanBeNull] ITarget target) => target != null && _reloadableWeaponTimer.IsAttackReady && !IsAttackProcess;
+        private bool CanAttack([CanBeNull] ITarget target) => target != null && _reloadableWeaponTimer.IsAttackReady;
 
         public void Attack(ITarget target)
         {
