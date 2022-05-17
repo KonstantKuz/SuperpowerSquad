@@ -5,22 +5,22 @@ using Survivors.Units.Target;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace Survivors.Units.Weapon.Charge.Projectile
+namespace Survivors.Units.Weapon.Projectile
 {
     public abstract class Projectile : MonoBehaviour
     {
         protected Action<GameObject> HitCallback;
         protected UnitType TargetType;   
-        protected ChargeParams ChargeParams;
-        protected float Speed => ChargeParams.Speed;
+        protected ProjectileParams Params;
+        protected float Speed => Params.Speed;
   
         
-        public virtual void Launch(ITarget target, ChargeParams chargeParams, Action<GameObject> hitCallback)
+        public virtual void Launch(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             Assert.IsNotNull(target);
             HitCallback = hitCallback;
             TargetType = target.UnitType;
-            ChargeParams = chargeParams;
+            Params = projectileParams;
         }
         private void OnCollisionEnter(Collision other)
         {
@@ -46,7 +46,7 @@ namespace Survivors.Units.Weapon.Charge.Projectile
 
         private void TryHitTargetsInRadius(GameObject excludedTarget)
         {
-            var hits = GetHits(ChargeParams.DamageRadius, TargetType);
+            var hits = GetHits(Params.DamageRadius, TargetType);
             foreach (var hit in hits) {
                 if (hit.gameObject == excludedTarget) {
                     continue;

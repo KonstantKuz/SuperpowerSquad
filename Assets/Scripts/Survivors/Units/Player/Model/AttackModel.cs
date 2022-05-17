@@ -1,5 +1,6 @@
 ﻿using Survivors.Units.Player.Config;
 using Survivors.Units.Weapon;
+using Survivors.Units.Weapon.Projectile;
 
 namespace Survivors.Units.Player.Model
 {
@@ -27,9 +28,9 @@ namespace Survivors.Units.Player.Model
         public int ChargeCount => _config.ChargeCount;    
         public int AttackAngle => _config.AttackAngle;
         
-        public ChargeParams CreateChargeParams()
+        public ProjectileParams CreateChargeParams()
         {
-            return new ChargeParams() {
+            return new ProjectileParams() {
                     Speed = ChargeSpeed,        
                     DamageRadius = DamageRadius,
             };

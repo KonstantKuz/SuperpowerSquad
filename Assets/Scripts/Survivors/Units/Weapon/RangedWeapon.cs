@@ -2,7 +2,7 @@
 using Survivors.Extension;
 using Survivors.Location.Service;
 using Survivors.Units.Target;
-using Survivors.Units.Weapon.Charge.Projectile;
+using Survivors.Units.Weapon.Projectile;
 using UnityEngine;
 using Zenject;
 
@@ -13,17 +13,17 @@ namespace Survivors.Units.Weapon
         [SerializeField] 
         private Transform _barrel;
         [SerializeField] 
-        private Projectile _ammo;
+        private Projectile.Projectile _ammo;
         [Inject]
         private WorldObjectFactory _objectFactory;
     
-        public override void Fire(ITarget target, ChargeParams chargeParams, Action<GameObject> hitCallback)
+        public override void Fire(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             var projectile = CreateProjectile();
             var pos = _barrel.position;
             var rotationToTarget = GetShootRotation(pos, target.Center.position);
             projectile.transform.SetPositionAndRotation(pos, rotationToTarget);
-            projectile.Launch(target, chargeParams, hitCallback);
+            projectile.Launch(target, projectileParams, hitCallback);
         }
         
         private static Quaternion GetShootRotation(Vector3 shootPos, Vector3 targetPos)
@@ -35,9 +35,9 @@ namespace Survivors.Units.Weapon
             var dir = targetPos - shootPos;
             return dir.XZ().normalized;
         }
-        private Projectile CreateProjectile()
+        private Projectile.Projectile CreateProjectile()
         {
-            return _objectFactory.CreateObject(_ammo.gameObject).GetComponent<Projectile>();
+            return _objectFactory.CreateObject(_ammo.gameObject).GetComponent<Projectile.Projectile>();
         }
     }
 }

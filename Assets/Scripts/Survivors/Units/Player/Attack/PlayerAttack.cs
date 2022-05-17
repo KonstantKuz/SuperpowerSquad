@@ -17,8 +17,8 @@ namespace Survivors.Units.Player.Attack
         [SerializeField]
         private bool _rotateToTarget = true;
         [SerializeField]
-        private Transform _root;
-
+        private Transform _rotationRoot;
+        
         private BaseWeapon _weapon;
         private AttackModel _attackModel;
         private Animator _animator;
@@ -49,8 +49,8 @@ namespace Survivors.Units.Player.Attack
         {
             _weapon = gameObject.RequireComponentInChildren<BaseWeapon>();
             _animator = gameObject.RequireComponentInChildren<Animator>();
-            _targetSearcher = GetComponent<ITargetSearcher>();
-
+            _targetSearcher = GetComponent<ITargetSearcher>();      
+            
             _weaponAnimationHandler = GetComponentInChildren<WeaponAnimationHandler>();
         }
 
@@ -61,8 +61,9 @@ namespace Survivors.Units.Player.Attack
         public void OnTick()
         {
             var target = FindTarget();
-            UpdateRotation(FindTarget());
-            
+            if (_rotateToTarget) {
+                UpdateRotation(target);
+            }
             _recharger?.OnTick();
 
             if (_recharger != null) {
@@ -76,20 +77,17 @@ namespace Survivors.Units.Player.Attack
         private void UpdateRotation([CanBeNull] ITarget target)
         {
             if (target != null) {
-                if (_rotateToTarget) {
-                    RotateToTarget(target.Center.position);
-                }
+                RotateToTarget(target.Center.position);
                
             } else {
-                _root.rotation = Quaternion.Lerp(_root.rotation, Quaternion.LookRotation(transform.forward), Time.deltaTime * 10);
+                _rotationRoot.rotation = Quaternion.Lerp(_rotationRoot.rotation, Quaternion.LookRotation(transform.forward), Time.deltaTime * 10);
             }
         }
-
         private void RotateToTarget(Vector3 targetPos)
         {
-            var lookAtDirection = (targetPos - _root.position).XZ().normalized;
-            var lookAt = Quaternion.LookRotation(lookAtDirection, _root.up);
-            _root.rotation = Quaternion.Lerp(_root.rotation, lookAt, Time.deltaTime * 10);
+            var lookAtDirection = (targetPos - _rotationRoot.position).XZ().normalized;
+            var lookAt = Quaternion.LookRotation(lookAtDirection, _rotationRoot.up);
+            _rotationRoot.rotation = Quaternion.Lerp(_rotationRoot.rotation, lookAt, Time.deltaTime * 10);
         }   
         private void CreateRecharger()
         {
