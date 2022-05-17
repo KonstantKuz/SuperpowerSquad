@@ -1,7 +1,7 @@
-﻿using System;
-using Survivors.Units.Config;
+﻿using Survivors.Units.Enemy.Config;
+using Survivors.Units.Model;
 
-namespace Survivors.Units.Model
+namespace Survivors.Units.Enemy.Model
 {
     public class EnemyHealthModel : IUnitHealthModel
     {
