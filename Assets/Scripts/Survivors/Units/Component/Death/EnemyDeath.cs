@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Survivors.Units.Component.Death
 {
-    public class EnemyDeath : MonoBehaviour
+    public class EnemyDeath : MonoBehaviour, IDeath
     {
         public void Die()
         {

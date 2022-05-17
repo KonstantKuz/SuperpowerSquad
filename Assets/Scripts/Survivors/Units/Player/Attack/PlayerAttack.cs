@@ -1,8 +1,10 @@
 ﻿using System;
 using JetBrains.Annotations;
+using ModestTree;
 using Survivors.Extension;
-using Survivors.Units.Damageable;
+using Survivors.Units.Component.Health;
 using Survivors.Units.Player.Model;
+using Survivors.Units.Player.Movement;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon;
 using UnityEngine;
@@ -10,23 +12,21 @@ using UnityEngine;
 namespace Survivors.Units.Player.Attack
 {
     [RequireComponent(typeof(ITargetSearcher))]
-    public class PlayerAttack : MonoBehaviour, IUnitInitializable<PlayerUnit, PlayerUnitModel>, IUpdatableUnitComponent, IAttack
+    [RequireComponent(typeof(MovementController))]
+    public class PlayerAttack : MonoBehaviour, IUnitInitializable, IUpdatableUnitComponent, IAttack
     {
         private readonly int _attackHash = Animator.StringToHash("Attack");
         public event Action OnAttack;
 
         [SerializeField]
         private bool _rotateToTarget = true;
-        [SerializeField]
-        private Transform _rotationRoot;
-        [SerializeField]
-        private float _rotationSpeed = 10;
 
         private BaseWeapon _weapon;
-        private AttackModel _attackModel;
+        private PlayerAttackModel _playerAttackModel;
         private Animator _animator;
         private ITargetSearcher _targetSearcher;
-        private ClipReloader _clipReloader;
+        private ReloadableWeaponTimer _reloadableWeaponTimer;
+        private MovementController _movementController;
 
         [CanBeNull]
         private WeaponAnimationHandler _weaponAnimationHandler;
@@ -37,10 +37,11 @@ namespace Survivors.Units.Player.Attack
         private bool IsTargetInvalid => !(_target is {IsAlive: true});
         private bool HasWeaponAnimationHandler => _weaponAnimationHandler != null;
 
-        public void Init(PlayerUnit playerUnit)
+        public void Init(IUnit unit)
         {
-            _attackModel = playerUnit.Model.AttackModel;
-            _clipReloader = new ClipReloader(_attackModel.ClipSize, _attackModel.AttackTime, _attackModel.ClipReloadTime, this);
+            Assert.IsNull(_reloadableWeaponTimer);
+            _playerAttackModel = (PlayerAttackModel) unit.Model.AttackModel;
+            _reloadableWeaponTimer = new ReloadableWeaponTimer(_playerAttackModel.ClipSize, _playerAttackModel.AttackTime, _playerAttackModel.ClipReloadTime, this);
             if (HasWeaponAnimationHandler) {
                 _weaponAnimationHandler.OnFireEvent += Fire;
             }
@@ -51,6 +52,7 @@ namespace Survivors.Units.Player.Attack
             _weapon = gameObject.RequireComponentInChildren<BaseWeapon>();
             _animator = gameObject.RequireComponentInChildren<Animator>();
             _targetSearcher = GetComponent<ITargetSearcher>();
+            _movementController = GetComponent<MovementController>();
 
             _weaponAnimationHandler = GetComponentInChildren<WeaponAnimationHandler>();
         }
@@ -62,35 +64,14 @@ namespace Survivors.Units.Player.Attack
         {
             var target = FindTarget();
             if (_rotateToTarget) {
-                UpdateRotation(target);
+                _movementController.RotateToTarget(target?.Center);
             }
             if (CanAttack(target)) {
                 Attack(target);
             }
         }
 
-        private bool CanAttack([CanBeNull] ITarget target) => target != null && _clipReloader.IsAttackReady && !IsAttackProcess;
-
-        private void UpdateRotation([CanBeNull] ITarget target)
-        {
-            if (target != null) {
-                RotateToTarget(target.Center.position);
-            } else {
-                Rotate(Quaternion.LookRotation(transform.forward));
-            }
-        }
-
-        private void RotateToTarget(Vector3 targetPos)
-        {
-            var lookAtDirection = (targetPos - _rotationRoot.position).XZ().normalized;
-            var lookAt = Quaternion.LookRotation(lookAtDirection, _rotationRoot.up);
-            Rotate(lookAt);
-        }
-
-        private void Rotate(Quaternion lookAt)
-        {
-            _rotationRoot.rotation = Quaternion.Lerp(_rotationRoot.rotation, lookAt, Time.deltaTime * _rotationSpeed);
-        }
+        private bool CanAttack([CanBeNull] ITarget target) => target != null && _reloadableWeaponTimer.IsAttackReady && !IsAttackProcess;
 
         public void Attack(ITarget target)
         {
@@ -109,13 +90,13 @@ namespace Survivors.Units.Player.Attack
             if (IsTargetInvalid) {
                 return;
             }
-            _weapon.Fire(_target, _attackModel.CreateProjectileParams(), DoDamage);
+            _weapon.Fire(_target, _playerAttackModel.CreateProjectileParams(), DoDamage);
         }
 
         private void DoDamage(GameObject target)
         {
             var damageable = target.RequireComponent<IDamageable>();
-            damageable.TakeDamage(_attackModel.AttackDamage);
+            damageable.TakeDamage(_playerAttackModel.AttackDamage);
             Debug.Log($"Damage applied, target:= {target.name}");
         }
 
@@ -124,8 +105,8 @@ namespace Survivors.Units.Player.Attack
             if (HasWeaponAnimationHandler) {
                 _weaponAnimationHandler.OnFireEvent -= Fire;
             }
-            _clipReloader.Dispose();
-            _clipReloader = null;
+            _reloadableWeaponTimer.Dispose();
+            _reloadableWeaponTimer = null;
         }
     }
 }

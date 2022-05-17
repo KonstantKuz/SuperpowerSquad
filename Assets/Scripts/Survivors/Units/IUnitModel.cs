@@ -6,5 +6,6 @@ namespace Survivors.Units
     {
         string Id { get; }
         IUnitHealthModel HealthModel { get; }
+        IAttackModel AttackModel { get; }
     }
 }

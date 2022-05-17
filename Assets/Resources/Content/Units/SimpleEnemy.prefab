@@ -16,7 +16,8 @@ GameObject:
   - component: {fileID: 3006564440288677136}
   - component: {fileID: 2594355831171297612}
   - component: {fileID: 4491497861294361367}
-  - component: {fileID: 807478761557335833}
+  - component: {fileID: 1412234775819129929}
+  - component: {fileID: 8111980166562719412}
   m_Layer: 6
   m_Name: SimpleEnemy
   m_TagString: Untagged
@@ -163,7 +164,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _unitType: 0
   _centerTarget: {fileID: 3102595488552592063}
---- !u!114 &807478761557335833
+--- !u!114 &1412234775819129929
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -172,6 +173,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 2047533565645016285}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b119a724237450cb1ec22a0d0e75ae5, type: 3}
+  m_Script: {fileID: 11500000, guid: 5e9add7f11978004eb4d2f2e37e1cd42, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &8111980166562719412
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047533565645016285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8fc2558860fce054fbdd443bfb74ad93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 

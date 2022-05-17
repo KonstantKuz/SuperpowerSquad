@@ -1,10 +1,8 @@
-﻿using Survivors.Units.Player;
-using Survivors.Units.Player.Model;
-
+﻿
 namespace Survivors.Units
 {
-    public interface IUnitInitializable<U, M> where U : IUnit<M> where M : IUnitModel
+    public interface IUnitInitializable
     {
-        public void Init(U unit);
+        public void Init(IUnit unit);
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using JetBrains.Annotations;
+using Survivors.Units.Model;
 using Survivors.Units.Player.Model;
 using Survivors.Units.Target;
 using UnityEngine;
@@ -8,19 +9,19 @@ using Zenject;
 namespace Survivors.Units.Player.Attack
 {
     [RequireComponent(typeof(ITarget))]
-    public class NearestTargetSearcher : MonoBehaviour, IUnitInitializable<PlayerUnit, PlayerUnitModel>, ITargetSearcher
+    public class NearestTargetSearcher : MonoBehaviour, IUnitInitializable, ITargetSearcher
     {
         [Inject]
         private TargetService _targetService;
 
-        private AttackModel _attackModel;
+        private IAttackModel _attackModel;
         private UnitType _targetType;
 
         private float Distance => _attackModel.AttackDistance;
 
-        public void Init(PlayerUnit playerUnit)
+        public void Init(IUnit unit)
         {
-            _attackModel = playerUnit.Model.AttackModel;
+            _attackModel = unit.Model.AttackModel;
             _targetType = GetComponent<ITarget>().UnitType.GetTargetUnitType();
         }
 
