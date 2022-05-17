@@ -8,14 +8,14 @@ using Zenject;
 namespace Survivors.Units.Player.Attack
 {
     [RequireComponent(typeof(ITarget))]
-    public class NearestTargetSearcher : MonoBehaviour, IUnitInitializable, ITargetSearcher
+    public class NearestTargetSearcher : MonoBehaviour, IUnitInitializable<PlayerUnit, PlayerUnitModel>, ITargetSearcher
     {
         [Inject]
         private TargetService _targetService;
-        
+
         private AttackModel _attackModel;
         private UnitType _targetType;
-        
+
         private float Distance => _attackModel.AttackDistance;
 
         public void Init(PlayerUnit playerUnit)
@@ -23,6 +23,7 @@ namespace Survivors.Units.Player.Attack
             _attackModel = playerUnit.Model.AttackModel;
             _targetType = GetComponent<ITarget>().UnitType.GetTargetUnitType();
         }
+
         [CanBeNull]
         public ITarget Find()
         {

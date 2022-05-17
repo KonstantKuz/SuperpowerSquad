@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Survivors.Units.Player.Attack
 {
     [RequireComponent(typeof(ITargetSearcher))]
-    public class PlayerAttack : MonoBehaviour, IUnitInitializable, IUpdatableUnitComponent, IAttack
+    public class PlayerAttack : MonoBehaviour, IUnitInitializable<PlayerUnit, PlayerUnitModel>, IUpdatableUnitComponent, IAttack
     {
         private readonly int _attackHash = Animator.StringToHash("Attack");
         public event Action OnAttack;

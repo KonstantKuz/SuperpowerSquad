@@ -2,7 +2,7 @@
 
 namespace Survivors.Units.Player.Model
 {
-    public class PlayerUnitModel 
+    public class PlayerUnitModel : IUnitModel
     {
         private readonly PlayerUnitConfig _config;
 
@@ -15,7 +15,6 @@ namespace Survivors.Units.Player.Model
         }
 
         public AttackModel AttackModel => _attackModel;
-
         public string Id => _config.Id;
     }
 }
