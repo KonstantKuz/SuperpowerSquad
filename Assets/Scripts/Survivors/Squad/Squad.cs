@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using SuperMaxim.Core.Extensions;
-using Survivors.Units.Player;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Zenject;
@@ -13,7 +12,6 @@ namespace Survivors.Squad
 {
     public class Squad : MonoBehaviour
     {
-        [SerializeField] private float _movementSpeed;
         [SerializeField] private float _unitSpeedScale;
         [SerializeField] private float _unitSize;
 
@@ -23,6 +21,7 @@ namespace Survivors.Squad
 
         [Inject] private Joystick _joystick;
         [Inject] private UnitFactory _unitFactory;
+        [Inject] private SquadConfig _squadConfig;
 
         private void Awake()
         {
@@ -40,7 +39,7 @@ namespace Survivors.Squad
         private void AddUnitToList(MovementController unit)
         {
             _units.Add(unit);
-            unit.SetSpeed(_movementSpeed * _unitSpeedScale);
+            unit.SetSpeed(_squadConfig.Params.Speed * _unitSpeedScale);
         }
         [Button]
         /*
@@ -84,7 +83,7 @@ namespace Survivors.Squad
 
         private void Move(Vector3 joystickDirection)
         {
-            var delta = _movementSpeed * joystickDirection * Time.deltaTime;
+            var delta = _squadConfig.Params.Speed * joystickDirection * Time.deltaTime;
             _destination.transform.position += delta;
         }
 
