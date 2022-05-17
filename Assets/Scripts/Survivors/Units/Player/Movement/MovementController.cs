@@ -20,7 +20,7 @@ namespace Survivors.Units.Player.Movement
 
         private NavMeshAgent _agent;
         private Animator _animator;
-
+        
         private NavMeshAgent Agent => _agent ??= GetComponent<NavMeshAgent>();
         private bool IsDestinationReached => _agent.remainingDistance < _agent.stoppingDistance;
 

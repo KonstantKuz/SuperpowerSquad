@@ -1,5 +1,5 @@
 ﻿using Survivors.Units.Player.Config;
-using Survivors.Units.Weapon;
+using Survivors.Units.Weapon.Projectile;
 
 namespace Survivors.Units.Player.Model
 {
@@ -18,19 +18,18 @@ namespace Survivors.Units.Player.Model
 
         public int AttackDamage => _config.AttackDamage;
 
-        public float RechargeTime => _config.RechargeTime;
+        public float ClipReloadTime => _config.ClipReloadTime;
 
         public float AttackTime => _config.AttackTime;
 
-        public float ChargeSpeed => _config.ChargeSpeed;
+        public float ProjectileSpeed => _config.ProjectileSpeed;
 
-        public int ChargeCount => _config.ChargeCount;    
-        public int AttackAngle => _config.AttackAngle;
-        
-        public ChargeParams CreateChargeParams()
+        public int ClipSize => _config.ClipSize;
+
+        public ProjectileParams CreateChargeParams()
         {
-            return new ChargeParams() {
-                    Speed = ChargeSpeed,        
+            return new ProjectileParams() {
+                    Speed = ProjectileSpeed,        
                     DamageRadius = DamageRadius,
             };
         }

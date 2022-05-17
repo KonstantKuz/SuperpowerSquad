@@ -4,7 +4,7 @@ using Survivors.Units.Target;
 using UnityEngine;
 using Zenject;
 
-namespace Survivors.Units.Weapon.Charge.Projectile
+namespace Survivors.Units.Weapon.Projectile
 {
     [RequireComponent(typeof(Rigidbody))]
     public class Bullet : Projectile
@@ -19,9 +19,9 @@ namespace Survivors.Units.Weapon.Charge.Projectile
         
         private float _timeLeft;
 
-        public override void Launch(ITarget target, ChargeParams chargeParams, Action<GameObject> hitCallback)
+        public override void Launch(ITarget target, ProjectileParams @params, Action<GameObject> hitCallback)
         {
-            base.Launch(target, chargeParams, hitCallback);
+            base.Launch(target, @params, hitCallback);
             SetupBullet();
         }
 

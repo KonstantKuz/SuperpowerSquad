@@ -172,7 +172,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rotateToTarget: 1
-  _root: {fileID: 7626905009210850996}
+  _rotationRoot: {fileID: 7626905009210850996}
 --- !u!114 &8226988932255853753
 MonoBehaviour:
   m_ObjectHideFlags: 0
