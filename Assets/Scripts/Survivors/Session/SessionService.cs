@@ -13,7 +13,7 @@ namespace Survivors.Session
         public void Start()
         {
             _unitFactory.LoadPlayerUnit(UnitFactory.SIMPLE_PLAYER_ID); 
-            //_enemyWavesSpawner.StartSpawn(_enemyWavesConfig);
+            _enemyWavesSpawner.StartSpawn(_enemyWavesConfig);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace Survivors.Units.Weapon.Projectile
+﻿namespace Survivors.Units.Weapon.Projectiles
 {
     public class ProjectileParams
     {

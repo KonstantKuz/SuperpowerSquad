@@ -1,6 +1,6 @@
 ﻿using Survivors.Units.Model;
 using Survivors.Units.Player.Config;
-using Survivors.Units.Weapon.Projectile;
+using Survivors.Units.Weapon.Projectiles;
 
 namespace Survivors.Units.Player.Model
 {

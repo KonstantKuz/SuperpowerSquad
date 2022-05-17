@@ -1,10 +1,8 @@
 ﻿using System;
-using System.Linq;
 using Feofun.Config;
 using Survivors.Location;
 using Survivors.Location.Service;
 using Survivors.Units.Enemy;
-using Survivors.Units.Player;
 using Survivors.Units.Player.Config;
 using Survivors.Units.Player.Model;
 using Survivors.Units.Player.Movement;
@@ -37,7 +35,8 @@ namespace Survivors.Units.Service
         private void ConfigurePlayerUnit(Unit unit)
         {
             _world.Squad.AddUnit(unit.GetComponent<MovementController>());
-            var model = new PlayerUnitModel(_playerUnitConfigs.Get(unit.ObjectId));
+            var config = _playerUnitConfigs.Get(unit.ObjectId);
+            var model = new PlayerUnitModel(config);
             unit.Init(model);
         }
         public EnemyAi CreateEnemy()

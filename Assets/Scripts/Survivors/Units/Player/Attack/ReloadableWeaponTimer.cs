@@ -2,7 +2,7 @@
 
 namespace Survivors.Units.Player.Attack
 {
-    public class ClipReloader
+    public class ReloadableWeaponTimer
     {
         private readonly float _attackInterval;
         private readonly float _reloadTime;
@@ -15,7 +15,7 @@ namespace Survivors.Units.Player.Attack
         private bool Reloaded => Time.time >= _startReloadTime + _reloadTime;
         public bool IsAttackReady => Time.time >= _lastAttackTime + _attackInterval && Reloaded;
 
-        public ClipReloader(int clipSize, float attackTime, float reloadTime, IAttack attack)
+        public ReloadableWeaponTimer(int clipSize, float attackTime, float reloadTime, IAttack attack)
         {
             _clipSize = clipSize;
             _currentClipSize = _clipSize;

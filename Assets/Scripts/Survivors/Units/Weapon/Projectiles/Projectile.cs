@@ -5,7 +5,7 @@ using Survivors.Units.Target;
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace Survivors.Units.Weapon.Projectile
+namespace Survivors.Units.Weapon.Projectiles
 {
     public abstract class Projectile : MonoBehaviour
     {
