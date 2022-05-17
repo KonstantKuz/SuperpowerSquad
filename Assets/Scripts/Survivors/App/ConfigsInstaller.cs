@@ -4,6 +4,7 @@ using Feofun.Localization.Config;
 using Survivors.Config;
 using Survivors.EnemySpawn.Config;
 using Survivors.Units.Enemy.Config;
+using Survivors.Squad;
 using Survivors.Units.Player.Config;
 using Zenject;
 
@@ -17,7 +18,8 @@ namespace Survivors.App
                     .RegisterSingle<LocalizationConfig>(Configs.LOCALIZATION)
                     .RegisterSingle<EnemyWavesConfig>(Configs.ENEMY_WAVES)
                     .RegisterStringKeyedCollection<PlayerUnitConfig>(Configs.PLAYER_UNIT)
-                    .RegisterStringKeyedCollection<EnemyUnitConfig>(Configs.ENEMY_UNIT);
+                    .RegisterStringKeyedCollection<EnemyUnitConfig>(Configs.ENEMY_UNIT)
+                    .RegisterSingle<SquadConfig>(Configs.SQUAD);
         }
     }
 }
