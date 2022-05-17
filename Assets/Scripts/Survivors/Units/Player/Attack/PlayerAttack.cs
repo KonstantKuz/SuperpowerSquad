@@ -10,36 +10,35 @@ using UnityEngine;
 namespace Survivors.Units.Player.Attack
 {
     [RequireComponent(typeof(ITargetSearcher))]
-    public class PlayerAttack : MonoBehaviour, IUnitInitializable, IUpdatableUnitComponent
+    public class PlayerAttack : MonoBehaviour, IUnitInitializable, IUpdatableUnitComponent, IAttack
     {
         private readonly int _attackHash = Animator.StringToHash("Attack");
+        public event Action OnAttack;
 
         [SerializeField]
         private bool _rotateToTarget = true;
         [SerializeField]
         private Transform _rotationRoot;
-        
+
         private BaseWeapon _weapon;
         private AttackModel _attackModel;
         private Animator _animator;
         private ITargetSearcher _targetSearcher;
-
-        private float _rechargerCompletionTime;
+        private ClipReloader _clipReloader;
 
         [CanBeNull]
         private WeaponAnimationHandler _weaponAnimationHandler;
         [CanBeNull]
-        private Recharger _recharger;
-        [CanBeNull]
         private ITarget _target;
-        private bool IsTargetInvalid => !(_target is {IsAlive: true});
+
         private bool IsAttackProcess { get; set; }
-        private bool Recharged => Time.time >= _rechargerCompletionTime + _attackModel.RechargeTime;
+        private bool IsTargetInvalid => !(_target is {IsAlive: true});
         private bool HasWeaponAnimationHandler => _weaponAnimationHandler != null;
 
         public void Init(PlayerUnit playerUnit)
         {
             _attackModel = playerUnit.Model.AttackModel;
+            _clipReloader = new ClipReloader(_attackModel.ClipSize, _attackModel.AttackTime, _attackModel.ClipReloadTime, this);
             if (HasWeaponAnimationHandler) {
                 _weaponAnimationHandler.OnFireEvent += Fire;
             }
@@ -49,14 +48,13 @@ namespace Survivors.Units.Player.Attack
         {
             _weapon = gameObject.RequireComponentInChildren<BaseWeapon>();
             _animator = gameObject.RequireComponentInChildren<Animator>();
-            _targetSearcher = GetComponent<ITargetSearcher>();      
-            
+            _targetSearcher = GetComponent<ITargetSearcher>();
+
             _weaponAnimationHandler = GetComponentInChildren<WeaponAnimationHandler>();
         }
 
         [CanBeNull]
         private ITarget FindTarget() => _targetSearcher.Find();
-        
 
         public void OnTick()
         {
@@ -64,51 +62,40 @@ namespace Survivors.Units.Player.Attack
             if (_rotateToTarget) {
                 UpdateRotation(target);
             }
-            _recharger?.OnTick();
-
-            if (_recharger != null) {
-                return;
-            }
-            if (Recharged) {
-                CreateRecharger();
+            if (CanAttack(target)) {
+                Attack(target);
             }
         }
+
+        private bool CanAttack([CanBeNull] ITarget target) => target != null && _clipReloader.IsAttackReady && !IsAttackProcess;
 
         private void UpdateRotation([CanBeNull] ITarget target)
         {
             if (target != null) {
                 RotateToTarget(target.Center.position);
-               
             } else {
                 _rotationRoot.rotation = Quaternion.Lerp(_rotationRoot.rotation, Quaternion.LookRotation(transform.forward), Time.deltaTime * 10);
             }
         }
+
         private void RotateToTarget(Vector3 targetPos)
         {
             var lookAtDirection = (targetPos - _rotationRoot.position).XZ().normalized;
             var lookAt = Quaternion.LookRotation(lookAtDirection, _rotationRoot.up);
             _rotationRoot.rotation = Quaternion.Lerp(_rotationRoot.rotation, lookAt, Time.deltaTime * 10);
-        }   
-        private void CreateRecharger()
-        {
-            _recharger = new Recharger(this, _attackModel.ChargeCount, _attackModel.AttackTime, OnRechargerCompleted);
         }
 
-        private void OnRechargerCompleted()
-        {
-            _rechargerCompletionTime = Time.time;
-            _recharger = null;
-        }
-
-        private void Attack(ITarget target)
+        public void Attack(ITarget target)
         {
             IsAttackProcess = true;
             _target = target;
             _animator.SetTrigger(_attackHash);
+            OnAttack?.Invoke();
             if (!HasWeaponAnimationHandler) {
                 Fire();
             }
         }
+
         private void Fire()
         {
             IsAttackProcess = false;
@@ -128,53 +115,53 @@ namespace Survivors.Units.Player.Attack
         private void OnDestroy()
         {
             if (HasWeaponAnimationHandler) {
-                _weaponAnimationHandler.OnFireEvent -= Fire; 
+                _weaponAnimationHandler.OnFireEvent -= Fire;
             }
-            _recharger = null;
+            _clipReloader.Dispose();
+            _clipReloader = null;
         }
 
-        private class Recharger
+        private class ClipReloader
         {
-            private readonly PlayerAttack _attack;
             private readonly float _attackInterval;
+            private readonly float _reloadTime;
+            private readonly int _clipSize;
+            private readonly IAttack _attack;
 
-            private int _chargeCount;
+            private int _currentClipSize;
             private float _lastAttackTime;
-            private Action _onCompleted;
-            private bool IsAttackReady => Time.time >= _lastAttackTime + _attackInterval;
+            private float _startReloadTime;
+            private bool Reloaded => Time.time >= _startReloadTime + _reloadTime;
+            public bool IsAttackReady => Time.time >= _lastAttackTime + _attackInterval && Reloaded;
 
-            public Recharger(PlayerAttack attack, int chargeCount, float attackTime, Action onCompleted)
+            public ClipReloader(int clipSize, float attackTime, float reloadTime, IAttack attack)
             {
+                _clipSize = clipSize;
+                _currentClipSize = _clipSize;
+                _reloadTime = reloadTime;
+                _attackInterval = attackTime / clipSize;
                 _attack = attack;
-                _onCompleted = onCompleted;
-                _chargeCount = chargeCount;
-                _attackInterval = attackTime / chargeCount;
+                attack.OnAttack += OnAttack;
             }
 
-            public void OnTick()
+            public void Dispose()
             {
-                if (_onCompleted == null) {
-                    return;
-                }
-                if (!IsAttackReady) {
-                    return;
-                }
-                if (_chargeCount <= 0) {
-                    _onCompleted?.Invoke();
-                    _onCompleted = null;
-                    return;
-                }
-                var target = _attack.FindTarget();
-                if (target != null) {
-                    Attack(target);
-                }
+                _attack.OnAttack -= OnAttack;
             }
 
-            private void Attack(ITarget target)
+            private void OnAttack()
             {
                 _lastAttackTime = Time.time;
-                _chargeCount--;
-                _attack.Attack(target);
+                --_currentClipSize;
+                if (_currentClipSize <= 0) {
+                    Reload();
+                }
+            }
+
+            private void Reload()
+            {
+                _startReloadTime = Time.time;
+                _currentClipSize = _clipSize;
             }
         }
     }
