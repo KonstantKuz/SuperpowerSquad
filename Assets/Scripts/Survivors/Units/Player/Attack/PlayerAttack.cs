@@ -78,7 +78,6 @@ namespace Survivors.Units.Player.Attack
             IsAttackProcess = true;
             _target = target;
             _animator.SetTrigger(_attackHash);
-            OnAttack?.Invoke();
             if (!HasWeaponAnimationHandler) {
                 Fire();
             }
@@ -90,6 +89,7 @@ namespace Survivors.Units.Player.Attack
             if (IsTargetInvalid) {
                 return;
             }
+            OnAttack?.Invoke();            
             _weapon.Fire(_target, _playerAttackModel.CreateProjectileParams(), DoDamage);
         }
 
