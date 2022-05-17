@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Survivors.Units.Damageable;
+using Survivors.Units.Component.Health;
 using Survivors.Units.Target;
 using UnityEngine;
 using UnityEngine.Assertions;

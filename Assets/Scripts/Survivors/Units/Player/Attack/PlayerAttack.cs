@@ -2,7 +2,7 @@
 using JetBrains.Annotations;
 using ModestTree;
 using Survivors.Extension;
-using Survivors.Units.Damageable;
+using Survivors.Units.Component.Health;
 using Survivors.Units.Player.Model;
 using Survivors.Units.Player.Movement;
 using Survivors.Units.Target;

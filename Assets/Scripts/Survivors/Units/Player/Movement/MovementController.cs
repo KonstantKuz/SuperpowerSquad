@@ -88,7 +88,7 @@ namespace Survivors.Units.Player.Movement
             _animator.SetFloat(_horizontalMotionHash, (float) Math.Sin(GetRadian(signedAngle)));
             _animator.SetFloat(_verticalMotionHash, (float) Math.Cos(GetRadian(signedAngle)));
         }
-        private double GetRadian(float signedAngle) => (Math.PI / 180) * signedAngle;
+        private double GetRadian(float signedAngle) => Mathf.Deg2Rad * signedAngle;
         private float GetRotateSignedAngle() => Vector2.SignedAngle(transform.forward.ToVector2XZ(), _rotationRoot.forward.ToVector2XZ());
     }
 }

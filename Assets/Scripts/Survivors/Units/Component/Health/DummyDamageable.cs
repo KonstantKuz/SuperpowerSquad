@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Survivors.Units.Damageable
+namespace Survivors.Units.Component.Health
 {
     public class DummyDamageable : MonoBehaviour, IDamageable
     {

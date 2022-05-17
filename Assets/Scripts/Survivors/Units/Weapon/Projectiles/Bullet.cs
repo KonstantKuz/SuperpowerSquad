@@ -51,6 +51,7 @@ namespace Survivors.Units.Weapon.Projectiles
         }
         private void Destroy()
         {
+            gameObject.SetActive(false);
             HitCallback = null;
             Destroy(gameObject);
         }
