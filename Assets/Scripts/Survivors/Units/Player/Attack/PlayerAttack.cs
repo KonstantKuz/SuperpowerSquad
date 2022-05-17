@@ -109,7 +109,7 @@ namespace Survivors.Units.Player.Attack
             if (IsTargetInvalid) {
                 return;
             }
-            _weapon.Fire(_target, _attackModel.CreateChargeParams(), DoDamage);
+            _weapon.Fire(_target, _attackModel.CreateProjectileParams(), DoDamage);
         }
 
         private void DoDamage(GameObject target)

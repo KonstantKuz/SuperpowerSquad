@@ -26,7 +26,7 @@ namespace Survivors.Units.Player.Model
 
         public int ClipSize => _config.ClipSize;
 
-        public ProjectileParams CreateChargeParams()
+        public ProjectileParams CreateProjectileParams()
         {
             return new ProjectileParams() {
                     Speed = ProjectileSpeed,        
