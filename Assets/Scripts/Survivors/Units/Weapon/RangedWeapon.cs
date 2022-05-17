@@ -1,4 +1,5 @@
 ﻿using System;
+using Survivors.Extension;
 using Survivors.Location.Service;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Charge.Projectile;
@@ -32,8 +33,7 @@ namespace Survivors.Units.Weapon
         private static Vector3 GetShootDirection(Vector3 shootPos, Vector3 targetPos)
         {
             var dir = targetPos - shootPos;
-            dir = new Vector3(dir.x, 0, dir.z);
-            return dir.normalized;
+            return dir.XZ().normalized;
         }
         private Projectile CreateProjectile()
         {

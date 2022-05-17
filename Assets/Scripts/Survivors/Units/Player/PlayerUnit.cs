@@ -12,7 +12,7 @@ namespace Survivors.Units.Player
         {
             Model = model;
             _updatables = GetComponentsInChildren<IUpdatableUnitComponent>(); 
-            foreach (var component in GetComponentsInChildren<IUnitInitialization>()) {
+            foreach (var component in GetComponentsInChildren<IUnitInitializable>()) {
                 component.Init(this);
             }
         }

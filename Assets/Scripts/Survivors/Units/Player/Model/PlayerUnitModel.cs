@@ -2,7 +2,7 @@
 
 namespace Survivors.Units.Player.Model
 {
-    public class PlayerUnitModel
+    public class PlayerUnitModel 
     {
         private readonly PlayerUnitConfig _config;
 

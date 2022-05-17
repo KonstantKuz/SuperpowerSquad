@@ -2,7 +2,7 @@
 
 namespace Survivors.Units
 {
-    public interface IUnitInitialization
+    public interface IUnitInitializable
     {
         public void Init(PlayerUnit playerUnit);
     }

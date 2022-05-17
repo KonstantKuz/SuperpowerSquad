@@ -10,7 +10,7 @@ using UnityEngine;
 namespace Survivors.Units.Player.Attack
 {
     [RequireComponent(typeof(ITargetSearcher))]
-    public class PlayerAttack : MonoBehaviour, IUnitInitialization, IUpdatableUnitComponent
+    public class PlayerAttack : MonoBehaviour, IUnitInitializable, IUpdatableUnitComponent
     {
         private readonly int _attackHash = Animator.StringToHash("Attack");
 
@@ -47,9 +47,9 @@ namespace Survivors.Units.Player.Attack
 
         private void Awake()
         {
-            _weapon = GetComponentInChildren<BaseWeapon>().IsNotNullComponent(this);
-            _animator = GetComponentInChildren<Animator>().IsNotNullComponent(this);
-            _targetSearcher = GetComponent<ITargetSearcher>().IsNotNullComponent(this);
+            _weapon = gameObject.RequireComponentInChildren<BaseWeapon>();
+            _animator = gameObject.RequireComponentInChildren<Animator>();
+            _targetSearcher = GetComponent<ITargetSearcher>();
 
             _weaponAnimationHandler = GetComponentInChildren<WeaponAnimationHandler>();
         }
