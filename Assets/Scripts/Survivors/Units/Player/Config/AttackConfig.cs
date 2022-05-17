@@ -14,20 +14,18 @@ namespace Survivors.Units.Player.Config
         [DataMember(Name = "AttackDamage")]
         private int _attackDamage;
 
-        [DataMember(Name = "RechargeTime")]
-        private float _rechargeTime;
+        [DataMember(Name = "ClipReloadTime")]
+        private float _clipReloadTime;
 
         [DataMember(Name = "AttackTime")]
         private float _attackTime;
 
-        [DataMember(Name = "ChargeSpeed")]
-        private float _chargeSpeed;
+        [DataMember(Name = "ProjectileSpeed")]
+        private float _projectileSpeed;
 
-        [DataMember(Name = "ChargeCount")]
-        private int _chargeCount;      
+        [DataMember(Name = "ClipSize")]
+        private int _clipSize;      
         
-        [DataMember(Name = "AttackAngle")]
-        private int _attackAngle;
 
         public float AttackDistance => _attackDistance;
         
@@ -35,13 +33,12 @@ namespace Survivors.Units.Player.Config
         
         public int AttackDamage => _attackDamage;
         
-        public float RechargeTime => _rechargeTime;
+        public float ClipReloadTime => _clipReloadTime;
         
         public float AttackTime => _attackTime;
         
-        public float ChargeSpeed => _chargeSpeed;
+        public float ProjectileSpeed => _projectileSpeed;
 
-        public int ChargeCount => _chargeCount;
-        public int AttackAngle => _attackAngle;
+        public int ClipSize => _clipSize;
     }
 }

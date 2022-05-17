@@ -18,13 +18,13 @@ namespace Survivors.Units.Player.Model
 
         public int AttackDamage => _config.AttackDamage;
 
-        public float ClipReloadTime => _config.RechargeTime;
+        public float ClipReloadTime => _config.ClipReloadTime;
 
         public float AttackTime => _config.AttackTime;
 
-        public float ProjectileSpeed => _config.ChargeSpeed;
+        public float ProjectileSpeed => _config.ProjectileSpeed;
 
-        public int ClipSize => _config.ChargeCount;
+        public int ClipSize => _config.ClipSize;
 
         public ProjectileParams CreateChargeParams()
         {
