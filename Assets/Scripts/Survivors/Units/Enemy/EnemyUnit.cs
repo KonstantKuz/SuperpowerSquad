@@ -31,9 +31,9 @@ namespace Survivors.Units.Enemy
             _enemyDeath = GetComponent<EnemyDeath>();
         }
 
-        public void Init(IUnitHealthModel healthModel)
+        public void Init(IUnitModel unitModel)
         {
-            _health.Init(healthModel, _enemyDeath.Die);
+            _health.Init(unitModel.HealthModel, _enemyDeath.Die);
         }
         
         private void Update()

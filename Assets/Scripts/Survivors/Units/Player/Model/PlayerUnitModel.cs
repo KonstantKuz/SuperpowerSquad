@@ -1,4 +1,5 @@
-﻿using Survivors.Units.Player.Config;
+﻿using Survivors.Units.Model;
+using Survivors.Units.Player.Config;
 
 namespace Survivors.Units.Player.Model
 {
@@ -12,9 +13,11 @@ namespace Survivors.Units.Player.Model
         {
             _config = config;
             _attackModel = new AttackModel(config.AttackConfig);
+            HealthModel = new HealthModel(config.Health);
         }
 
         public AttackModel AttackModel => _attackModel;
         public string Id => _config.Id;
+        public IUnitHealthModel HealthModel { get; }
     }
 }

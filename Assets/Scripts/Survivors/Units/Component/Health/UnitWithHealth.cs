@@ -19,7 +19,7 @@ namespace Survivors.Units.Component.Health
         public void Init(IUnitHealthModel healthModel, Action onDeath)
         {
             _healthConfig = healthModel;
-            _currentHealth = new FloatReactiveProperty(_healthConfig.StartingHealth);
+            _currentHealth = new FloatReactiveProperty(_healthConfig.MaxHealth);
             DamageEnabled = true;
             OnDeath += onDeath;
         }
