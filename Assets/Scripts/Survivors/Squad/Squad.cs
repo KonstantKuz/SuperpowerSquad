@@ -6,6 +6,8 @@ using UnityEngine.Assertions;
 using Zenject;
 using EasyButtons;
 using Survivors.Squad.Formation;
+using Survivors.Units.Player.Movement;
+using Survivors.Units.Service;
 
 namespace Survivors.Squad
 {
@@ -20,14 +22,26 @@ namespace Survivors.Squad
         private readonly ISquadFormation _formation = new CircleFormation();
 
         [Inject] private Joystick _joystick;
-        [Inject] private DiContainer _container;
+        [Inject] private UnitFactory _unitFactory;
 
+        private void Awake()
+        {
+            _destination = GetComponentInChildren<SquadDestination>();
+            GetComponentsInChildren<MovementController>().ForEach(AddUnitToList);
+            SetUnitPositions();
+        }
+        
         public void AddUnit(MovementController unit)
+        {
+            unit.transform.SetParent(transform);
+            unit.transform.position = GetSpawnPosition();
+            AddUnitToList(unit);
+        }
+        private void AddUnitToList(MovementController unit)
         {
             _units.Add(unit);
             unit.SetSpeed(_movementSpeed * _unitSpeedScale);
         }
-
         [Button]
         /*
          * This functions just tests formation change when new units are added
@@ -35,9 +49,7 @@ namespace Survivors.Squad
         private void SpawnUnit()
         {
             Assert.IsTrue(_units.Count > 0);
-            var newUnit = _container.InstantiatePrefabForComponent<MovementController>(_units[0]);
-            newUnit.transform.SetParent(transform);
-            newUnit.transform.position = GetSpawnPosition();
+            var newUnit = _unitFactory.LoadPlayerUnit(UnitFactory.SIMPLE_PLAYER_ID).GetComponent<MovementController>();
             AddUnit(newUnit);
         }
 
@@ -46,14 +58,7 @@ namespace Survivors.Squad
         {
             _destination.SwitchVisibility();
         }
-
-        private void Awake()
-        {
-            _destination = GetComponentInChildren<SquadDestination>();
-            GetComponentsInChildren<MovementController>().ForEach(AddUnit);
-            SetUnitPositions();
-        }
-
+        
         private void SetUnitPositions()
         {
             for (int unitIdx = 0; unitIdx < _units.Count; unitIdx++)

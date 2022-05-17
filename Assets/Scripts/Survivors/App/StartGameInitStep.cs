@@ -9,6 +9,7 @@ namespace Survivors.App
     public class StartGameInitStep : AppInitStep
     {
         [Inject] private SessionService _sessionService;
+        
         public StartGameInitStep()
         {
         }

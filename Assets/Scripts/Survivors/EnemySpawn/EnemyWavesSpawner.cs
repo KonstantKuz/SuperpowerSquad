@@ -14,8 +14,8 @@ namespace Survivors.EnemySpawn
 {
     public class EnemyWavesSpawner : MonoBehaviour
     {
-        [SerializeField] private float _minOutOfViewOffset = 1f;
-        [SerializeField] private float _outOfViewOffsetMultiplier = 0.3f;
+        [SerializeField] private float _minOutOfViewOffset = 2f;
+        [SerializeField] private float _outOfViewOffsetMultiplier = 0.2f;
 
         private List<EnemyWaveConfig> _waves;
         private Coroutine _spawnCoroutine;

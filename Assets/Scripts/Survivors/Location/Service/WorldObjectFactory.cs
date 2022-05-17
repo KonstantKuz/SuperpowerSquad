@@ -12,7 +12,7 @@ namespace Survivors.Location.Service
 {
     public class WorldObjectFactory : MonoBehaviour
     {
-        private const string OBJECT_PREFABS_PATH_ROOT = "Location/";
+        private const string OBJECT_PREFABS_PATH_ROOT = "Content/";
 
         private readonly Dictionary<string, GameObject> _prefabs = new Dictionary<string, GameObject>();
 
@@ -33,7 +33,7 @@ namespace Survivors.Location.Service
         private void LoadWorldObjects()
         {
             var worldObjects = Resources.LoadAll<WorldObject>(OBJECT_PREFABS_PATH_ROOT);
-            foreach (WorldObject worldObject in worldObjects) {
+            foreach (var worldObject in worldObjects) {
                 _prefabs.Add(worldObject.ObjectId, worldObject.GameObject);
             }
         }

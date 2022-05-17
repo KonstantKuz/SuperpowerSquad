@@ -5,10 +5,12 @@ namespace Survivors.Location
     public class World : MonoBehaviour
     {
         [SerializeField] private Transform _ground;
-        [SerializeField] private GameObject _spawnContainer;
+        [SerializeField] private GameObject _spawnContainer;   
+        [SerializeField] private Squad.Squad _squad;
 
         public Transform Ground => _ground;
-        public GameObject SpawnContainer => _spawnContainer;
+        public GameObject SpawnContainer => _spawnContainer;  
+        public Squad.Squad Squad => _squad;
 
         public Vector3 GetGroundIntersection(Ray withRay)
         {
