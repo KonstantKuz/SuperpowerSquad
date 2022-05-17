@@ -1,4 +1,5 @@
-﻿using Survivors.Units.Model;
+﻿using Survivors.Units.Enemy.Config;
+using Survivors.Units.Model;
 
 namespace Survivors.Units.Enemy.Model
 {
@@ -6,15 +7,12 @@ namespace Survivors.Units.Enemy.Model
     {
         public string Id { get; set; }
         public IUnitHealthModel HealthModel { get; set; }
+        public IAttackModel AttackModel { get; }
 
-        public static EnemyUnitModel Create(string id, 
-            IUnitHealthModel healthModel)
+        public EnemyUnitModel(EnemyUnitConfig config)
         {
-            return new EnemyUnitModel
-            {
-                Id = id,
-                HealthModel = healthModel,
-            };
+            Id = config.Id;
+            HealthModel = new HealthModel(config.Health);
         }
     }
 }

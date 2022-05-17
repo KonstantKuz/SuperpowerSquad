@@ -16,6 +16,7 @@ namespace Survivors.Units.Target
                 _targets[target.UnitType] = new HashSet<ITarget>();
             }
             _targets[target.UnitType].Add(target);
+            target.OnTargetInvalid += Remove;
         }
 
         public void Remove(ITarget target)

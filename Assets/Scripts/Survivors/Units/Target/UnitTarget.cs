@@ -1,4 +1,5 @@
 ﻿using System;
+using Survivors.Units.Player.Attack;
 using UnityEngine;
 using Zenject;
 
@@ -16,7 +17,7 @@ namespace Survivors.Units.Target
         [Inject] 
         private TargetService _targetService;
 
-        public Action OnTargetInvalid { get; set; }
+        public Action<ITarget> OnTargetInvalid { get; set; }
         public Transform Root => transform;
         public bool IsAlive => true;
         public Transform Center => _centerTarget;

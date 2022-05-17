@@ -1,22 +1,14 @@
-﻿using System;
+﻿﻿using System;
 using Feofun.Config;
 using Survivors.Location;
 using Survivors.Location.Service;
 using Survivors.Units.Enemy;
-using Survivors.Units.Player;
  using Survivors.Units.Enemy.Config;
  using Survivors.Units.Enemy.Model;
- using Survivors.Units.Model;
  using Zenject;
  using Survivors.Units.Player.Config;
  using Survivors.Units.Player.Model;
  using Survivors.Units.Player.Movement;
-using Survivors.Units.Enemy.Config;
-using Survivors.Units.Enemy.Model;
-using Survivors.Units.Player.Config;
-using Survivors.Units.Player.Model;
-using Survivors.Units.Player.Movement;
-using Zenject;
 
  namespace Survivors.Units.Service
 {
@@ -55,8 +47,7 @@ using Zenject;
         {
             var enemy = _worldObjectFactory.CreateObject(SIMPLE_ENEMY_ID, _world.SpawnContainer).GetComponent<EnemyUnit>();
             var config = _enemyUnitConfigs.Get(SIMPLE_ENEMY_ID);
-            var health = new HealthModel(config.Health);
-            var model = EnemyUnitModel.Create(SIMPLE_ENEMY_ID, health);
+            var model = new EnemyUnitModel(config);
             enemy.Init(model);
             return enemy;
         }

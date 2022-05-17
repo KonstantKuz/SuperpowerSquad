@@ -9,7 +9,7 @@ namespace Survivors.Units.Target
     public interface ITarget
     {
         UnitType UnitType { get; set; }
-        Action OnTargetInvalid { get; set; }
+        Action<ITarget> OnTargetInvalid { get; set; }
         Transform Root { get; }
         Transform Center { get; } 
         bool IsAlive { get; }

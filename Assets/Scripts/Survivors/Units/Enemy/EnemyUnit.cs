@@ -10,7 +10,7 @@ namespace Survivors.Units.Enemy
 {
     [RequireComponent(typeof(NavMeshAgent))]
     [RequireComponent(typeof(UnitWithHealth))]
-    [RequireComponent(typeof(EnemyDeath))]
+    [RequireComponent(typeof(DestroyDeath))]
     public class EnemyUnit : Unit
     {
         private NavMeshAgent _agent;
