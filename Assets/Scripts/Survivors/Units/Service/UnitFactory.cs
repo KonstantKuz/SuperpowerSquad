@@ -7,6 +7,7 @@ using Survivors.Units.Enemy;
 using Survivors.Units.Player;
 using Survivors.Units.Player.Config;
 using Survivors.Units.Player.Model;
+using Survivors.Units.Player.Movement;
 using Zenject;
 
 namespace Survivors.Units.Service

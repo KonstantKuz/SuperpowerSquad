@@ -6,6 +6,7 @@ using UnityEngine.Assertions;
 using Zenject;
 using EasyButtons;
 using Survivors.Squad.Formation;
+using Survivors.Units.Player.Movement;
 using Survivors.Units.Service;
 
 namespace Survivors.Squad
