@@ -1,2 +1,2 @@
 Id,Health,AttackDistance,DamageRadius,AttackDamage,ClipReloadTime,AttackTime,ProjectileSpeed,ClipSize
-StandardUnit,100,20,0,100,5,6,30,3
+StandardUnit,100,20,0,100,5,0.5,30,6
