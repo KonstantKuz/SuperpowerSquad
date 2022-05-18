@@ -7,7 +7,7 @@ namespace Survivors.Units.Component.Health
 {
     public class UnitWithHealth : MonoBehaviour, IUnitInitializable, IDamageable
     {
-        private IUnitHealthModel _healthModel;
+        private HealthModel _healthModel;
         private ReactiveProperty<float> _currentHealth;
         public IObservable<float> CurrentValue => _currentHealth;
         public int MaxValue => _healthModel.MaxHealth;

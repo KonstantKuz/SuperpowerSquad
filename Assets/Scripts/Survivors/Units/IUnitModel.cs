@@ -5,7 +5,7 @@ namespace Survivors.Units
     public interface IUnitModel
     {
         string Id { get; }
-        IUnitHealthModel HealthModel { get; }
+        HealthModel HealthModel { get; }
         IAttackModel AttackModel { get; }
     }
 }

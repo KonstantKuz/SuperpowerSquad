@@ -16,7 +16,6 @@ namespace Survivors.Units.Target
                 _targets[target.UnitType] = new HashSet<ITarget>();
             }
             _targets[target.UnitType].Add(target);
-            target.OnTargetInvalid += Remove;
         }
 
         public void Remove(ITarget target)
@@ -32,7 +31,5 @@ namespace Survivors.Units.Target
         {
             return AllTargetsOfType(unitType).OrderBy(it => Vector3.Distance(it.Root.position, pos)).FirstOrDefault();
         }
-
-     
     }
 }

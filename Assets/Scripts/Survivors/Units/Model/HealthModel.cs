@@ -1,7 +1,7 @@
 ﻿
 namespace Survivors.Units.Model
 {
-    public class HealthModel : IUnitHealthModel
+    public class HealthModel
     {
         public int MaxHealth { get; }
 

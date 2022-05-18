@@ -17,9 +17,9 @@ namespace Survivors.Units.Target
         [Inject] 
         private TargetService _targetService;
 
-        public Action<ITarget> OnTargetInvalid { get; set; }
+        public Action OnTargetInvalid { get; set; }
         public Transform Root => transform;
-        public bool IsAlive => true;
+        public bool IsAlive { get; private set; } = true;
         public Transform Center => _centerTarget;
 
         public UnitType UnitType
@@ -41,9 +41,23 @@ namespace Survivors.Units.Target
 
         private void Awake()
         {
-            
             TargetId = $"{_unitType.ToString()}#{_idCount++}";
             _targetService.Add(this);
+        }
+        
+        public void OnDeath()
+        {
+            if (!IsAlive) return;
+            IsAlive = false;
+            OnTargetInvalid?.Invoke();
+            _targetService.Remove(this);
+        }
+
+        private void OnDestroy()
+        {
+            if (!IsAlive) return;
+            OnTargetInvalid?.Invoke();
+            _targetService.Remove(this);
         }
     }
 }

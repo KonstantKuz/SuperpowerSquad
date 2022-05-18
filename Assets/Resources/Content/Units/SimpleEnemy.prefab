@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3870860260993355359}
   - component: {fileID: 7792710414609505496}
   - component: {fileID: 3006564440288677136}
+  - component: {fileID: 6629324333623088289}
   - component: {fileID: 4491497861294361367}
   - component: {fileID: 1412234775819129929}
   - component: {fileID: 8111980166562719412}
@@ -133,6 +134,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d89041dc1bc74fca96b73d391f0c1429, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6629324333623088289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047533565645016285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 95a9c8df7c3c4443a92159f8b894db21, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _objectId: SimpleEnemy

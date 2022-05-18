@@ -1,7 +1,4 @@
-﻿using Survivors.Units.Component.Death;
-using Survivors.Units.Component.Health;
-using Survivors.Units.Model;
-using Survivors.Units.Target;
+﻿using Survivors.Units.Target;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
@@ -9,9 +6,7 @@ using Zenject;
 namespace Survivors.Units.Enemy
 {
     [RequireComponent(typeof(NavMeshAgent))]
-    [RequireComponent(typeof(UnitWithHealth))]
-    [RequireComponent(typeof(DestroyDeath))]
-    public class EnemyUnit : Unit
+    public class EnemyAi : MonoBehaviour
     {
         private NavMeshAgent _agent;
         private ITarget _target;

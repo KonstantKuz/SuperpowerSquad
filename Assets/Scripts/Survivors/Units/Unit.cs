@@ -35,11 +35,8 @@ namespace Survivors.Units
         public void Kill()
         {
             _damageable.OnDeath -= Kill;
-
             _death.PlayDeath();
-            
-            _selfTarget.OnTargetInvalid?.Invoke(_selfTarget);
-            
+            _selfTarget.OnDeath();
             OnDeath?.Invoke(this);
             OnDeath = null;
         }
