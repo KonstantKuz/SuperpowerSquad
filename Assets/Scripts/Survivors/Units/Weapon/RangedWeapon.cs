@@ -34,7 +34,7 @@ namespace Survivors.Units.Weapon
         private static Vector3 GetShootDirection(Vector3 shootPos, Vector3 targetPos)
         {
             var dir = targetPos - shootPos;
-            return dir.XZ().normalized;
+            return dir.normalized;
         }
 
         private Projectile CreateProjectile()
