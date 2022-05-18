@@ -43,13 +43,13 @@ using Survivors.Units.Enemy;
             unit.Init(model);
         }
 
-        public EnemyAi CreateEnemy()
+        public Unit CreateEnemy()
         {
             var enemy = _worldObjectFactory.CreateObject(SIMPLE_ENEMY_ID, _world.SpawnContainer).GetComponent<Unit>();
             var config = _enemyUnitConfigs.Get(SIMPLE_ENEMY_ID);
             var model = new EnemyUnitModel(config);
             enemy.Init(model);
-            return enemy.GetComponent<EnemyAi>();
+            return enemy;
         }
     }
 }
