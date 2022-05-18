@@ -186,6 +186,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &146805515 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3322225681223616483, guid: 35125c194a51b14489fcf91a7da5dd53, type: 3}
+  m_PrefabInstance: {fileID: 3514698042878797253}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2d085b8452a1414a9b3d9185f8721891, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &371733634 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1873516484607207762, guid: d6eb7c9c829425d47a84bcef4eeb0c9e, type: 3}
@@ -236,6 +247,7 @@ GameObject:
   - component: {fileID: 876315363}
   - component: {fileID: 876315364}
   - component: {fileID: 876315365}
+  - component: {fileID: 876315366}
   m_Layer: 0
   m_Name: App
   m_TagString: Untagged
@@ -270,8 +282,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _gameApplication: {fileID: 876315364}
-  _joystick: {fileID: 1042008005}
   _worldServicesInstaller: {fileID: 876315365}
+  _uiInstaller: {fileID: 876315366}
   _enemyWavesSpawner: {fileID: 371733634}
 --- !u!114 &876315364
 MonoBehaviour:
@@ -299,6 +311,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _world: {fileID: 371733636}
   _worldObjectFactory: {fileID: 371733635}
+--- !u!114 &876315366
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 876315361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8e35815c129f44e883289b627abf85c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _joystick: {fileID: 1042008005}
+  _screenSwitcher: {fileID: 146805515}
 --- !u!114 &1042008005 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4730046974365000937, guid: 35125c194a51b14489fcf91a7da5dd53, type: 3}

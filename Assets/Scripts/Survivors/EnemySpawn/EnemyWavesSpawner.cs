@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using LegionMaster.Extension;
+using Feofun.Extension;
 using Survivors.EnemySpawn.Config;
 using Survivors.Location;
 using Survivors.Units.Service;

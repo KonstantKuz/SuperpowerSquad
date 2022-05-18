@@ -15,5 +15,10 @@ namespace Survivors.Session
             _unitFactory.LoadPlayerUnit(UnitFactory.SIMPLE_PLAYER_ID); 
             _enemyWavesSpawner.StartSpawn(_enemyWavesConfig);
         }
+
+        public void Term()
+        {
+            
+        }
     }
 }

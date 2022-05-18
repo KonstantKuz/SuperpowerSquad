@@ -1,6 +1,8 @@
+using Feofun.UI.Screen;
 using SuperMaxim.Messaging;
 using Survivors.EnemySpawn;
 using Survivors.Location;
+using Survivors.UI;
 using Survivors.Units;
 
 using UnityEngine;
@@ -10,26 +12,28 @@ namespace Survivors.App
 {
     public class MainSceneMonoInstaller : MonoInstaller
     {
+        
         [SerializeField]
         private GameApplication _gameApplication;
         [SerializeField]
-        private Joystick _joystick;
+        private WorldServicesInstaller _worldServicesInstaller;  
         [SerializeField]
-        private WorldServicesInstaller _worldServicesInstaller;
+        private UIInstaller _uiInstaller;
         [SerializeField]
         private EnemyWavesSpawner _enemyWavesSpawner;
-        
+
         public override void InstallBindings()
         {
             Container.BindInterfacesTo<MainSceneMonoInstaller>().FromInstance(this).AsSingle();
             Container.Bind<GameApplication>().FromInstance(_gameApplication).AsSingle();
             Container.Bind<IMessenger>().FromInstance(Messenger.Default).AsSingle();
-            Container.Bind<Joystick>().FromInstance(_joystick).AsSingle();
+
 
             ConfigsInstaller.Install(Container);
             UnitServicesInstaller.Install(Container);            
-
             _worldServicesInstaller.Install(Container);
+            _uiInstaller.Install(Container);
+  
             Container.Bind<EnemyWavesSpawner>().FromInstance(_enemyWavesSpawner);
         }
     }
