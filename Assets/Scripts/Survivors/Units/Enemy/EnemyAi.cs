@@ -11,7 +11,7 @@ namespace Survivors.Units.Enemy
         private NavMeshAgent _agent;
         private ITarget _target;
 
-        [Inject] 
+        [Inject]
         private TargetService _targetService;
 
         public NavMeshAgent NavMeshAgent => _agent;
@@ -25,13 +25,10 @@ namespace Survivors.Units.Enemy
         {
             _target ??= _targetService.FindClosestTargetOfType(UnitType.PLAYER, transform.position);
 
-            if (_target != null)
-            {
+            if (_target != null) {
                 _agent.destination = _target.Root.position;
                 _agent.isStopped = false;
-            }
-            else
-            {
+            } else {
                 _agent.isStopped = true;
             }
         }

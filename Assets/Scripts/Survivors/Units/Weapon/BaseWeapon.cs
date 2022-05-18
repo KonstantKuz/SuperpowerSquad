@@ -1,7 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 using Survivors.Units.Target;
-using Survivors.Units.Weapon.Projectile;
+using Survivors.Units.Weapon.Projectiles;
 using UnityEngine;
 
 namespace Survivors.Units.Weapon

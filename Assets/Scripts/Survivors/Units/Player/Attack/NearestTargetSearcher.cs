@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using JetBrains.Annotations;
+using Survivors.Units.Model;
 using Survivors.Units.Player.Model;
 using Survivors.Units.Target;
 using UnityEngine;
@@ -12,17 +13,18 @@ namespace Survivors.Units.Player.Attack
     {
         [Inject]
         private TargetService _targetService;
-        
-        private AttackModel _attackModel;
+
+        private IAttackModel _attackModel;
         private UnitType _targetType;
-        
+
         private float Distance => _attackModel.AttackDistance;
 
-        public void Init(IUnitModel unitModel)
+        public void Init(IUnit unit)
         {
-            _attackModel = unitModel.AttackModel;
+            _attackModel = unit.Model.AttackModel;
             _targetType = GetComponent<ITarget>().UnitType.GetTargetUnitType();
         }
+
         [CanBeNull]
         public ITarget Find()
         {

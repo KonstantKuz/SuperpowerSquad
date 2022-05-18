@@ -1,7 +1,8 @@
 ﻿using System;
 using JetBrains.Annotations;
 using Survivors.Extension;
-using Survivors.Units.Damageable;
+using Survivors.Units.Component.Health;
+using Survivors.Units.Model;
 using Survivors.Units.Player.Attack;
 using Survivors.Units.Player.Model;
 using Survivors.Units.Target;
@@ -14,7 +15,7 @@ namespace Survivors.Units.Enemy
     public class EnemyAttack : MonoBehaviour
     {
         private BaseWeapon _weapon;
-        private AttackModel _attackModel;
+        private IAttackModel _attackModel;
         private ITargetSearcher _targetSearcher;
         
         [CanBeNull]
@@ -22,7 +23,7 @@ namespace Survivors.Units.Enemy
         
         private bool IsTargetInvalid => !(_target is {IsAlive: true});
 
-        public void Init(AttackModel attackModel)
+        public void Init(IAttackModel attackModel)
         {
             _attackModel = attackModel;
         }

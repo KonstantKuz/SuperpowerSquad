@@ -1,4 +1,5 @@
-﻿using Survivors.Units.Player.Config;
+﻿using Survivors.Units.Model;
+using Survivors.Units.Player.Config;
 
 namespace Survivors.Units.Player.Model
 {
@@ -6,16 +7,17 @@ namespace Survivors.Units.Player.Model
     {
         private readonly PlayerUnitConfig _config;
 
-        private readonly AttackModel _attackModel;
+        private readonly PlayerAttackModel _playerAttackModel;
 
         public PlayerUnitModel(PlayerUnitConfig config)
         {
             _config = config;
-            _attackModel = new AttackModel(config.AttackConfig);
+            HealthModel = new HealthModel(config.Health);
+            _playerAttackModel = new PlayerAttackModel(config.AttackConfig);
         }
 
-        public AttackModel AttackModel => _attackModel;
-
         public string Id => _config.Id;
+        public HealthModel HealthModel { get; }
+        public IAttackModel AttackModel => _playerAttackModel;
     }
 }

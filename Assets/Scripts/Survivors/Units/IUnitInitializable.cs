@@ -5,6 +5,6 @@ namespace Survivors.Units
 {
     public interface IUnitInitializable
     {
-        void Init(IUnitModel unitModel);
+        public void Init(IUnit unit);
     }
 }

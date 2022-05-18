@@ -1,7 +1,7 @@
 ﻿using System;
-using Survivors.Units.Damageable;
+using Survivors.Units.Component.Health;
 using Survivors.Units.Target;
-using Survivors.Units.Weapon.Projectile;
+using Survivors.Units.Weapon.Projectiles;
 using UnityEngine;
 
 namespace Survivors.Units.Weapon

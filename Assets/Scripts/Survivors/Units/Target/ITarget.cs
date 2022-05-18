@@ -14,5 +14,6 @@ namespace Survivors.Units.Target
         Transform Center { get; } 
         bool IsAlive { get; }
         string TargetId { get; }
+        void OnDeath();
     }
 }
