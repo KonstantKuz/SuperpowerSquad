@@ -41,8 +41,8 @@ namespace Survivors.UI.Screen.World
 
         private IEnumerator EndSession()
         {
-            TermSession();
             yield return new WaitForSeconds(_afterSessionDelay);
+            TermSession();
             _screenSwitcher.SwitchTo(DebriefingScreen.DEBRIEFING_SCREEN.ToString());
         }
 

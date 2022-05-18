@@ -284,7 +284,6 @@ MonoBehaviour:
   _gameApplication: {fileID: 876315364}
   _worldServicesInstaller: {fileID: 876315365}
   _uiInstaller: {fileID: 876315366}
-  _enemyWavesSpawner: {fileID: 371733634}
 --- !u!114 &876315364
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -311,6 +310,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _world: {fileID: 371733636}
   _worldObjectFactory: {fileID: 371733635}
+  _enemyWavesSpawner: {fileID: 371733634}
 --- !u!114 &876315366
 MonoBehaviour:
   m_ObjectHideFlags: 0

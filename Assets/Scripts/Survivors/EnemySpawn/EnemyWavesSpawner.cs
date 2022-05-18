@@ -5,6 +5,7 @@ using System.Linq;
 using Feofun.Extension;
 using Survivors.EnemySpawn.Config;
 using Survivors.Location;
+using Survivors.Session;
 using Survivors.Units.Enemy;
 using Survivors.Units.Service;
 using UnityEngine;
@@ -13,7 +14,7 @@ using Random = UnityEngine.Random;
 
 namespace Survivors.EnemySpawn
 {
-    public class EnemyWavesSpawner : MonoBehaviour
+    public class EnemyWavesSpawner : MonoBehaviour, ISessionTerm
     {
         [SerializeField] private float _minOutOfViewOffset = 2f;
         [SerializeField] private float _outOfViewOffsetMultiplier = 0.2f;
@@ -35,7 +36,10 @@ namespace Survivors.EnemySpawn
             _waves = new List<EnemyWaveConfig>(orderedConfigs);
             _spawnCoroutine = StartCoroutine(SpawnWaves());
         }
-
+        public void Term()
+        {
+            Dispose();
+        }
         private IEnumerator SpawnWaves()
         {
             var currentTime = 0;
@@ -123,5 +127,7 @@ namespace Survivors.EnemySpawn
             Right,
             Left,
         }
+
+ 
     }
 }

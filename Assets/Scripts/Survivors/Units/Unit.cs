@@ -25,7 +25,8 @@ namespace Survivors.Units
         public IUnitModel Model { get; private set; }
         public GameObject Object => gameObject;
         public UnitType UnitType => _selfTarget.UnitType;
-
+        
+        public bool IsAlive { get; set; }
         public void Init(IUnitModel model)
         {
             Model = model;
@@ -51,6 +52,7 @@ namespace Survivors.Units
         public void Kill()
         {
             _damageable.OnDeath -= Kill;
+            IsAlive = false;
             _death.PlayDeath();
             _selfTarget.OnDeath();
             OnDeath?.Invoke(this);
@@ -59,6 +61,9 @@ namespace Survivors.Units
 
         private void Update()
         {
+            if (!IsAlive) {
+                return;
+            }
             UpdateComponents();
         }
 

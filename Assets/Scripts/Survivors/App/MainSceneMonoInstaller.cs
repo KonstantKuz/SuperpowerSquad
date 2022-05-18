@@ -19,8 +19,7 @@ namespace Survivors.App
         private WorldServicesInstaller _worldServicesInstaller;  
         [SerializeField]
         private UIInstaller _uiInstaller;
-        [SerializeField]
-        private EnemyWavesSpawner _enemyWavesSpawner;
+     
 
         public override void InstallBindings()
         {
@@ -34,7 +33,7 @@ namespace Survivors.App
             _worldServicesInstaller.Install(Container);
             _uiInstaller.Install(Container);
   
-            Container.Bind<EnemyWavesSpawner>().FromInstance(_enemyWavesSpawner);
+   
         }
     }
 }
