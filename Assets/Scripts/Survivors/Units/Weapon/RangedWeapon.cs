@@ -1,5 +1,4 @@
 ﻿using System;
-using Survivors.Extension;
 using Survivors.Location.Service;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles;
@@ -17,12 +16,13 @@ namespace Survivors.Units.Weapon
         [Inject]
         private WorldObjectFactory _objectFactory;
 
+        private Vector3 _barrelPos; //Seems that in some cases unity cannot correctly take position inside animation event
+
         public override void Fire(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             var projectile = CreateProjectile();
-            var pos = _barrel.position;
-            var rotationToTarget = GetShootRotation(pos, target.Center.position);
-            projectile.transform.SetPositionAndRotation(pos, rotationToTarget);
+            var rotationToTarget = GetShootRotation(_barrelPos, target.Center.position);
+            projectile.transform.SetPositionAndRotation(_barrelPos, rotationToTarget);
             projectile.Launch(target, projectileParams, hitCallback);
         }
 
@@ -39,7 +39,12 @@ namespace Survivors.Units.Weapon
 
         private Projectile CreateProjectile()
         {
-            return _objectFactory.CreateObject(_ammo.gameObject).GetComponent<Projectiles.Projectile>();
+            return _objectFactory.CreateObject(_ammo.gameObject).GetComponent<Projectile>();
+        }
+
+        private void LateUpdate()
+        {
+            _barrelPos = _barrel.position;
         }
     }
 }
