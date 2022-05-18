@@ -6,6 +6,7 @@ using UnityEngine.Assertions;
 using Zenject;
 using EasyButtons;
 using Survivors.Squad.Formation;
+using Survivors.Units;
 using Survivors.Units.Player.Movement;
 using Survivors.Units.Service;
 
@@ -41,7 +42,15 @@ namespace Survivors.Squad
         {
             _units.Add(unit);
             unit.SetSpeed(_movementSpeed * _unitSpeedScale);
+            unit.GetComponent<Unit>().OnDeath += RemoveUnit;
         }
+
+        private void RemoveUnit(IUnit unit)
+        {
+            var movementController = unit.GameObject.GetComponent<MovementController>();
+            _units.Remove(movementController);
+        }
+
         [Button]
         /*
          * This functions just tests formation change when new units are added

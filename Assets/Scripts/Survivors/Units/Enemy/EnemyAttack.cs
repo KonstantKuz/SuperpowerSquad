@@ -1,51 +1,58 @@
-﻿using System;
-using JetBrains.Annotations;
-using Survivors.Extension;
+﻿using Survivors.Extension;
 using Survivors.Units.Component.Health;
-using Survivors.Units.Model;
-using Survivors.Units.Player.Attack;
-using Survivors.Units.Player.Model;
-using Survivors.Units.Target;
+using Survivors.Units.Enemy.Model;
 using Survivors.Units.Weapon;
 using UnityEngine;
 
 namespace Survivors.Units.Enemy
 {
-    [RequireComponent(typeof(ITargetSearcher))]
-    public class EnemyAttack : MonoBehaviour
+    public class EnemyAttack : MonoBehaviour, IUnitInitializable, IUpdatableUnitComponent
     {
+        private EnemyAi _enemyAi;
         private BaseWeapon _weapon;
-        private IAttackModel _attackModel;
-        private ITargetSearcher _targetSearcher;
-        
-        [CanBeNull]
-        private ITarget _target;
-        
-        private bool IsTargetInvalid => !(_target is {IsAlive: true});
+        private EnemyAttackModel _attackModel;
 
-        public void Init(IAttackModel attackModel)
+        private float _attackTimer;
+
+        
+        public void Init(IUnit unit)
         {
-            _attackModel = attackModel;
+            _attackModel = (EnemyAttackModel) unit.Model.AttackModel;
         }
 
         private void Awake()
         {
+            _enemyAi = gameObject.RequireComponent<EnemyAi>();
             _weapon = gameObject.RequireComponentInChildren<BaseWeapon>();
-            _targetSearcher = GetComponent<ITargetSearcher>();
         }
 
-        private void Update()
+        public void OnTick()
         {
-            _target = _targetSearcher.Find();
-            if (_target != null)
+            UpdateTimer();
+            if (CanAttack())
             {
-                Fire();
+                Attack();
             }
         }
-        
-        private void Fire()
+
+        private void UpdateTimer()
         {
-            _weapon.Fire(_target, null, DoDamage);
+            _attackTimer += Time.deltaTime;
+        }
+
+        private bool CanAttack()
+        {
+            return _enemyAi.CurrentTarget != null 
+                   && DistanceToTarget <= _attackModel.AttackDistance 
+                   && _attackTimer >= _attackModel.AttackInterval;
+        }
+        
+        private float DistanceToTarget => Vector3.Distance(transform.position, _enemyAi.CurrentTarget.Root.position);
+
+        private void Attack()
+        {
+            _weapon.Fire(_enemyAi.CurrentTarget, null, DoDamage);
+            _attackTimer = 0;
         }
 
         private void DoDamage(GameObject target)
@@ -54,5 +61,6 @@ namespace Survivors.Units.Enemy
             damageable.TakeDamage(_attackModel.AttackDamage);
             Debug.Log($"Damage applied, target:= {target.name}");
         }
+
     }
 }

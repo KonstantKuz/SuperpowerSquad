@@ -11,10 +11,10 @@ namespace Survivors.Units.Player.Config
         [DataMember(Name = "Health")]
         private int _health;
         [DataMember]
-        private AttackConfig _attackConfig;
+        private PlayerAttackConfig _playerAttackConfig;
 
         public string Id => _id;
         public int Health => _health;
-        public AttackConfig AttackConfig => _attackConfig;
+        public PlayerAttackConfig PlayerAttackConfig => _playerAttackConfig;
     }
 }

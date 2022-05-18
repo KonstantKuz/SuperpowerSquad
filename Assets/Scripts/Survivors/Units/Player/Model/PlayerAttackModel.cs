@@ -6,9 +6,9 @@ namespace Survivors.Units.Player.Model
 {
     public class PlayerAttackModel : IAttackModel
     {
-        private readonly AttackConfig _config;
+        private readonly PlayerAttackConfig _config;
 
-        public PlayerAttackModel(AttackConfig config)
+        public PlayerAttackModel(PlayerAttackConfig config)
         {
             _config = config;
         }

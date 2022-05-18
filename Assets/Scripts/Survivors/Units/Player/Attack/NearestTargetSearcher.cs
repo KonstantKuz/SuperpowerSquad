@@ -11,6 +11,9 @@ namespace Survivors.Units.Player.Attack
     [RequireComponent(typeof(ITarget))]
     public class NearestTargetSearcher : MonoBehaviour, IUnitInitializable, ITargetSearcher
     {
+        [SerializeField] 
+        private bool _ignoreAttackDistance;
+        
         [Inject]
         private TargetService _targetService;
 
@@ -34,6 +37,9 @@ namespace Survivors.Units.Player.Attack
                                  .FirstOrDefault();
         }
 
-        private bool IsDistanceReached(ITarget target) => Vector3.Distance(target.Root.position, transform.position) <= Distance;
+        private bool IsDistanceReached(ITarget target)
+        {
+            return _ignoreAttackDistance || Vector3.Distance(target.Root.position, transform.position) <= Distance;
+        }
     }
 }

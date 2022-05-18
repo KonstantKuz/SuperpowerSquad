@@ -5,6 +5,7 @@ using Survivors.Units.Component.Death;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Model;
 using Survivors.Units.Target;
+using UnityEngine;
 
 namespace Survivors.Units
 {
@@ -15,6 +16,7 @@ namespace Survivors.Units
         private IUnitDeath _death;
         private ITarget _selfTarget;
         public IUnitModel Model { get; private set; }
+        public GameObject GameObject => gameObject;
 
         public Action<IUnit> OnDeath { get; set; }
 
