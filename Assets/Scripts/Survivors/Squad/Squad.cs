@@ -48,7 +48,7 @@ namespace Survivors.Squad
         /*
          * This functions just tests formation change when new units are added
          */
-        private void SpawnUnit()
+        public void SpawnUnit()
         {
             var nextUnit = _playerUnitConfigs.Values[_units.Count % _playerUnitConfigs.Values.Count];
             _unitFactory.LoadPlayerUnit(nextUnit.Id).GetComponent<MovementController>();
