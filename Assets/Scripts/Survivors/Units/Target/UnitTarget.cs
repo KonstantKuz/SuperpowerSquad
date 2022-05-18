@@ -1,4 +1,5 @@
 ﻿using System;
+using Survivors.Units.Player.Attack;
 using UnityEngine;
 using Zenject;
 
@@ -40,7 +41,6 @@ namespace Survivors.Units.Target
 
         private void Awake()
         {
-            
             TargetId = $"{_unitType.ToString()}#{_idCount++}";
             _targetService.Add(this);
         }

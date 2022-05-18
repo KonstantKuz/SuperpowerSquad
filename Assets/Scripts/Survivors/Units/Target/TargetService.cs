@@ -31,7 +31,5 @@ namespace Survivors.Units.Target
         {
             return AllTargetsOfType(unitType).OrderBy(it => Vector3.Distance(it.Root.position, pos)).FirstOrDefault();
         }
-
-     
     }
 }

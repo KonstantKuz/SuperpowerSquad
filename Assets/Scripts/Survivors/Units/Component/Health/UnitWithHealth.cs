@@ -5,23 +5,21 @@ using UnityEngine;
 
 namespace Survivors.Units.Component.Health
 {
-    public class UnitWithHealth : MonoBehaviour, IDamageable
+    public class UnitWithHealth : MonoBehaviour, IUnitInitializable, IDamageable
     {
+        private HealthModel _healthModel;
         private ReactiveProperty<float> _currentHealth;
         public IObservable<float> CurrentValue => _currentHealth;
-        public int MaxValue => _healthConfig.MaxHealth;
+        public int MaxValue => _healthModel.MaxHealth;
         public bool DamageEnabled { get; set; }
         public event Action OnDeath;
         public event Action OnDamageTaken;
         
-        private IUnitHealthModel _healthConfig;
-      
-        public void Init(IUnitHealthModel healthModel, Action onDeath)
+        public void Init(IUnit unit)
         {
-            _healthConfig = healthModel;
-            _currentHealth = new FloatReactiveProperty(_healthConfig.StartingHealth);
+            _healthModel = unit.Model.HealthModel;
+            _currentHealth = new FloatReactiveProperty(_healthModel.MaxHealth);
             DamageEnabled = true;
-            OnDeath += onDeath;
         }
         
         public void TakeDamage(float damage)

@@ -12,10 +12,12 @@ namespace Survivors.Units.Player.Model
         public PlayerUnitModel(PlayerUnitConfig config)
         {
             _config = config;
+            HealthModel = new HealthModel(config.Health);
             _playerAttackModel = new PlayerAttackModel(config.AttackConfig);
         }
 
-        public IAttackModel AttackModel => _playerAttackModel;
         public string Id => _config.Id;
+        public HealthModel HealthModel { get; }
+        public IAttackModel AttackModel => _playerAttackModel;
     }
 }

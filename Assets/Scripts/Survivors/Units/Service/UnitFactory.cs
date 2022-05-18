@@ -1,16 +1,16 @@
+﻿﻿using System;
 using Feofun.Config;
-using System;
 using Survivors.Location;
 using Survivors.Location.Service;
 using Survivors.Units.Enemy;
-using Survivors.Units.Enemy.Config;
-using Survivors.Units.Enemy.Model;
-using Survivors.Units.Player.Config;
-using Survivors.Units.Player.Model;
-using Survivors.Units.Player.Movement;
-using Zenject;
+ using Survivors.Units.Enemy.Config;
+ using Survivors.Units.Enemy.Model;
+ using Zenject;
+ using Survivors.Units.Player.Config;
+ using Survivors.Units.Player.Model;
+ using Survivors.Units.Player.Movement;
 
-namespace Survivors.Units.Service
+ namespace Survivors.Units.Service
 {
     public class UnitFactory
     {
@@ -18,13 +18,13 @@ namespace Survivors.Units.Service
         public const string SIMPLE_PLAYER_ID = "StandardUnit";
 
         [Inject]
-        private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
-        [Inject]
-        private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
-        [Inject]
         private World _world;
         [Inject]
         private WorldObjectFactory _worldObjectFactory;
+        [Inject]
+        private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
+        [Inject]
+        private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
 
         public Unit LoadPlayerUnit(string unitId)
         {
@@ -43,12 +43,12 @@ namespace Survivors.Units.Service
             unit.Init(model);
         }
 
-        public EnemyUnit CreateEnemy()
+        public Unit CreateEnemy()
         {
-            var enemy = _worldObjectFactory.CreateObject(SIMPLE_ENEMY_ID, _world.SpawnContainer).GetComponent<EnemyUnit>();
+            var enemy = _worldObjectFactory.CreateObject(SIMPLE_ENEMY_ID, _world.SpawnContainer).GetComponent<Unit>();
             var config = _enemyUnitConfigs.Get(SIMPLE_ENEMY_ID);
-            var health = new EnemyHealthModel(config);
-            enemy.Init(health);
+            var model = new EnemyUnitModel(config);
+            enemy.Init(model);
             return enemy;
         }
     }
