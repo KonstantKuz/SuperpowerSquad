@@ -118,6 +118,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rotationRoot: {fileID: 7626905009210850996}
+  _rotationSpeed: 10
 --- !u!114 &3254496561695502941
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -172,7 +173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rotateToTarget: 1
-  _rotationRoot: {fileID: 7626905009210850996}
+  _attackAnimationName: TwoHandsShooting
 --- !u!114 &8226988932255853753
 MonoBehaviour:
   m_ObjectHideFlags: 0
