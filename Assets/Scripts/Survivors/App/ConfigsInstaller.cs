@@ -15,11 +15,11 @@ namespace Survivors.App
         public static void Install(DiContainer container)
         {
             new ConfigLoader(container, new CsvConfigDeserializer())
-                    .RegisterSingle<LocalizationConfig>(Configs.LOCALIZATION)
-                    .RegisterSingle<EnemyWavesConfig>(Configs.ENEMY_WAVES)
-                    .RegisterStringKeyedCollection<PlayerUnitConfig>(Configs.PLAYER_UNIT)
-                    .RegisterStringKeyedCollection<EnemyUnitConfig>(Configs.ENEMY_UNIT)
-                    .RegisterSingle<SquadConfig>(Configs.SQUAD);
+                .RegisterSingle<LocalizationConfig>(Configs.LOCALIZATION)
+                .RegisterSingle<EnemyWavesConfig>(Configs.ENEMY_WAVES)
+                .RegisterStringKeyedCollection<PlayerUnitConfig>(Configs.PLAYER_UNIT)
+                .RegisterStringKeyedCollection<EnemyUnitConfig>(Configs.ENEMY_UNIT)
+                .RegisterSingle<SquadConfig>(Configs.SQUAD);
         }
     }
 }
