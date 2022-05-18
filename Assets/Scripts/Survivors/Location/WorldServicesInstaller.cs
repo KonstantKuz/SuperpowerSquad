@@ -13,9 +13,9 @@ namespace Survivors.Location
         public void Install(DiContainer container)
         {
             _worldObjectFactory.Init();
-            container.Bind<WorldObjectFactory>().FromInstance(_worldObjectFactory).AsSingle();
+            container.BindInterfacesAndSelfTo<WorldObjectFactory>().FromInstance(_worldObjectFactory).AsSingle();
             container.Bind<World>().FromInstance(_world);
-            container.Bind<SessionService>().AsSingle();
+            container.BindInterfacesAndSelfTo<SessionService>().AsSingle();
         }
     }
 }

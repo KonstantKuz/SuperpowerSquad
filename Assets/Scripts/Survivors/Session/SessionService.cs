@@ -10,7 +10,7 @@ using Zenject;
 
 namespace Survivors.Session
 {
-    public class SessionService
+    public class SessionService : ISessionTerm
     {
         [Inject] private EnemyWavesSpawner _enemyWavesSpawner;
         [Inject] private EnemyWavesConfig _enemyWavesConfig;
@@ -21,7 +21,7 @@ namespace Survivors.Session
 
         public void Start()
         {
-            _unitFactory.LoadPlayerUnit(UnitFactory.SIMPLE_PLAYER_ID);
+            _unitFactory.CreatePlayer(UnitFactory.SIMPLE_PLAYER_ID);
             _enemyWavesSpawner.StartSpawn(_enemyWavesConfig);
             _unitService.OnPlayerUnitDeath += OnPlayerUnitDeath;
         }
@@ -42,7 +42,6 @@ namespace Survivors.Session
                     Winner = winner,
             });
         }
-
         public void Term()
         {
             _unitService.OnPlayerUnitDeath -= OnPlayerUnitDeath;

@@ -1,16 +1,15 @@
-﻿﻿using System;
+﻿using System;
 using Feofun.Config;
 using Survivors.Location;
 using Survivors.Location.Service;
-using Survivors.Units.Enemy;
- using Survivors.Units.Enemy.Config;
- using Survivors.Units.Enemy.Model;
- using Zenject;
- using Survivors.Units.Player.Config;
- using Survivors.Units.Player.Model;
- using Survivors.Units.Player.Movement;
+using Survivors.Units.Enemy.Config;
+using Survivors.Units.Enemy.Model;
+using Zenject;
+using Survivors.Units.Player.Config;
+using Survivors.Units.Player.Model;
+using Survivors.Units.Player.Movement;
 
- namespace Survivors.Units.Service
+namespace Survivors.Units.Service
 {
     public class UnitFactory
     {
@@ -26,7 +25,7 @@ using Survivors.Units.Enemy;
         [Inject]
         private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
 
-        public Unit LoadPlayerUnit(string unitId)
+        public Unit CreatePlayer(string unitId)
         {
             var unitObj = _worldObjectFactory.CreateObject(unitId);
             var unit = unitObj.GetComponentInChildren<Unit>()

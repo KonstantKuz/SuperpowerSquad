@@ -53,7 +53,7 @@ namespace Survivors.Squad
         private void SpawnUnit()
         {
             Assert.IsTrue(_units.Count > 0);
-            var newUnit = _unitFactory.LoadPlayerUnit(UnitFactory.SIMPLE_PLAYER_ID).GetComponent<MovementController>();
+            var newUnit = _unitFactory.CreatePlayer(UnitFactory.SIMPLE_PLAYER_ID).GetComponent<MovementController>();
             AddUnit(newUnit);
         }
 

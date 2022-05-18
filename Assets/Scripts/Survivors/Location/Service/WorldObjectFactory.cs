@@ -1,8 +1,8 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using Survivors.Location.Model;
+using Survivors.Session;
 using UnityEngine;
 using Zenject;
 using UniRx;
@@ -10,7 +10,7 @@ using UniRx.Triggers;
 
 namespace Survivors.Location.Service
 {
-    public class WorldObjectFactory : MonoBehaviour
+    public class WorldObjectFactory : MonoBehaviour, ISessionTerm
     {
         private const string OBJECT_PREFABS_PATH_ROOT = "Content/";
 

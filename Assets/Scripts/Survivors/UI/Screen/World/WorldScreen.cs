@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Feofun.App;
 using Feofun.UI.Screen;
 using JetBrains.Annotations;
 using SuperMaxim.Messaging;
@@ -15,14 +16,17 @@ namespace Survivors.UI.Screen.World
         public const ScreenId WORLD_SCREEN = ScreenId.World;
         public override ScreenId ScreenId => WORLD_SCREEN;
         public override string Url => ScreenName;
-        
+
         [SerializeField]
         private float _afterSessionDelay = 2;
-        
-        [Inject] private SessionService _sessionService;
-        [Inject] private IMessenger _messenger;
-        [Inject] private ScreenSwitcher _screenSwitcher;
-        
+
+        [Inject]
+        private SessionService _sessionService;
+        [Inject]
+        private IMessenger _messenger;
+        [Inject]
+        private ScreenSwitcher _screenSwitcher;
+
         [PublicAPI]
         public void Init()
         {
@@ -34,14 +38,19 @@ namespace Survivors.UI.Screen.World
         {
             StartCoroutine(EndSession());
         }
+
         private IEnumerator EndSession()
         {
+            TermSession();
             yield return new WaitForSeconds(_afterSessionDelay);
             _screenSwitcher.SwitchTo(DebriefingScreen.DEBRIEFING_SCREEN.ToString());
         }
-        private void OnDisable()
+
+        private void TermSession()
         {
-            _sessionService.Term();
+            var services = AppContext.Container.ResolveAll<ISessionTerm>();
+            services.ForEach(it => it.Term());
+            
         }
     }
 }
