@@ -45,13 +45,13 @@ namespace Survivors.Units.Player.Attack
             _playerAttackModel = (PlayerAttackModel) unit.Model.AttackModel;
             _reloadableWeaponTimer =
                     new ReloadableWeaponTimer(_playerAttackModel.ClipSize, _playerAttackModel.AttackTime, _playerAttackModel.ClipReloadTime, this);
-            SetAttackAnimationSpeed(_reloadableWeaponTimer.AttackInterval);
+            UpdateAnimationSpeed(_reloadableWeaponTimer.AttackInterval);
             if (HasWeaponAnimationHandler) {
                 _weaponAnimationHandler.OnFireEvent += Fire;
             }
         }
 
-        private void SetAttackAnimationSpeed(float attackInterval)
+        private void UpdateAnimationSpeed(float attackInterval)
         {
             var clips = _animator.runtimeAnimatorController.animationClips;
             var attackClipLength = clips.First(it => it.name == _attackAnimationName).length;
