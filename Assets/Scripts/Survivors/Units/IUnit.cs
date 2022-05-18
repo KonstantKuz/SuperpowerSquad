@@ -1,12 +1,15 @@
-﻿
-using Survivors.Units.Model;
+﻿using System;
+using UnityEngine;
 
 namespace Survivors.Units
 {
     public interface IUnit
     {
-        IUnitModel Model { get; }
+        event Action<IUnit> OnDeath;
+        IUnitModel Model { get; }  
+        GameObject Object { get; }
+        UnitType UnitType { get; }
         public void Init(IUnitModel model);
-
+        public void Kill();
     }
 }

@@ -5,6 +5,7 @@ using System.Linq;
 using Feofun.Extension;
 using Survivors.EnemySpawn.Config;
 using Survivors.Location;
+using Survivors.Units.Enemy;
 using Survivors.Units.Service;
 using UnityEngine;
 using Zenject;
@@ -105,7 +106,8 @@ namespace Survivors.EnemySpawn
         private void SpawnEnemy(Vector3 place)
         {
             var enemy = _unitFactory.CreateEnemy();
-            enemy.NavMeshAgent.Warp(place);
+            var enemyAi = enemy.GetComponent<EnemyAi>();
+            enemyAi.NavMeshAgent.Warp(place);
         }
 
         private void Dispose()

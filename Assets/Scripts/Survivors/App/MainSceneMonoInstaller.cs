@@ -4,7 +4,7 @@ using Survivors.EnemySpawn;
 using Survivors.Location;
 using Survivors.UI;
 using Survivors.Units;
-
+using Survivors.Units.Installer;
 using UnityEngine;
 using Zenject;
 

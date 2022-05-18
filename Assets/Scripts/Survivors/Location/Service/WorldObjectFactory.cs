@@ -67,12 +67,11 @@ namespace Survivors.Location.Service
             return _createdObjects.Where(go => go.GetComponent<T>() != null).Select(go => go.GetComponent<T>()).ToList();
         }
 
-        public void DestroyAllObjects()
+        public void Term()
         {
-            foreach (GameObject gameObject in _createdObjects) {
+            foreach (var gameObject in _createdObjects) {
                 Destroy(gameObject);
             }
-            Dispose();
         }
 
         private void OnDestroy()

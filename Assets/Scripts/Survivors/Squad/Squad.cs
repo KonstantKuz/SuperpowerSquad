@@ -36,6 +36,10 @@ namespace Survivors.Squad
             unit.transform.SetParent(transform);
             unit.transform.position = GetSpawnPosition();
             AddUnitToList(unit);
+        } 
+        public void RemoveUnit(MovementController unit)
+        {
+            _units.Remove(unit);
         }
         private void AddUnitToList(MovementController unit)
         {

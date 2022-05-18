@@ -21,7 +21,7 @@ namespace Survivors.Units.Target
         {
             _targets[target.UnitType].Remove(target);
         }
-
+        
         public IEnumerable<ITarget> AllTargetsOfType(UnitType unitType) =>
                 _targets.ContainsKey(unitType) ? _targets[unitType] : Enumerable.Empty<ITarget>();
 
@@ -30,7 +30,5 @@ namespace Survivors.Units.Target
         {
             return AllTargetsOfType(unitType).OrderBy(it => Vector3.Distance(it.Root.position, pos)).FirstOrDefault();
         }
-
-     
     }
 }

@@ -8,7 +8,7 @@ namespace Survivors.UI.Screen.Debriefing
 {
     public class DebriefingScreen : BaseScreen
     {
-        private const ScreenId DEBRIEFING_SCREEN = ScreenId.Debriefing;
+        public const ScreenId DEBRIEFING_SCREEN = ScreenId.Debriefing;
         public override ScreenId ScreenId => DEBRIEFING_SCREEN; 
         public override string Url => ScreenName;
         
