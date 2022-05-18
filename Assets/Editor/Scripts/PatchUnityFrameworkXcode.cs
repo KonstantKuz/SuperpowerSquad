@@ -1,9 +1,9 @@
-﻿using UnityEditor;
+﻿#if UNITY_IOS && UNITY_EDITOR
+using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEditor.iOS.Xcode;
 using UnityEngine;
 
-#if UNITY_EDITOR
 namespace Editor
 {
     public class PatchUnityFrameworkXcode
@@ -11,9 +11,7 @@ namespace Editor
         [PostProcessBuild]
         public static void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject)
         {
-#if UNITY_IOS            
             SetUnityFrameworkCodeSignToManual(pathToBuiltProject);
-#endif
         }
 
         private static void SetUnityFrameworkCodeSignToManual(string pathToBuiltProject)
