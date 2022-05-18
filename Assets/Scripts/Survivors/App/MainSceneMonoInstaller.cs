@@ -1,3 +1,4 @@
+using Feofun.UI;
 using SuperMaxim.Messaging;
 using Survivors.EnemySpawn;
 using Survivors.Location;
@@ -18,6 +19,8 @@ namespace Survivors.App
         private WorldServicesInstaller _worldServicesInstaller;
         [SerializeField]
         private EnemyWavesSpawner _enemyWavesSpawner;
+        [SerializeField] 
+        private HudContainer _hudContainer;
         
         public override void InstallBindings()
         {
@@ -31,6 +34,7 @@ namespace Survivors.App
 
             _worldServicesInstaller.Install(Container);
             Container.Bind<EnemyWavesSpawner>().FromInstance(_enemyWavesSpawner);
+            Container.Bind<HudContainer>().FromInstance(_hudContainer);
         }
     }
 }

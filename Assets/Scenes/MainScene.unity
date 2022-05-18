@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657826, g: 0.49641263, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -273,6 +273,7 @@ MonoBehaviour:
   _joystick: {fileID: 1042008005}
   _worldServicesInstaller: {fileID: 876315365}
   _enemyWavesSpawner: {fileID: 371733634}
+  _hudContainer: {fileID: 3514698042878797254}
 --- !u!114 &876315364
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -473,6 +474,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 35125c194a51b14489fcf91a7da5dd53, type: 3}
+--- !u!114 &3514698042878797254 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7331594850770789416, guid: 35125c194a51b14489fcf91a7da5dd53, type: 3}
+  m_PrefabInstance: {fileID: 3514698042878797253}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1f1b4532f38350048a1d65f19944c4c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8746036833688596024
 PrefabInstance:
   m_ObjectHideFlags: 0
