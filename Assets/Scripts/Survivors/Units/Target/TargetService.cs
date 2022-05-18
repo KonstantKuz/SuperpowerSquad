@@ -9,7 +9,6 @@ namespace Survivors.Units.Target
     public class TargetService
     {
         private readonly Dictionary<UnitType, HashSet<ITarget>> _targets = new Dictionary<UnitType, HashSet<ITarget>>();
-
         public void Add(ITarget target)
         {
             if (!_targets.ContainsKey(target.UnitType)) {
