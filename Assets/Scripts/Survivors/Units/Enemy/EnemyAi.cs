@@ -1,7 +1,4 @@
-﻿using Survivors.Units.Component.Death;
-using Survivors.Units.Component.Health;
-using Survivors.Units.Model;
-using Survivors.Units.Target;
+﻿using Survivors.Units.Target;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
@@ -9,13 +6,9 @@ using Zenject;
 namespace Survivors.Units.Enemy
 {
     [RequireComponent(typeof(NavMeshAgent))]
-    [RequireComponent(typeof(UnitWithHealth))]
-    [RequireComponent(typeof(EnemyDeath))]
-    public class EnemyUnit : MonoBehaviour
+    public class EnemyAi : MonoBehaviour
     {
         private NavMeshAgent _agent;
-        private UnitWithHealth _health;
-        private EnemyDeath _enemyDeath;
         private ITarget _target;
 
         [Inject]
@@ -26,16 +19,6 @@ namespace Survivors.Units.Enemy
         private void Awake()
         {
             _agent = GetComponent<NavMeshAgent>();
-            _health = GetComponent<UnitWithHealth>();
-            _enemyDeath = GetComponent<EnemyDeath>();
-        }
-
-        public void Init(IUnitHealthModel healthModel)
-        {
-            _health.Init(healthModel, () => {
-                _targetService.Remove(GetComponent<ITarget>());
-                _enemyDeath.Die();
-            });
         }
 
         private void Update()
