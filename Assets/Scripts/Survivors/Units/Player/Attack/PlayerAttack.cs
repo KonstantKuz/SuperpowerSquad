@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using JetBrains.Annotations;
 using ModestTree;
 using Survivors.Extension;
@@ -15,12 +16,14 @@ namespace Survivors.Units.Player.Attack
     [RequireComponent(typeof(MovementController))]
     public class PlayerAttack : MonoBehaviour, IUnitInitializable, IUpdatableUnitComponent, IAttack
     {
+        private static readonly int _attackSpeedMultiplierHash = Animator.StringToHash("AttackSpeedMultiplier");
         private readonly int _attackHash = Animator.StringToHash("Attack");
         public event Action OnAttack;
 
         [SerializeField]
         private bool _rotateToTarget = true;
-
+        [SerializeField] private string _attackAnimationName;
+        
         private BaseWeapon _weapon;
         private PlayerAttackModel _playerAttackModel;
         private Animator _animator;
@@ -32,8 +35,7 @@ namespace Survivors.Units.Player.Attack
         private WeaponAnimationHandler _weaponAnimationHandler;
         [CanBeNull]
         private ITarget _target;
-
-        private bool IsAttackProcess { get; set; }
+        
         private bool IsTargetInvalid => !(_target is {IsAlive: true});
         private bool HasWeaponAnimationHandler => _weaponAnimationHandler != null;
 
@@ -41,10 +43,22 @@ namespace Survivors.Units.Player.Attack
         {
             Assert.IsNull(_reloadableWeaponTimer);
             _playerAttackModel = (PlayerAttackModel) unit.Model.AttackModel;
-            _reloadableWeaponTimer = new ReloadableWeaponTimer(_playerAttackModel.ClipSize, _playerAttackModel.AttackTime, _playerAttackModel.ClipReloadTime, this);
+            _reloadableWeaponTimer =
+                    new ReloadableWeaponTimer(_playerAttackModel.ClipSize, _playerAttackModel.AttackTime, _playerAttackModel.ClipReloadTime, this);
+            UpdateAnimationSpeed(_reloadableWeaponTimer.AttackInterval);
             if (HasWeaponAnimationHandler) {
                 _weaponAnimationHandler.OnFireEvent += Fire;
             }
+        }
+
+        private void UpdateAnimationSpeed(float attackInterval)
+        {
+            var clips = _animator.runtimeAnimatorController.animationClips;
+            var attackClipLength = clips.First(it => it.name == _attackAnimationName).length;
+            if (attackInterval >= attackClipLength) {
+                return;
+            }
+            _animator.SetFloat(_attackSpeedMultiplierHash, attackClipLength / attackInterval);
         }
 
         private void Awake()
@@ -71,11 +85,10 @@ namespace Survivors.Units.Player.Attack
             }
         }
 
-        private bool CanAttack([CanBeNull] ITarget target) => target != null && _reloadableWeaponTimer.IsAttackReady && !IsAttackProcess;
+        private bool CanAttack([CanBeNull] ITarget target) => target != null && _reloadableWeaponTimer.IsAttackReady;
 
         public void Attack(ITarget target)
         {
-            IsAttackProcess = true;
             _target = target;
             _animator.SetTrigger(_attackHash);
             OnAttack?.Invoke();
@@ -86,7 +99,6 @@ namespace Survivors.Units.Player.Attack
 
         private void Fire()
         {
-            IsAttackProcess = false;
             if (IsTargetInvalid) {
                 return;
             }

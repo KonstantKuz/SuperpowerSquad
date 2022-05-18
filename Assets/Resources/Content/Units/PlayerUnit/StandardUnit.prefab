@@ -61,8 +61,6 @@ GameObject:
   - component: {fileID: 5225966623019145733}
   - component: {fileID: 6901569034813441397}
   - component: {fileID: 8226988932255853753}
-  - component: {fileID: 3342955279677392920}
-  - component: {fileID: 3334235368138664924}
   m_Layer: 0
   m_Name: StandardUnit
   m_TagString: Untagged
@@ -175,6 +173,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rotateToTarget: 1
+  _attackAnimationName: TwoHandsShooting
 --- !u!114 &8226988932255853753
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -185,30 +184,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: f71904749c6648c89b87b28b5c4731dd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3342955279677392920
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3254496561695502929}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e9add7f11978004eb4d2f2e37e1cd42, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3334235368138664924
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3254496561695502929}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fc2558860fce054fbdd443bfb74ad93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &3337903664774207016
