@@ -40,7 +40,6 @@ namespace Survivors.Units.Enemy
 
         private void OnDeath()
         {
-            _targetService.Remove(GetComponent<ITarget>());
             _enemyDeath.Die();
             _unitTarget.OnDeath();
         }
