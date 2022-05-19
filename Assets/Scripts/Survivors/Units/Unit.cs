@@ -42,13 +42,8 @@ namespace Survivors.Units
             _damageable.OnDeath += Kill;
             _unitService.Add(this);
         }
-
+        
         [Button]
-        public void KillUnit()
-        {
-            Kill();
-        }
-
         public void Kill()
         {
             _damageable.OnDeath -= Kill;

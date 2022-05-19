@@ -213,7 +213,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _disappearDelay: 2
-  _delayUntilDisappear: 0.5
+  _delayUntilDisappear: 3
   _offsetYDisappear: 3
 --- !u!114 &3337903664774207016
 MonoBehaviour:

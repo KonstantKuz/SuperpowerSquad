@@ -6,6 +6,7 @@ using SuperMaxim.Messaging;
 using Survivors.Session;
 using Survivors.Session.Messages;
 using Survivors.UI.Screen.Debriefing;
+using Survivors.Units;
 using UnityEngine;
 using Zenject;
 
@@ -20,12 +21,9 @@ namespace Survivors.UI.Screen.World
         [SerializeField]
         private float _afterSessionDelay = 2;
 
-        [Inject]
-        private SessionService _sessionService;
-        [Inject]
-        private IMessenger _messenger;
-        [Inject]
-        private ScreenSwitcher _screenSwitcher;
+        [Inject] private SessionService _sessionService;
+        [Inject] private IMessenger _messenger;
+        [Inject] private ScreenSwitcher _screenSwitcher;
 
         [PublicAPI]
         public void Init()
@@ -36,14 +34,14 @@ namespace Survivors.UI.Screen.World
 
         private void OnSessionFinished(SessionEndMessage evn)
         {
-            StartCoroutine(EndSession());
+            StartCoroutine(EndSession(evn.Winner));
         }
 
-        private IEnumerator EndSession()
+        private IEnumerator EndSession(UnitType winner)
         {
             yield return new WaitForSeconds(_afterSessionDelay);
             TermSession();
-            _screenSwitcher.SwitchTo(DebriefingScreen.DEBRIEFING_SCREEN.ToString());
+            _screenSwitcher.SwitchTo(DebriefingScreen.DEBRIEFING_SCREEN.ToString(), false, winner);
         }
 
         private void TermSession()

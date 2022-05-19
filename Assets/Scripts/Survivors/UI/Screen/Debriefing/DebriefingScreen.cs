@@ -1,6 +1,8 @@
 ﻿using Feofun.UI.Components;
 using Feofun.UI.Screen;
+using JetBrains.Annotations;
 using Survivors.UI.Screen.World;
+using Survivors.Units;
 using UnityEngine;
 using Zenject;
 
@@ -16,7 +18,12 @@ namespace Survivors.UI.Screen.Debriefing
         private ActionButton _nextButton;
         [Inject]
         private ScreenSwitcher _screenSwitcher;
-        
+
+        [PublicAPI]
+        public void Init(UnitType winner)
+        {
+            
+        }
         public void OnEnable()
         {
             _nextButton.Init(OnReload);
