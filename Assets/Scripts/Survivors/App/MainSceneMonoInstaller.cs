@@ -28,11 +28,9 @@ namespace Survivors.App
 
 
             ConfigsInstaller.Install(Container);
-            UnitServicesInstaller.Install(Container);            
+            UnitServicesInstaller.Install(Container);
             _worldServicesInstaller.Install(Container);
             _uiInstaller.Install(Container);
-  
-   
         }
     }
 }
