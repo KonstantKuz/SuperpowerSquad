@@ -9,7 +9,7 @@ namespace Survivors.Units.Component.Death
         private readonly int _deathHash = Animator.StringToHash("Death");
         
         [SerializeField]
-        private float _disappearDelay;       
+        private float _disappearTime;       
         [SerializeField]
         private float _delayUntilDisappear;     
         [SerializeField]
@@ -34,7 +34,7 @@ namespace Survivors.Units.Component.Death
             
             _animator.SetTrigger(_deathHash);            
             yield return new WaitForSeconds(_delayUntilDisappear);
-            _disappearTween = gameObject.transform.DOMoveY(transform.position.y - _offsetYDisappear, _disappearDelay);
+            _disappearTween = gameObject.transform.DOMoveY(transform.position.y - _offsetYDisappear, _disappearTime);
             yield return _disappearTween.WaitForCompletion(); 
             Destroy(gameObject);
         }

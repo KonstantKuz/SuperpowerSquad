@@ -20,6 +20,7 @@ namespace Feofun.UI.Screen
         {
             DeActivateAll();
         }
+        
         public void SwitchTo(string url, bool async = false, params object[] initParams)
         {
             var path = url.Split('/');

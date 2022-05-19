@@ -212,7 +212,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 645f314e7f354fe09ccbe8d9ff0330dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _disappearDelay: 2
+  _disappearTime: 3
   _delayUntilDisappear: 3
   _offsetYDisappear: 3
 --- !u!114 &3337903664774207016
