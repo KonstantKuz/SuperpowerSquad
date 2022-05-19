@@ -9,11 +9,6 @@ using UnityEngine;
 
 namespace Survivors.Units
 {
-    public interface IUnitDeathEventReceiver
-    {
-        void OnDeath();
-    }
-    
     public class Unit : WorldObject, IUnit
     {
         private IUpdatableUnitComponent[] _updatables;
