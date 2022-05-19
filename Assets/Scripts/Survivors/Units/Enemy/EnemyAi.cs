@@ -24,6 +24,10 @@ namespace Survivors.Units.Enemy
             get => _target;
             private set
             {
+                if (_target != null)
+                {
+                    _target.OnTargetInvalid -= ClearTarget;
+                }
                 _target = value;
                 if (_target != null)
                 {
@@ -64,7 +68,6 @@ namespace Survivors.Units.Enemy
 
         private void ClearTarget()
         {
-            CurrentTarget.OnTargetInvalid -= ClearTarget;
             CurrentTarget = null;
         }
     }
