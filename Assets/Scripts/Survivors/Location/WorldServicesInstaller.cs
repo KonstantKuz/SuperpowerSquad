@@ -16,7 +16,7 @@ namespace Survivors.Location
             _worldObjectFactory.Init();
             container.BindInterfacesAndSelfTo<WorldObjectFactory>().FromInstance(_worldObjectFactory).AsSingle();
             container.Bind<World>().FromInstance(_world);
-            container.BindInterfacesAndSelfTo<WorldService>().AsSingle();
+            container.BindInterfacesAndSelfTo<SessionService>().AsSingle();
             container.BindInterfacesAndSelfTo<EnemyWavesSpawner>().FromInstance(_enemyWavesSpawner);
         }
     }

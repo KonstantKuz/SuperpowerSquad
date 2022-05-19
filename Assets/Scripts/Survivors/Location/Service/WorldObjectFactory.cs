@@ -10,7 +10,7 @@ using UniRx.Triggers;
 
 namespace Survivors.Location.Service
 {
-    public class WorldObjectFactory : MonoBehaviour, IWorldTerm
+    public class WorldObjectFactory : MonoBehaviour, IWorldCleanUp
     {
         private const string OBJECT_PREFABS_PATH_ROOT = "Content/";
 
@@ -18,7 +18,7 @@ namespace Survivors.Location.Service
 
         private readonly List<GameObject> _createdObjects = new List<GameObject>();
         private CompositeDisposable _disposable;
-        
+
         [Inject]
         private World _world;
         [Inject]
@@ -52,8 +52,7 @@ namespace Survivors.Location.Service
             var parentContainer = container == null ? _world.SpawnContainer.transform : container.transform;
             var createdGameObject = _container.InstantiatePrefab(prefab, parentContainer);
             _createdObjects.Add(createdGameObject);
-            createdGameObject.OnDestroyAsObservable()
-                .Subscribe((o) => OnDestroyObject(createdGameObject)).AddTo(_disposable);
+            createdGameObject.OnDestroyAsObservable().Subscribe((o) => OnDestroyObject(createdGameObject)).AddTo(_disposable);
             return createdGameObject;
         }
 
@@ -67,7 +66,7 @@ namespace Survivors.Location.Service
             return _createdObjects.Where(go => go.GetComponent<T>() != null).Select(go => go.GetComponent<T>()).ToList();
         }
 
-        public void Term()
+        public void OnWorldCleanUp()
         {
             foreach (var gameObject in _createdObjects) {
                 Destroy(gameObject);

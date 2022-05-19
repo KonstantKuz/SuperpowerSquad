@@ -20,15 +20,21 @@ namespace Feofun.UI.Screen
         {
             DeActivateAll();
         }
-        
-        public void SwitchTo(string url, bool async = false, params object[] initParams)
+        public void SwitchToAsync(string url, params object[] initParams)
         {
             var path = url.Split('/');
             var screenName = path.Last();
-            var switchingParams = new SwitchingParam(async).SetParamForScreen(screenName, initParams);
+            var switchingParams = new SwitchingParam(true).SetParamForScreen(screenName, initParams);
             SwitchTo(url, switchingParams);
         }
-        public void SwitchTo(string url, SwitchingParam switchingParam)
+        public void SwitchTo(string url, params object[] initParams)
+        {
+            var path = url.Split('/');
+            var screenName = path.Last();
+            var switchingParams = new SwitchingParam().SetParamForScreen(screenName, initParams);
+            SwitchTo(url, switchingParams);
+        }
+        private void SwitchTo(string url, SwitchingParam switchingParam)
         {
             var coroutine = ScreenSwitchCoroutine(url, switchingParam);
             if (!switchingParam.Async) {

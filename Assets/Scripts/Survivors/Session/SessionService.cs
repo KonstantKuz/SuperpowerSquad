@@ -10,7 +10,7 @@ using Zenject;
 
 namespace Survivors.Session
 {
-    public class WorldService : IWorldTerm
+    public class SessionService : IWorldCleanUp
     {
         [Inject] private EnemyWavesSpawner _enemyWavesSpawner;
         [Inject] private EnemyWavesConfig _enemyWavesConfig;
@@ -42,7 +42,7 @@ namespace Survivors.Session
                     Winner = winner,
             });
         }
-        public void Term()
+        public void OnWorldCleanUp()
         {
             _unitService.OnPlayerUnitDeath -= OnPlayerUnitDeath;
         }
