@@ -41,7 +41,7 @@ namespace Survivors.UI.Screen.World
         {
             yield return new WaitForSeconds(_afterSessionDelay);
             _world.CleanUp();
-            _screenSwitcher.SwitchTo(DebriefingScreen.ID.ToString(), false, winner);
+            _screenSwitcher.SwitchTo(DebriefingScreen.ID.ToString(), winner);
         }
 
  
