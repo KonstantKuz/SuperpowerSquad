@@ -154,6 +154,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2100000, guid: 356f671d33d2ad94f8f1bcc1459a4dd3, type: 2}
     - target: {fileID: 4279273933897615359, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
+      propertyPath: _ammo
+      value: 
+      objectReference: {fileID: 6667546112043371410, guid: b287a6cc7ee20284eb8d0ca0baf0a87b, type: 3}
+    - target: {fileID: 4279273933897615359, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
       propertyPath: _barrel
       value: 
       objectReference: {fileID: 3842915777954506920}
