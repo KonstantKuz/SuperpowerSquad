@@ -38,20 +38,20 @@ namespace Survivors.Units.Target
             TargetId = $"{_unitType.ToString()}#{_idCount++}";
             _targetService.Add(this);
         }
-        
+
         public void OnDeath()
         {
             if (!IsAlive) return;
             IsAlive = false;
+            _targetService.Remove(this);            
             OnTargetInvalid?.Invoke();
-            _targetService.Remove(this);
         }
 
         private void OnDestroy()
         {
             if (!IsAlive) return;
-            OnTargetInvalid?.Invoke();
             _targetService.Remove(this);
+            OnTargetInvalid?.Invoke();
         }
     }
 }

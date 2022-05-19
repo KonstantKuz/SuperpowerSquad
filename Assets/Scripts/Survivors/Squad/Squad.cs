@@ -3,7 +3,9 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using Zenject;
 using EasyButtons;
+using Feofun.Config;
 using Survivors.Squad.Formation;
+using Survivors.Units.Player.Config;
 using Survivors.Units.Player.Movement;
 using Survivors.Units.Service;
 
@@ -11,7 +13,6 @@ namespace Survivors.Squad
 {
     public class Squad : MonoBehaviour
     {
-        [SerializeField] private float _movementSpeed;
         [SerializeField] private float _unitSpeedScale;
         [SerializeField] private float _unitSize;
 
@@ -21,6 +22,8 @@ namespace Survivors.Squad
 
         [Inject] private Joystick _joystick;
         [Inject] private UnitFactory _unitFactory;
+        [Inject] private SquadConfig _squadConfig;
+        [Inject] private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
 
         private void Awake()
         {
@@ -32,7 +35,7 @@ namespace Survivors.Squad
         {
             unit.transform.SetParent(transform);
             unit.transform.position = GetSpawnPosition();
-            unit.Init(this, _movementSpeed * _unitSpeedScale);
+            unit.Init(this, _squadConfig.Params.Speed * _unitSpeedScale);
             _units.Add(unit);
         }
 
@@ -45,10 +48,11 @@ namespace Survivors.Squad
         /*
          * This functions just tests formation change when new units are added
          */
-        private void SpawnUnit()
+        public void SpawnUnit()
         {
             Assert.IsTrue(_units.Count > 0);
-            _unitFactory.LoadPlayerUnit(UnitFactory.SIMPLE_PLAYER_ID);
+            var nextUnit = _playerUnitConfigs.Values[_units.Count % _playerUnitConfigs.Values.Count];
+            _unitFactory.LoadPlayerUnit(nextUnit.Id);
         }
 
         [Button]
@@ -82,7 +86,7 @@ namespace Survivors.Squad
 
         private void Move(Vector3 joystickDirection)
         {
-            var delta = _movementSpeed * joystickDirection * Time.deltaTime;
+            var delta = _squadConfig.Params.Speed * joystickDirection * Time.deltaTime;
             _destination.transform.position += delta;
         }
 
