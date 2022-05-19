@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using SuperMaxim.Core.Extensions;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Zenject;
@@ -29,7 +28,6 @@ namespace Survivors.Squad
         private void Awake()
         {
             _destination = GetComponentInChildren<SquadDestination>();
-            GetComponentsInChildren<MovementController>().ForEach(AddUnitToList);
             SetUnitPositions();
         }
         
@@ -37,21 +35,24 @@ namespace Survivors.Squad
         {
             unit.transform.SetParent(transform);
             unit.transform.position = GetSpawnPosition();
-            AddUnitToList(unit);
-        }
-        private void AddUnitToList(MovementController unit)
-        {
+            unit.Init(this, _squadConfig.Params.Speed * _unitSpeedScale);
             _units.Add(unit);
-            unit.SetSpeed(_squadConfig.Params.Speed * _unitSpeedScale);
         }
+
+        public void RemoveUnit(MovementController unit)
+        {
+            _units.Remove(unit);
+        }
+
         [Button]
         /*
          * This functions just tests formation change when new units are added
          */
         public void SpawnUnit()
         {
+            Assert.IsTrue(_units.Count > 0);
             var nextUnit = _playerUnitConfigs.Values[_units.Count % _playerUnitConfigs.Values.Count];
-            _unitFactory.LoadPlayerUnit(nextUnit.Id).GetComponent<MovementController>();
+            _unitFactory.LoadPlayerUnit(nextUnit.Id);
         }
 
         [Button]
