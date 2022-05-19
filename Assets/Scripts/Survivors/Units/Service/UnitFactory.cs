@@ -15,7 +15,7 @@ using Survivors.Units.Enemy;
     public class UnitFactory
     {
         private const string SIMPLE_ENEMY_ID = "SimpleEnemy";
-        public const string SIMPLE_PLAYER_ID = "StandardUnit";
+        public const string SIMPLE_PLAYER_ID = "RocketUnit";
 
         [Inject]
         private World _world;

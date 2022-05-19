@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using JetBrains.Annotations;
 using ModestTree;
 using Survivors.Extension;
@@ -14,12 +13,11 @@ namespace Survivors.Units.Player.Attack
 {
     [RequireComponent(typeof(ITargetSearcher))]
     [RequireComponent(typeof(MovementController))]
-    public class PlayerAttack : MonoBehaviour, IUnitInitializable, IUpdatableUnitComponent, IAttack
+    public class PlayerAttack : MonoBehaviour, IUnitInitializable, IUpdatableUnitComponent
     {
-        private static readonly int _attackSpeedMultiplierHash = Animator.StringToHash("AttackSpeedMultiplier");
-        private readonly int _attackHash = Animator.StringToHash("Attack");
-        public event Action OnAttack;
-
+        private static readonly int AttackSpeedMultiplierHash = Animator.StringToHash("AttackSpeedMultiplier");
+        private static readonly int AttackHash = Animator.StringToHash("Attack");
+        
         [SerializeField]
         private bool _rotateToTarget = true;
         [SerializeField] private string _attackAnimationName;
@@ -28,7 +26,7 @@ namespace Survivors.Units.Player.Attack
         private PlayerAttackModel _playerAttackModel;
         private Animator _animator;
         private ITargetSearcher _targetSearcher;
-        private ReloadableWeaponTimer _reloadableWeaponTimer;
+        private ReloadableWeaponTimer _weaponTimer;
         private MovementController _movementController;
 
         [CanBeNull]
@@ -41,11 +39,11 @@ namespace Survivors.Units.Player.Attack
 
         public void Init(IUnit unit)
         {
-            Assert.IsNull(_reloadableWeaponTimer);
+            Assert.IsNull(_weaponTimer);
             _playerAttackModel = (PlayerAttackModel) unit.Model.AttackModel;
-            _reloadableWeaponTimer =
-                    new ReloadableWeaponTimer(_playerAttackModel.ClipSize, _playerAttackModel.AttackTime, _playerAttackModel.ClipReloadTime, this);
-            UpdateAnimationSpeed(_reloadableWeaponTimer.AttackInterval);
+            _weaponTimer =
+                    new ReloadableWeaponTimer(_playerAttackModel.ClipSize, _playerAttackModel.AttackTime, _playerAttackModel.ClipReloadTime);
+            UpdateAnimationSpeed(_weaponTimer.AttackInterval);
             if (HasWeaponAnimationHandler) {
                 _weaponAnimationHandler.OnFireEvent += Fire;
             }
@@ -58,7 +56,7 @@ namespace Survivors.Units.Player.Attack
             if (attackInterval >= attackClipLength) {
                 return;
             }
-            _animator.SetFloat(_attackSpeedMultiplierHash, attackClipLength / attackInterval);
+            _animator.SetFloat(AttackSpeedMultiplierHash, attackClipLength / attackInterval);
         }
 
         private void Awake()
@@ -85,12 +83,13 @@ namespace Survivors.Units.Player.Attack
             }
         }
 
-        private bool CanAttack([CanBeNull] ITarget target) => target != null && _reloadableWeaponTimer.IsAttackReady;
+        private bool CanAttack([CanBeNull] ITarget target) => target != null && _weaponTimer.IsAttackReady;
 
-        public void Attack(ITarget target)
+        private void Attack(ITarget target)
         {
             _target = target;
-            _animator.SetTrigger(_attackHash);
+            _animator.SetTrigger(AttackHash);
+            _weaponTimer.OnAttack();            
             if (!HasWeaponAnimationHandler) {
                 Fire();
             }
@@ -98,10 +97,11 @@ namespace Survivors.Units.Player.Attack
 
         private void Fire()
         {
-            if (IsTargetInvalid) {
+            if (IsTargetInvalid)
+            {
+                _weaponTimer.CancelLastTimer();
                 return;
             }
-            OnAttack?.Invoke();            
             _weapon.Fire(_target, _playerAttackModel.CreateProjectileParams(), DoDamage);
         }
 
@@ -117,8 +117,7 @@ namespace Survivors.Units.Player.Attack
             if (HasWeaponAnimationHandler) {
                 _weaponAnimationHandler.OnFireEvent -= Fire;
             }
-            _reloadableWeaponTimer.Dispose();
-            _reloadableWeaponTimer = null;
+            _weaponTimer = null;
         }
     }
 }
