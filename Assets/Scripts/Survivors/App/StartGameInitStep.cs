@@ -19,7 +19,7 @@ namespace Survivors.App
 
         protected override void Run()
         {
-            _screenSwitcher.SwitchTo(WorldScreen.WORLD_SCREEN.ToString());
+            _screenSwitcher.SwitchTo(WorldScreen.ID.ToString());
             Next();
         }
     }

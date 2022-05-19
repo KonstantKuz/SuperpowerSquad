@@ -14,8 +14,8 @@ namespace Survivors.UI.Screen.World
 {
     public class WorldScreen : BaseScreen
     {
-        public const ScreenId WORLD_SCREEN = ScreenId.World;
-        public override ScreenId ScreenId => WORLD_SCREEN;
+        public const ScreenId ID = ScreenId.World;
+        public override ScreenId ScreenId => ID;
         public override string Url => ScreenName;
 
         [SerializeField]
@@ -41,7 +41,7 @@ namespace Survivors.UI.Screen.World
         {
             yield return new WaitForSeconds(_afterSessionDelay);
             TermSession();
-            _screenSwitcher.SwitchTo(DebriefingScreen.DEBRIEFING_SCREEN.ToString(), false, winner);
+            _screenSwitcher.SwitchTo(DebriefingScreen.ID.ToString(), false, winner);
         }
 
         private void TermSession()

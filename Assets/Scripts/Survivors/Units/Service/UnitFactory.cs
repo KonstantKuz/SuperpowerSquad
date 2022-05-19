@@ -25,7 +25,7 @@ namespace Survivors.Units.Service
         [Inject]
         private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
 
-        public Unit CreatePlayer(string unitId)
+        public Unit CreatePlayerUnit(string unitId)
         {
             var unitObj = _worldObjectFactory.CreateObject(unitId);
             var unit = unitObj.GetComponentInChildren<Unit>()

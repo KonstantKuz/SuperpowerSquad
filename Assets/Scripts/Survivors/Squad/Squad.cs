@@ -55,7 +55,7 @@ namespace Survivors.Squad
         public void SpawnUnit()
         {
             var nextUnit = _playerUnitConfigs.Values[_units.Count % _playerUnitConfigs.Values.Count];
-            _unitFactory.CreatePlayer(nextUnit.Id).GetComponent<MovementController>();
+            _unitFactory.CreatePlayerUnit(nextUnit.Id).GetComponent<MovementController>();
         }
 
         [Button]

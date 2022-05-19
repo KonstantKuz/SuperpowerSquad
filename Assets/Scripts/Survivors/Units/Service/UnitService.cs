@@ -25,7 +25,7 @@ namespace Survivors.Units.Service
             _units[unit.UnitType].Remove(unit);
             unit.OnDeath -= OnDeathUnit;
         }
-        public bool ExistUnitType(UnitType unitType) => _units.ContainsKey(unitType) && _units[unitType].Any();
+        public bool HasUnitOfType(UnitType unitType) => _units.ContainsKey(unitType) && _units[unitType].Any();
 
         private void OnDeathUnit(IUnit unit)
         {

@@ -47,7 +47,7 @@ namespace Feofun.UI.Screen
             var path = url.Split('/');
             var screenName = path[0];
 
-            yield return SwitchScreen(screenName, switchingParam.FindParamForScreen(screenName));
+            yield return SwitchScreen(screenName, switchingParam.GetParamsForScreen(screenName));
             
             if (path.Length > 1) {
                 yield return SwitchSubscreen(GetSubscreenUrl(path), switchingParam);

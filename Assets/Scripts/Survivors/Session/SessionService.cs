@@ -21,7 +21,7 @@ namespace Survivors.Session
 
         public void Start()
         {
-            _unitFactory.CreatePlayer(UnitFactory.SIMPLE_PLAYER_ID);
+            _unitFactory.CreatePlayerUnit(UnitFactory.SIMPLE_PLAYER_ID);
             _enemyWavesSpawner.StartSpawn(_enemyWavesConfig);
             _unitService.OnPlayerUnitDeath += OnPlayerUnitDeath;
         }
@@ -29,7 +29,7 @@ namespace Survivors.Session
         private void OnPlayerUnitDeath(IUnit unit)
         {
             _world.Squad.RemoveUnit(unit.Object.GetComponent<MovementController>());
-            if (_unitService.ExistUnitType(UnitType.PLAYER)) {
+            if (_unitService.HasUnitOfType(UnitType.PLAYER)) {
                 return;
             }
             EndSession(UnitType.ENEMY);

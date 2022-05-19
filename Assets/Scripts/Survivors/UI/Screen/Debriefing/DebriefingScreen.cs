@@ -10,8 +10,8 @@ namespace Survivors.UI.Screen.Debriefing
 {
     public class DebriefingScreen : BaseScreen
     {
-        public const ScreenId DEBRIEFING_SCREEN = ScreenId.Debriefing;
-        public override ScreenId ScreenId => DEBRIEFING_SCREEN; 
+        public const ScreenId ID = ScreenId.Debriefing;
+        public override ScreenId ScreenId => ID; 
         public override string Url => ScreenName;
         
         [SerializeField]
@@ -37,7 +37,7 @@ namespace Survivors.UI.Screen.Debriefing
 
         private void OnReload()
         {
-            _screenSwitcher.SwitchTo(WorldScreen.WORLD_SCREEN.ToString());
+            _screenSwitcher.SwitchTo(WorldScreen.ID.ToString());
         }
     }
 }

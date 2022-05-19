@@ -28,6 +28,6 @@ namespace Feofun.UI.Screen
             _async = true;
             return this;
         }
-        public object[] FindParamForScreen(string screenName) => _screenParams.ContainsKey(screenName) ? _screenParams[screenName] : new object[] { };
+        public object[] GetParamsForScreen(string screenName) => _screenParams.ContainsKey(screenName) ? _screenParams[screenName] : new object[] { };
     }
 }
