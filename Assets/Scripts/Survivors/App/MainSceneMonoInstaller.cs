@@ -1,9 +1,7 @@
-using Feofun.UI.Screen;
+using Feofun.Localization.Service;
 using SuperMaxim.Messaging;
-using Survivors.EnemySpawn;
 using Survivors.Location;
 using Survivors.UI;
-using Survivors.Units;
 using Survivors.Units.Installer;
 using UnityEngine;
 using Zenject;
@@ -25,7 +23,8 @@ namespace Survivors.App
         {
             Container.BindInterfacesTo<MainSceneMonoInstaller>().FromInstance(this).AsSingle();
             Container.Bind<GameApplication>().FromInstance(_gameApplication).AsSingle();
-            Container.Bind<IMessenger>().FromInstance(Messenger.Default).AsSingle();
+            Container.Bind<IMessenger>().FromInstance(Messenger.Default).AsSingle();     
+            Container.Bind<LocalizationService>().AsSingle();
 
 
             ConfigsInstaller.Install(Container);

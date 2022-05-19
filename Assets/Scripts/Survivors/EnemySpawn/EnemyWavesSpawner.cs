@@ -27,11 +27,7 @@ namespace Survivors.EnemySpawn
 
         public void StartSpawn(EnemyWavesConfig enemyWavesConfig)
         {
-            if (_spawnCoroutine != null)
-            {
-                Dispose();
-            }
-
+            Dispose();
             var orderedConfigs = enemyWavesConfig.EnemySpawns.OrderBy(it => it.SpawnTime);
             _waves = new List<EnemyWaveConfig>(orderedConfigs);
             _spawnCoroutine = StartCoroutine(SpawnWaves());
@@ -116,8 +112,11 @@ namespace Survivors.EnemySpawn
 
         private void Dispose()
         {
-            StopCoroutine(_spawnCoroutine);
-            _spawnCoroutine = null;
+            if (_spawnCoroutine != null)
+            {
+                StopCoroutine(_spawnCoroutine);
+                _spawnCoroutine = null;
+            }
         }
 
         private enum SpawnSide

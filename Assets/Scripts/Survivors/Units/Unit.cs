@@ -41,6 +41,7 @@ namespace Survivors.Units
 
             _damageable.OnDeath += Kill;
             _unitService.Add(this);
+            IsAlive = true;
         }
         
         [Button]

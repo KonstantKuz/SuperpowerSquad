@@ -16,13 +16,19 @@ namespace Survivors.UI.Screen.Debriefing
         
         [SerializeField]
         private ActionButton _nextButton;
+        [SerializeField]
+        private GameObject _winPanel;
+        [SerializeField]
+        private GameObject _losePanel;
+        
         [Inject]
         private ScreenSwitcher _screenSwitcher;
 
         [PublicAPI]
         public void Init(UnitType winner)
         {
-            
+            _winPanel.SetActive(winner == UnitType.PLAYER);     
+            _losePanel.SetActive(winner != UnitType.PLAYER);
         }
         public void OnEnable()
         {

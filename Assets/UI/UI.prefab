@@ -251,6 +251,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DebriefingScreen
       objectReference: {fileID: 0}
+    - target: {fileID: 4510510540947579704, guid: 7db92583dd5ea8445b086e37d7ecd05b, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7172425760286209250, guid: 7db92583dd5ea8445b086e37d7ecd05b, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
