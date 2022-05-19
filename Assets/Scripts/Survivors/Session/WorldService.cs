@@ -10,7 +10,7 @@ using Zenject;
 
 namespace Survivors.Session
 {
-    public class SessionService : ISessionTerm
+    public class WorldService : IWorldTerm
     {
         [Inject] private EnemyWavesSpawner _enemyWavesSpawner;
         [Inject] private EnemyWavesConfig _enemyWavesConfig;

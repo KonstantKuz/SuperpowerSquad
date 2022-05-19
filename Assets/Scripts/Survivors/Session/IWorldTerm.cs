@@ -1,6 +1,6 @@
 ﻿namespace Survivors.Session
 {
-    public interface ISessionTerm
+    public interface IWorldTerm
     {
         void Term();
     }

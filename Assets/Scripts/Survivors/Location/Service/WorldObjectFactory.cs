@@ -10,7 +10,7 @@ using UniRx.Triggers;
 
 namespace Survivors.Location.Service
 {
-    public class WorldObjectFactory : MonoBehaviour, ISessionTerm
+    public class WorldObjectFactory : MonoBehaviour, IWorldTerm
     {
         private const string OBJECT_PREFABS_PATH_ROOT = "Content/";
 

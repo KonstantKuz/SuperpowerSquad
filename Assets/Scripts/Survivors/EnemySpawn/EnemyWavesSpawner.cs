@@ -14,7 +14,7 @@ using Random = UnityEngine.Random;
 
 namespace Survivors.EnemySpawn
 {
-    public class EnemyWavesSpawner : MonoBehaviour, ISessionTerm
+    public class EnemyWavesSpawner : MonoBehaviour, IWorldTerm
     {
         [SerializeField] private float _minOutOfViewOffset = 2f;
         [SerializeField] private float _outOfViewOffsetMultiplier = 0.2f;

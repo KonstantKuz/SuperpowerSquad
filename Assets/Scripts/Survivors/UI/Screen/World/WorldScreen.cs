@@ -21,14 +21,14 @@ namespace Survivors.UI.Screen.World
         [SerializeField]
         private float _afterSessionDelay = 2;
 
-        [Inject] private SessionService _sessionService;
+        [Inject] private WorldService _worldService;
         [Inject] private IMessenger _messenger;
         [Inject] private ScreenSwitcher _screenSwitcher;
 
         [PublicAPI]
         public void Init()
         {
-            _sessionService.Start();
+            _worldService.Start();
             _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
         }
 
@@ -46,7 +46,7 @@ namespace Survivors.UI.Screen.World
 
         private void TermSession()
         {
-            var services = AppContext.Container.ResolveAll<ISessionTerm>();
+            var services = AppContext.Container.ResolveAll<IWorldTerm>();
             services.ForEach(it => it.Term());
             
         }
