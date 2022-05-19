@@ -4,7 +4,9 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using Zenject;
 using EasyButtons;
+using Feofun.Config;
 using Survivors.Squad.Formation;
+using Survivors.Units.Player.Config;
 using Survivors.Units.Player.Movement;
 using Survivors.Units.Service;
 
@@ -22,6 +24,7 @@ namespace Survivors.Squad
         [Inject] private Joystick _joystick;
         [Inject] private UnitFactory _unitFactory;
         [Inject] private SquadConfig _squadConfig;
+        [Inject] private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
 
         private void Awake()
         {
@@ -45,11 +48,10 @@ namespace Survivors.Squad
         /*
          * This functions just tests formation change when new units are added
          */
-        private void SpawnUnit()
+        public void SpawnUnit()
         {
-            Assert.IsTrue(_units.Count > 0);
-            var newUnit = _unitFactory.LoadPlayerUnit(UnitFactory.SIMPLE_PLAYER_ID).GetComponent<MovementController>();
-            AddUnit(newUnit);
+            var nextUnit = _playerUnitConfigs.Values[_units.Count % _playerUnitConfigs.Values.Count];
+            _unitFactory.LoadPlayerUnit(nextUnit.Id).GetComponent<MovementController>();
         }
 
         [Button]
