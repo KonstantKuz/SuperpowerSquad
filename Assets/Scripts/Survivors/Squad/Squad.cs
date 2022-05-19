@@ -1,12 +1,9 @@
 ﻿using System.Collections.Generic;
-using SuperMaxim.Core.Extensions;
-using Survivors.Units.Player;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Zenject;
 using EasyButtons;
 using Survivors.Squad.Formation;
-using Survivors.Units;
 using Survivors.Units.Player.Movement;
 using Survivors.Units.Service;
 
@@ -28,7 +25,6 @@ namespace Survivors.Squad
         private void Awake()
         {
             _destination = GetComponentInChildren<SquadDestination>();
-            GetComponentsInChildren<MovementController>().ForEach(AddUnitToList);
             SetUnitPositions();
         }
         
@@ -36,19 +32,13 @@ namespace Survivors.Squad
         {
             unit.transform.SetParent(transform);
             unit.transform.position = GetSpawnPosition();
-            AddUnitToList(unit);
-        }
-        private void AddUnitToList(MovementController unit)
-        {
+            unit.Init(this, _movementSpeed * _unitSpeedScale);
             _units.Add(unit);
-            unit.SetSpeed(_movementSpeed * _unitSpeedScale);
-            unit.GetComponent<Unit>().OnDeath += RemoveUnit;
         }
 
-        private void RemoveUnit(IUnit unit)
+        public void RemoveUnit(MovementController unit)
         {
-            var movementController = unit.GameObject.GetComponent<MovementController>();
-            _units.Remove(movementController);
+            _units.Remove(unit);
         }
 
         [Button]
@@ -58,8 +48,7 @@ namespace Survivors.Squad
         private void SpawnUnit()
         {
             Assert.IsTrue(_units.Count > 0);
-            var newUnit = _unitFactory.LoadPlayerUnit(UnitFactory.SIMPLE_PLAYER_ID).GetComponent<MovementController>();
-            AddUnit(newUnit);
+            _unitFactory.LoadPlayerUnit(UnitFactory.SIMPLE_PLAYER_ID);
         }
 
         [Button]

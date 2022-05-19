@@ -13,6 +13,7 @@ namespace Survivors.Units.Player.Model
             _config = config;
         }
 
+        public float TargetSearchRadius => AttackDistance;
         public float AttackDistance => _config.AttackDistance;
 
         public float DamageRadius => _config.DamageRadius;
