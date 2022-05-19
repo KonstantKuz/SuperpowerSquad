@@ -17,8 +17,24 @@ namespace Survivors.Units.Enemy
         private ITargetSearcher _targetSearcher;
 
         public NavMeshAgent NavMeshAgent => _agent;
+        
         [CanBeNull] 
-        public ITarget CurrentTarget => _target;
+        public ITarget CurrentTarget
+        {
+            get => _target;
+            private set
+            {
+                if (_target != null)
+                {
+                    _target.OnTargetInvalid -= ClearTarget;
+                }
+                _target = value;
+                if (_target != null)
+                {
+                    _target.OnTargetInvalid += ClearTarget;
+                }
+            }
+        }
 
         public void Init(IUnit unit)
         {
@@ -34,31 +50,25 @@ namespace Survivors.Units.Enemy
 
         public void OnTick()
         {
-            if (_target == null)
+            if (CurrentTarget == null)
             {
                 _agent.isStopped = true;
                 FindTarget();
                 return;
             }
 
-            _agent.destination = _target.Root.position;
+            _agent.destination = CurrentTarget.Root.position;
             _agent.isStopped = false;
         }
 
         private void FindTarget()
         {
-            _target = _targetSearcher.Find();
-            if (_target == null)
-            {
-                return;
-            }
-            _target.OnTargetInvalid += ClearTarget;
+            CurrentTarget = _targetSearcher.Find();
         }
 
         private void ClearTarget()
         {
-            _target.OnTargetInvalid -= ClearTarget;
-            _target = null;
+            CurrentTarget = null;
         }
     }
 }

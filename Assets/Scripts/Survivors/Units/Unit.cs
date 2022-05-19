@@ -1,10 +1,10 @@
 ﻿using System;
+using SuperMaxim.Core.Extensions;
 using Survivors.Extension;
 using Survivors.Location.Model;
 using Survivors.Units.Component.Death;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Model;
-using Survivors.Units.Target;
 using UnityEngine;
 
 namespace Survivors.Units
@@ -14,7 +14,8 @@ namespace Survivors.Units
         private IUpdatableUnitComponent[] _updatables;
         private IDamageable _damageable;
         private IUnitDeath _death;
-        private ITarget _selfTarget;
+        private IUnitDeathEventReceiver[] _deathEventReceivers;
+      
         public IUnitModel Model { get; private set; }
         public GameObject GameObject => gameObject;
 
@@ -30,16 +31,17 @@ namespace Survivors.Units
             _updatables = GetComponentsInChildren<IUpdatableUnitComponent>();
             _damageable = gameObject.RequireComponent<IDamageable>();
             _death =  gameObject.RequireComponent<IUnitDeath>();
-            _selfTarget =  gameObject.RequireComponent<ITarget>();
-            
+            _deathEventReceivers = GetComponentsInChildren<IUnitDeathEventReceiver>();
+
             _damageable.OnDeath += Kill;
         }
 
         public void Kill()
         {
             _damageable.OnDeath -= Kill;
+            _deathEventReceivers.ForEach(it => it.OnDeath());
+            
             _death.PlayDeath();
-            _selfTarget.OnDeath();
             OnDeath?.Invoke(this);
             OnDeath = null;
         }

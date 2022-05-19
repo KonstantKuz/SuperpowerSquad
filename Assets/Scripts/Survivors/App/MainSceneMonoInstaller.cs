@@ -2,6 +2,7 @@ using Feofun.UI;
 using SuperMaxim.Messaging;
 using Survivors.EnemySpawn;
 using Survivors.Location;
+using Survivors.Squad;
 using Survivors.Units;
 
 using UnityEngine;
@@ -30,7 +31,7 @@ namespace Survivors.App
             Container.Bind<Joystick>().FromInstance(_joystick).AsSingle();
 
             ConfigsInstaller.Install(Container);
-            UnitServicesInstaller.Install(Container);            
+            UnitServicesInstaller.Install(Container);
 
             _worldServicesInstaller.Install(Container);
             Container.Bind<EnemyWavesSpawner>().FromInstance(_enemyWavesSpawner);

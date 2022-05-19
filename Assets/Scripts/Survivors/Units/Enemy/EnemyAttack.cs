@@ -6,6 +6,7 @@ using UnityEngine;
 
 namespace Survivors.Units.Enemy
 {
+    [RequireComponent(typeof(EnemyAi))]
     public class EnemyAttack : MonoBehaviour, IUnitInitializable, IUpdatableUnitComponent
     {
         private EnemyAi _enemyAi;
@@ -61,6 +62,5 @@ namespace Survivors.Units.Enemy
             damageable.TakeDamage(_attackModel.AttackDamage);
             Debug.Log($"Damage applied, target:= {target.name}");
         }
-
     }
 }

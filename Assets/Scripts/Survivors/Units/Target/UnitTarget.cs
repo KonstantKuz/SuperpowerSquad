@@ -5,7 +5,7 @@ using Zenject;
 
 namespace Survivors.Units.Target
 {
-    public class UnitTarget : MonoBehaviour, ITarget
+    public class UnitTarget : MonoBehaviour, ITarget, IUnitDeathEventReceiver
     {
         private static int _idCount;
         
@@ -17,11 +17,10 @@ namespace Survivors.Units.Target
         [Inject] 
         private TargetService _targetService;
 
-        public Action OnTargetInvalid { get; set; }
-        public Transform Root => transform;
+        public string TargetId { get; private set; }
         public bool IsAlive { get; private set; } = true;
+        public Transform Root => transform;
         public Transform Center => _centerTarget;
-
         public UnitType UnitType
         {
             get => _unitType;
@@ -32,32 +31,27 @@ namespace Survivors.Units.Target
                 _targetService.Add(this);
             }
         }
-
-        public string TargetId
-        {
-            get;
-            private set;
-        }
+        public Action OnTargetInvalid { get; set; }
 
         private void Awake()
         {
             TargetId = $"{_unitType.ToString()}#{_idCount++}";
             _targetService.Add(this);
         }
-        
+
         public void OnDeath()
         {
             if (!IsAlive) return;
             IsAlive = false;
+            _targetService.Remove(this);            
             OnTargetInvalid?.Invoke();
-            _targetService.Remove(this);
         }
 
         private void OnDestroy()
         {
             if (!IsAlive) return;
-            OnTargetInvalid?.Invoke();
             _targetService.Remove(this);
+            OnTargetInvalid?.Invoke();
         }
     }
 }

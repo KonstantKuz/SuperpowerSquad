@@ -17,7 +17,7 @@ namespace Survivors.Units.Weapon
                 return;
             }
 
-            if (targetObj.gameObject.GetComponent<IDamageable>() == null)
+            if (targetObj.GetComponent<IDamageable>() == null)
             {
                 Debug.LogWarning("Target has no damageable component");
                 return;
