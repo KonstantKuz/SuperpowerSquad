@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 DOTween and DOTween Pro are copyright (c) 2014-2018 Daniele Giardini - Demigiant
+=======
+DOTween and DOTween Pro are copyright (c) 2014-2018 Daniele Giardini - Demigiant1
+>>>>>>> origin/master
 
 // IMPORTANT!!! /////////////////////////////////////////////
 // Upgrading DOTween from versions older than 1.2.000 ///////

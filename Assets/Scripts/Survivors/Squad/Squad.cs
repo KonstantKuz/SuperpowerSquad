@@ -52,7 +52,7 @@ namespace Survivors.Squad
         {
             Assert.IsTrue(_units.Count > 0);
             var nextUnit = _playerUnitConfigs.Values[_units.Count % _playerUnitConfigs.Values.Count];
-            _unitFactory.LoadPlayerUnit(nextUnit.Id);
+            _unitFactory.CreatePlayerUnit(nextUnit.Id);
         }
 
         [Button]

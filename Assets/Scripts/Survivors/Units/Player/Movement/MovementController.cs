@@ -88,7 +88,7 @@ namespace Survivors.Units.Player.Movement
         }
         private void UpdateAnimationRotateValues()
         {
-            if (IsDestinationReached) {
+            if (IsDestinationReached || Agent.isStopped) {
                 _animator.SetFloat(_horizontalMotionHash, 0);
                 _animator.SetFloat(_verticalMotionHash, 0);
                 return;

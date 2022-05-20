@@ -1,5 +1,4 @@
 ﻿using System;
-using Survivors.Units.Player.Attack;
 using UnityEngine;
 using Zenject;
 

@@ -1,3 +1,5 @@
+using Feofun.App;
+using Survivors.Session;
 using UnityEngine;
 
 namespace Survivors.Location
@@ -17,6 +19,12 @@ namespace Survivors.Location
             var plane = new Plane(Ground.up, Ground.position);
             plane.Raycast(withRay, out var intersectionDist);
             return withRay.GetPoint(intersectionDist);
+        }
+        public void CleanUp()
+        {
+            var services = AppContext.Container.ResolveAll<IWorldCleanUp>();
+            services.ForEach(it => it.OnWorldCleanUp());
+            
         }
     }
 }

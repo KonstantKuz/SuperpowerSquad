@@ -1,10 +1,9 @@
 using Feofun.UI;
+using Feofun.Localization.Service;
 using SuperMaxim.Messaging;
-using Survivors.EnemySpawn;
 using Survivors.Location;
-using Survivors.Squad;
-using Survivors.Units;
-
+using Survivors.UI;
+using Survivors.Units.Installer;
 using UnityEngine;
 using Zenject;
 
@@ -12,30 +11,26 @@ namespace Survivors.App
 {
     public class MainSceneMonoInstaller : MonoInstaller
     {
+        
         [SerializeField]
         private GameApplication _gameApplication;
         [SerializeField]
-        private Joystick _joystick;
+        private WorldServicesInstaller _worldServicesInstaller;  
         [SerializeField]
-        private WorldServicesInstaller _worldServicesInstaller;
-        [SerializeField]
-        private EnemyWavesSpawner _enemyWavesSpawner;
-        [SerializeField] 
-        private UIRoot _uiRoot;
-        
+        private UIInstaller _uiInstaller;
+     
         public override void InstallBindings()
         {
             Container.BindInterfacesTo<MainSceneMonoInstaller>().FromInstance(this).AsSingle();
             Container.Bind<GameApplication>().FromInstance(_gameApplication).AsSingle();
-            Container.Bind<IMessenger>().FromInstance(Messenger.Default).AsSingle();
-            Container.Bind<Joystick>().FromInstance(_joystick).AsSingle();
+            Container.Bind<IMessenger>().FromInstance(Messenger.Default).AsSingle();     
+            Container.Bind<LocalizationService>().AsSingle();
+
 
             ConfigsInstaller.Install(Container);
             UnitServicesInstaller.Install(Container);
-
             _worldServicesInstaller.Install(Container);
-            Container.Bind<EnemyWavesSpawner>().FromInstance(_enemyWavesSpawner);
-            Container.Bind<UIRoot>().FromInstance(_uiRoot);
+            _uiInstaller.Install(Container);
         }
     }
 }
