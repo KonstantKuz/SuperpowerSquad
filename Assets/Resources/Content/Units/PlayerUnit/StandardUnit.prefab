@@ -61,8 +61,8 @@ GameObject:
   - component: {fileID: 8226988932255853753}
   - component: {fileID: 8166840625109294545}
   - component: {fileID: 7041231531928989995}
-  - component: {fileID: 1143396240576940078}
-  - component: {fileID: 3254496561695502941}
+  - component: {fileID: 507659729570458952}
+  - component: {fileID: 8444665568130124392}
   m_Layer: 0
   m_Name: StandardUnit
   m_TagString: Untagged
@@ -82,6 +82,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7626905009210850996}
+  - {fileID: 9147401880746721591}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -187,7 +188,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e9add7f11978004eb4d2f2e37e1cd42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1143396240576940078
+--- !u!114 &507659729570458952
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -196,10 +197,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 3254496561695502929}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fc2558860fce054fbdd443bfb74ad93, type: 3}
+  m_Script: {fileID: 11500000, guid: 645f314e7f354fe09ccbe8d9ff0330dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &3254496561695502941
+  _disappearTime: 3
+  _delayUntilDisappear: 3
+  _offsetYDisappear: 3
+--- !u!114 &8444665568130124392
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -208,10 +212,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 3254496561695502929}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3904fda15694c55b18fbfbf180efa03, type: 3}
+  m_Script: {fileID: 11500000, guid: b9c1dbc409d68794b856557412180aac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _distanceToObject: 25
+  _hudPrefab: {fileID: 5908310967132934326, guid: 60ee3281ab8997e478d99f0a185cdf69, type: 3}
+  _hudPlace: {fileID: 9147401880746721591}
 --- !u!114 &3337903664774207016
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -224,6 +229,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a403e78fb60a4119895031136f8e7b9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &4951073889635086035
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 9147401880746721591}
+  m_Layer: 0
+  m_Name: HudPlace
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &9147401880746721591
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4951073889635086035}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 2.2, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3254496561695502942}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &5940396417788635572
 GameObject:
   m_ObjectHideFlags: 0

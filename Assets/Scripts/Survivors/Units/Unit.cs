@@ -1,26 +1,34 @@
 ﻿using System;
-using SuperMaxim.Core.Extensions;
 using Survivors.Extension;
+using EasyButtons;
+using SuperMaxim.Core.Extensions;
 using Survivors.Location.Model;
 using Survivors.Units.Component.Death;
 using Survivors.Units.Component.Health;
+using Survivors.Units.Service;
+using Survivors.Units.Target;
+using Zenject;
 using Survivors.Units.Model;
-using UnityEngine;
 
 namespace Survivors.Units
 {
     public class Unit : WorldObject, IUnit
     {
+        [Inject]
+        private UnitService _unitService;
+
         private IUpdatableUnitComponent[] _updatables;
         private IDamageable _damageable;
         private IUnitDeath _death;
+        private ITarget _selfTarget;
         private IUnitDeathEventReceiver[] _deathEventReceivers;
-      
+
+        public bool IsAlive { get; set; }
+
+        public UnitType UnitType => _selfTarget.UnitType;
         public IUnitModel Model { get; private set; }
-        public GameObject GameObject => gameObject;
-
-        public Action<IUnit> OnDeath { get; set; }
-
+        public event Action<IUnit> OnDeath;
+        
         public void Init(IUnitModel model)
         {
             Model = model;
@@ -30,17 +38,21 @@ namespace Survivors.Units
             }
             _updatables = GetComponentsInChildren<IUpdatableUnitComponent>();
             _damageable = gameObject.RequireComponent<IDamageable>();
-            _death =  gameObject.RequireComponent<IUnitDeath>();
+            _death = gameObject.RequireComponent<IUnitDeath>();
+            _selfTarget = gameObject.RequireComponent<ITarget>();
             _deathEventReceivers = GetComponentsInChildren<IUnitDeathEventReceiver>();
 
             _damageable.OnDeath += Kill;
+            _unitService.Add(this);
+            IsAlive = true;
         }
-
+        
+        [Button]
         public void Kill()
         {
             _damageable.OnDeath -= Kill;
+            IsAlive = false;
             _deathEventReceivers.ForEach(it => it.OnDeath());
-            
             _death.PlayDeath();
             OnDeath?.Invoke(this);
             OnDeath = null;
@@ -48,6 +60,9 @@ namespace Survivors.Units
 
         private void Update()
         {
+            if (!IsAlive) {
+                return;
+            }
             UpdateComponents();
         }
 
@@ -56,6 +71,11 @@ namespace Survivors.Units
             for (int i = 0; i < _updatables.Length; i++) {
                 _updatables[i].OnTick();
             }
+        }
+
+        private void OnDestroy()
+        {
+            _unitService.Remove(this);
         }
     }
 }
