@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6244abc3d0074c1b97783281c6416b47, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Barrel: {fileID: 1312274636268225353}
+  _barrel: {fileID: 1312274636268225353}
   _beam: {fileID: 7719168980779158545, guid: 26bea9183413de14b81ea7028f0fde3b, type: 3}
 --- !u!1001 &2155014422790022114
 PrefabInstance:
@@ -99,6 +99,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 4279273933897615359, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
+    - {fileID: 4331444546958184133, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
 --- !u!1 &2058353209681895259 stripped
 GameObject:
