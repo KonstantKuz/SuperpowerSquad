@@ -1,0 +1,6 @@
+Id,Modifier,Target,ParameterName,Value
+AttackDamage,AddPercent,Friends,AttackDamage,10
+AttackTime,AddPercent,Friends,AttackTime,-10
+ProjectileSpeed,AddPercent,Friends,ProjectileSpeed,10
+Health,AddValue,Friends,Health,100
+DamageRadius,AddPercent,Friends,DamageRadius,10
