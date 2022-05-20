@@ -34,7 +34,7 @@ namespace Survivors.Units.Player.Attack
         [CanBeNull]
         private ITarget _target;
         
-        private bool IsTargetInvalid => !(_target is {IsAlive: true});
+        private bool IsTargetInvalid => !_target.IsTargetValidAndAlive();
         private bool HasWeaponAnimationHandler => _weaponAnimationHandler != null;
 
         public void Init(IUnit unit)

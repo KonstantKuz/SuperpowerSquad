@@ -17,7 +17,7 @@ namespace Survivors.Units.Weapon.Projectiles
 
         [SerializeField] private Explosion _explosion;
 
-        [SerializeField] private float _selfExplodeRange;
+        [SerializeField] private float _detonationDistance;
 
         [SerializeField] private float _initialCourseTime;
 
@@ -33,11 +33,11 @@ namespace Survivors.Units.Weapon.Projectiles
 
         private void Update()
         {
-            UpdateTargetPos();
+            UpdateTargetPosition();
             UpdatePosition();
 
             TimeLeft -= Time.deltaTime;
-            if (TimeLeft <= 0 || Vector3.Distance(transform.position, _lastTargetPos) < _selfExplodeRange)
+            if (TimeLeft <= 0 || Vector3.Distance(transform.position, _lastTargetPos) < _detonationDistance)
                 Explode(transform.position);
         }
 
@@ -50,6 +50,7 @@ namespace Survivors.Units.Weapon.Projectiles
 
         private void SetTarget(ITarget target)
         {
+            Assert.IsNull(_target, "we are currently supporting only one call to SetTarget on launch");
             Assert.IsNotNull(target);
             if (!_followTarget)
             {
@@ -57,17 +58,14 @@ namespace Survivors.Units.Weapon.Projectiles
                 return;
             }
 
-            if (_target == target) return;
-            if (_target != null) ClearTarget();
-
             _target = target;
             _target.OnTargetInvalid += ClearTarget;
         }
 
-        private void UpdateTargetPos()
+        private void UpdateTargetPosition()
         {
             if (!_followTarget) return;
-            if (!(_target is { IsAlive: true })) return;
+            if (!_target.IsTargetValidAndAlive()) return;
             _lastTargetPos = _target.Center.position;
         }
 

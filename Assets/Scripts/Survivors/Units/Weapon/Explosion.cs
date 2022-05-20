@@ -37,7 +37,7 @@ namespace Survivors.Units.Weapon
         private static bool IsAliveEnemy(UnitType targetType, Collider collider)
         {
             var target = collider.GetComponent<ITarget>();
-            return target is { IsAlive: true } && target.UnitType == targetType;
+            return target.IsTargetValidAndAlive() && target.UnitType == targetType;
         }
 
         private void DamageHits(Collider[] hits, Action<GameObject> hitCallback)
