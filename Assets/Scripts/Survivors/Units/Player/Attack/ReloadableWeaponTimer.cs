@@ -8,7 +8,6 @@ namespace Survivors.Units.Player.Attack
  
         private readonly float _reloadTime;
         private readonly int _clipSize;
-        private readonly IAttack _attack;
 
         private int _currentClipSize;
         private float _lastAttackTime;
@@ -16,22 +15,15 @@ namespace Survivors.Units.Player.Attack
         private bool Reloaded => Time.time >= _startReloadTime + _reloadTime;
         public bool IsAttackReady => Time.time >= _lastAttackTime + _attackInterval && Reloaded;
         public float AttackInterval => _attackInterval;
-        public ReloadableWeaponTimer(int clipSize, float attackTime, float reloadTime, IAttack attack)
+        public ReloadableWeaponTimer(int clipSize, float attackTime, float reloadTime)
         {
             _clipSize = clipSize;
             _currentClipSize = _clipSize;
             _reloadTime = reloadTime;
             _attackInterval = attackTime / clipSize;
-            _attack = attack;
-            attack.OnAttack += OnAttack;
         }
 
-        public void Dispose()
-        {
-            _attack.OnAttack -= OnAttack;
-        }
-
-        private void OnAttack()
+        public void OnAttack()
         {
             _lastAttackTime = Time.time;
             --_currentClipSize;
@@ -44,6 +36,20 @@ namespace Survivors.Units.Player.Attack
         {
             _startReloadTime = Time.time;
             _currentClipSize = _clipSize;
+        }
+
+        public void CancelLastTimer()
+        {
+            _lastAttackTime = Time.time - _attackInterval;
+            if (_currentClipSize >= _clipSize)
+            {
+                _startReloadTime = Time.time;
+                _currentClipSize = 1;
+            }
+            else
+            {
+                _currentClipSize++;
+            }
         }
     }
 }
