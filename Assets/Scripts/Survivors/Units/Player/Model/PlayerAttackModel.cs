@@ -6,13 +6,14 @@ namespace Survivors.Units.Player.Model
 {
     public class PlayerAttackModel : IAttackModel
     {
-        private readonly AttackConfig _config;
+        private readonly PlayerAttackConfig _config;
 
-        public PlayerAttackModel(AttackConfig config)
+        public PlayerAttackModel(PlayerAttackConfig config)
         {
             _config = config;
         }
 
+        public float TargetSearchRadius => AttackDistance;
         public float AttackDistance => _config.AttackDistance;
 
         public float DamageRadius => _config.DamageRadius;

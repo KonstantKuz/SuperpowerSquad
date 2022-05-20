@@ -1,4 +1,8 @@
-﻿using Survivors.Units.Target;
+﻿using JetBrains.Annotations;
+using Survivors.Extension;
+using Survivors.Units.Enemy.Model;
+using Survivors.Units.Player.Attack;
+using Survivors.Units.Target;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
@@ -6,31 +10,65 @@ using Zenject;
 namespace Survivors.Units.Enemy
 {
     [RequireComponent(typeof(NavMeshAgent))]
-    public class EnemyAi : MonoBehaviour
+    public class EnemyAi : MonoBehaviour, IUnitInitializable, IUpdatableUnitComponent
     {
         private NavMeshAgent _agent;
         private ITarget _target;
-
-        [Inject]
-        private TargetService _targetService;
+        private ITargetSearcher _targetSearcher;
 
         public NavMeshAgent NavMeshAgent => _agent;
+        
+        [CanBeNull] 
+        public ITarget CurrentTarget
+        {
+            get => _target;
+            private set
+            {
+                if (_target != null)
+                {
+                    _target.OnTargetInvalid -= ClearTarget;
+                }
+                _target = value;
+                if (_target != null)
+                {
+                    _target.OnTargetInvalid += ClearTarget;
+                }
+            }
+        }
+
+        public void Init(IUnit unit)
+        {
+            var model = (EnemyUnitModel) unit.Model;
+            _agent.speed = model.MoveSpeed;
+        }
 
         private void Awake()
         {
-            _agent = GetComponent<NavMeshAgent>();
+            _agent = gameObject.RequireComponent<NavMeshAgent>();
+            _targetSearcher = gameObject.RequireComponent<ITargetSearcher>();
         }
 
-        private void Update()
+        public void OnTick()
         {
-            _target ??= _targetService.FindClosestTargetOfType(UnitType.PLAYER, transform.position);
-
-            if (_target is {IsAlive: true}) {
-                _agent.destination = _target.Root.position;
-                _agent.isStopped = false;
-            } else {
+            if (CurrentTarget == null)
+            {
                 _agent.isStopped = true;
+                FindTarget();
+                return;
             }
+
+            _agent.destination = CurrentTarget.Root.position;
+            _agent.isStopped = false;
+        }
+
+        private void FindTarget()
+        {
+            CurrentTarget = _targetSearcher.Find();
+        }
+
+        private void ClearTarget()
+        {
+            CurrentTarget = null;
         }
     }
 }

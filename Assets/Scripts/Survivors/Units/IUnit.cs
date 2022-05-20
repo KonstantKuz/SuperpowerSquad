@@ -1,4 +1,5 @@
 ﻿using System;
+using Survivors.Units.Model;
 using UnityEngine;
 
 namespace Survivors.Units

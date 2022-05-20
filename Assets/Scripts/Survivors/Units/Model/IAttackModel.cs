@@ -2,7 +2,8 @@ namespace Survivors.Units.Model
 {
     public interface IAttackModel
     {
-        float AttackDistance { get; } 
+        float TargetSearchRadius { get; }
+        float AttackDistance { get; }
         int AttackDamage { get; } 
     }
 }

@@ -4,7 +4,6 @@ using Survivors.EnemySpawn.Config;
 using Survivors.Location;
 using Survivors.Session.Messages;
 using Survivors.Units;
-using Survivors.Units.Player.Movement;
 using Survivors.Units.Service;
 using Zenject;
 
@@ -17,7 +16,6 @@ namespace Survivors.Session
         [Inject] private UnitFactory _unitFactory;
         [Inject] private UnitService _unitService;
         [Inject] private IMessenger _messenger;
-        [Inject] private World _world;
 
         public void Start()
         {
@@ -28,7 +26,6 @@ namespace Survivors.Session
 
         private void OnPlayerUnitDeath(IUnit unit)
         {
-            _world.Squad.RemoveUnit(unit.Object.GetComponent<MovementController>());
             if (_unitService.HasUnitOfType(UnitType.PLAYER)) {
                 return;
             }

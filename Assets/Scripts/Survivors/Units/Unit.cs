@@ -1,6 +1,7 @@
 ﻿using System;
-using EasyButtons;
 using Survivors.Extension;
+using EasyButtons;
+using SuperMaxim.Core.Extensions;
 using Survivors.Location.Model;
 using Survivors.Units.Component.Death;
 using Survivors.Units.Component.Health;
@@ -8,6 +9,7 @@ using Survivors.Units.Service;
 using Survivors.Units.Target;
 using UnityEngine;
 using Zenject;
+using Survivors.Units.Model;
 
 namespace Survivors.Units
 {
@@ -20,9 +22,11 @@ namespace Survivors.Units
         private IDamageable _damageable;
         private IUnitDeath _death;
         private ITarget _selfTarget;
-
+        private IUnitDeathEventReceiver[] _deathEventReceivers;
+      
         public event Action<IUnit> OnDeath;
         public IUnitModel Model { get; private set; }
+        
         public GameObject Object => gameObject;
         public UnitType UnitType => _selfTarget.UnitType;
         
@@ -38,6 +42,7 @@ namespace Survivors.Units
             _damageable = gameObject.RequireComponent<IDamageable>();
             _death = gameObject.RequireComponent<IUnitDeath>();
             _selfTarget = gameObject.RequireComponent<ITarget>();
+            _deathEventReceivers = GetComponentsInChildren<IUnitDeathEventReceiver>();
 
             _damageable.OnDeath += Kill;
             _unitService.Add(this);
@@ -49,8 +54,8 @@ namespace Survivors.Units
         {
             _damageable.OnDeath -= Kill;
             IsAlive = false;
+            _deathEventReceivers.ForEach(it => it.OnDeath());
             _death.PlayDeath();
-            _selfTarget.OnDeath();
             OnDeath?.Invoke(this);
             OnDeath = null;
         }
