@@ -1,3 +1,4 @@
+using Feofun.UI;
 using Feofun.Localization.Service;
 using SuperMaxim.Messaging;
 using Survivors.Location;
@@ -18,7 +19,6 @@ namespace Survivors.App
         [SerializeField]
         private UIInstaller _uiInstaller;
      
-
         public override void InstallBindings()
         {
             Container.BindInterfacesTo<MainSceneMonoInstaller>().FromInstance(this).AsSingle();

@@ -7,7 +7,6 @@ using Survivors.Units.Component.Death;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Service;
 using Survivors.Units.Target;
-using UnityEngine;
 using Zenject;
 using Survivors.Units.Model;
 
@@ -23,14 +22,13 @@ namespace Survivors.Units
         private IUnitDeath _death;
         private ITarget _selfTarget;
         private IUnitDeathEventReceiver[] _deathEventReceivers;
-      
-        public event Action<IUnit> OnDeath;
-        public IUnitModel Model { get; private set; }
-        
-        public GameObject Object => gameObject;
-        public UnitType UnitType => _selfTarget.UnitType;
-        
+
         public bool IsAlive { get; set; }
+
+        public UnitType UnitType => _selfTarget.UnitType;
+        public IUnitModel Model { get; private set; }
+        public event Action<IUnit> OnDeath;
+        
         public void Init(IUnitModel model)
         {
             Model = model;
