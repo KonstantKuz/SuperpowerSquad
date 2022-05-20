@@ -16,14 +16,14 @@ namespace Survivors.Units.Weapon.Projectiles
         private ITarget _target;
         private Action<GameObject> _hitCallback;
         private ProjectileParams _projectileParams;
-        private Transform _barrel;
+        private IBarrelOwner _barrel;
 
         private float _lifeTime;
         private bool _hit;
         private bool _initialized;
         private float HitTime => _maxLifeTime * _ratioHitTime;
 
-        public void Launch(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback, Transform barrel)
+        public void Launch(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback, IBarrelOwner barrel)
         {
             _projectileParams = projectileParams;
             _hitCallback = hitCallback;
@@ -47,9 +47,20 @@ namespace Survivors.Units.Weapon.Projectiles
                 return;
             }
             UpdateLifeTime();
-            if (_barrel != null) {
-                transform.position = _barrel.position;
+            UpdatePositionAndRotation();
+        }
+
+        private void LateUpdate()
+        {
+            if (_barrel != null && _target != null) {
+                transform.SetPositionAndRotation(_barrel.BarrelPos, 
+                                                 RangedWeapon.GetShootRotation(_barrel.BarrelPos, _target.Center.position));
             }
+        }
+
+        private void UpdatePositionAndRotation()
+        {
+          
         }
 
         private void UpdateLifeTime()
@@ -57,7 +68,6 @@ namespace Survivors.Units.Weapon.Projectiles
             _lifeTime += Time.deltaTime;
             if (_lifeTime >= HitTime && !_hit) {
                 TryHit();
-                ClearTarget();
             }
             if (_lifeTime >= _maxLifeTime) {
                 Destroy();
@@ -87,7 +97,8 @@ namespace Survivors.Units.Weapon.Projectiles
                 return;
             }
             _hitCallback?.Invoke(targetObj.gameObject);
-            Projectile.TryHitTargetsInRadius(targetObj.gameObject.transform.position, _projectileParams.DamageRadius, target.UnitType, targetObj.gameObject, _hitCallback);
+            Projectile.TryHitTargetsInRadius(targetObj.gameObject.transform.position, _projectileParams.DamageRadius, target.UnitType,
+                                             targetObj.gameObject, _hitCallback);
         }
 
         private void Destroy()
