@@ -4,7 +4,7 @@ namespace Survivors.Units.Component
 {
     public interface IHealthBarOwner
     {
-        int MaxValue { get; }
+        float MaxValue { get; }
         IObservable<float> CurrentValue { get; }
     }
 }

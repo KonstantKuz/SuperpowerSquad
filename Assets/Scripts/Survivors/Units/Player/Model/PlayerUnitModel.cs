@@ -15,12 +15,12 @@ namespace Survivors.Units.Player.Model
         public PlayerUnitModel(PlayerUnitConfig config)
         {
             _config = config;
-            HealthModel = new HealthModel(config.Health);
+            HealthModel = new PlayerHealthModel(config.Health, this);
             _playerAttackModel = new PlayerAttackModel(config.PlayerAttackConfig, this);
         }
 
         public string Id => _config.Id;
-        public HealthModel HealthModel { get; }
+        public IHealthModel HealthModel { get; }
         public IAttackModel AttackModel => _playerAttackModel;
 
         public void AddModifier(IModifier modifier)
