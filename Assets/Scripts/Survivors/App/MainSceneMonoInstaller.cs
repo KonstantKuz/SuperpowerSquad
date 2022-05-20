@@ -21,7 +21,7 @@ namespace Survivors.App
         [SerializeField]
         private EnemyWavesSpawner _enemyWavesSpawner;
         [SerializeField] 
-        private HudContainer _hudContainer;
+        private UIRoot _uiRoot;
         
         public override void InstallBindings()
         {
@@ -35,7 +35,7 @@ namespace Survivors.App
 
             _worldServicesInstaller.Install(Container);
             Container.Bind<EnemyWavesSpawner>().FromInstance(_enemyWavesSpawner);
-            Container.Bind<HudContainer>().FromInstance(_hudContainer);
+            Container.Bind<UIRoot>().FromInstance(_uiRoot);
         }
     }
 }

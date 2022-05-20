@@ -4,7 +4,7 @@ using Zenject;
 
 namespace Survivors.Units.Component.Hud
 {
-    public class HudOwner : MonoBehaviour, IUnitInitializable
+    public class UnitHudOwner : MonoBehaviour, IUnitInitializable, IUnitDeathEventReceiver
     {
         [SerializeField] private UnitHudPresenter _hudPrefab;
         [SerializeField] private Transform _hudPlace;
@@ -20,7 +20,11 @@ namespace Survivors.Units.Component.Hud
         {
             _hudPresenter = _container.InstantiatePrefabForComponent<UnitHudPresenter>(_hudPrefab);
             _hudPresenter.Init(this, _hudPlace);
-            unit.OnDeath += delegate { _hudPresenter.OnDeath(); };
+        }
+
+        public void OnDeath()
+        {
+            _hudPresenter.OnUnitDeath();
         }
     }
 }

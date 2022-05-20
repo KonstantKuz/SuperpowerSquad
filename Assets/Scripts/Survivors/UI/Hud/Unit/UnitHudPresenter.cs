@@ -1,8 +1,6 @@
 using Feofun.UI;
-using Survivors.Units;
 using Survivors.Units.Component;
 using Survivors.Units.Component.Hud;
-using UniRx;
 using UnityEngine;
 using Zenject;
 
@@ -12,30 +10,20 @@ namespace Survivors.UI.Hud.Unit
     {
         [SerializeField] private HealthBarView _healthBarView;
         
-        private CompositeDisposable _disposable;
         private Transform _hudPlace;
         
-        [Inject] private HudContainer _hudContainer;
+        [Inject] private UIRoot _uiRoot;
 
-        private static int HudCount;
-        
-        public void Init(HudOwner hudOwner, Transform hudPlace)
+        public void Init(UnitHudOwner unitHudOwner, Transform hudPlace)
         {
-            HudCount++;
-            hudPlace.gameObject.name += HudCount;
-            
-            _disposable?.Dispose();
-            _disposable = new CompositeDisposable();
-
-            transform.SetParent(_hudContainer.transform);
+            transform.SetParent(_uiRoot.HudContainer);
             _hudPlace = hudPlace;
             
-            InitHealthBar(hudOwner.HealthBarOwner);
+            InitHealthBar(unitHudOwner.HealthBarOwner);
         }
 
-        public void OnDeath()
+        public void OnUnitDeath()
         {
-            _disposable?.Dispose();
             Destroy(gameObject);
         }
 
