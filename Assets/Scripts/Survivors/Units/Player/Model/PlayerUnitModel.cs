@@ -13,7 +13,7 @@ namespace Survivors.Units.Player.Model
         {
             _config = config;
             HealthModel = new HealthModel(config.Health);
-            _playerAttackModel = new PlayerAttackModel(config.AttackConfig);
+            _playerAttackModel = new PlayerAttackModel(config.PlayerAttackConfig);
         }
 
         public string Id => _config.Id;

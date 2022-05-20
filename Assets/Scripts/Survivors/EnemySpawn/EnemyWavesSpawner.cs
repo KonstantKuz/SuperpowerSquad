@@ -2,9 +2,10 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using LegionMaster.Extension;
+using Feofun.Extension;
 using Survivors.EnemySpawn.Config;
 using Survivors.Location;
+using Survivors.Session;
 using Survivors.Units.Enemy;
 using Survivors.Units.Service;
 using UnityEngine;
@@ -13,7 +14,7 @@ using Random = UnityEngine.Random;
 
 namespace Survivors.EnemySpawn
 {
-    public class EnemyWavesSpawner : MonoBehaviour
+    public class EnemyWavesSpawner : MonoBehaviour, IWorldCleanUp
     {
         [SerializeField] private float _minOutOfViewOffset = 2f;
         [SerializeField] private float _outOfViewOffsetMultiplier = 0.2f;
@@ -26,16 +27,15 @@ namespace Survivors.EnemySpawn
 
         public void StartSpawn(EnemyWavesConfig enemyWavesConfig)
         {
-            if (_spawnCoroutine != null)
-            {
-                Dispose();
-            }
-
+            Dispose();
             var orderedConfigs = enemyWavesConfig.EnemySpawns.OrderBy(it => it.SpawnTime);
             _waves = new List<EnemyWaveConfig>(orderedConfigs);
             _spawnCoroutine = StartCoroutine(SpawnWaves());
         }
-
+        public void OnWorldCleanUp()
+        {
+            Dispose();
+        }
         private IEnumerator SpawnWaves()
         {
             var currentTime = 0;
@@ -112,8 +112,11 @@ namespace Survivors.EnemySpawn
 
         private void Dispose()
         {
-            StopCoroutine(_spawnCoroutine);
-            _spawnCoroutine = null;
+            if (_spawnCoroutine != null)
+            {
+                StopCoroutine(_spawnCoroutine);
+                _spawnCoroutine = null;
+            }
         }
 
         private enum SpawnSide
@@ -123,5 +126,7 @@ namespace Survivors.EnemySpawn
             Right,
             Left,
         }
+
+ 
     }
 }
