@@ -3,7 +3,7 @@
 namespace Survivors.Units.Player.Config
 {
     [DataContract]
-    public class AttackConfig
+    public class PlayerAttackConfig
     {
         [DataMember(Name = "AttackDistance")]
         private float _attackDistance;

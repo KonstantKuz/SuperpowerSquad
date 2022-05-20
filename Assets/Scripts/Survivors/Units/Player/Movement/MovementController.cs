@@ -7,7 +7,7 @@ using UnityEngine.AI;
 namespace Survivors.Units.Player.Movement
 {
     [RequireComponent(typeof(NavMeshAgent))]
-    public class MovementController : MonoBehaviour
+    public class MovementController : MonoBehaviour, IUnitDeathEventReceiver
     {
         private readonly int _runHash = Animator.StringToHash("Run");
         private readonly int _idleHash = Animator.StringToHash("Idle");
@@ -19,7 +19,8 @@ namespace Survivors.Units.Player.Movement
         private Transform _rotationRoot;
         [SerializeField]
         private float _rotationSpeed = 10;
-        
+
+        private Squad.Squad _currentSquad;
         private NavMeshAgent _agent;
         private Animator _animator;
         private NavMeshAgent Agent => _agent ??= GetComponent<NavMeshAgent>();
@@ -38,6 +39,12 @@ namespace Survivors.Units.Player.Movement
             UpdateAnimationRotateValues();
         }
 
+        public void Init(Squad.Squad squad, float speed)
+        {
+            Agent.speed = speed;
+            _currentSquad = squad;
+        }
+
         public void MoveTo(Vector3 destination)
         {
             Agent.destination = destination;
@@ -49,16 +56,6 @@ namespace Survivors.Units.Player.Movement
             _animator.Play(_runHash);
         }
 
-        private void Stop()
-        {
-            Agent.isStopped = true;
-            _animator.Play(_idleHash);
-        }
-
-        public void SetSpeed(float speed)
-        {
-            Agent.speed = speed;
-        }
         public void RotateToTarget([CanBeNull] Transform target)
         {
             if (target != null) {
@@ -66,6 +63,18 @@ namespace Survivors.Units.Player.Movement
             } else {
                 Rotate(Quaternion.LookRotation(transform.forward));
             }
+        }
+        
+        public void OnDeath()
+        {
+            Stop();
+            _currentSquad.RemoveUnit(this);
+        }
+        
+        private void Stop()
+        {
+            Agent.isStopped = true;
+            _animator.Play(_idleHash);
         }
         private void RotateTo(Vector3 targetPos)
         {
