@@ -6,10 +6,9 @@ namespace Survivors.Units
 {
     public interface IUnit
     {
-        event Action<IUnit> OnDeath;
-        IUnitModel Model { get; }  
-        GameObject Object { get; }
         UnitType UnitType { get; }
+        IUnitModel Model { get; }  
+        event Action<IUnit> OnDeath;
         public void Init(IUnitModel model);
         public void Kill();
     }

@@ -5,13 +5,15 @@ using UnityEngine;
 
 namespace Survivors.Units.Component.Health
 {
-    public class UnitWithHealth : MonoBehaviour, IUnitInitializable, IDamageable
+    public class UnitWithHealth : MonoBehaviour, IUnitInitializable, IDamageable, IHealthBarOwner
     {
         private HealthModel _healthModel;
         private ReactiveProperty<float> _currentHealth;
-        public IObservable<float> CurrentValue => _currentHealth;
+        
         public int MaxValue => _healthModel.MaxHealth;
+        public IObservable<float> CurrentValue => _currentHealth;
         public bool DamageEnabled { get; set; }
+        
         public event Action OnDeath;
         public event Action OnDamageTaken;
         
