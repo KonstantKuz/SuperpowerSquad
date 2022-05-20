@@ -25,7 +25,7 @@ using Survivors.Location.Service;
         [Inject]
         private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
 
-        public void LoadPlayerUnit(string unitId)
+        public void CreatePlayerUnit(string unitId)
         {
             var unitObj = _worldObjectFactory.CreateObject(unitId);
             var unit = unitObj.GetComponentInChildren<Unit>()

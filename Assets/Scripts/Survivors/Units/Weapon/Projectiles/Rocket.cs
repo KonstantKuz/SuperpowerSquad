@@ -87,7 +87,7 @@ namespace Survivors.Units.Weapon.Projectiles
 
         private void Explode(Vector3 pos)
         {
-            Explosion.Explode(_objectFactory, _explosion, pos, Params.DamageRadius, TargetType, HitCallback);
+            Explosion.Create(_objectFactory, _explosion, pos, Params.DamageRadius, TargetType, HitCallback);
             Destroy();
         }
 
