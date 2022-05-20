@@ -45,6 +45,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _barrel: {fileID: 1143356745896943787}
   _ammo: {fileID: 460837788804016623, guid: ee9d5b56f51a94240abb3f70fb881720, type: 3}
+  _angleBetweenShots: 3
 --- !u!1 &3254496561695502929
 GameObject:
   m_ObjectHideFlags: 0

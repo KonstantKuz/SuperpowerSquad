@@ -3,6 +3,7 @@ using Survivors.Location.Service;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles;
 using UnityEngine;
+using UnityEngine.Assertions;
 using Zenject;
 
 namespace Survivors.Units.Weapon
@@ -13,6 +14,8 @@ namespace Survivors.Units.Weapon
         private Transform _barrel;
         [SerializeField]
         private Projectile _ammo;
+        [SerializeField] 
+        private float _angleBetweenShots;
         [Inject]
         private WorldObjectFactory _objectFactory;
 
@@ -20,10 +23,15 @@ namespace Survivors.Units.Weapon
 
         public override void Fire(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
-            var projectile = CreateProjectile();
+            Assert.IsNotNull(projectileParams);
             var rotationToTarget = GetShootRotation(_barrelPos, target.Center.position);
-            projectile.transform.SetPositionAndRotation(_barrelPos, rotationToTarget);
-            projectile.Launch(target, projectileParams, hitCallback);
+            for (int i = 0; i < projectileParams.Count; i++)
+            {
+                var projectile = CreateProjectile();
+                var rotation = rotationToTarget * Quaternion.Euler(0, _angleBetweenShots * (0.5f - 0.5f * projectileParams.Count + i), 0);
+                projectile.transform.SetPositionAndRotation(_barrelPos, rotation);
+                projectile.Launch(target, projectileParams, hitCallback);
+            }
         }
 
         private static Quaternion GetShootRotation(Vector3 shootPos, Vector3 targetPos)

@@ -4,5 +4,6 @@
     {
         public float Speed;
         public float DamageRadius;
+        public int Count;
     }
 }
