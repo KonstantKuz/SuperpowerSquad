@@ -17,8 +17,6 @@ namespace Survivors.Units
         private IUnitDeathEventReceiver[] _deathEventReceivers;
       
         public IUnitModel Model { get; private set; }
-        public GameObject GameObject => gameObject;
-
         public Action<IUnit> OnDeath { get; set; }
 
         public void Init(IUnitModel model)
