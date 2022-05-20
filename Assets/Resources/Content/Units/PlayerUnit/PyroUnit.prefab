@@ -58,7 +58,7 @@ PrefabInstance:
     - target: {fileID: 3502657725538741023, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 22100000, guid: 1ea40f09dcf34094fba271406d790b48, type: 2}
+      objectReference: {fileID: 22100000, guid: 56b99f9fd51f66c4d847482565484f9e, type: 2}
     - target: {fileID: 3502657726139544785, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
@@ -73,7 +73,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6901569034813441397, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
       propertyPath: _attackAnimationName
-      value: Gunplay
+      value: PyroAttack
       objectReference: {fileID: 0}
     - target: {fileID: 8559560586870761238, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
       propertyPath: m_IsActive
