@@ -5,8 +5,11 @@ using Zenject;
 using EasyButtons;
 using Feofun.Config;
 using Feofun.Modifiers;
+using Feofun.Modifiers.Config;
+using LegionMaster.Extension;
 using Survivors.Squad.Formation;
 using Survivors.Units;
+using Survivors.Units.Modifiers;
 using Survivors.Units.Player.Config;
 using Survivors.Units.Service;
 
@@ -25,6 +28,8 @@ namespace Survivors.Squad
         [Inject] private UnitFactory _unitFactory;
         [Inject] private SquadConfig _squadConfig;
         [Inject] private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
+        [Inject] private StringKeyedConfigCollection<ParameterUpgradeConfig> _modifierConfigs;
+        [Inject] private ModifierFactory _modifierFactory;
 
         private void Awake()
         {
@@ -59,6 +64,15 @@ namespace Survivors.Squad
             Assert.IsTrue(_units.Count > 0);
             var nextUnit = _playerUnitConfigs.Values[_units.Count % _playerUnitConfigs.Values.Count];
             _unitFactory.CreatePlayerUnit(nextUnit.Id);
+        }
+
+        // This is test function. Remove later
+        public void AddRandomUpgrade()
+        {
+            var modifierId = _modifierConfigs.Keys.Random();
+            var modifier = _modifierFactory.Create(_modifierConfigs.Get(modifierId).ModifierConfig);
+            Debug.Log($"Adding modifier {modifierId}");
+            AddModifier(modifier);
         }
 
         [Button]
