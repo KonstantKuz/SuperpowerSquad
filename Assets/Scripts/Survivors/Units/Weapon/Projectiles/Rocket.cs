@@ -9,26 +9,37 @@ namespace Survivors.Units.Weapon.Projectiles
 {
     public sealed class Rocket : Projectile
     {
-        [SerializeField] 
-        private bool _followTarget;
-        [SerializeField] 
-        private float _rotationSpeed;
-        [SerializeField] 
-        private float _maxLifeTime;
-        [SerializeField]
-        private Explosion _explosion;
-        [SerializeField] 
-        private float _selfExplodeRange;
-        [SerializeField] 
-        private float _initialCourseTime;
-        
-        [Inject]
-        private WorldObjectFactory _objectFactory;
+        [SerializeField] private bool _followTarget;
 
-        private ITarget _target;
+        [SerializeField] private float _rotationSpeed;
+
+        [SerializeField] private float _maxLifeTime;
+
+        [SerializeField] private Explosion _explosion;
+
+        [SerializeField] private float _selfExplodeRange;
+
+        [SerializeField] private float _initialCourseTime;
+
         private Vector3 _lastTargetPos;
 
+        [Inject] private WorldObjectFactory _objectFactory;
+
+        private ITarget _target;
+
         private float TimeLeft { get; set; }
+
+        private float LifeTime => _maxLifeTime - TimeLeft;
+
+        private void Update()
+        {
+            UpdateTargetPos();
+            UpdatePosition();
+
+            TimeLeft -= Time.deltaTime;
+            if (TimeLeft <= 0 || Vector3.Distance(transform.position, _lastTargetPos) < _selfExplodeRange)
+                Explode(transform.position);
+        }
 
         public override void Launch(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
@@ -47,24 +58,10 @@ namespace Survivors.Units.Weapon.Projectiles
             }
 
             if (_target == target) return;
-            if (_target != null)
-            {
-                ClearTarget();
-            }
-            
+            if (_target != null) ClearTarget();
+
             _target = target;
             _target.OnTargetInvalid += ClearTarget;
-        }
-
-        private void Update()
-        {
-            UpdateTargetPos();
-            UpdatePosition();
-            
-            TimeLeft -= Time.deltaTime;
-            if (TimeLeft <= 0 || Vector3.Distance(transform.position, _lastTargetPos) < _selfExplodeRange) {
-                Explode(transform.position);
-            }
         }
 
         private void UpdateTargetPos()
@@ -85,12 +82,11 @@ namespace Survivors.Units.Weapon.Projectiles
             }
         }
 
-        private float LifeTime => _maxLifeTime - TimeLeft;
-
         protected override void TryHit(GameObject target, Vector3 hitPos, Vector3 collisionNorm)
         {
             Explode(hitPos);
         }
+
         private void Explode(Vector3 pos)
         {
             Explosion.Explode(_objectFactory, _explosion, pos, Params.DamageRadius, TargetType, HitCallback);
@@ -106,10 +102,7 @@ namespace Survivors.Units.Weapon.Projectiles
 
         private void ClearTarget()
         {
-            if (_target != null)
-            {
-                _target.OnTargetInvalid -= ClearTarget;
-            }
+            if (_target != null) _target.OnTargetInvalid -= ClearTarget;
             _target = null;
         }
     }
