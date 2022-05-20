@@ -6,7 +6,7 @@ namespace Feofun.Modifiers.Config
     public class ModifierConfig
     {
         [DataMember(Name = "Modifier")]
-        private ModifierType _modifier;
+        private string _modifier;
 
         [DataMember(Name = "ParameterName")]
         private string _parameterName;
@@ -17,7 +17,7 @@ namespace Feofun.Modifiers.Config
         [DataMember(Name = "Target")]
         private ModifierTarget _target;
 
-        public ModifierType Modifier => _modifier;
+        public string Modifier => _modifier;
 
         public string ParameterName => _parameterName;
 

@@ -1,9 +1,8 @@
 using SuperMaxim.Messaging;
 using Survivors.EnemySpawn;
 using Survivors.Location;
-using Survivors.Squad;
 using Survivors.Units;
-
+using Survivors.Units.Modifiers;
 using UnityEngine;
 using Zenject;
 
@@ -32,6 +31,7 @@ namespace Survivors.App
 
             _worldServicesInstaller.Install(Container);
             Container.Bind<EnemyWavesSpawner>().FromInstance(_enemyWavesSpawner);
+            ModifiersInstaller.Install(Container);
         }
     }
 }

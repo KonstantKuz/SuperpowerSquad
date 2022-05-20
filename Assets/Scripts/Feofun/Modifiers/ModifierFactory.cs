@@ -1,18 +1,26 @@
 ﻿using System;
+using System.Collections.Generic;
 using Feofun.Modifiers.Config;
 
 namespace Feofun.Modifiers
 {
-    public static class ModifierFactory
+    public class ModifierFactory
     {
-        public static IModifier Create(ModifierConfig modifierCfg)
+        private readonly Dictionary<string, Func<ModifierConfig, IModifier>> _factoryMethods = 
+            new Dictionary<string, Func<ModifierConfig, IModifier>>();
+
+        public void Register(string name, Func<ModifierConfig, IModifier> factoryMethod)
         {
-            return modifierCfg.Modifier switch
+            _factoryMethods[name] = factoryMethod;
+        }
+        public IModifier Create(ModifierConfig modifierCfg)
+        {
+            if (!_factoryMethods.ContainsKey(modifierCfg.Modifier))
             {
-                ModifierType.AddValue => new AddValueModifier(modifierCfg.ParameterName, modifierCfg.Value),
-                ModifierType.AddPercent => new AddPercentModifier(modifierCfg.ParameterName, modifierCfg.Value),
-                _ => throw new ArgumentOutOfRangeException($"Unsupported modifier type {modifierCfg.Modifier}")
-            };
+                throw new Exception($"no modifier factory registered for modifier {modifierCfg.Modifier}");
+            }
+
+            return _factoryMethods[modifierCfg.Modifier].Invoke(modifierCfg);
         }
     }
 }
