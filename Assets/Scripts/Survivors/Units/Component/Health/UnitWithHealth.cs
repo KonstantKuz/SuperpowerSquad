@@ -1,5 +1,5 @@
 ﻿using System;
-using Survivors.Units.Enemy.Model;
+using Feofun.Extension;
 using Survivors.Units.Model;
 using UniRx;
 using UnityEngine;
@@ -10,8 +10,9 @@ namespace Survivors.Units.Component.Health
     {
         private IHealthModel _healthModel;
         private ReactiveProperty<float> _currentHealth;
+        private IDisposable _disposable;
         
-        public float MaxValue => _healthModel.MaxHealth;
+        public float MaxValue => _healthModel.MaxHealth.Value;
         public IObservable<float> CurrentValue => _currentHealth;
         public bool DamageEnabled { get; set; }
         
@@ -21,8 +22,9 @@ namespace Survivors.Units.Component.Health
         public void Init(IUnit unit)
         {
             _healthModel = unit.Model.HealthModel;
-            _currentHealth = new FloatReactiveProperty(_healthModel.MaxHealth);
+            _currentHealth = new FloatReactiveProperty(_healthModel.MaxHealth.Value);
             DamageEnabled = true;
+            _disposable = _healthModel.MaxHealth.Diff().Subscribe(OnMaxHealthChanged);
         }
         
         public void TakeDamage(float damage)
@@ -56,6 +58,8 @@ namespace Survivors.Units.Component.Health
         {
             OnDeath = null;
             OnDamageTaken = null;
+            _disposable?.Dispose();
+            _disposable = null;
         }
         
         private void LogDamage(float damage)
@@ -64,6 +68,11 @@ namespace Survivors.Units.Component.Health
             Debug.Log($"Damage: -" + damage + " CurrentHealth: " + _currentHealth.Value + " GameObj:= " + gameObject.name);
 #endif            
         }
-    
+
+        private void OnMaxHealthChanged(float delta)
+        {
+            if (delta < 0) return;
+            ChangeHealth(delta);
+        }
     }
 }

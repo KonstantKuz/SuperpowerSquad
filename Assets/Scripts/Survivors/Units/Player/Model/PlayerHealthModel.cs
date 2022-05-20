@@ -1,6 +1,7 @@
 ﻿using Feofun.Modifiers;
 using Survivors.Units.Model;
 using Survivors.Units.Modifiers;
+using UniRx;
 
 namespace Survivors.Units.Player.Model
 {
@@ -13,6 +14,6 @@ namespace Survivors.Units.Player.Model
             _maxHealth = new FloatModifiableParameter(Parameters.HEALTH, maxHealth, parameterOwner);
         }
 
-        public float MaxHealth => _maxHealth.Value;
+        public IReadOnlyReactiveProperty<float> MaxHealth => _maxHealth.ReactiveValue;
     }
 }
