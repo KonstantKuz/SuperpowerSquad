@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7789061370550061189}
   - component: {fileID: 7719168980779158545}
   m_Layer: 10
-  m_Name: PyroCharge
+  m_Name: FireBeam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3f4b488b912d2a46b805e34201c024a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _objectId: PyroCharge
+  _objectId: FireBeam
   _objectType: 0
 --- !u!114 &7719168980779158545
 MonoBehaviour:

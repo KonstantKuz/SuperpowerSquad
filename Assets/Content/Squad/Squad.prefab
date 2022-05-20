@@ -118,7 +118,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8200542041956235311}
   - component: {fileID: 1404112492156379236}
-  - component: {fileID: 1437979601831476072}
   m_Layer: 0
   m_Name: Squad
   m_TagString: Untagged
@@ -155,16 +154,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _unitSpeedScale: 1.2
   _unitSize: 1.5
---- !u!114 &1437979601831476072
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7626070557693701769}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3904fda15694c55b18fbfbf180efa03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _distanceToObject: 25

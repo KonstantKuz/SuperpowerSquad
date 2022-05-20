@@ -10,11 +10,10 @@ namespace Survivors.Units.Weapon.Projectiles
     public abstract class Projectile : MonoBehaviour
     {
         protected Action<GameObject> HitCallback;
-        protected UnitType TargetType;   
+        protected UnitType TargetType;
         protected ProjectileParams Params;
         protected float Speed => Params.Speed;
-  
-        
+
         public virtual void Launch(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             Assert.IsNotNull(target);
@@ -22,6 +21,7 @@ namespace Survivors.Units.Weapon.Projectiles
             TargetType = target.UnitType;
             Params = projectileParams;
         }
+
         private void OnCollisionEnter(Collision other)
         {
             var colliderTarget = other.collider.GetComponent<ITarget>();
@@ -41,28 +41,31 @@ namespace Survivors.Units.Weapon.Projectiles
         protected virtual void TryHit(GameObject target, Vector3 hitPos, Vector3 collisionNorm)
         {
             HitCallback?.Invoke(target);
-            TryHitTargetsInRadius(target);
+            TryHitTargetsInRadius(target.transform.position, Params.DamageRadius, TargetType, target, HitCallback);
         }
-
-        private void TryHitTargetsInRadius(GameObject excludedTarget)
+        public static void TryHitTargetsInRadius(Vector3 hitPosition,
+                                                 float damageRadius,
+                                                 UnitType targetType,
+                                                 GameObject excludedTarget,
+                                                 Action<GameObject> hitCallback)
         {
-            var hits = GetHits(Params.DamageRadius, TargetType);
+            var hits = GetHits(hitPosition, damageRadius, targetType);
             foreach (var hit in hits) {
                 if (hit.gameObject == excludedTarget) {
                     continue;
                 }
                 if (hit.TryGetComponent(out IDamageable damageable)) {
-                    HitCallback?.Invoke(hit.gameObject);
+                    hitCallback?.Invoke(hit.gameObject);
                 }
             }
         }
-        private Collider[] GetHits(float damageRadius, UnitType targetType)
-        {
-            var hits = Physics.OverlapSphere(transform.position, damageRadius);
-            return hits.Where(go => go.GetComponent<ITarget>() != null && go.GetComponent<ITarget>().IsAlive
-                                    && go.GetComponent<ITarget>().UnitType == targetType).ToArray();
-        }
-        
 
+        private static Collider[] GetHits(Vector3 hitPosition, float damageRadius, UnitType targetType)
+        {
+            var hits = Physics.OverlapSphere(hitPosition, damageRadius);
+            return hits.Where(go => go.GetComponent<ITarget>() != null && go.GetComponent<ITarget>().IsAlive
+                                    && go.GetComponent<ITarget>().UnitType == targetType)
+                       .ToArray();
+        }
     }
 }
