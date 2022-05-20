@@ -1,4 +1,5 @@
-﻿using Survivors.Units.Enemy.Config;
+﻿using Feofun.Modifiers;
+using Survivors.Units.Enemy.Config;
 using Survivors.Units.Model;
 
 namespace Survivors.Units.Enemy.Model
@@ -16,6 +17,11 @@ namespace Survivors.Units.Enemy.Model
             MoveSpeed = config.MoveSpeed;
             HealthModel = new HealthModel(config.Health);
             AttackModel = new EnemyAttackModel(config.EnemyAttackConfig);
+        }
+
+        public void AddModifier(IModifier modifier)
+        {
+            //do nothing
         }
     }
 }

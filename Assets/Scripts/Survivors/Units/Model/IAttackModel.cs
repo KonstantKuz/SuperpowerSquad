@@ -4,6 +4,6 @@ namespace Survivors.Units.Model
     {
         float TargetSearchRadius { get; }
         float AttackDistance { get; }
-        int AttackDamage { get; } 
+        float AttackDamage { get; } 
     }
 }

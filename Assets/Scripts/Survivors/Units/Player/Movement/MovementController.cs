@@ -68,7 +68,7 @@ namespace Survivors.Units.Player.Movement
         public void OnDeath()
         {
             Stop();
-            _currentSquad.RemoveUnit(this);
+            _currentSquad.RemoveUnit(GetComponent<Unit>());
         }
         
         private void Stop()

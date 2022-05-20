@@ -4,9 +4,10 @@ using UnityEngine.Assertions;
 using Zenject;
 using EasyButtons;
 using Feofun.Config;
+using Feofun.Modifiers;
 using Survivors.Squad.Formation;
+using Survivors.Units;
 using Survivors.Units.Player.Config;
-using Survivors.Units.Player.Movement;
 using Survivors.Units.Service;
 
 namespace Survivors.Squad
@@ -17,7 +18,7 @@ namespace Survivors.Squad
         [SerializeField] private float _unitSize;
 
         private SquadDestination _destination;
-        private readonly List<MovementController> _units = new List<MovementController>();
+        private readonly List<Unit> _units = new List<Unit>();
         private readonly ISquadFormation _formation = new CircleFormation();
 
         [Inject] private Joystick _joystick;
@@ -31,17 +32,22 @@ namespace Survivors.Squad
             SetUnitPositions();
         }
         
-        public void AddUnit(MovementController unit)
+        public void AddUnit(Unit unit)
         {
             unit.transform.SetParent(transform);
             unit.transform.position = GetSpawnPosition();
-            unit.Init(this, _squadConfig.Params.Speed * _unitSpeedScale);
+            unit.MovementController.Init(this, _squadConfig.Params.Speed * _unitSpeedScale);
             _units.Add(unit);
         }
 
-        public void RemoveUnit(MovementController unit)
+        public void RemoveUnit(Unit unit)
         {
             _units.Remove(unit);
+        }
+
+        public void AddModifier(IModifier modifier)
+        {
+            _units.ForEach(unit => unit.AddModifier(modifier));
         }
 
         [Button]
@@ -94,7 +100,7 @@ namespace Survivors.Squad
         {
             for (int unitIdx = 0; unitIdx < _units.Count; unitIdx++)
             {
-                _units[unitIdx].MoveTo(GetUnitPosition(unitIdx));
+                _units[unitIdx].MovementController.MoveTo(GetUnitPosition(unitIdx));
             }
         }
 
