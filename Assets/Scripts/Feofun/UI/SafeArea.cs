@@ -9,19 +9,19 @@ namespace Feofun.UI
         private void Awake()
         {
             var rectTransform = GetComponent<RectTransform>();
-            var safeArea = Screen.safeArea;
+            var safeArea = UnityEngine.Screen.safeArea;
             if (_enableBottomSafeArea)
             {
                 rectTransform.anchorMin = new Vector2(
-                safeArea.xMin / Screen.width,
-                safeArea.yMin / Screen.height);
+                safeArea.xMin / UnityEngine.Screen.width,
+                safeArea.yMin / UnityEngine.Screen.height);
             }
 
             if (_enableTopSafeArea)
             {
                 rectTransform.anchorMax = new Vector2(
-                    safeArea.xMax / Screen.width,
-                    safeArea.yMax / Screen.height);
+                    safeArea.xMax / UnityEngine.Screen.width,
+                    safeArea.yMax / UnityEngine.Screen.height);
             }
         }
     }

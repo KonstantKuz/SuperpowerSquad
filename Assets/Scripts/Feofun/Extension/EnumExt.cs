@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Random = UnityEngine.Random;
 
-namespace LegionMaster.Extension
+namespace Feofun.Extension
 {
     public static class EnumExt
     {

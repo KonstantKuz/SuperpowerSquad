@@ -1,6 +1,7 @@
 using Feofun.App.Init;
+using Feofun.UI.Screen;
 using JetBrains.Annotations;
-using Survivors.Session;
+using Survivors.UI.Screen.World;
 using Zenject;
 
 namespace Survivors.App
@@ -8,7 +9,9 @@ namespace Survivors.App
     [PublicAPI]
     public class StartGameInitStep : AppInitStep
     {
-        [Inject] private SessionService _sessionService;
+        [Inject]
+        private ScreenSwitcher _screenSwitcher;
+        
         
         public StartGameInitStep()
         {
@@ -16,7 +19,7 @@ namespace Survivors.App
 
         protected override void Run()
         {
-            _sessionService.Start();
+            _screenSwitcher.SwitchTo(WorldScreen.ID.ToString());
             Next();
         }
     }
