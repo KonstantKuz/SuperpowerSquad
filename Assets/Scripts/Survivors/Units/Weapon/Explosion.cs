@@ -12,7 +12,7 @@ namespace Survivors.Units.Weapon
         [SerializeField]
         private ParticleSystem[] _particles;
 
-        private void Explode(float damageRadius, UnitType targetType, Action<GameObject> hitCallback)
+        private void Create(float damageRadius, UnitType targetType, Action<GameObject> hitCallback)
         {
             PlayParticles();
             var hits = GetHits(damageRadius, targetType);
@@ -49,7 +49,7 @@ namespace Survivors.Units.Weapon
             }
         }
 
-        public static void Explode(WorldObjectFactory objectFactory, 
+        public static void Create(WorldObjectFactory objectFactory, 
             Explosion prefab, 
             Vector3 pos,
             float radius, 
@@ -58,7 +58,7 @@ namespace Survivors.Units.Weapon
         {
             var explosion = objectFactory.CreateObject(prefab.gameObject).GetComponent<Explosion>();
             explosion.transform.position = pos;
-            explosion.Explode(radius, targetType, hitCallback);            
+            explosion.Create(radius, targetType, hitCallback);            
         }
     }
 }
