@@ -31,7 +31,7 @@ namespace Survivors.Loot.Service
             var lootConfig = _droppingLoots.Values.FirstOrDefault(it => it.EnemyId == unit.Model.Id);
             var dropChance = lootConfig.DropChance;
 
-            if (Random.value < dropChance)
+            if (Random.value > dropChance)
             {
                 return;
             }
