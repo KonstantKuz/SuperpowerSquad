@@ -30,9 +30,14 @@ namespace Survivors.Units.Weapon
         private Collider[] GetHits(float damageRadius, UnitType targetType)
         {
             var hits = Physics.OverlapSphere(transform.position, damageRadius);
-            return hits.Where(go => go.GetComponent<ITarget>() != null && go.GetComponent<ITarget>().IsAlive
-                                    && go.GetComponent<ITarget>().UnitType == targetType)
+            return hits.Where(hit => IsAliveEnemy(targetType, hit))
                        .ToArray();
+        }
+
+        private static bool IsAliveEnemy(UnitType targetType, Collider collider)
+        {
+            var target = collider.GetComponent<ITarget>();
+            return target is { IsAlive: true } && target.UnitType == targetType;
         }
 
         private void DamageHits(Collider[] hits, Action<GameObject> hitCallback)
