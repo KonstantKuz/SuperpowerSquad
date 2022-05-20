@@ -1,5 +1,6 @@
 using System.Runtime.Serialization;
 using Feofun.Config;
+using Survivors.Loot.Config;
 
 namespace Survivors.Units.Enemy.Config
 {
@@ -7,16 +8,15 @@ namespace Survivors.Units.Enemy.Config
     {
         [DataMember(Name = "Id")] 
         private string _id;
-        [DataMember(Name = "Health")] 
-        private int _health;
-        [DataMember(Name = "MoveSpeed")] 
-        private float _moveSpeed;
+
+        public string Id => _id; 
         [DataMember] 
-        private EnemyAttackConfig _enemyAttackConfig;
-        
-        public string Id => _id;
-        public int Health => _health;
-        public float MoveSpeed => _moveSpeed;
-        public EnemyAttackConfig EnemyAttackConfig => _enemyAttackConfig;
+        public int Health;
+        [DataMember] 
+        public float MoveSpeed;
+        [DataMember] 
+        public EnemyAttackConfig EnemyAttackConfig;
+        [DataMember] 
+        public DroppingLootConfig DroppingLootConfig;
     }
 }

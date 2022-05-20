@@ -4,6 +4,7 @@ using UnityEngine.Assertions;
 using Zenject;
 using EasyButtons;
 using Feofun.Config;
+using Survivors.Squad.Config;
 using Survivors.Squad.Formation;
 using Survivors.Units.Player.Config;
 using Survivors.Units.Player.Movement;
