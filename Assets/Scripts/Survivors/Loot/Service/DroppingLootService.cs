@@ -1,9 +1,11 @@
+using System;
 using System.Linq;
 using Feofun.Config;
 using Survivors.Location;
 using Survivors.Location.Service;
 using Survivors.Loot.Config;
 using Survivors.Session;
+using Survivors.Squad.Service;
 using Survivors.Units;
 using Survivors.Units.Service;
 using Zenject;
@@ -14,6 +16,7 @@ namespace Survivors.Loot.Service
     public class DroppingLootService : IWorldCleanUp
     {
         [Inject] private World _world;
+        [Inject] private SquadUpgradeService _squadUpgradeService;
         [Inject] private UnitService _unitService;
         [Inject] private WorldObjectFactory _worldObjectFactory;
         [Inject] private StringKeyedConfigCollection<DroppingLootConfig> _droppingLoots;
@@ -41,7 +44,14 @@ namespace Survivors.Loot.Service
 
         public void OnLootCollected(DroppingLootConfig collectedLoot)
         {
-            
+            switch (collectedLoot.Type)
+            {
+                case DroppingLootType.Exp:
+                    _squadUpgradeService.AddExp(collectedLoot.Amount);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
         
         public void OnWorldCleanUp()
