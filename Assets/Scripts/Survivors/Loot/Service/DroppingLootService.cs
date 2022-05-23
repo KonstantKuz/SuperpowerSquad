@@ -38,7 +38,7 @@ namespace Survivors.Loot.Service
             
             var dropChance = lootConfig.DropChance;
 
-            if (GetChance(dropChance))
+            if (Random.value > dropChance)
             {
                 return;
             }
