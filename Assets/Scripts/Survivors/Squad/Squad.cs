@@ -27,8 +27,7 @@ namespace Survivors.Squad
         [Inject] private UnitFactory _unitFactory;
         [Inject] private SquadConfig _squadConfig;
         [Inject] private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
-        [Inject] private StringKeyedConfigCollection<ParameterUpgradeConfig> _modifierConfigs;
-        [Inject] private ModifierFactory _modifierFactory;
+        public IEnumerable<Unit> Units => _units;
 
         private void Awake()
         {
@@ -71,15 +70,6 @@ namespace Survivors.Squad
             Assert.IsTrue(_units.Count > 0);
             var nextUnit = _playerUnitConfigs.Values[_units.Count % _playerUnitConfigs.Values.Count];
             _unitFactory.CreatePlayerUnit(nextUnit.Id);
-        }
-
-        // This is test function. Remove later
-        public void AddRandomUpgrade()
-        {
-            var modifierId = _modifierConfigs.Keys.Random();
-            var modifier = _modifierFactory.Create(_modifierConfigs.Get(modifierId).ModifierConfig);
-            Debug.Log($"Adding modifier {modifierId}");
-            AddModifier(modifier);
         }
 
         [Button]

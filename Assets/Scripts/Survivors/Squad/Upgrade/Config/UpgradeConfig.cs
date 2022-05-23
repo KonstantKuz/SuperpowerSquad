@@ -7,6 +7,6 @@ namespace Survivors.Squad.Upgrade
         [DataMember]
         public UpgradeType Type;
         [DataMember]
-        public string UpgradeId;
+        public string UpgradeId; //TODO: конфликтует по смыслу с upgrade.Id
     }
 }
