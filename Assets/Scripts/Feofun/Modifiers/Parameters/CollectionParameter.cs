@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Feofun.Modifiers
+namespace Feofun.Modifiers.Parameters
 {
     public class CollectionParameter<T> : IModifiableParameter
     {
@@ -13,7 +13,7 @@ namespace Feofun.Modifiers
         public CollectionParameter(string name, IEnumerable<T> initialValue, IModifiableParameterOwner owner, bool isSet = false)
         {
             Name = name;
-            InitialValue = CreateContainer(initialValue, isSet);
+            InitialValue = CreateCollection(initialValue, isSet);
             _value = InitialValue;
             owner.AddParameter(this);
         }
@@ -28,7 +28,7 @@ namespace Feofun.Modifiers
             _value = InitialValue;
         }
 
-        private static ICollection<T> CreateContainer(IEnumerable<T> initialValue, bool isSet)
+        private static ICollection<T> CreateCollection(IEnumerable<T> initialValue, bool isSet)
         {
             return isSet ? (ICollection<T>) new HashSet<T>(initialValue) : new List<T>(initialValue);
         }

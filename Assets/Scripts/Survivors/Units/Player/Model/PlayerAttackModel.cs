@@ -1,4 +1,5 @@
 ﻿using Feofun.Modifiers;
+using Feofun.Modifiers.Parameters;
 using Survivors.Units.Model;
 using Survivors.Units.Modifiers;
 using Survivors.Units.Player.Config;

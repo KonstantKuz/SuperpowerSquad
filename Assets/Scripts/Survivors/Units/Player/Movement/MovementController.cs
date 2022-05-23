@@ -20,7 +20,6 @@ namespace Survivors.Units.Player.Movement
         [SerializeField]
         private float _rotationSpeed = 10;
 
-        private Squad.Squad _currentSquad;
         private NavMeshAgent _agent;
         private Animator _animator;
         private NavMeshAgent Agent => _agent ??= GetComponent<NavMeshAgent>();
@@ -39,10 +38,9 @@ namespace Survivors.Units.Player.Movement
             UpdateAnimationRotateValues();
         }
 
-        public void Init(Squad.Squad squad, float speed)
+        public void Init(float speed)
         {
             Agent.speed = speed;
-            _currentSquad = squad;
         }
 
         public void MoveTo(Vector3 destination)
@@ -68,7 +66,6 @@ namespace Survivors.Units.Player.Movement
         public void OnDeath()
         {
             Stop();
-            _currentSquad.RemoveUnit(GetComponent<Unit>());
         }
         
         private void Stop()

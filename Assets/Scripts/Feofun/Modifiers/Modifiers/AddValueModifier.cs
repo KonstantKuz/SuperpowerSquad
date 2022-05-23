@@ -1,4 +1,6 @@
-﻿namespace Feofun.Modifiers
+﻿using Feofun.Modifiers.Parameters;
+
+namespace Feofun.Modifiers.Modifiers
 {
     public class AddValueModifier: IModifier
     {
