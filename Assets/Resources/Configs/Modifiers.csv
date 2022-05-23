@@ -1,6 +1,10 @@
 Id,Modifier,Target,ParameterName,Value
-AttackDamage,AddPercent,Friends,AttackDamage,10
-AttackTime,AddPercent,Friends,AttackTime,-10
-ProjectileSpeed,AddPercent,Friends,ProjectileSpeed,10
-Health,AddValue,Friends,Health,100
-DamageRadius,AddPercent,Friends,DamageRadius,10
+AttackDamageSelf10,AddValue,Self,AttackDamage,10
+AttackDamageSquad,AddPercent,Friends,AttackDamage,10
+HealthSelf100,AddValue,Self,Health,100
+HealthSelf200,AddValue,Self,Health,200
+ShotCountSelf,AddValue,Self,ShotCount,1
+AttackDistanceSelf1,AddValue,Self,AttackDistance,1
+HealthSquad,AddPercent,Friends,AttackTime,10
+AttackTimeSquad,AddPercent,Friends,AttackTime,-10
+ShotCountSquad,AddValue,Friends,ShotCount,1
