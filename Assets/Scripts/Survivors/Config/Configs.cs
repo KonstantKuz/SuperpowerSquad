@@ -8,5 +8,6 @@ namespace Survivors.Config
         public const string ENEMY_UNIT = "EnemyUnit";
         public const string SQUAD = "Squad";
         public const string MODIFIERS = "Modifiers";
+        public const string UPGRADES = "Upgrades";
     }
 }
