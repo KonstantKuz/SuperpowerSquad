@@ -30,16 +30,22 @@ namespace Survivors.Loot
             {
                 return;
             }
+            
+            MoveLoot(loot);
+        }
+
+        private void MoveLoot(DroppingLoot loot)
+        {
             var collectLootMove = loot.transform.DOMove(transform.position, _collectTime).SetEase(Ease.Linear);
             _movingLoots.Add(collectLootMove);
-            collectLootMove.onComplete += delegate
+            collectLootMove.onComplete = () =>
             {
                 _movingLoots.Remove(collectLootMove);
                 _lootService.OnLootCollected(loot.Config);
                 Destroy(loot.gameObject);
             };
         }
-
+        
         public void OnWorldCleanUp()
         {
             _movingLoots.ForEach(it => it.Kill());

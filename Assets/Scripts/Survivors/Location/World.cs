@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using EasyButtons;
 using Feofun.App;
@@ -27,16 +28,31 @@ namespace Survivors.Location
             plane.Raycast(withRay, out var intersectionDist);
             return withRay.GetPoint(intersectionDist);
         }
-        
+
         [Button]
         public void CleanUp()
         {
             var services = AppContext.Container.ResolveAll<IWorldCleanUp>();
             services.ForEach(it => it.OnWorldCleanUp());
-            var gameObjects = FindObjectsOfType<MonoBehaviour>().OfType<IWorldCleanUp>().Except(services);
+            var gameObjects = GetObjectComponents<IWorldCleanUp>().Except(services);
             gameObjects.ForEach(it => it.OnWorldCleanUp());
             
             _worldObjectFactory.DestroyAllObjects();
+        }
+
+        public List<T> GetObjectComponents<T>()
+        {
+            return GetObjects()
+                .Where(go => go.GetComponent<T>() != null)
+                .Select(go => go.GetComponent<T>())
+                .ToList();
+        }
+
+        public List<GameObject> GetObjects()
+        {
+            return GetComponentsInChildren<Transform>(true)
+                .Select(it => it.gameObject)
+                .ToList();
         }
     }
 }
