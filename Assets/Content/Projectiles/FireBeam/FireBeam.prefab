@@ -61,7 +61,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxLifeTime: 1.2
   _ratioHitTime: 0.25
-  _fireAngle: 20
+  _fireAngle: 30
 --- !u!1001 &5592065395139034600
 PrefabInstance:
   m_ObjectHideFlags: 0

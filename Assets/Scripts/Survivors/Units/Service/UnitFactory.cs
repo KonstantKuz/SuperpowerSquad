@@ -14,7 +14,7 @@ using Survivors.Location.Service;
     public class UnitFactory
     {
         private const string SIMPLE_ENEMY_ID = "SimpleEnemy";
-        public const string SIMPLE_PLAYER_ID = "PyroUnit";
+        public const string SIMPLE_PLAYER_ID = "StandardUnit";
 
         [Inject]
         private World _world;
