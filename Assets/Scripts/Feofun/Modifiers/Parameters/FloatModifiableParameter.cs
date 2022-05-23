@@ -1,7 +1,7 @@
 ﻿using UniRx;
 using UnityEngine;
 
-namespace Feofun.Modifiers
+namespace Feofun.Modifiers.Parameters
 {
     public class FloatModifiableParameter : IModifiableParameter
     {

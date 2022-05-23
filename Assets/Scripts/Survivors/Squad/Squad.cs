@@ -5,7 +5,6 @@ using Zenject;
 using EasyButtons;
 using Feofun.Config;
 using Feofun.Modifiers;
-using Feofun.Modifiers.Config;
 using LegionMaster.Extension;
 using Survivors.Squad.Formation;
 using Survivors.Units;
@@ -41,13 +40,21 @@ namespace Survivors.Squad
         {
             unit.transform.SetParent(transform);
             unit.transform.position = GetSpawnPosition();
-            unit.MovementController.Init(this, _squadConfig.Params.Speed * _unitSpeedScale);
+            unit.MovementController.Init(_squadConfig.Params.Speed * _unitSpeedScale);
+            unit.OnDeath += OnUnitDeath;
             _units.Add(unit);
+        }
+
+        private void OnUnitDeath(IUnit unit)
+        {
+            RemoveUnit(unit as Unit);
         }
 
         public void RemoveUnit(Unit unit)
         {
+            Assert.IsTrue(_units.Contains(unit));
             _units.Remove(unit);
+            unit.OnDeath -= OnUnitDeath;
         }
 
         public void AddModifier(IModifier modifier)

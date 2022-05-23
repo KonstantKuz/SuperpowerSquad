@@ -1,4 +1,5 @@
 ﻿using Feofun.Modifiers;
+using Feofun.Modifiers.Modifiers;
 using Zenject;
 
 namespace Survivors.Units.Modifiers
