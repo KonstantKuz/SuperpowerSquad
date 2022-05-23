@@ -8,6 +8,7 @@ using Survivors.Session;
 using Survivors.Squad.Service;
 using Survivors.Units;
 using Survivors.Units.Service;
+using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
 
@@ -29,9 +30,15 @@ namespace Survivors.Loot.Service
         public void TrySpawnLoot(IUnit unit)
         {
             var lootConfig = _droppingLoots.Values.FirstOrDefault(it => it.EnemyId == unit.Model.Id);
+            if (lootConfig == null)
+            {
+                Debug.LogWarning($"There is no loot config for enemy with id {unit.Model.Id}.");
+                return;
+            }
+            
             var dropChance = lootConfig.DropChance;
 
-            if (Random.value > dropChance)
+            if (GetChance(dropChance))
             {
                 return;
             }
@@ -40,6 +47,11 @@ namespace Survivors.Loot.Service
             var loot = _worldObjectFactory.CreateObject(lootId, _world.SpawnContainer).GetComponent<DroppingLoot>();
             loot.transform.position = unit.GameObject.transform.position;
             loot.Init(lootConfig);
+        }
+
+        private bool GetChance(float dropChance)
+        {
+            return Random.Range(0, 100) > dropChance * 100;
         }
 
         public void OnLootCollected(DroppingLootConfig collectedLoot)

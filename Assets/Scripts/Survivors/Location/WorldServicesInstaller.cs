@@ -19,7 +19,7 @@ namespace Survivors.Location
             container.Bind<World>().FromInstance(_world);
             container.BindInterfacesAndSelfTo<SessionService>().AsSingle();
             container.BindInterfacesAndSelfTo<EnemyWavesSpawner>().FromInstance(_enemyWavesSpawner);
-            container.Bind<DroppingLootService>().AsSingle();
+            container.BindInterfacesAndSelfTo<DroppingLootService>().AsSingle();
         }
     }
 }

@@ -9,15 +9,15 @@ namespace Survivors.Squad.Service
     public class SquadUpgradeService
     {
         private readonly SquadProgressRepository _repository;
-        private readonly StringKeyedConfigCollection<SquadLevelConfig> _levelStringKeyedConfig;
+        private readonly StringKeyedConfigCollection<SquadLevelConfig> _levelConfig;
 
         public SquadProgress Progress => _repository.Get() ?? new SquadProgress();
         
         public SquadUpgradeService(SquadProgressRepository repository, 
-                                     StringKeyedConfigCollection<SquadLevelConfig> levelStringKeyedConfig)
+                                     StringKeyedConfigCollection<SquadLevelConfig> levelConfig)
         {
             _repository = repository;
-            _levelStringKeyedConfig = levelStringKeyedConfig;
+            _levelConfig = levelConfig;
         }
 
         public void ResetProgress()
@@ -29,7 +29,7 @@ namespace Survivors.Squad.Service
         {
             Assert.IsTrue(amount >= 0, "Added amount of Exp should be non-negative");
             var progress = Progress;
-            progress.AddExp(amount, _levelStringKeyedConfig);
+            progress.AddExp(amount, _levelConfig);
             SetProgress(progress);
             Debug.Log($"Update progress! Level == {progress.Level} Exp == {progress.Exp}");
         }

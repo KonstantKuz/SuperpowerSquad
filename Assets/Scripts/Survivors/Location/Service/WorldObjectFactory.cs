@@ -10,7 +10,7 @@ using UniRx.Triggers;
 
 namespace Survivors.Location.Service
 {
-    public class WorldObjectFactory : MonoBehaviour, IWorldCleanUp
+    public class WorldObjectFactory : MonoBehaviour
     {
         private const string OBJECT_PREFABS_PATH_ROOT = "Content/";
 
@@ -66,7 +66,7 @@ namespace Survivors.Location.Service
             return _createdObjects.Where(go => go.GetComponent<T>() != null).Select(go => go.GetComponent<T>()).ToList();
         }
 
-        public void OnWorldCleanUp()
+        public void DestroyAllObjects()
         {
             foreach (var gameObject in _createdObjects) {
                 Destroy(gameObject);

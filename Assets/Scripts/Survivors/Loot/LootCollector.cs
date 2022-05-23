@@ -1,15 +1,20 @@
 ﻿using System;
+using System.Collections.Generic;
 using DG.Tweening;
 using Survivors.Loot.Service;
+using Survivors.Session;
 using Survivors.Squad.Config;
 using UnityEngine;
 using Zenject;
 
 namespace Survivors.Loot
 {
-    public class LootCollector : MonoBehaviour
+    public class LootCollector : MonoBehaviour, IWorldCleanUp
     {
+        [SerializeField] private float _collectTime;
         [SerializeField] private SphereCollider _collider;
+        
+        private List<Tween> _movingLoots = new List<Tween>();
         
         [Inject] private SquadConfig _squadConfig;
         [Inject] private DroppingLootService _lootService;
@@ -25,12 +30,19 @@ namespace Survivors.Loot
             {
                 return;
             }
-            var collectLootMove = loot.transform.DOMove(transform.position, 0.5f).SetEase(Ease.Linear);
+            var collectLootMove = loot.transform.DOMove(transform.position, _collectTime).SetEase(Ease.Linear);
+            _movingLoots.Add(collectLootMove);
             collectLootMove.onComplete += delegate
             {
+                _movingLoots.Remove(collectLootMove);
                 _lootService.OnLootCollected(loot.Config);
                 Destroy(loot.gameObject);
             };
+        }
+
+        public void OnWorldCleanUp()
+        {
+            _movingLoots.ForEach(it => it.Kill());
         }
     }
 }

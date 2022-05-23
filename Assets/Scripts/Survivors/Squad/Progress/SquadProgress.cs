@@ -9,7 +9,7 @@ namespace Survivors.Squad.Progress
         public int Level = 1;
         public int Exp;
 
-        public bool IsMaxLevel(StringKeyedConfigCollection<SquadLevelConfig> levels) => Level >= levels.Values.Count + 1;
+        public bool IsMaxLevel(StringKeyedConfigCollection<SquadLevelConfig> levels) => Level > levels.Values.Count;
 
         public int MaxExpForCurrentLevel(StringKeyedConfigCollection<SquadLevelConfig> levels) => CurrentLevelConfig(levels).ExpToNextLevel;
 
