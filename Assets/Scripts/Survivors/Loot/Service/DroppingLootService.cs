@@ -49,11 +49,6 @@ namespace Survivors.Loot.Service
             loot.Init(lootConfig);
         }
 
-        private bool GetChance(float dropChance)
-        {
-            return Random.Range(0, 100) > dropChance * 100;
-        }
-
         public void OnLootCollected(DroppingLootConfig collectedLoot)
         {
             switch (collectedLoot.Type)
