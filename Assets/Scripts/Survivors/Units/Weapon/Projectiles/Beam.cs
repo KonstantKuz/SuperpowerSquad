@@ -21,7 +21,6 @@ namespace Survivors.Units.Weapon.Projectiles
         protected ProjectileParams ProjectileParams;
         protected Transform Barrel;
         
-        private bool _hit;
         private float HitTime => _maxLifeTime * _ratioHitTime;
 
         public void Launch(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback, Transform barrel)
@@ -31,19 +30,17 @@ namespace Survivors.Units.Weapon.Projectiles
             HitCallback = hitCallback;
             Barrel = barrel;
             SetTarget(target); 
-            StartCoroutine(UpdateLifeTime());
+            StartCoroutine(Shoot());
         }
 
         private void SetTarget(ITarget target)
         {
-            if (Target != null) {
-                ClearTarget();
-            }
+            ClearTarget();
             Target = target;
             TargetType = target.UnitType;
             Target.OnTargetInvalid += ClearTarget;
         }
-        private IEnumerator UpdateLifeTime()
+        private IEnumerator Shoot()
         {
             yield return new WaitForSeconds(HitTime);
             TryHitTarget();
@@ -53,10 +50,6 @@ namespace Survivors.Units.Weapon.Projectiles
 
         private void TryHitTarget()
         {
-            if (_hit) {
-                return;
-            }
-            _hit = true;
             if (Target == null) {
                 return;
             }
@@ -81,7 +74,6 @@ namespace Survivors.Units.Weapon.Projectiles
         }
         private void Destroy()
         {
-            gameObject.SetActive(false);
             ClearTarget();
             HitCallback = null;
             Destroy(gameObject);

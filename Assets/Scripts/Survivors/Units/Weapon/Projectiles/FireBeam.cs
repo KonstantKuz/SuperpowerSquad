@@ -10,18 +10,14 @@ namespace Survivors.Units.Weapon.Projectiles
 
         protected override void TryHit(GameObject target)
         {
-            base.TryHit(target);
-            TryHitTargetsInCone(target);
+            TryHitTargetsInCone();
         }
 
-        private void TryHitTargetsInCone(GameObject excludedTarget)
+        private void TryHitTargetsInCone()
         {
             var hits = Projectile.GetHits(Barrel.position, ProjectileParams.AttackDistance, TargetType);
             foreach (var hit in hits) {
-                if (hit.gameObject == excludedTarget) {
-                    continue;
-                }
-                if (!IsTargetInsideCone(hit.transform.position, Barrel.position, Barrel.forward, _fireAngle, ProjectileParams.AttackDistance)) {
+                if (!IsTargetInsideCone(hit.transform.position, Barrel.position, Barrel.forward, _fireAngle)) {
                     continue;
                 }
                 if (hit.TryGetComponent(out IDamageable damageable)) {
@@ -29,13 +25,8 @@ namespace Survivors.Units.Weapon.Projectiles
                 }
             }
         }
-
-        private static bool IsTargetInsideCone(Vector3 target, Vector3 coneOrigin, Vector3 coneDirection, float maxAngle, float maxDistance)
+        private static bool IsTargetInsideCone(Vector3 target, Vector3 coneOrigin, Vector3 coneDirection, float maxAngle)
         {
-            var distanceToConeOrigin = (target - coneOrigin).magnitude;
-            if (distanceToConeOrigin > maxDistance) {
-                return false;
-            }
             var targetDirection = target - coneOrigin;
             var angle = Vector3.Angle(coneDirection, targetDirection);
             return angle <= maxAngle;

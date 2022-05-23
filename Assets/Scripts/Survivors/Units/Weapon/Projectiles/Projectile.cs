@@ -66,7 +66,7 @@ namespace Survivors.Units.Weapon.Projectiles
             var hits = Physics.OverlapSphere(position, damageRadius);
             return hits.Where(go => {
                            var target = go.GetComponent<ITarget>();
-                           return target != null && target.IsAlive && target.UnitType == targetType;
+                           return target.IsTargetValidAndAlive() && target.UnitType == targetType;
                        })
                        .ToArray();
         }
