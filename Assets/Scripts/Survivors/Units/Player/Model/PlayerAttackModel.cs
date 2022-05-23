@@ -44,6 +44,7 @@ namespace Survivors.Units.Player.Model
             return new ProjectileParams {
                     Speed = ProjectileSpeed,        
                     DamageRadius = DamageRadius,
+                    AttackDistance = AttackDistance,
             };
         }
     }

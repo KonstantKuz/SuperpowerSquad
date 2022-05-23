@@ -19,7 +19,7 @@ namespace Survivors.Session
 
         public void Start()
         {
-            _unitFactory.CreatePlayerUnit(UnitFactory.SIMPLE_PLAYER_ID);
+            _unitFactory.CreatePlayerUnit(UnitFactory.SIMPLE_PLAYER_ID); 
             _enemyWavesSpawner.StartSpawn(_enemyWavesConfig);
             _unitService.OnPlayerUnitDeath += OnPlayerUnitDeath;
         }
