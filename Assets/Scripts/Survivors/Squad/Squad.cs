@@ -4,9 +4,12 @@ using UnityEngine.Assertions;
 using Zenject;
 using EasyButtons;
 using Feofun.Config;
+using Feofun.Modifiers;
+using LegionMaster.Extension;
 using Survivors.Squad.Formation;
+using Survivors.Units;
+using Survivors.Units.Modifiers;
 using Survivors.Units.Player.Config;
-using Survivors.Units.Player.Movement;
 using Survivors.Units.Service;
 
 namespace Survivors.Squad
@@ -17,13 +20,15 @@ namespace Survivors.Squad
         [SerializeField] private float _unitSize;
 
         private SquadDestination _destination;
-        private readonly List<MovementController> _units = new List<MovementController>();
+        private readonly List<Unit> _units = new List<Unit>();
         private readonly ISquadFormation _formation = new CircleFormation();
 
         [Inject] private Joystick _joystick;
         [Inject] private UnitFactory _unitFactory;
         [Inject] private SquadConfig _squadConfig;
         [Inject] private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
+        [Inject] private StringKeyedConfigCollection<ParameterUpgradeConfig> _modifierConfigs;
+        [Inject] private ModifierFactory _modifierFactory;
 
         private void Awake()
         {
@@ -31,17 +36,30 @@ namespace Survivors.Squad
             SetUnitPositions();
         }
         
-        public void AddUnit(MovementController unit)
+        public void AddUnit(Unit unit)
         {
             unit.transform.SetParent(transform);
             unit.transform.position = GetSpawnPosition();
-            unit.Init(this, _squadConfig.Params.Speed * _unitSpeedScale);
+            unit.MovementController.Init(_squadConfig.Params.Speed * _unitSpeedScale);
+            unit.OnDeath += OnUnitDeath;
             _units.Add(unit);
         }
 
-        public void RemoveUnit(MovementController unit)
+        private void OnUnitDeath(IUnit unit)
         {
+            RemoveUnit(unit as Unit);
+        }
+
+        public void RemoveUnit(Unit unit)
+        {
+            Assert.IsTrue(_units.Contains(unit));
             _units.Remove(unit);
+            unit.OnDeath -= OnUnitDeath;
+        }
+
+        public void AddModifier(IModifier modifier)
+        {
+            _units.ForEach(unit => unit.AddModifier(modifier));
         }
 
         [Button]
@@ -53,6 +71,15 @@ namespace Survivors.Squad
             Assert.IsTrue(_units.Count > 0);
             var nextUnit = _playerUnitConfigs.Values[_units.Count % _playerUnitConfigs.Values.Count];
             _unitFactory.CreatePlayerUnit(nextUnit.Id);
+        }
+
+        // This is test function. Remove later
+        public void AddRandomUpgrade()
+        {
+            var modifierId = _modifierConfigs.Keys.Random();
+            var modifier = _modifierFactory.Create(_modifierConfigs.Get(modifierId).ModifierConfig);
+            Debug.Log($"Adding modifier {modifierId}");
+            AddModifier(modifier);
         }
 
         [Button]
@@ -94,7 +121,7 @@ namespace Survivors.Squad
         {
             for (int unitIdx = 0; unitIdx < _units.Count; unitIdx++)
             {
-                _units[unitIdx].MoveTo(GetUnitPosition(unitIdx));
+                _units[unitIdx].MovementController.MoveTo(GetUnitPosition(unitIdx));
             }
         }
 
