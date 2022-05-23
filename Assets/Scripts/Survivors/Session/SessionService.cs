@@ -1,7 +1,6 @@
 ﻿using SuperMaxim.Messaging;
 using Survivors.EnemySpawn;
 using Survivors.EnemySpawn.Config;
-using Survivors.Location;
 using Survivors.Session.Messages;
 using Survivors.Units;
 using Survivors.Units.Service;
