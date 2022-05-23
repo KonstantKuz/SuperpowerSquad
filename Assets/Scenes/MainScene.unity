@@ -421,6 +421,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2221336044384964254, guid: 35125c194a51b14489fcf91a7da5dd53, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 874950910}
+    - target: {fileID: 2221336044384964254, guid: 35125c194a51b14489fcf91a7da5dd53, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: AddRandomUpgrade
+      objectReference: {fileID: 0}
     - target: {fileID: 3514698043046846563, guid: 35125c194a51b14489fcf91a7da5dd53, type: 3}
       propertyPath: m_Name
       value: UI

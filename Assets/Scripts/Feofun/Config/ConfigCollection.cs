@@ -49,6 +49,7 @@ namespace Feofun.Config
         public TValue Find(TKey id) => Contains(id) ? _map[id] : default;
 
         public List<TValue> Values => _map.Values.ToList();
+        public List<TKey> Keys => _map.Keys.ToList();
 
         public IEnumerator<TValue> GetEnumerator()
         {

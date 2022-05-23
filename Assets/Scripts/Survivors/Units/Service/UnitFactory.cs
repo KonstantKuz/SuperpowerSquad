@@ -35,7 +35,7 @@ using Survivors.Location.Service;
 
         private void ConfigurePlayerUnit(Unit unit)
         {
-            _world.Squad.AddUnit(unit.GetComponent<MovementController>());
+            _world.Squad.AddUnit(unit);
             var config = _playerUnitConfigs.Get(unit.ObjectId);
             var model = new PlayerUnitModel(config);
             unit.Init(model);

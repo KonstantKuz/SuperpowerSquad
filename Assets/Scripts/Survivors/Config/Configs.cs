@@ -7,5 +7,6 @@ namespace Survivors.Config
         public const string PLAYER_UNIT = "PlayerUnit";
         public const string ENEMY_UNIT = "EnemyUnit";
         public const string SQUAD = "Squad";
+        public const string MODIFIERS = "Modifiers";
     }
 }

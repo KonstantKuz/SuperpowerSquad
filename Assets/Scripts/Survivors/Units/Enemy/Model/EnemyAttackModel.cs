@@ -16,7 +16,7 @@ namespace Survivors.Units.Enemy.Model
 
         public float TargetSearchRadius { get; }
         public float AttackDistance { get; }
-        public int AttackDamage { get; }
+        public float AttackDamage { get; }
         public float AttackInterval { get; }
     }
 }
