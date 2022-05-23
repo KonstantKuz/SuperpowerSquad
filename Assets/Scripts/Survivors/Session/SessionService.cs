@@ -3,6 +3,7 @@ using Survivors.EnemySpawn;
 using Survivors.EnemySpawn.Config;
 using Survivors.Location;
 using Survivors.Session.Messages;
+using Survivors.Squad.Upgrade;
 using Survivors.Units;
 using Survivors.Units.Service;
 using Zenject;
@@ -16,9 +17,11 @@ namespace Survivors.Session
         [Inject] private UnitFactory _unitFactory;
         [Inject] private UnitService _unitService;
         [Inject] private IMessenger _messenger;
+        [Inject] private UpgradeService _upgradeService;
 
         public void Start()
         {
+            _upgradeService.Init();
             _unitFactory.CreatePlayerUnit(UnitFactory.SIMPLE_PLAYER_ID); 
             _enemyWavesSpawner.StartSpawn(_enemyWavesConfig);
             _unitService.OnPlayerUnitDeath += OnPlayerUnitDeath;

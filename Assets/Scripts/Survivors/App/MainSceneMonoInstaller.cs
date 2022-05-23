@@ -2,6 +2,7 @@ using Feofun.UI;
 using Feofun.Localization.Service;
 using SuperMaxim.Messaging;
 using Survivors.Location;
+using Survivors.Squad;
 using Survivors.UI;
 using Survivors.Units.Installer;
 using Survivors.Units;
@@ -34,6 +35,7 @@ namespace Survivors.App
             _worldServicesInstaller.Install(Container);
             _uiInstaller.Install(Container);
             ModifiersInstaller.Install(Container);
+            SquadInstaller.Install(Container);
         }
     }
 }

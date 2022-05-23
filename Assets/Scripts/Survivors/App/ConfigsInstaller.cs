@@ -5,9 +5,9 @@ using Survivors.Config;
 using Survivors.EnemySpawn.Config;
 using Survivors.Units.Enemy.Config;
 using Survivors.Squad;
+using Survivors.Squad.Upgrade;
 using Survivors.Units.Modifiers;
 using Survivors.Units.Player.Config;
-using Survivors.Units.Player.Upgrades;
 using Zenject;
 
 namespace Survivors.App
