@@ -31,7 +31,6 @@ namespace Survivors.Squad.Service
             var progress = Progress;
             progress.AddExp(amount, _levelConfig);
             SetProgress(progress);
-            Debug.Log($"Update progress! Level == {progress.Level} Exp == {progress.Exp}");
         }
 
         private void SetProgress(SquadProgress progress)
