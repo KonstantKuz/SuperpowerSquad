@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using ModestTree;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Target;
 using UnityEngine;
@@ -13,77 +15,52 @@ namespace Survivors.Units.Weapon.Projectiles
         [SerializeField]
         private float _ratioHitTime;
 
-        private ITarget _target;
-        private Action<GameObject> _hitCallback;
-        private ProjectileParams _projectileParams;
-        private IBarrelOwner _barrel;
-
-        private float _lifeTime;
+        protected ITarget Target;
+        protected UnitType TargetType;
+        protected Action<GameObject> HitCallback;
+        protected ProjectileParams ProjectileParams;
+        protected Transform Barrel;
+        
         private bool _hit;
-        private bool _initialized;
         private float HitTime => _maxLifeTime * _ratioHitTime;
 
-        public void Launch(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback, IBarrelOwner barrel)
+        public void Launch(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback, Transform barrel)
         {
-            _projectileParams = projectileParams;
-            _hitCallback = hitCallback;
-            _barrel = barrel;
-            SetTarget(target);
-            _initialized = true;
+            Assert.IsNotNull(target);
+            ProjectileParams = projectileParams;
+            HitCallback = hitCallback;
+            Barrel = barrel;
+            SetTarget(target); 
+            StartCoroutine(UpdateLifeTime());
         }
 
         private void SetTarget(ITarget target)
         {
-            if (_target != null) {
+            if (Target != null) {
                 ClearTarget();
             }
-            _target = target;
-            _target.OnTargetInvalid += ClearTarget;
+            Target = target;
+            TargetType = target.UnitType;
+            Target.OnTargetInvalid += ClearTarget;
         }
-
-        private void Update()
+        private IEnumerator UpdateLifeTime()
         {
-            if (!_initialized) {
-                return;
-            }
-            UpdateLifeTime();
-            UpdatePositionAndRotation();
+            yield return new WaitForSeconds(HitTime);
+            TryHitTarget();
+            yield return new WaitForSeconds(Math.Abs(_maxLifeTime - HitTime));
+            Destroy();
         }
 
-        private void LateUpdate()
-        {
-            if (_barrel != null && _target != null) {
-                transform.SetPositionAndRotation(_barrel.BarrelPos, 
-                                                 RangedWeapon.GetShootRotation(_barrel.BarrelPos, _target.Center.position));
-            }
-        }
-
-        private void UpdatePositionAndRotation()
-        {
-          
-        }
-
-        private void UpdateLifeTime()
-        {
-            _lifeTime += Time.deltaTime;
-            if (_lifeTime >= HitTime && !_hit) {
-                TryHit();
-            }
-            if (_lifeTime >= _maxLifeTime) {
-                Destroy();
-            }
-        }
-
-        private void TryHit()
+        private void TryHitTarget()
         {
             if (_hit) {
                 return;
             }
             _hit = true;
-            if (_target == null) {
+            if (Target == null) {
                 return;
             }
-            Hit(_target);
+            Hit(Target);
         }
 
         private void Hit(ITarget target)
@@ -96,25 +73,25 @@ namespace Survivors.Units.Weapon.Projectiles
             if (targetObj.GetComponent<IDamageable>() == null) {
                 return;
             }
-            _hitCallback?.Invoke(targetObj.gameObject);
-            Projectile.TryHitTargetsInRadius(targetObj.gameObject.transform.position, _projectileParams.DamageRadius, target.UnitType,
-                                             targetObj.gameObject, _hitCallback);
+            TryHit(targetObj.gameObject);
         }
-
+        protected virtual void TryHit(GameObject target)
+        {
+            HitCallback?.Invoke(target);
+        }
         private void Destroy()
         {
             gameObject.SetActive(false);
             ClearTarget();
-            _hitCallback = null;
+            HitCallback = null;
             Destroy(gameObject);
         }
-
-        protected virtual void ClearTarget()
+        private void ClearTarget()
         {
-            if (_target != null) {
-                _target.OnTargetInvalid -= ClearTarget;
+            if (Target != null) {
+                Target.OnTargetInvalid -= ClearTarget;
             }
-            _target = null;
+            Target = null;
         }
     }
 }

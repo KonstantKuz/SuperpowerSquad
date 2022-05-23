@@ -7,7 +7,7 @@ using Zenject;
 
 namespace Survivors.Units.Weapon
 {
-    public class BeamWeapon : BaseWeapon, IBarrelOwner
+    public class BeamWeapon : BaseWeapon
     {
         [SerializeField]
         private Transform _barrel;
@@ -23,12 +23,12 @@ namespace Survivors.Units.Weapon
             var beam = CreateBeam();
             var rotationToTarget = RangedWeapon.GetShootRotation(BarrelPos, target.Center.position);
             beam.transform.SetPositionAndRotation(BarrelPos, rotationToTarget);
-            beam.Launch(target, projectileParams, hitCallback, this);
+            beam.Launch(target, projectileParams, hitCallback, _barrel);
         }
 
         private Beam CreateBeam()
         {
-            return _objectFactory.CreateObject(_beam.gameObject).GetComponent<Beam>();
+            return _objectFactory.CreateObject(_beam.gameObject, _barrel).GetComponent<Beam>();
         }
 
         private void LateUpdate()

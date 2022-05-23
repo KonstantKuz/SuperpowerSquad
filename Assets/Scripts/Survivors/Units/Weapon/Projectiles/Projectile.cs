@@ -43,6 +43,7 @@ namespace Survivors.Units.Weapon.Projectiles
             HitCallback?.Invoke(target);
             TryHitTargetsInRadius(target.transform.position, Params.DamageRadius, TargetType, target, HitCallback);
         }
+
         public static void TryHitTargetsInRadius(Vector3 hitPosition,
                                                  float damageRadius,
                                                  UnitType targetType,
@@ -60,11 +61,13 @@ namespace Survivors.Units.Weapon.Projectiles
             }
         }
 
-        private static Collider[] GetHits(Vector3 hitPosition, float damageRadius, UnitType targetType)
+        public static Collider[] GetHits(Vector3 position, float damageRadius, UnitType targetType)
         {
-            var hits = Physics.OverlapSphere(hitPosition, damageRadius);
-            return hits.Where(go => go.GetComponent<ITarget>() != null && go.GetComponent<ITarget>().IsAlive
-                                    && go.GetComponent<ITarget>().UnitType == targetType)
+            var hits = Physics.OverlapSphere(position, damageRadius);
+            return hits.Where(go => {
+                           var target = go.GetComponent<ITarget>();
+                           return target != null && target.IsAlive && target.UnitType == targetType;
+                       })
                        .ToArray();
         }
     }
