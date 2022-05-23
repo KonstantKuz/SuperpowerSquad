@@ -35,7 +35,7 @@ using Survivors.Location.Service;
 
         private void ConfigurePlayerUnit(Unit unit)
         {
-            _world.Squad.AddUnit(unit.GetComponent<MovementController>());
+            _world.Squad.AddUnit(unit);
             var config = _playerUnitConfigs.Get(unit.ObjectId);
             var model = new PlayerUnitModel(config);
             unit.Init(model);
@@ -43,7 +43,7 @@ using Survivors.Location.Service;
 
         public Unit CreateEnemy()
         {
-            var enemy = _worldObjectFactory.CreateObject(SIMPLE_ENEMY_ID, _world.SpawnContainer).GetComponent<Unit>();
+            var enemy = _worldObjectFactory.CreateObject(SIMPLE_ENEMY_ID).GetComponent<Unit>();
             var config = _enemyUnitConfigs.Get(SIMPLE_ENEMY_ID);
             var model = new EnemyUnitModel(config);
             enemy.Init(model);

@@ -1,6 +1,10 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Scripts/Feofun/Repository.meta
 guid: e377c1b71dbf1074d9b98d52c3f07e8b
 folderAsset: yes
+=======
+guid: 44bcc59b05786e04ca1b90fca3971c72
+>>>>>>> origin/master:Assets/Plugins/Demigiant/DOTween.meta~master.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

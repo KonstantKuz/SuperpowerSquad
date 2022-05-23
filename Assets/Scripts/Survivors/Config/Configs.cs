@@ -9,5 +9,6 @@ namespace Survivors.Config
         public const string DROPPING_LOOT = "DroppingLoot";
         public const string SQUAD = "Squad";
         public const string SQUAD_LEVEL = "SquadLevel";
+        public const string MODIFIERS = "Modifiers";
     }
 }
