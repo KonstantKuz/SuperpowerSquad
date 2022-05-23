@@ -56,7 +56,7 @@ namespace Survivors.Units.Weapon.Projectiles
             Destroy(gameObject);
         }
 
-        private void PlayVfx(Vector3 pos, Vector3 up)
+        protected void PlayVfx(Vector3 pos, Vector3 up)
         {
             if (_hitVfx == null) return;
             var vfx = _objectFactory.CreateObject(_hitVfx);

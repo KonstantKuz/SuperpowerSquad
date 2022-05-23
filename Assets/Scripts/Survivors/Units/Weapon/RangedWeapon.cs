@@ -1,4 +1,5 @@
 ﻿using System;
+using Survivors.Extension;
 using Survivors.Location.Service;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles;
@@ -11,6 +12,8 @@ namespace Survivors.Units.Weapon
     {
         [SerializeField]
         private Transform _barrel;
+        [SerializeField]
+        private bool _tiltToTargetOnY = true;
 
         [SerializeField]
         private Projectile _ammo;
@@ -23,19 +26,24 @@ namespace Survivors.Units.Weapon
         public override void Fire(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             var projectile = CreateProjectile();
-            var rotationToTarget = GetShootRotation(_barrelPos, target.Center.position);
+            var rotationToTarget = GetShootRotation(_barrelPos, target.Center.position, _tiltToTargetOnY);
             projectile.transform.SetPositionAndRotation(_barrelPos, rotationToTarget);
             projectile.Launch(target, projectileParams, hitCallback);
         }
 
-        public static Quaternion GetShootRotation(Vector3 shootPos, Vector3 targetPos)
+        public static Quaternion GetShootRotation(Vector3 shootPos, Vector3 targetPos, bool tiltToTargetOnY)
         {
-            return Quaternion.LookRotation(GetShootDirection(shootPos, targetPos));
+            return Quaternion.LookRotation(GetShootDirection(shootPos, targetPos, tiltToTargetOnY));
         }
 
-        private static Vector3 GetShootDirection(Vector3 shootPos, Vector3 targetPos)
+        private static Vector3 GetShootDirection(Vector3 shootPos, Vector3 targetPos, bool tiltToTargetOnY)
         {
-            var dir = targetPos - shootPos;
+            Vector3 dir;
+            if (tiltToTargetOnY) {
+                dir = targetPos - shootPos;
+            } else {
+                dir = targetPos.XZ() - shootPos.XZ();
+            }
             return dir.normalized;
         }
 
