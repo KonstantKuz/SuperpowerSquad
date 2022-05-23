@@ -1,5 +1,10 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Resources/Content/DroppingLoot.meta
+guid: 7d1763737275a2c4588ddf1781261d19
+folderAsset: yes
+=======
 guid: 3beec3c37cf7485438597079a3512225
+>>>>>>> origin/master:Assets/Plugins/Demigiant/DOTween.meta~HEAD.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

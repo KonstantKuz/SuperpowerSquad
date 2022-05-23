@@ -3,6 +3,7 @@
     public enum ObjectType
     {
         NONE,
-        UNIT
+        UNIT,
+        LOOT,
     }
 }
