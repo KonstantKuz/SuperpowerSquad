@@ -1,4 +1,4 @@
-Upgrade,Type,Id
+Id,Type,UpgradeId
 StandartUnit,Unit,StandartUnit
 ,Modifier,AttackDamageSelf10
 ,Modifier,HealthSelf100
