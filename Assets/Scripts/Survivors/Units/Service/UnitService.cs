@@ -10,6 +10,7 @@ namespace Survivors.Units.Service
     {
         private readonly Dictionary<UnitType, HashSet<IUnit>> _units = new Dictionary<UnitType, HashSet<IUnit>>();
         public event Action<IUnit> OnPlayerUnitDeath;
+        public event Action<IUnit> OnEnemyUnitDeath;
 
         public void Add(IUnit unit)
         {
@@ -33,6 +34,8 @@ namespace Survivors.Units.Service
             Remove(unit);
             if (unit.UnitType == UnitType.PLAYER) {
                 OnPlayerUnitDeath?.Invoke(unit);
+            } else {
+                OnEnemyUnitDeath?.Invoke(unit);
             }
         }
     }

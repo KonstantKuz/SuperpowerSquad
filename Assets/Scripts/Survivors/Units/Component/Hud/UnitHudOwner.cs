@@ -1,16 +1,17 @@
+using Survivors.Session;
 using Survivors.UI.Hud.Unit;
 using UnityEngine;
 using Zenject;
 
 namespace Survivors.Units.Component.Hud
 {
-    public class UnitHudOwner : MonoBehaviour, IUnitInitializable, IUnitDeathEventReceiver
+    public class UnitHudOwner : MonoBehaviour, IUnitInitializable, IUnitDeathEventReceiver, IWorldCleanUp
     {
         [SerializeField] private UnitHudPresenter _hudPrefab;
         [SerializeField] private Transform _hudPlace;
         
-        private IHealthBarOwner _healthBarOwner;
         private UnitHudPresenter _hudPresenter;
+        private IHealthBarOwner _healthBarOwner;
 
         [Inject] private DiContainer _container;
 
@@ -23,6 +24,11 @@ namespace Survivors.Units.Component.Hud
         }
 
         public void OnDeath()
+        {
+            _hudPresenter.OnUnitDeath();
+        }
+
+        public void OnWorldCleanUp()
         {
             _hudPresenter.OnUnitDeath();
         }

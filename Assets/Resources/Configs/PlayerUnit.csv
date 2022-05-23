@@ -2,4 +2,8 @@ Id,Health,AttackDistance,DamageRadius,AttackDamage,ClipReloadTime,AttackTime,Pro
 StandardUnit,100,20,0,100,0,3,30,6
 MachineGunnerUnit,100,20,0,30,0,15,30,60
 RocketUnit,100,20,2,100,0,3,15,1
+<<<<<<< HEAD
 BomberUnit,100,20,2,100,0,3,15,1
+=======
+PyroUnit,100,10,4,100,0,1.5,15,1
+>>>>>>> origin/master

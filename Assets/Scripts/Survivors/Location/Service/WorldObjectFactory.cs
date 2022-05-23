@@ -10,7 +10,7 @@ using UniRx.Triggers;
 
 namespace Survivors.Location.Service
 {
-    public class WorldObjectFactory : MonoBehaviour, IWorldCleanUp
+    public class WorldObjectFactory : MonoBehaviour
     {
         private const string OBJECT_PREFABS_PATH_ROOT = "Content/";
 
@@ -38,7 +38,7 @@ namespace Survivors.Location.Service
             }
         }
 
-        public GameObject CreateObject(string objectId, [CanBeNull] GameObject container = null)
+        public GameObject CreateObject(string objectId, [CanBeNull] Transform container = null)
         {
             if (!_prefabs.ContainsKey(objectId)) {
                 throw new KeyNotFoundException($"No prefab with objectId {objectId} found");
@@ -47,7 +47,7 @@ namespace Survivors.Location.Service
             return CreateObject(prefab, container);
         }
 
-        public GameObject CreateObject(GameObject prefab, [CanBeNull] GameObject container = null)
+        public GameObject CreateObject(GameObject prefab, [CanBeNull] Transform container = null)
         {
             var parentContainer = container == null ? _world.SpawnContainer.transform : container.transform;
             var createdGameObject = _container.InstantiatePrefab(prefab, parentContainer);
@@ -66,7 +66,7 @@ namespace Survivors.Location.Service
             return _createdObjects.Where(go => go.GetComponent<T>() != null).Select(go => go.GetComponent<T>()).ToList();
         }
 
-        public void OnWorldCleanUp()
+        public void DestroyAllObjects()
         {
             foreach (var gameObject in _createdObjects) {
                 Destroy(gameObject);
