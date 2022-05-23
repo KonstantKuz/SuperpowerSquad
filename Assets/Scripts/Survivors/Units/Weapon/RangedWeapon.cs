@@ -12,14 +12,17 @@ namespace Survivors.Units.Weapon
     {
         [SerializeField]
         private Transform _barrel;
+
         [SerializeField]
         private Projectile _ammo;
-        [SerializeField] 
-        private float _angleBetweenShots;
-        [Inject]
-        private WorldObjectFactory _objectFactory;
 
         private Vector3 _barrelPos; //Seems that in some cases unity cannot correctly take position inside animation event
+
+        [SerializeField] 
+        private float _angleBetweenShots;
+        
+        [Inject]
+        private WorldObjectFactory _objectFactory;
 
         public override void Fire(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
@@ -34,7 +37,7 @@ namespace Survivors.Units.Weapon
             }
         }
 
-        private static Quaternion GetShootRotation(Vector3 shootPos, Vector3 targetPos)
+        public static Quaternion GetShootRotation(Vector3 shootPos, Vector3 targetPos)
         {
             return Quaternion.LookRotation(GetShootDirection(shootPos, targetPos));
         }
