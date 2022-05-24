@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using Survivors.Location.Service;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles;
@@ -28,12 +30,21 @@ namespace Survivors.Units.Weapon
         {
             Assert.IsNotNull(projectileParams);
             var rotationToTarget = GetShootRotation(_barrelPos, target.Center.position);
+            var spreadAngles = GetSpreadInAngle(projectileParams.Count).ToList();
             for (int i = 0; i < projectileParams.Count; i++)
             {
                 var projectile = CreateProjectile();
-                var rotation = rotationToTarget * Quaternion.Euler(0, _angleBetweenShots * (0.5f - 0.5f * projectileParams.Count + i), 0);
+                var rotation = rotationToTarget * Quaternion.Euler(0, spreadAngles[i], 0);
                 projectile.transform.SetPositionAndRotation(_barrelPos, rotation);
                 projectile.Launch(target, projectileParams, hitCallback);
+            }
+        }
+
+        private IEnumerable<float> GetSpreadInAngle(int count)
+        {
+            for (int i = 0; i < count; i++)
+            {
+                yield return _angleBetweenShots * (2 * i + 1 - count)/2; 
             }
         }
 

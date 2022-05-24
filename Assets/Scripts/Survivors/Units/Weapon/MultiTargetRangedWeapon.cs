@@ -17,49 +17,56 @@ namespace Survivors.Units.Weapon
         public override void Fire(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             Assert.IsNotNull(projectileParams);
-            var targets = new List<ITarget> { target };
-            FindAdditionalTargets(targets, projectileParams.Count, projectileParams.DamageRadius);
-            for (int i = 0; i < projectileParams.Count; i++)
+            var targets = FindAdditionalTargets(target, projectileParams.Count, projectileParams.DamageRadius);
+            foreach (var t in targets)
             {
-                base.Fire(targets[i], new ProjectileParams
-                {
-                    Count = 1,
-                    DamageRadius = projectileParams.DamageRadius, 
-                    Speed = projectileParams.Speed
-                }, hitCallback);
+                base.Fire(t, 
+                    new ProjectileParams
+                    {
+                        Count = 1,
+                        DamageRadius = projectileParams.DamageRadius, 
+                        Speed = projectileParams.Speed
+                    }, 
+                    hitCallback);
             }
         }
 
-        private void FindAdditionalTargets(List<ITarget> targets, int targetCount, float distanceBetweenTargets)
+        private List<ITarget> FindAdditionalTargets(ITarget initialTarget, int targetCount, float minDistanceBetweenTargets)
         {
-            var allTargets = _targetSearcher.GetAllOrderedByDistance().ToList();
-            targets.ForEach(it => allTargets.Remove(it));
+            var selectedTargets = new List<ITarget> { initialTarget };            
+            var possibleTargets = _targetSearcher
+                .GetAllOrderedByDistance()
+                .Except(selectedTargets)                
+                .ToList();
             
-            TryAddDistinctTargets(targets, targetCount, distanceBetweenTargets, allTargets);
-            TryAddRandomTargets(targets, targetCount, allTargets);
+            SelectDistinctTargets(selectedTargets, targetCount - selectedTargets.Count, minDistanceBetweenTargets, possibleTargets);
+            SelectRandomTargets(selectedTargets, targetCount - selectedTargets.Count, possibleTargets);
+            return selectedTargets;
         }
 
-        private static void TryAddRandomTargets(List<ITarget> targets, int targetCount, List<ITarget> allTargets)
+        private static void SelectRandomTargets(ICollection<ITarget> selectedTargets, int countToSelect, List<ITarget> possibleTargets)
         {
-            while (targets.Count < targetCount && allTargets.Count > 0)
+            for (int i = 0; i < countToSelect; i++)
             {
-                var newTarget = allTargets.Random();
+                if (possibleTargets.Count == 0) return;
+                var newTarget = possibleTargets.Random();
                 if (newTarget == null) return;
-                allTargets.Remove(newTarget);
-                targets.Add(newTarget);
+                
+                possibleTargets.Remove(newTarget);
+                selectedTargets.Add(newTarget);
             }
         }
 
-        private static void TryAddDistinctTargets(ICollection<ITarget> targets, int targetCount, float distanceBetweenTargets, ICollection<ITarget> allTargets)
+        private static void SelectDistinctTargets(ICollection<ITarget> selectedTargets, int countToSelect, float distanceBetweenTargets, ICollection<ITarget> possibleTargets)
         {
-            while (targets.Count < targetCount && allTargets.Count > 0)
-            {
-                var newTarget = allTargets
+            for (int i = 0; i < countToSelect; i++) {
+                var newTarget = possibleTargets
                     .FirstOrDefault(it =>
-                        Vector3.Distance(targets.Last().Center.position, it.Center.position) >= distanceBetweenTargets);
+                        Vector3.Distance(selectedTargets.Last().Center.position, it.Center.position) >= distanceBetweenTargets);
                 if (newTarget == null) return;
-                allTargets.Remove(newTarget);
-                targets.Add(newTarget);
+                
+                possibleTargets.Remove(newTarget);
+                selectedTargets.Add(newTarget);
             }
         }
     }
