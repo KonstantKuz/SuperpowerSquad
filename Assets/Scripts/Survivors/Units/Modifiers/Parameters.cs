@@ -7,5 +7,6 @@
         public const string PROJECTILE_SPEED = "ProjectileSpeed";
         public const string HEALTH = "Health";
         public const string DAMAGE_RADIUS = "DamageRadius";
+        public const string SHOT_COUNT = "ShotCount";
     }
 }
