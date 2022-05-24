@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using JetBrains.Annotations;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Target;
 using UnityEngine;
@@ -24,20 +25,27 @@ namespace Survivors.Units.Weapon.Projectiles
 
         private void OnCollisionEnter(Collision other)
         {
-            var colliderTarget = other.collider.GetComponent<ITarget>();
-            if (colliderTarget == null) {
-                return;
-            }
-            if (TargetType != colliderTarget.UnitType) {
-                return;
-            }
-            if (!other.collider.TryGetComponent(out IDamageable damageable)) {
+            if (!CanDamageTarget(other.collider, TargetType, out var target)) {
                 return;
             }
             var contact = other.GetContact(0);
             TryHit(other.gameObject, contact.point, contact.normal);
         }
-
+        protected static bool CanDamageTarget(Collider targetCollider, UnitType type, [CanBeNull] out ITarget target)
+        {
+            target = null;
+            if (!targetCollider.TryGetComponent(out ITarget targetComponent)) {
+                return false;
+            }
+            if (!targetComponent.IsTargetValidAndAlive() || type != targetComponent.UnitType) {
+                return false;
+            }
+            if (!targetCollider.TryGetComponent(out IDamageable damageable)) {
+                return false;
+            }
+            target = targetComponent;
+            return true;
+        }
         protected virtual void TryHit(GameObject target, Vector3 hitPos, Vector3 collisionNorm)
         {
             HitCallback?.Invoke(target);

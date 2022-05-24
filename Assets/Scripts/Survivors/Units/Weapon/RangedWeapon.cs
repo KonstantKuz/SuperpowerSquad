@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Survivors.Extension;
 using Survivors.Location.Service;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles;
@@ -14,6 +15,8 @@ namespace Survivors.Units.Weapon
     {
         [SerializeField]
         private Transform _barrel;
+        [SerializeField]
+        private bool _aimInXZPlane;
 
         [SerializeField]
         private Projectile _ammo;
@@ -29,7 +32,7 @@ namespace Survivors.Units.Weapon
         public override void Fire(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             Assert.IsNotNull(projectileParams);
-            var rotationToTarget = GetShootRotation(_barrelPos, target.Center.position);
+            var rotationToTarget = GetShootRotation(_barrelPos, target.Center.position, _aimInXZPlane);
             var spreadAngles = GetSpreadInAngle(projectileParams.Count).ToList();
             for (int i = 0; i < projectileParams.Count; i++)
             {
@@ -48,9 +51,13 @@ namespace Survivors.Units.Weapon
             }
         }
 
-        public static Quaternion GetShootRotation(Vector3 shootPos, Vector3 targetPos)
+        public static Quaternion GetShootRotation(Vector3 shootPos, Vector3 targetPos, bool aimInXZPlane)
         {
-            return Quaternion.LookRotation(GetShootDirection(shootPos, targetPos));
+            var shootDirection = GetShootDirection(shootPos, targetPos);
+            if (aimInXZPlane) {
+                shootDirection = shootDirection.XZ();
+            }
+            return Quaternion.LookRotation(shootDirection);
         }
 
         private static Vector3 GetShootDirection(Vector3 shootPos, Vector3 targetPos)
