@@ -32,6 +32,8 @@ namespace Survivors.Squad
         [Inject] private StringKeyedConfigCollection<ParameterUpgradeConfig> _modifierConfigs;
         [Inject] private ModifierFactory _modifierFactory;
 
+        public SquadDestination Destination => _destination;
+
         private void Awake()
         {
             _destination = GetComponentInChildren<SquadDestination>();
