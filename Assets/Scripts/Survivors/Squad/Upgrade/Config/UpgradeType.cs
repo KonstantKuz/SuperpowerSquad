@@ -1,4 +1,4 @@
-﻿namespace Survivors.Squad.Upgrade
+﻿namespace Survivors.Squad.Upgrade.Config
 {
     public enum UpgradeType
     {

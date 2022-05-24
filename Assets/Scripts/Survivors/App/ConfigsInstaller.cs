@@ -8,6 +8,7 @@ using Survivors.Units.Enemy.Config;
 using Survivors.Squad;
 using Survivors.Squad.Upgrade;
 using Survivors.Squad.Config;
+using Survivors.Squad.Upgrade.Config;
 using Survivors.Units.Modifiers;
 using Survivors.Units.Player.Config;
 using Zenject;

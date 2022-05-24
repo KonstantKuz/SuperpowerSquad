@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 using LegionMaster.Extension;
 using SuperMaxim.Core.Extensions;
 using Survivors.Location;
+using Survivors.Squad.Upgrade.Config;
 using Survivors.Units.Modifiers;
 using Survivors.Units.Service;
 using Zenject;
@@ -30,7 +31,14 @@ namespace Survivors.Squad.Upgrade
 
         public void Init()
         {
-            _squadState = new SquadState();
+            _squadState = InitSquadState();
+        }
+
+        private static SquadState InitSquadState()
+        {
+            var squadState = new SquadState();
+            squadState.IncreaseLevel(UnitFactory.SIMPLE_PLAYER_ID);
+            return squadState;
         }
 
         public void AddRandomUpgrade()
@@ -64,7 +72,7 @@ namespace Survivors.Squad.Upgrade
 
         private void AddModifier(UpgradeConfig upgradeConfig, string upgradeId)
         {
-            var modifierConfig = _modifierConfigs.Get(upgradeConfig.UpgradeId).ModifierConfig;
+            var modifierConfig = _modifierConfigs.Get(upgradeConfig.ImprovementId).ModifierConfig;
             var allSquadUnits = _world.Squad.Units;
             var units = modifierConfig.Target switch
             {
@@ -78,7 +86,7 @@ namespace Survivors.Squad.Upgrade
 
         private void AddUnit(UpgradeConfig upgradeConfig)
         {
-            _unitFactory.CreatePlayerUnit(upgradeConfig.UpgradeId);
+            _unitFactory.CreatePlayerUnit(upgradeConfig.ImprovementId);
         }
     }
 }

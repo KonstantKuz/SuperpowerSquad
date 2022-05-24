@@ -1,12 +1,12 @@
-Id,Type,UpgradeId
-StandartUnit,Unit,StandartUnit
+Id,Type,ImprovementId
+StandardUnit,Unit,StandardUnit
 ,Modifier,AttackDamageSelf10
 ,Modifier,HealthSelf100
 ,Modifier,AttackDamageSelf10
-,Unit,StandartUnit
+,Unit,StandardUnit
 ,Modifier,HealthSelf200
 ,Modifier,AttackDamageSelf10
-,Unit,StandartUnit
+,Unit,StandardUnit
 RocketUnit,Unit,RocketUnit
 ,Modifier,AttackDamageSelf10
 ,Modifier,HealthSelf100

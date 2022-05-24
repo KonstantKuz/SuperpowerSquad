@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Feofun.Config;
 using Feofun.Config.Csv;
 using JetBrains.Annotations;
 
-namespace Survivors.Squad.Upgrade
+namespace Survivors.Squad.Upgrade.Config
 {
     [PublicAPI]
     public class UpgradesConfig: ILoadableConfig

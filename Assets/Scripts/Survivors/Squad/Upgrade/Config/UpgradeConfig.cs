@@ -1,12 +1,12 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Survivors.Squad.Upgrade
+namespace Survivors.Squad.Upgrade.Config
 {
     public class UpgradeConfig
     {
         [DataMember]
         public UpgradeType Type;
         [DataMember]
-        public string UpgradeId; //TODO: конфликтует по смыслу с upgrade.Id
+        public string ImprovementId;
     }
 }
