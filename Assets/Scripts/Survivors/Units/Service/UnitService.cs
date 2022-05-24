@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Feofun.Modifiers;
 using JetBrains.Annotations;
+using SuperMaxim.Core.Extensions;
 
 namespace Survivors.Units.Service
 {
@@ -20,7 +22,6 @@ namespace Survivors.Units.Service
             _units[unit.UnitType].Add(unit);
             unit.OnDeath += OnDeathUnit;
         }
-
         public void Remove(IUnit unit)
         {
             _units[unit.UnitType].Remove(unit);
