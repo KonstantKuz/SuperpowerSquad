@@ -42,5 +42,15 @@ namespace Survivors.Squad.Upgrade.Config
         }
 
         public IEnumerable<string> Keys() => _upgrades.Keys;
+
+        public bool IsUnitUpgrade(string upgradeId)
+        {
+            return GetLevelConfigs(upgradeId)[0].Type == UpgradeType.Unit;
+        }
+
+        public string GetUnitName(string upgradeId)
+        {
+            return GetLevelConfigs(upgradeId)[0].ImprovementId;
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Feofun.Config;
 using Feofun.Modifiers;
@@ -7,6 +8,7 @@ using LegionMaster.Extension;
 using SuperMaxim.Core.Extensions;
 using Survivors.Location;
 using Survivors.Squad.Upgrade.Config;
+using Survivors.Units;
 using Survivors.Units.Modifiers;
 using Survivors.Units.Service;
 using Zenject;
@@ -73,15 +75,17 @@ namespace Survivors.Squad.Upgrade
         private void AddModifier(UpgradeConfig upgradeConfig, string upgradeId)
         {
             var modifierConfig = _modifierConfigs.Get(upgradeConfig.ImprovementId).ModifierConfig;
-            var allSquadUnits = _world.Squad.Units;
-            var units = modifierConfig.Target switch
-            {
-                ModifierTarget.Friends => allSquadUnits,
-                ModifierTarget.Self => allSquadUnits.Where(it => it.Model.Id == upgradeId), //TODO: есть неявная завязка на то, что Target.Self стоит у апгрейдов юнитов...
-                _ => throw new ArgumentOutOfRangeException()
-            };
+            var targetUnits = GetTargetUnits(upgradeId);
             var modifier = _modifierFactory.Create(modifierConfig);
-            units.ForEach(it => it.AddModifier(modifier));
+            targetUnits.ForEach(it => it.AddModifier(modifier));
+        }
+
+        private IEnumerable<Unit> GetTargetUnits(string upgradeId)
+        {
+            var allSquadUnits = _world.Squad.Units;
+            return !_config.IsUnitUpgrade(upgradeId) ? 
+                allSquadUnits : 
+                allSquadUnits.Where(it => it.Model.Id == _config.GetUnitName(upgradeId));
         }
 
         private void AddUnit(UpgradeConfig upgradeConfig)
