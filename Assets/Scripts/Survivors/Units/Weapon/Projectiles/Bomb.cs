@@ -10,7 +10,6 @@ namespace Survivors.Units.Weapon.Projectiles
 {
     public class Bomb : Projectile
     {
-        [SerializeField] private float _speed;
         [SerializeField] private Vector2 _heightRange;
         [SerializeField] private Explosion _explosion;
 
@@ -20,24 +19,23 @@ namespace Survivors.Units.Weapon.Projectiles
         {
             base.Launch(target, projectileParams, hitCallback);
             var targetPos = target.Center.position;
-            var moveTime = GetMoveTime(targetPos);
+            var moveTime = GetFlightTime(targetPos);
             var maxHeight = GetMaxHeight(targetPos, projectileParams.AttackDistance);
             var jumpMove = transform.DOJump(targetPos, maxHeight, 1, moveTime);
             jumpMove.SetEase(Ease.Linear);
             jumpMove.onComplete = () => Explode(targetPos);
         }
 
-        private float GetMoveTime(Vector3 targetPos)
+        private float GetFlightTime(Vector3 targetPos)
         {
             var distanceToTarget = Vector3.Distance(transform.position, targetPos);
-            var sin2angle = Physics.gravity.y * distanceToTarget / Mathf.Pow(_speed, 2);
-            return _speed * sin2angle / Physics.gravity.y;
+            return distanceToTarget / Params.Speed;
         }
 
         private float GetMaxHeight(Vector3 targetPos, float maxDistance)
         {
             var distanceToTarget = Vector3.Distance(transform.position, targetPos);
-            return distanceToTarget.Remap(0, maxDistance, _heightRange.x, _heightRange.y);
+            return MathExtensions.Remap(distanceToTarget, 0, maxDistance, _heightRange.x, _heightRange.y);
         }
         
         protected override void TryHit(GameObject target, Vector3 hitPos, Vector3 collisionNorm)

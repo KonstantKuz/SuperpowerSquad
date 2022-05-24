@@ -2,10 +2,12 @@
 {
     public static class MathExtensions
     {
-        public static float Remap(this float value, float originRangeX, float originRangeY, float targetRangeX, float targetRangeY) 
+        /// <summary>
+        /// Returns the value in the range [targetRangeMin, targetRangeMax] equivalent to source value in the range [sourceRangeMin, sourceRangeMax].
+        /// </summary>
+        public static float Remap(float sourceValue, float sourceRangeMin, float sourceRangeMax, float targetRangeMin, float targetRangeMax) 
         {
-            value = (value - originRangeX) / (originRangeY - originRangeX) * (targetRangeY - targetRangeX) + targetRangeX;
-            return value;
+            return (sourceValue - sourceRangeMin) / (sourceRangeMax - sourceRangeMin) * (targetRangeMax - targetRangeMin) + targetRangeMin;
         }
     }
 }
