@@ -6,7 +6,7 @@ namespace Survivors.Units.Weapon.Projectiles
     {
         public void OnTriggerEnter(Collider collider)
         {
-            if (!CanHitTarget(collider, TargetType, out var target)) {
+            if (!CanDamageTarget(collider, TargetType, out var target)) {
                 return;
             }
             TryHit(collider.gameObject, transform.position, -transform.forward);

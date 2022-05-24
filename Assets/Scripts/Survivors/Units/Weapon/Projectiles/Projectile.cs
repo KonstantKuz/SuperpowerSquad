@@ -25,13 +25,13 @@ namespace Survivors.Units.Weapon.Projectiles
 
         private void OnCollisionEnter(Collision other)
         {
-            if (!CanHitTarget(other.collider, TargetType, out var target)) {
+            if (!CanDamageTarget(other.collider, TargetType, out var target)) {
                 return;
             }
             var contact = other.GetContact(0);
             TryHit(other.gameObject, contact.point, contact.normal);
         }
-        protected static bool CanHitTarget(Collider targetCollider, UnitType type, [CanBeNull] out ITarget target)
+        protected static bool CanDamageTarget(Collider targetCollider, UnitType type, [CanBeNull] out ITarget target)
         {
             target = null;
             if (!targetCollider.TryGetComponent(out ITarget targetComponent)) {
