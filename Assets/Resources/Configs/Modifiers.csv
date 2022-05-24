@@ -5,6 +5,6 @@ Health100,AddValue,Health,100
 Health200,AddValue,Health,200
 ShotCount,AddValue,ShotCount,1
 AttackDistance1,AddValue,AttackDistance,1
-Health10Percent,AddPercent,AttackTime,10
+Health10Percent,AddPercent,Health,10
 AttackTime10Percent,AddPercent,AttackTime,-10
-AttackTime0.5,AddValue,AttackSpeed,-0.5
+AttackTime0.5,AddValue,AttackTime,-0.5
