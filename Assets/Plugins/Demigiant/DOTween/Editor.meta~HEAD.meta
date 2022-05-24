@@ -1,5 +1,10 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Scripts/Survivors/Squad/Progress.meta
+guid: 24794e4b41c3dba4ab96ac4bbff183c3
+folderAsset: yes
+=======
 guid: 4239651fb15754a478d758e5b7847fc1
+>>>>>>> origin/master:Assets/Plugins/Demigiant/DOTween/Editor.meta~HEAD.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

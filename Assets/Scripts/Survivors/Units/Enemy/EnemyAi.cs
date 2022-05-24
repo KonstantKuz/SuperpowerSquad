@@ -50,10 +50,11 @@ namespace Survivors.Units.Enemy
 
         public void OnTick()
         {
+            FindTarget();
+
             if (CurrentTarget == null)
             {
                 _agent.isStopped = true;
-                FindTarget();
                 return;
             }
 

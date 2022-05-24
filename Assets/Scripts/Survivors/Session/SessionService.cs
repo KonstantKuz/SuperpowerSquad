@@ -1,6 +1,7 @@
 ﻿using SuperMaxim.Messaging;
 using Survivors.EnemySpawn;
 using Survivors.EnemySpawn.Config;
+using Survivors.Loot.Service;
 using Survivors.Session.Messages;
 using Survivors.Units;
 using Survivors.Units.Service;
@@ -10,6 +11,7 @@ namespace Survivors.Session
 {
     public class SessionService : IWorldCleanUp
     {
+        [Inject] private DroppingLootService _lootService;
         [Inject] private EnemyWavesSpawner _enemyWavesSpawner;
         [Inject] private EnemyWavesConfig _enemyWavesConfig;
         [Inject] private UnitFactory _unitFactory;
@@ -18,7 +20,8 @@ namespace Survivors.Session
 
         public void Start()
         {
-            _unitFactory.CreatePlayerUnit(UnitFactory.SIMPLE_PLAYER_ID); 
+            _lootService.Init();
+            _unitFactory.CreatePlayerUnit(UnitFactory.SIMPLE_PLAYER_ID);
             _enemyWavesSpawner.StartSpawn(_enemyWavesConfig);
             _unitService.OnPlayerUnitDeath += OnPlayerUnitDeath;
         }
