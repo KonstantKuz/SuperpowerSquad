@@ -2,9 +2,9 @@
 using Feofun.Config;
 using Feofun.Modifiers.Config;
 
-namespace Survivors.Units.Modifiers
+namespace Survivors.Modifiers.Config
 {
-    public class ParameterUpgradeConfig: ICollectionItem<string>
+    public class ParameterUpgradeConfig : ICollectionItem<string>
     {
         [field: DataMember(Name = "Id")]
         public string Id { get; }

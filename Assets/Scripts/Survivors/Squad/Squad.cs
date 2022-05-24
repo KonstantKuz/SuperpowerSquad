@@ -8,9 +8,10 @@ using Survivors.Session;
 using Survivors.Squad.Config;
 using Feofun.Modifiers;
 using LegionMaster.Extension;
+using Survivors.Modifiers;
+using Survivors.Modifiers.Config;
 using Survivors.Squad.Formation;
 using Survivors.Units;
-using Survivors.Units.Modifiers;
 using Survivors.Units.Player.Config;
 using Survivors.Units.Service;
 

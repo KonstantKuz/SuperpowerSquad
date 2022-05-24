@@ -1,42 +1,22 @@
-﻿using System.Collections.Generic;
-using Feofun.Modifiers;
+﻿using Feofun.Modifiers;
 using Feofun.Modifiers.Parameters;
+using Survivors.Modifiers;
 using Survivors.Squad.Config;
-using Survivors.Units.Modifiers;
-using Survivors.Units.Player.Config;
 
 namespace Survivors.Squad.Model
 {
-    public class SquadParamsModel : IModifiableParameterOwner
+    public class SquadParamsModel : ModifiableParameterOwner
     {
-        private readonly SquadParams _config;
+        private readonly FloatModifiableParameter _speed;
+        private readonly FloatModifiableParameter _collectRadius;
         
-        private readonly FloatModifiableParameter _attackDamage;
-        private readonly FloatModifiableParameter _attackTime;
-        
-        private readonly Dictionary<string, IModifiableParameter> _parameters = new Dictionary<string, IModifiableParameter>();
-        
-        public SquadParamsModel(PlayerAttackConfig config)
+        public SquadParamsModel(SquadParams config)
         {
-            _config = config;
-            _attackDamage = new FloatModifiableParameter(Parameters.ATTACK_DAMAGE, _config.AttackDamage, parameterOwner);
-            _attackTime = new FloatModifiableParameter(Parameters.ATTACK_TIME, _config.AttackTime, parameterOwner);
-            _projectileSpeed = new FloatModifiableParameter(Parameters.PROJECTILE_SPEED, _config.ProjectileSpeed, parameterOwner);
-            _damageRadius = new FloatModifiableParameter(Parameters.DAMAGE_RADIUS, _config.DamageRadius, parameterOwner);
+            _speed = new FloatModifiableParameter(Parameters.SPEED, config.Speed, this);
+            _collectRadius = new FloatModifiableParameter(Parameters.COLLECT_RADIUS, config.CollectRadius, this);
         }
         
-        public float DamageRadius => _damageRadius.Value;
-
-        public float AttackDamage => _attackDamage.Value;
-
-        public IModifiableParameter GetParameter(string name)
-        {
-            
-        }
-
-        public void AddParameter(IModifiableParameter parameter)
-        {
-           
-        }
+        public float Speed => _speed.Value;
+        public float CollectRadius => _collectRadius.Value;
     }
 }
