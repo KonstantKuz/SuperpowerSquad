@@ -4,6 +4,8 @@ using UnityEngine.Assertions;
 using Zenject;
 using EasyButtons;
 using Feofun.Config;
+using Survivors.Session;
+using Survivors.Squad.Config;
 using Feofun.Modifiers;
 using LegionMaster.Extension;
 using Survivors.Squad.Formation;
@@ -14,7 +16,7 @@ using Survivors.Units.Service;
 
 namespace Survivors.Squad
 {
-    public class Squad : MonoBehaviour
+    public class Squad : MonoBehaviour, IWorldCleanUp
     {
         [SerializeField] private float _unitSpeedScale;
         [SerializeField] private float _unitSize;
@@ -118,6 +120,11 @@ namespace Survivors.Squad
         private Vector3 GetSpawnPosition()
         {
             return _destination.transform.position + _formation.GetSpawnOffset(_unitSize, _units.Count);
+        }
+
+        public void OnWorldCleanUp()
+        {
+            _units.Clear();
         }
     }
 }
