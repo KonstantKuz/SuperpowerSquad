@@ -8,3 +8,4 @@ AttackDistanceSelf1,AddValue,Self,AttackDistance,1
 HealthSquad,AddPercent,Friends,AttackTime,10
 AttackTimeSquad,AddPercent,Friends,AttackTime,-10
 ShotCountSquad,AddValue,Friends,ShotCount,1
+AttackTimeSelf,AddValue,Self,AttackSpeed,-0.5
