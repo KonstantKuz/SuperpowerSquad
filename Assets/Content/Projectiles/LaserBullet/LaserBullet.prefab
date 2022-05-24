@@ -154,22 +154,6 @@ Transform:
   m_Father: {fileID: 1930454367651404986}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1072024809014579618
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6145749111093608583}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8d0729e0f438422f9d453f8c1ad49a9f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _positions:
-  - {fileID: 7146105218277646261}
-  - {fileID: 8416033013096674640}
-  _lineRenderer: {fileID: 6116303466062220547}
 --- !u!1001 &6146397164654548989
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -270,8 +254,12 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 120781623809727230, guid: 6028b5b4fbbf45e45a362de709aa2e18, type: 3}
+      propertyPath: m_UseWorldSpace
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 120781623809727230, guid: 6028b5b4fbbf45e45a362de709aa2e18, type: 3}
       propertyPath: m_Positions.Array.data[1].z
-      value: 3
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 199143261753923560, guid: 6028b5b4fbbf45e45a362de709aa2e18, type: 3}
       propertyPath: m_Materials.Array.size
@@ -316,18 +304,8 @@ PrefabInstance:
     m_RemovedComponents:
     - {fileID: 114296117140264314, guid: 6028b5b4fbbf45e45a362de709aa2e18, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 6028b5b4fbbf45e45a362de709aa2e18, type: 3}
---- !u!1 &6145749111093608583 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1818483698145146, guid: 6028b5b4fbbf45e45a362de709aa2e18, type: 3}
-  m_PrefabInstance: {fileID: 6146397164654548989}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6143647264562173541 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4218847627608472, guid: 6028b5b4fbbf45e45a362de709aa2e18, type: 3}
-  m_PrefabInstance: {fileID: 6146397164654548989}
-  m_PrefabAsset: {fileID: 0}
---- !u!120 &6116303466062220547 stripped
-LineRenderer:
-  m_CorrespondingSourceObject: {fileID: 120781623809727230, guid: 6028b5b4fbbf45e45a362de709aa2e18, type: 3}
   m_PrefabInstance: {fileID: 6146397164654548989}
   m_PrefabAsset: {fileID: 0}

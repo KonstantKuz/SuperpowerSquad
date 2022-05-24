@@ -21,7 +21,7 @@ namespace Survivors.Units.Weapon
         public override void Fire(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             var beam = CreateBeam();
-            var rotationToTarget = RangedWeapon.GetShootRotation(BarrelPos, target.Center.position, false);
+            var rotationToTarget = RangedWeapon.GetShootRotation(BarrelPos, target.Center.position, true);
             beam.transform.SetPositionAndRotation(BarrelPos, rotationToTarget);
             beam.Launch(target, projectileParams, hitCallback, _barrel);
         }

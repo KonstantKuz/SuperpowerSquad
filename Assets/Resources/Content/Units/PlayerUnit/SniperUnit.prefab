@@ -320,6 +320,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 8186796900186291429}
     - target: {fileID: 4331444546958184133, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
+      propertyPath: _aimInXZPlane
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4331444546958184133, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
       propertyPath: _tiltToTargetOnY
       value: 0
       objectReference: {fileID: 0}
