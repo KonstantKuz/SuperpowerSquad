@@ -1,5 +1,6 @@
 ﻿using System.Runtime.Serialization;
 using Feofun.Config;
+using Feofun.Modifiers;
 using Feofun.Modifiers.Config;
 
 namespace Survivors.Modifiers.Config
@@ -11,5 +12,10 @@ namespace Survivors.Modifiers.Config
 
         [field: DataMember]
         public ModifierConfig ModifierConfig { get; }
+
+        [DataMember(Name = "Target")]
+        private ModifierTarget _target;
+
+        public ModifierTarget Target => _target;
     }
 }

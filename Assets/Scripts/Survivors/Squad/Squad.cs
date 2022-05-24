@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Zenject;
@@ -7,6 +8,7 @@ using Feofun.Config;
 using Survivors.Session;
 using Feofun.Modifiers;
 using LegionMaster.Extension;
+using Survivors.Modifiers;
 using Survivors.Modifiers.Config;
 using Survivors.Squad.Formation;
 using Survivors.Squad.Model;
@@ -93,15 +95,33 @@ namespace Survivors.Squad
             _unitFactory.CreatePlayerUnit(nextUnit.Id);
         }
         
-        // This is test function. Remove later
-        public void AddRandomUpgrade()
+        /*
+        * This is test function. Remove later
+        */
+        public void AddRandomUnitUpgrade()
         {
-            var modifierId = _modifierConfigs.Keys.Random();
-            var modifier = _modifierFactory.Create(_modifierConfigs.Get(modifierId).ModifierConfig);
-            Debug.Log($"Adding modifier {modifierId}");
+            var config = GetRandomUpgradeConfig(ModifierTarget.Unit);
+            var modifier = _modifierFactory.Create(config.ModifierConfig);
+            Debug.Log($"Adding modifier {config.Id}");
             AddUnitModifier(modifier);
         }
-
+        /*
+        * This is test function. Remove later
+        */
+        private ParameterUpgradeConfig GetRandomUpgradeConfig(ModifierTarget target) =>
+                _modifierConfigs.Values.Where(it => it.Target == target).ToList().Random();
+        [Button]  
+        /*
+         * This is test function. Remove later
+         */
+        public void AddRandomSquadUpgrade()
+        {
+            var config = GetRandomUpgradeConfig(ModifierTarget.Squad);
+            var modifier = _modifierFactory.Create(config.ModifierConfig);
+            Debug.Log($"Adding modifier {config.Id}");
+            AddSquadModifier(modifier);
+        }
+        
         [Button]
         private void SwitchSquadCenterVisibility()
         {
