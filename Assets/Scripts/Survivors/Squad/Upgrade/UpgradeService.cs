@@ -15,7 +15,6 @@ using Zenject;
 
 namespace Survivors.Squad.Upgrade
 {
-    //TODO: надо добавлять модификаторы новым юнитам
     [PublicAPI]
     public class UpgradeService
     {
@@ -74,10 +73,16 @@ namespace Survivors.Squad.Upgrade
 
         private void AddModifier(UpgradeConfig upgradeConfig, string upgradeId)
         {
-            var modifierConfig = _modifierConfigs.Get(upgradeConfig.ImprovementId).ModifierConfig;
-            var targetUnits = GetTargetUnits(upgradeId);
-            var modifier = _modifierFactory.Create(modifierConfig);
+            var modifier = CreateModifier(upgradeConfig);
+            var targetUnits = GetTargetUnits(upgradeId);            
             targetUnits.ForEach(it => it.AddModifier(modifier));
+        }
+
+        private IModifier CreateModifier(UpgradeConfig upgradeConfig)
+        {
+            var modifierConfig = _modifierConfigs.Get(upgradeConfig.ImprovementId).ModifierConfig;
+            var modifier = _modifierFactory.Create(modifierConfig);
+            return modifier;
         }
 
         private IEnumerable<Unit> GetTargetUnits(string upgradeId)
@@ -90,7 +95,28 @@ namespace Survivors.Squad.Upgrade
 
         private void AddUnit(UpgradeConfig upgradeConfig)
         {
-            _unitFactory.CreatePlayerUnit(upgradeConfig.ImprovementId);
+            var unit = _unitFactory.CreatePlayerUnit(upgradeConfig.ImprovementId);
+            AddExistingModifiers(unit);
+        }
+
+        private void AddExistingModifiers(Unit newUnit)
+        {
+            foreach (var upgrade in _squadState.Upgrades)
+            {
+                if (IsDifferentUnitUpgrade(newUnit, upgrade.Key)) continue;
+                for (int level = 1; level <= upgrade.Value; level++)
+                {
+                    var upgradeConfig = _config.GetUpgradeConfig(upgrade.Key, level);
+                    if (upgradeConfig.Type == UpgradeType.Unit) continue;
+                    var modifier = CreateModifier(upgradeConfig);
+                    newUnit.AddModifier(modifier);
+                }
+            }
+        }
+
+        private bool IsDifferentUnitUpgrade(Unit newUnit, string upgradeId)
+        {
+            return _config.IsUnitUpgrade(upgradeId) && _config.GetUnitName(upgradeId) == newUnit.Model.Id;
         }
     }
 }

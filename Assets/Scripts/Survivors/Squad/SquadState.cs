@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace Survivors.Squad
 {
@@ -17,5 +19,7 @@ namespace Survivors.Squad
 
             _upgradeLevels[upgradeId]++;
         }
+
+        public IReadOnlyDictionary<string, int> Upgrades => _upgradeLevels;
     }
 }
