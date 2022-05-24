@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using JetBrains.Annotations;
 using Survivors.Units.Model;
 using Survivors.Units.Player.Model;
@@ -28,10 +29,14 @@ namespace Survivors.Units.Player.Attack
         [CanBeNull]
         public ITarget Find()
         {
+            return GetAllOrderedByDistance().FirstOrDefault();
+        }
+
+        public IEnumerable<ITarget> GetAllOrderedByDistance()
+        {
             return _targetService.AllTargetsOfType(_targetType)
-                                 .Where(IsDistanceReached)
-                                 .OrderBy(it => Vector3.Distance(it.Root.position, transform.position))
-                                 .FirstOrDefault();
+                .Where(IsDistanceReached)
+                .OrderBy(it => Vector3.Distance(it.Root.position, transform.position));
         }
 
         private bool IsDistanceReached(ITarget target) => 
