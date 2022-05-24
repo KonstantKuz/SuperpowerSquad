@@ -35,7 +35,7 @@ namespace Survivors.Units.Weapon.Projectiles
         private float GetMaxHeight(Vector3 targetPos, float maxDistance)
         {
             var distanceToTarget = Vector3.Distance(transform.position, targetPos);
-            return MathExtensions.Remap(distanceToTarget, 0, maxDistance, _heightRange.x, _heightRange.y);
+            return MathLib.Remap(distanceToTarget, 0, maxDistance, _heightRange.x, _heightRange.y);
         }
         
         protected override void TryHit(GameObject target, Vector3 hitPos, Vector3 collisionNorm)

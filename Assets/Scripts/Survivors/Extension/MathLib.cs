@@ -1,6 +1,6 @@
 ﻿namespace Survivors.Extension
 {
-    public static class MathExtensions
+    public static class MathLib
     {
         /// <summary>
         /// Returns the value in the range [targetRangeMin, targetRangeMax] equivalent to source value in the range [sourceRangeMin, sourceRangeMax].
