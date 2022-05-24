@@ -14,20 +14,19 @@ namespace Survivors.Units.Weapon
     {
         [SerializeField] private NearestTargetSearcher _targetSearcher;
         
-        public override void Fire(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback)
+        public override void Fire(ITarget firstTarget, ProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             Assert.IsNotNull(projectileParams);
-            var targets = FindAdditionalTargets(target, projectileParams.Count, projectileParams.DamageRadius);
-            foreach (var t in targets)
+            var targets = FindAdditionalTargets(firstTarget, projectileParams.Count, projectileParams.DamageRadius);
+            var singleShotParams = new ProjectileParams
             {
-                base.Fire(t, 
-                    new ProjectileParams
-                    {
-                        Count = 1,
-                        DamageRadius = projectileParams.DamageRadius, 
-                        Speed = projectileParams.Speed
-                    }, 
-                    hitCallback);
+                Count = 1,
+                DamageRadius = projectileParams.DamageRadius,
+                Speed = projectileParams.Speed
+            };
+            foreach (var target in targets)
+            {
+                base.Fire(target, singleShotParams, hitCallback);
             }
         }
 
@@ -57,12 +56,12 @@ namespace Survivors.Units.Weapon
             }
         }
 
-        private static void SelectDistinctTargets(ICollection<ITarget> selectedTargets, int countToSelect, float distanceBetweenTargets, ICollection<ITarget> possibleTargets)
+        private static void SelectDistinctTargets(ICollection<ITarget> selectedTargets, int countToSelect, float minDistanceBetweenTargets, ICollection<ITarget> possibleTargets)
         {
             for (int i = 0; i < countToSelect; i++) {
                 var newTarget = possibleTargets
                     .FirstOrDefault(it =>
-                        Vector3.Distance(selectedTargets.Last().Center.position, it.Center.position) >= distanceBetweenTargets);
+                        Vector3.Distance(selectedTargets.Last().Center.position, it.Center.position) >= minDistanceBetweenTargets);
                 if (newTarget == null) return;
                 
                 possibleTargets.Remove(newTarget);
