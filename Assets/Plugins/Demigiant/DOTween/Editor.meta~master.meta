@@ -1,6 +1,11 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Resources/Content/DroppingLoot/SmallExp.prefab.meta
+guid: 3ba61e6d30745884dba28461322c8a12
+PrefabImporter:
+=======
 guid: 2f0e8747863010f4e8bd1c51de862814
 DefaultImporter:
+>>>>>>> origin/master:Assets/Plugins/Demigiant/DOTween/Editor.meta~master.meta
   externalObjects: {}
   userData: 
   assetBundleName: 
