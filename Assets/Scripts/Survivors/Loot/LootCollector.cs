@@ -1,36 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using DG.Tweening;
 using Survivors.Loot.Service;
 using Survivors.Session;
-using Survivors.Squad.Config;
+using Survivors.Squad;
+using UniRx;
 using UnityEngine;
 using Zenject;
 
 namespace Survivors.Loot
 {
-    public class LootCollector : MonoBehaviour, IWorldCleanUp
+    public class LootCollector : MonoBehaviour, IWorldCleanUp, ISquadInitializable
     {
-        [SerializeField] private float _collectTime;
-        [SerializeField] private SphereCollider _collider;
-        
-        private List<Tween> _movingLoots = new List<Tween>();
-        
-        [Inject] private SquadConfig _squadConfig;
-        [Inject] private DroppingLootService _lootService;
+        [SerializeField]
+        private float _collectTime;
+        [SerializeField]
+        private SphereCollider _collider;
 
-        private void Awake()
+        [Inject]
+        private DroppingLootService _lootService;
+
+        private List<Tween> _movingLoots = new List<Tween>();
+        private CompositeDisposable _disposable;
+
+        public void Init(Squad.Squad squad)
         {
-            _collider.radius = _squadConfig.Params.CollectRadius;
+            _disposable?.Dispose();
+            _disposable = new CompositeDisposable();
+            squad.Model.CollectRadius.Subscribe(radius => _collider.radius = radius).AddTo(_disposable);
         }
 
         private void OnTriggerEnter(Collider other)
         {
-            if (!other.TryGetComponent(out DroppingLoot loot))
-            {
+            if (!other.TryGetComponent(out DroppingLoot loot)) {
                 return;
             }
-            
             MoveLoot(loot);
         }
 
@@ -38,17 +41,18 @@ namespace Survivors.Loot
         {
             var collectLootMove = loot.transform.DOMove(transform.position, _collectTime).SetEase(Ease.Linear);
             _movingLoots.Add(collectLootMove);
-            collectLootMove.onComplete = () =>
-            {
+            collectLootMove.onComplete = () => {
                 _movingLoots.Remove(collectLootMove);
                 _lootService.OnLootCollected(loot.Config);
                 Destroy(loot.gameObject);
             };
         }
-        
+
         public void OnWorldCleanUp()
         {
             _movingLoots.ForEach(it => it.Kill());
+            _disposable?.Dispose();
+            _disposable = null;
         }
     }
 }

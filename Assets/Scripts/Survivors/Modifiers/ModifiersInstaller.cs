@@ -2,7 +2,7 @@
 using Feofun.Modifiers.Modifiers;
 using Zenject;
 
-namespace Survivors.Units.Modifiers
+namespace Survivors.Modifiers
 {
     public static class ModifiersInstaller
     {

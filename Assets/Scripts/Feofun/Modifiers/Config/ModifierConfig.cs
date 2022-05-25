@@ -13,16 +13,12 @@ namespace Feofun.Modifiers.Config
 
         [DataMember(Name = "Value")]
         private float _value;
-
-        [DataMember(Name = "Target")]
-        private ModifierTarget _target;
-
+        
         public string Modifier => _modifier;
 
         public string ParameterName => _parameterName;
 
-        public float Value => _value;
+        public float Value => _value; 
 
-        public ModifierTarget Target => _target;
     }
 }

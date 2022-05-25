@@ -1,11 +1,11 @@
 using Feofun.Localization.Service;
 using SuperMaxim.Messaging;
 using Survivors.Location;
+using Survivors.Modifiers;
 using Survivors.Squad;
 using Survivors.UI;
 using Survivors.Units.Installer;
 using Survivors.Units;
-using Survivors.Units.Modifiers;
 using UnityEngine;
 using Zenject;
 
@@ -30,10 +30,10 @@ namespace Survivors.App
 
             ConfigsInstaller.Install(Container);
             UnitServicesInstaller.Install(Container);
+            ModifiersInstaller.Install(Container);            
             SquadServicesInstaller.Install(Container);
             _worldServicesInstaller.Install(Container);
             _uiInstaller.Install(Container);
-            ModifiersInstaller.Install(Container);
         }
     }
 }
