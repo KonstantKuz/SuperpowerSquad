@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Survivors.Squad
+namespace Survivors.Squad.Upgrade
 {
-    public class SquadState
+    public class SquadUpgradeState
     {
         private readonly Dictionary<string, int> _upgradeLevels = new Dictionary<string, int>();
 
