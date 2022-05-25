@@ -8,52 +8,39 @@ using JetBrains.Annotations;
 
 namespace Survivors.Squad.Upgrade.Config
 {
-    interface IUpgradeLevelList: IReadOnlyList<UpgradeConfig>
-    {
-        
-    }
-    
     [PublicAPI]
     public class UpgradesConfig: ILoadableConfig
     {
-        private Dictionary<string, IUpgradeLevelList> _upgrades;
+        private IReadOnlyDictionary<string, UpgradeBranchConfig> _upgradeBranches;
 
         public void Load(Stream stream)
         {
-            _upgrades = new CsvSerializer().ReadNestedTable<UpgradeConfig>(stream)
-                .ToDictionary(it => it.Key, it => (IUpgradeLevelList)it.Value);
+            _upgradeBranches = new CsvSerializer().ReadNestedTable<UpgradeConfig>(stream)
+                .ToDictionary(it => it.Key, it => new UpgradeBranchConfig(it.Key, it.Value));
         }
 
-        private IUpgradeLevelList GetLevelConfigs(string upgradeId)
+        public UpgradeBranchConfig GetUpgradeBranch(string upgradeBranchId)
         {
-            if (!_upgrades.ContainsKey(upgradeId))
+            if (!_upgradeBranches.ContainsKey(upgradeBranchId))
             {
-                throw new Exception($"No upgrades for id {upgradeId} in upgrades config");
+                throw new Exception($"No upgrades for id {upgradeBranchId} in upgrades config");
             }
-            return _upgrades[upgradeId];
+
+            return _upgradeBranches[upgradeBranchId];
         }
 
-        public UpgradeConfig GetUpgradeConfig(string upgradeId, int level)
+        public UpgradeConfig GetUpgradeConfig(string upgradeBranchId, int level)
         {
-            var levels = GetLevelConfigs(upgradeId);
-            if (level <= 0 || level >= levels.Count)
-            {
-                throw new Exception($"Wrong upgrade level {level} for id {upgradeId}");
-            }
-            return levels[level - 1];
+            var branch = GetUpgradeBranch(upgradeBranchId);
+            return branch.GetLevel(level);
         }
 
-        public int GetMaxLevel(string upgradeId)
+        public int GetMaxLevel(string upgradeBranchId)
         {
-            return GetLevelConfigs(upgradeId).Count - 1;
+            return GetUpgradeBranch(upgradeBranchId).MaxLevel;
         }
 
-        public IEnumerable<string> Keys() => _upgrades.Keys;
-
-        public bool IsUnitUpgrade(string upgradeId)
-        {
-            return GetLevelConfigs(upgradeId).Any(it => it.Type == UpgradeType.Unit);
-        }
+        public IEnumerable<string> GetUpgradeBranchIds() => _upgradeBranches.Keys;
 
         public string GetUnitName(string upgradeId)
         {

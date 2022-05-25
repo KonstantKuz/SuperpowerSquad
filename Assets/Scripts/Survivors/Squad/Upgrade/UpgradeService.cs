@@ -5,7 +5,6 @@ using Feofun.Config;
 using Feofun.Modifiers;
 using JetBrains.Annotations;
 using LegionMaster.Extension;
-using SuperMaxim.Core.Extensions;
 using Survivors.Location;
 using Survivors.Modifiers;
 using Survivors.Modifiers.Config;
@@ -45,38 +44,40 @@ namespace Survivors.Squad.Upgrade
 
         public void AddRandomUpgrade()
         {
-            Upgrade(_config.Keys().ToList().Random());
+            Upgrade(_config.GetUpgradeBranchIds().ToList().Random());
         }
         
-        public void Upgrade(string upgradeId)
+        public void Upgrade(string upgradeBranchId)
         {
-            var level = _squadUpgradeState.GetLevel(upgradeId);
-            if (level >= _config.GetMaxLevel(upgradeId)) return;
-            _squadUpgradeState.IncreaseLevel(upgradeId);
-            var upgradeConfig = _config.GetUpgradeConfig(upgradeId, _squadUpgradeState.GetLevel(upgradeId));
-            ApplyUpgrade(upgradeConfig, upgradeId);
+            var level = _squadUpgradeState.GetLevel(upgradeBranchId);
+            if (level >= _config.GetMaxLevel(upgradeBranchId)) return;
+            _squadUpgradeState.IncreaseLevel(upgradeBranchId);
+            ApplyUpgrade(upgradeBranchId, _squadUpgradeState.GetLevel(upgradeBranchId));
         }
 
-        private void ApplyUpgrade(UpgradeConfig upgradeConfig, string upgradeId)
+        private void ApplyUpgrade(string upgradeBranchId, int level)
         {
+            var upgradeBranch = _config.GetUpgradeBranch(upgradeBranchId);
+            var upgradeConfig = upgradeBranch.GetLevel(level);
+            
             switch (upgradeConfig.Type)
             {
                 case UpgradeType.Unit:
-                    AddUnit(upgradeId);
+                    AddUnit(upgradeBranch.BranchUnitName);
                     break;
                 case UpgradeType.Modifier:
-                    AddModifier(upgradeConfig, upgradeId);
+                    AddModifier(upgradeConfig, upgradeBranch.BranchUnitName);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
 
-        private void AddModifier(UpgradeConfig upgradeConfig, string upgradeId)
+        private void AddModifier(UpgradeConfig upgradeConfig, string unitName)
         {
             var modifierConfig = _modifierConfigs.Get(upgradeConfig.ModifierId);
             var modifier = _modifierFactory.Create(modifierConfig.ModifierConfig);
-            _world.Squad.AddModifier(modifier, modifierConfig.Target, _config.IsUnitUpgrade(upgradeId) ? upgradeId : null);
+            _world.Squad.AddModifier(modifier, modifierConfig.Target, unitName);
         }
 
         private IModifier CreateModifier(UpgradeConfig upgradeConfig)
@@ -86,12 +87,12 @@ namespace Survivors.Squad.Upgrade
             return modifier;
         }
 
-        private IEnumerable<Unit> GetTargetUnits(string upgradeId)
+        private IEnumerable<Unit> GetTargetUnits(UpgradeBranchConfig upgradeBranchConfig)
         {
             var allSquadUnits = _world.Squad.Units;
-            return !_config.IsUnitUpgrade(upgradeId) ? 
+            return upgradeBranchConfig.IsUnitBranch ? 
                 allSquadUnits : 
-                allSquadUnits.Where(it => it.Model.Id == _config.GetUnitName(upgradeId));
+                allSquadUnits.Where(it => it.Model.Id == upgradeBranchConfig.BranchUnitName);
         }
 
         private void AddUnit(string unitId)
@@ -123,7 +124,8 @@ namespace Survivors.Squad.Upgrade
         {
             foreach (var upgrade in _squadUpgradeState.Upgrades)
             {
-                if (_config.IsUnitUpgrade(upgrade.Key)) continue;
+                var upgradeBranch = _config.GetUpgradeBranch(upgrade.Key);
+                if (upgradeBranch.IsUnitBranch) continue;
                 for (int level = 1; level <= upgrade.Value; level++)
                 {
                     yield return new Tuple<string, int>(upgrade.Key, level);
