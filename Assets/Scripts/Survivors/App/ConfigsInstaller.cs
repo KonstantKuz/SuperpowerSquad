@@ -5,10 +5,11 @@ using Feofun.Modifiers.Config;
 using Survivors.Config;
 using Survivors.EnemySpawn.Config;
 using Survivors.Loot.Config;
+using Survivors.Modifiers;
+using Survivors.Modifiers.Config;
 using Survivors.Units.Enemy.Config;
 using Survivors.Squad;
 using Survivors.Squad.Config;
-using Survivors.Units.Modifiers;
 using Survivors.Units.Player.Config;
 using Zenject;
 

@@ -1,6 +1,7 @@
 ﻿using System;
 using JetBrains.Annotations;
 using Survivors.Extension;
+using UniRx;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -22,14 +23,20 @@ namespace Survivors.Units.Player.Movement
 
         private NavMeshAgent _agent;
         private Animator _animator;
+        private CompositeDisposable _disposable;
         private NavMeshAgent Agent => _agent ??= GetComponent<NavMeshAgent>();
         private bool IsDestinationReached => _agent.remainingDistance < _agent.stoppingDistance;
 
+        public void Init(IReadOnlyReactiveProperty<float> speed)
+        {
+            _disposable?.Dispose();
+            _disposable = new CompositeDisposable();
+            speed.Subscribe(value => Agent.speed = value).AddTo(_disposable);
+        }
         private void Awake()
         {
             _animator = GetComponentInChildren<Animator>();
         }
-
         private void Update()
         {
             if (!Agent.isStopped && IsDestinationReached) {
@@ -37,12 +44,6 @@ namespace Survivors.Units.Player.Movement
             }
             UpdateAnimationRotateValues();
         }
-
-        public void Init(float speed)
-        {
-            Agent.speed = speed;
-        }
-
         public void MoveTo(Vector3 destination)
         {
             Agent.destination = destination;
@@ -66,6 +67,8 @@ namespace Survivors.Units.Player.Movement
         public void OnDeath()
         {
             Stop();
+            _disposable?.Dispose();
+            _disposable = null;
         }
         
         private void Stop()
