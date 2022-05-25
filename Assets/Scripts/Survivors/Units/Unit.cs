@@ -26,6 +26,7 @@ namespace Survivors.Units
         private IUnitDeathEventReceiver[] _deathEventReceivers;
         private MovementController _movementController;
 
+        public ITarget SelfTarget => _selfTarget;
         public bool IsAlive { get; set; }
 
         public UnitType UnitType => _selfTarget.UnitType;
@@ -37,9 +38,6 @@ namespace Survivors.Units
         {
             Model = model;
 
-            foreach (var component in GetComponentsInChildren<IUnitInitializable>()) {
-                component.Init(this);
-            }
             _updatables = GetComponentsInChildren<IUpdatableUnitComponent>();
             _damageable = gameObject.RequireComponent<IDamageable>();
             _death = gameObject.RequireComponent<IUnitDeath>();
@@ -49,6 +47,10 @@ namespace Survivors.Units
             _damageable.OnDeath += Kill;
             _unitService.Add(this);
             IsAlive = true;
+            
+            foreach (var component in GetComponentsInChildren<IUnitInitializable>()) {
+                component.Init(this);
+            }
         }
         
         [Button]

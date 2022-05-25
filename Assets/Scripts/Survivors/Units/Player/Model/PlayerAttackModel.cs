@@ -4,6 +4,7 @@ using Survivors.Modifiers;
 using Survivors.Units.Model;
 using Survivors.Units.Player.Config;
 using Survivors.Units.Weapon.Projectiles;
+using UniRx;
 
 namespace Survivors.Units.Player.Model
 {
@@ -40,8 +41,7 @@ namespace Survivors.Units.Player.Model
         public float ProjectileSpeed => _projectileSpeed.Value;
 
         public int ClipSize => _config.ClipSize;
-
-        public int ShotCount => (int)_shotCount.Value;
+        public IReadOnlyReactiveProperty<int> ShotCount => _shotCount.ReactiveValue.Select(it => (int) it).ToReactiveProperty();
 
         public ProjectileParams CreateProjectileParams()
         {
@@ -49,7 +49,7 @@ namespace Survivors.Units.Player.Model
                     Speed = ProjectileSpeed,        
                     DamageRadius = DamageRadius,
                     AttackDistance = AttackDistance,
-                    Count = ShotCount
+                    Count = ShotCount.Value
             };
         }
     }
