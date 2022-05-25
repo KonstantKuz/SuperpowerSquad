@@ -73,26 +73,11 @@ namespace Survivors.Squad.Upgrade
             }
         }
 
-        private void AddModifier(UpgradeConfig upgradeConfig, string unitName)
+        private void AddModifier(UpgradeLevelConfig upgradeLevelConfig, [CanBeNull]string unitName)
         {
-            var modifierConfig = _modifierConfigs.Get(upgradeConfig.ModifierId);
+            var modifierConfig = _modifierConfigs.Get(upgradeLevelConfig.ModifierId);
             var modifier = _modifierFactory.Create(modifierConfig.ModifierConfig);
             _world.Squad.AddModifier(modifier, modifierConfig.Target, unitName);
-        }
-
-        private IModifier CreateModifier(UpgradeConfig upgradeConfig)
-        {
-            var modifierConfig = _modifierConfigs.Get(upgradeConfig.ModifierId).ModifierConfig;
-            var modifier = _modifierFactory.Create(modifierConfig);
-            return modifier;
-        }
-
-        private IEnumerable<Unit> GetTargetUnits(UpgradeBranchConfig upgradeBranchConfig)
-        {
-            var allSquadUnits = _world.Squad.Units;
-            return upgradeBranchConfig.IsUnitBranch ? 
-                allSquadUnits : 
-                allSquadUnits.Where(it => it.Model.Id == upgradeBranchConfig.BranchUnitName);
         }
 
         private void AddUnit(string unitId)
@@ -115,7 +100,7 @@ namespace Survivors.Squad.Upgrade
                 var modifierConfig = _modifierConfigs.Get(upgradeConfig.ModifierId);
                 if (modifierConfig.Target == ModifierTarget.Squad) continue;
                 
-                var modifier = CreateModifier(upgradeConfig);
+                var modifier = _modifierFactory.Create(modifierConfig.ModifierConfig);
                 newUnit.AddModifier(modifier);
             }
         }

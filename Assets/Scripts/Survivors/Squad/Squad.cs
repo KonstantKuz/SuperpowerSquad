@@ -42,7 +42,7 @@ namespace Survivors.Squad
         public SquadModel Model => _model;
         private bool Initialized => _model != null;
         
-        private void Awake()
+        public void Awake()
         {
             _destination = GetComponentInChildren<SquadDestination>();
             SetUnitPositions();
@@ -65,13 +65,40 @@ namespace Survivors.Squad
             unit.OnDeath += OnUnitDeath;
             _units.Add(unit);
         }
-        
-        public void AddModifier(IModifier modifier, ModifierTarget target, [CanBeNull] string unitId)
+
+        private void OnUnitDeath(IUnit unit)
+        {
+            RemoveUnit(unit as Unit);
+        }
+
+        public void RemoveUnit(Unit unit)
+        {
+            Assert.IsTrue(_units.Contains(unit));
+            _units.Remove(unit);
+            unit.OnDeath -= OnUnitDeath;
+        }
+
+        public void AddSquadModifier(IModifier modifier)
+        {
+            Model.AddModifier(modifier);
+        }
+
+        public void AddUnitModifier(IModifier modifier, [CanBeNull]string unitId = null)
+        {
+            var units = _units;
+            if (unitId != null)
+            {
+                units = _units.Where(it => it.Model.Id == unitId).ToList();
+            }
+            units.ForEach(unit => unit.AddModifier(modifier));
+        }
+
+        public void AddModifier(IModifier modifier, ModifierTarget target, [CanBeNull]string unitId = null)
         {
             switch (target)
             {
                 case ModifierTarget.Unit:
-                    AddUnitsModifier(modifier, unitId);
+                    AddUnitModifier(modifier, unitId);
                     break;
                 case ModifierTarget.Squad:
                     AddSquadModifier(modifier);
@@ -80,20 +107,7 @@ namespace Survivors.Squad
                     throw new ArgumentOutOfRangeException();
             }
         }
-        private void AddSquadModifier(IModifier modifier)
-        {
-            Model.AddModifier(modifier);
-        }
 
-        private void AddUnitsModifier(IModifier modifier, [CanBeNull] string unitId)
-        {
-            var units = _units;
-            if (unitId != null) {
-                units = _units.Where(it => it.Model.Id == unitId).ToList();
-            }
-            units.ForEach(unit => unit.AddModifier(modifier));
-        }
-        
         [Button]
         /*
          * This functions just tests formation change when new units are added
@@ -153,16 +167,6 @@ namespace Survivors.Squad
             return _destination.transform.position + _formation.GetSpawnOffset(_unitSize, _units.Count);
         }
 
-        private void OnUnitDeath(IUnit unit)
-        {
-            RemoveUnit(unit as Unit);
-        }
-        private void RemoveUnit(Unit unit)
-        {
-            Assert.IsTrue(_units.Contains(unit));
-            _units.Remove(unit);
-            unit.OnDeath -= OnUnitDeath;
-        }
         public void OnWorldCleanUp()
         {
             _units.Clear();
