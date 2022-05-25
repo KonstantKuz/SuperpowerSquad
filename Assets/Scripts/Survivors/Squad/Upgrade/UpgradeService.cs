@@ -19,7 +19,7 @@ namespace Survivors.Squad.Upgrade
     [PublicAPI]
     public class UpgradeService
     {
-        private SquadState _squadState;
+        private SquadUpgradeState _squadUpgradeState;
         
         [Inject] private UpgradesConfig _config;
 
@@ -33,12 +33,12 @@ namespace Survivors.Squad.Upgrade
 
         public void Init()
         {
-            _squadState = InitSquadState();
+            _squadUpgradeState = InitSquadState();
         }
 
-        private static SquadState InitSquadState()
+        private static SquadUpgradeState InitSquadState()
         {
-            var squadState = new SquadState();
+            var squadState = new SquadUpgradeState();
             squadState.IncreaseLevel(UnitFactory.SIMPLE_PLAYER_ID);
             return squadState;
         }
@@ -50,10 +50,10 @@ namespace Survivors.Squad.Upgrade
         
         public void Upgrade(string upgradeId)
         {
-            var level = _squadState.GetLevel(upgradeId);
+            var level = _squadUpgradeState.GetLevel(upgradeId);
             if (level >= _config.GetMaxLevel(upgradeId)) return;
-            _squadState.IncreaseLevel(upgradeId);
-            var upgradeConfig = _config.GetUpgradeConfig(upgradeId, _squadState.GetLevel(upgradeId));
+            _squadUpgradeState.IncreaseLevel(upgradeId);
+            var upgradeConfig = _config.GetUpgradeConfig(upgradeId, _squadUpgradeState.GetLevel(upgradeId));
             ApplyUpgrade(upgradeConfig, upgradeId);
         }
 
@@ -121,7 +121,7 @@ namespace Survivors.Squad.Upgrade
 
         private IEnumerable<Tuple<string, int>> GetAbilitiesUpgrades()
         {
-            foreach (var upgrade in _squadState.Upgrades)
+            foreach (var upgrade in _squadUpgradeState.Upgrades)
             {
                 if (_config.IsUnitUpgrade(upgrade.Key)) continue;
                 for (int level = 1; level <= upgrade.Value; level++)
@@ -133,7 +133,7 @@ namespace Survivors.Squad.Upgrade
 
         private IEnumerable<Tuple<string, int>> GetUnitUpgrades(string unitId)
         {
-            var unitLevel = _squadState.GetLevel(unitId);
+            var unitLevel = _squadUpgradeState.GetLevel(unitId);
             for (int level = 1; level < unitLevel; level++)
             {
                 yield return new Tuple<string, int>(unitId, level);

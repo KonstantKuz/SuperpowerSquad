@@ -17,7 +17,7 @@ namespace Survivors.Loot.Service
     public class DroppingLootService : IWorldCleanUp
     {
         [Inject] private World _world;
-        [Inject] private SquadUpgradeService _squadUpgradeService;
+        [Inject] private SquadProgressService _squadProgressService;
         [Inject] private UnitService _unitService;
         [Inject] private WorldObjectFactory _worldObjectFactory;
         [Inject] private StringKeyedConfigCollection<DroppingLootConfig> _droppingLoots;
@@ -54,7 +54,7 @@ namespace Survivors.Loot.Service
             switch (collectedLoot.Type)
             {
                 case DroppingLootType.Exp:
-                    _squadUpgradeService.AddExp(collectedLoot.Amount);
+                    _squadProgressService.AddExp(collectedLoot.Amount);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
