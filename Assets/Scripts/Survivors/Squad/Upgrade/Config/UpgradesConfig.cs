@@ -8,17 +8,23 @@ using JetBrains.Annotations;
 
 namespace Survivors.Squad.Upgrade.Config
 {
+    interface IUpgradeLevelList: IReadOnlyList<UpgradeConfig>
+    {
+        
+    }
+    
     [PublicAPI]
     public class UpgradesConfig: ILoadableConfig
     {
-        private Dictionary<string, IReadOnlyList<UpgradeConfig>> _upgrades;
+        private Dictionary<string, IUpgradeLevelList> _upgrades;
 
         public void Load(Stream stream)
         {
-            _upgrades = new CsvSerializer().ReadNestedTable<UpgradeConfig>(stream);
+            _upgrades = new CsvSerializer().ReadNestedTable<UpgradeConfig>(stream)
+                .ToDictionary(it => it.Key, it => (IUpgradeLevelList)it.Value);
         }
 
-        public IReadOnlyList<UpgradeConfig> GetLevelConfigs(string upgradeId)
+        private IReadOnlyList<UpgradeConfig> GetLevelConfigs(string upgradeId)
         {
             if (!_upgrades.ContainsKey(upgradeId))
             {
