@@ -38,7 +38,7 @@ namespace Survivors.Units.Weapon.Projectiles
 
         private void Update()
         {
-            _currentPlaceAngle += Params.Speed;
+            _currentPlaceAngle += Params.Speed * Time.deltaTime;
             var targetPosition = _rotationCenter.position + 
                                          Quaternion.AngleAxis(_currentPlaceAngle, _rotationCenter.up) * _rotationCenter.forward * Params.AttackDistance;
             transform.position = Vector3.Lerp(transform.position, targetPosition, _interpolationSpeed);
