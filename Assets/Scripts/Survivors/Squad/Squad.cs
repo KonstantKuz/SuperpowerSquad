@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -86,6 +87,26 @@ namespace Survivors.Squad
         public void AddUnitModifier(IModifier modifier)
         {
             _units.ForEach(unit => unit.AddModifier(modifier));
+        }
+
+        public void AddModifier(IModifier modifier, ModifierTarget target, string unitId)
+        {
+            switch (target)
+            {
+                case ModifierTarget.Unit:
+                    var units = _units;
+                    if (unitId != null)
+                    {
+                        units = _units.Where(it => it.Model.Id == unitId).ToList();
+                    }
+                    units.ForEach(unit => unit.AddModifier(modifier));
+                    break;
+                case ModifierTarget.Squad:
+                    AddSquadModifier(modifier);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         [Button]

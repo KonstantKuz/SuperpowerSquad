@@ -74,9 +74,9 @@ namespace Survivors.Squad.Upgrade
 
         private void AddModifier(UpgradeConfig upgradeConfig, string upgradeId)
         {
-            var modifier = CreateModifier(upgradeConfig);
-            var targetUnits = GetTargetUnits(upgradeId);            
-            targetUnits.ForEach(it => it.AddModifier(modifier));
+            var modifierConfig = _modifierConfigs.Get(upgradeConfig.ModifierId);
+            var modifier = _modifierFactory.Create(modifierConfig.ModifierConfig);
+            _world.Squad.AddModifier(modifier, modifierConfig.Target, _config.IsUnitUpgrade(upgradeId) ? upgradeId : null);
         }
 
         private IModifier CreateModifier(UpgradeConfig upgradeConfig)
