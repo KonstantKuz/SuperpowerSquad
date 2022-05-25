@@ -8,6 +8,7 @@ using EasyButtons;
 using Feofun.Config;
 using Survivors.Session;
 using Feofun.Modifiers;
+using JetBrains.Annotations;
 using LegionMaster.Extension;
 using Survivors.Modifiers;
 using Survivors.Modifiers.Config;
@@ -84,22 +85,22 @@ namespace Survivors.Squad
             Model.AddModifier(modifier);
         }
 
-        public void AddUnitModifier(IModifier modifier)
+        public void AddUnitModifier(IModifier modifier, [CanBeNull]string unitId = null)
         {
-            _units.ForEach(unit => unit.AddModifier(modifier));
+            var units = _units;
+            if (unitId != null)
+            {
+                units = _units.Where(it => it.Model.Id == unitId).ToList();
+            }
+            units.ForEach(unit => unit.AddModifier(modifier));
         }
 
-        public void AddModifier(IModifier modifier, ModifierTarget target, string unitId)
+        public void AddModifier(IModifier modifier, ModifierTarget target, [CanBeNull]string unitId = null)
         {
             switch (target)
             {
                 case ModifierTarget.Unit:
-                    var units = _units;
-                    if (unitId != null)
-                    {
-                        units = _units.Where(it => it.Model.Id == unitId).ToList();
-                    }
-                    units.ForEach(unit => unit.AddModifier(modifier));
+                    AddUnitModifier(modifier, unitId);
                     break;
                 case ModifierTarget.Squad:
                     AddSquadModifier(modifier);
