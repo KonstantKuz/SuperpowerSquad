@@ -13,7 +13,7 @@ namespace Survivors.Squad.Upgrade
         private CompositeDisposable _disposable;
 
 
-        private void Init()
+        public void Init()
         {
             _disposable?.Dispose();
             _disposable = new CompositeDisposable();

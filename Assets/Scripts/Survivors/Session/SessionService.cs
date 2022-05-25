@@ -25,7 +25,8 @@ namespace Survivors.Session
         [Inject] private SquadConfig _squadConfig;
         [Inject] private IMessenger _messenger;
         [Inject] private UpgradeService _upgradeService;  
-        [Inject] private SquadProgressService _squadProgressService;
+        [Inject] private SquadProgressService _squadProgressService;      
+        [Inject] private UpgradeSelectionService _upgradeSelectionService;
 
         public void Start()
         {
@@ -33,6 +34,7 @@ namespace Survivors.Session
             _lootService.Init();
             _upgradeService.Init();      
             _squadProgressService.Init();
+            _upgradeSelectionService.Init();
             _unitFactory.CreatePlayerUnit(UnitFactory.SIMPLE_PLAYER_ID);
             _enemyWavesSpawner.StartSpawn(_enemyWavesConfig);
             _unitService.OnPlayerUnitDeath += OnPlayerUnitDeath;
