@@ -101,22 +101,38 @@ namespace Survivors.Squad.Upgrade
 
         private void AddExistingModifiers(Unit newUnit)
         {
+            var existingUpgrades = new List<Tuple<string, int>>();
+            existingUpgrades.AddRange(GetUnitUpgrades(newUnit.Model.Id));
+            existingUpgrades.AddRange(GetAbilitiesUpgrades());
+            
+            foreach (var (upgradeId, level) in existingUpgrades)
+            {
+                var upgradeConfig = _config.GetUpgradeConfig(upgradeId, level);
+                if (upgradeConfig.Type == UpgradeType.Unit) continue;
+                var modifier = CreateModifier(upgradeConfig);
+                newUnit.AddModifier(modifier);
+            }
+        }
+
+        private IEnumerable<Tuple<string, int>> GetAbilitiesUpgrades()
+        {
             foreach (var upgrade in _squadState.Upgrades)
             {
-                if (IsDifferentUnitUpgrade(newUnit, upgrade.Key)) continue;
+                if (_config.IsUnitUpgrade(upgrade.Key)) continue;
                 for (int level = 1; level <= upgrade.Value; level++)
                 {
-                    var upgradeConfig = _config.GetUpgradeConfig(upgrade.Key, level);
-                    if (upgradeConfig.Type == UpgradeType.Unit) continue;
-                    var modifier = CreateModifier(upgradeConfig);
-                    newUnit.AddModifier(modifier);
+                    yield return new Tuple<string, int>(upgrade.Key, level);
                 }
             }
         }
 
-        private bool IsDifferentUnitUpgrade(Unit newUnit, string upgradeId)
+        private IEnumerable<Tuple<string, int>> GetUnitUpgrades(string unitId)
         {
-            return _config.IsUnitUpgrade(upgradeId) && _config.GetUnitName(upgradeId) == newUnit.Model.Id;
+            var unitLevel = _squadState.GetLevel(unitId);
+            for (int level = 1; level < unitLevel; level++)
+            {
+                yield return new Tuple<string, int>(unitId, level);
+            }
         }
     }
 }
