@@ -32,7 +32,8 @@ namespace Survivors.Squad
 
         private SquadDestination _destination;
         private SquadModel _model;
-
+        private IReadOnlyReactiveProperty<float> _unitSpeed;
+        
         [Inject] private Joystick _joystick;
         [Inject] private UnitFactory _unitFactory;
         [Inject] private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
@@ -40,24 +41,28 @@ namespace Survivors.Squad
         [Inject] private ModifierFactory _modifierFactory;
 
         public SquadModel Model => _model;
-        public bool Initialized => _model != null;
+        private bool Initialized => _model != null;
+        
         public void Awake()
         {
             _destination = GetComponentInChildren<SquadDestination>();
             SetUnitPositions();
         }
+
         public void Init(SquadModel model)
         {
             _model = model;
+            _unitSpeed = _model.Speed.Select(speed => speed * _unitSpeedScale).ToReactiveProperty();
             foreach (var component in GetComponentsInChildren<ISquadInitializable>()) {
                 component.Init(this);
             }
         }
+
         public void AddUnit(Unit unit)
         {
             unit.transform.SetParent(transform);
             unit.transform.position = GetSpawnPosition();
-            unit.MovementController.Init(_model.Speed.Select(speed => speed * _unitSpeedScale).ToReactiveProperty());
+            unit.MovementController.Init(_unitSpeed);
             unit.OnDeath += OnUnitDeath;
             _units.Add(unit);
         }
@@ -94,7 +99,7 @@ namespace Survivors.Squad
             var nextUnit = _playerUnitConfigs.Values[_units.Count % _playerUnitConfigs.Values.Count];
             _unitFactory.CreatePlayerUnit(nextUnit.Id);
         }
-        
+
         /*
         * This is test function. Remove later
         */
@@ -105,12 +110,14 @@ namespace Survivors.Squad
             Debug.Log($"Adding modifier {config.Id}");
             AddUnitModifier(modifier);
         }
+
         /*
         * This is test function. Remove later
         */
         private ParameterUpgradeConfig GetRandomUpgradeConfig(ModifierTarget target) =>
                 _modifierConfigs.Values.Where(it => it.Target == target).ToList().Random();
-        [Button]  
+
+        [Button]
         /*
          * This is test function. Remove later
          */
@@ -121,7 +128,7 @@ namespace Survivors.Squad
             Debug.Log($"Adding modifier {config.Id}");
             AddSquadModifier(modifier);
         }
-        
+
         [Button]
         private void SwitchSquadCenterVisibility()
         {
