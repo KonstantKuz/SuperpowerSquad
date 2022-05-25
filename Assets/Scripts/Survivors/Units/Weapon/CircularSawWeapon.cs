@@ -13,7 +13,7 @@ namespace Survivors.Units.Weapon
     {
         [SerializeField] private CircularSaw _circularSawPrefab;
 
-        private Transform _rotateAround;
+        private Transform _rotationCenter;
         private ProjectileParams _projectileParams;
         private Transform _sawsRoot;
         private List<CircularSaw> _saws;
@@ -23,7 +23,7 @@ namespace Survivors.Units.Weapon
 
         public void Init(Transform rotateAround, ProjectileParams projectileParams)
         {
-            _rotateAround = rotateAround;
+            _rotationCenter = rotateAround;
             _projectileParams = projectileParams;
             _sawsRoot = new GameObject("SawsRoot").transform;
             _sawsRoot.SetParent(_world.SpawnContainer.transform);
@@ -44,7 +44,7 @@ namespace Survivors.Units.Weapon
             _projectileParams = projectileParams;
             foreach (var saw in _saws)
             {
-                saw.SetParams(_projectileParams);
+                saw.UpdateParams(_projectileParams);
             }
             PlaceSaws();
         }
@@ -58,7 +58,7 @@ namespace Survivors.Units.Weapon
         private void Update()
         {
             _sawsRoot.localRotation *= Quaternion.Euler(0, _projectileParams.Speed * Time.deltaTime, 0);
-            _sawsRoot.position = _rotateAround.position;
+            _sawsRoot.position = _rotationCenter.position;
         }
 
         private void PlaceSaws()

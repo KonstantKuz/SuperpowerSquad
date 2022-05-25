@@ -43,7 +43,7 @@ namespace Survivors.Squad
         public SquadModel Model => _model;
         public SquadDestination Destination => _destination;
         public IReadOnlyReactiveProperty<int> UnitsCount => _units.ObserveCountChanged().ToReactiveProperty();
-        public float FormationSize => _formation.GetSize(_unitSize, _units.Count);
+        public float SquadRadius => _formation.GetMaxSize(_unitSize, _units.Count) / 2;
 
         public void Awake()
         {

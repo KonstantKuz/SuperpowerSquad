@@ -39,7 +39,7 @@ namespace Survivors.Units.Player.Attack
             _playerAttackModel = attackModel;
             _squad = _owner.gameObject.RequireComponentInParent<Squad.Squad>();
             
-            var projectileParams = attackModel.CreateProjectileParams();
+            var projectileParams = GetSawParamsForSquad();
             _circularSawWeapon.Init(_squad.Destination.transform, projectileParams);
             attackModel.ShotCount.Subscribe(CreateSaws).AddTo(_disposable);
             _squad.UnitsCount.Subscribe(UpdateRadius).AddTo(_disposable);
@@ -56,9 +56,15 @@ namespace Survivors.Units.Player.Attack
 
         private void UpdateRadius(int squadCount)
         {
-            var projectileParams = _playerAttackModel.CreateProjectileParams();
-            projectileParams.AttackDistance += _squad.FormationSize;
+            var projectileParams = GetSawParamsForSquad();
             _circularSawWeapon.UpdateParams(projectileParams);
+        }
+
+        private ProjectileParams GetSawParamsForSquad()
+        {
+            var projectileParams = _playerAttackModel.CreateProjectileParams();
+            projectileParams.AttackDistance += _squad.SquadRadius;
+            return projectileParams;
         }
 
         public void OnDeath()
