@@ -41,10 +41,5 @@ namespace Survivors.Squad.Upgrade.Config
         }
 
         public IEnumerable<string> GetUpgradeBranchIds() => _upgradeBranches.Keys;
-
-        public string GetUnitName(string upgradeId)
-        {
-            return upgradeId;
-        }
     }
 }
