@@ -5,7 +5,6 @@ using Feofun.Config;
 using Feofun.Modifiers;
 using JetBrains.Annotations;
 using LegionMaster.Extension;
-using SuperMaxim.Core.Extensions;
 using Survivors.Location;
 using Survivors.Modifiers;
 using Survivors.Modifiers.Config;

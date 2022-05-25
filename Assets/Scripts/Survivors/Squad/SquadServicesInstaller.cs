@@ -1,6 +1,5 @@
 using Survivors.Squad.Progress;
 using Survivors.Squad.Service;
-using UnityEngine;
 using Zenject;
 
 namespace Survivors.Squad
@@ -9,7 +8,7 @@ namespace Survivors.Squad
     {
         public static void Install(DiContainer container)
         {
-            container.Bind<SquadUpgradeService>().AsSingle();
+            container.Bind<SquadProgressService>().AsSingle();
             container.Bind<SquadProgressRepository>().AsSingle();
         }
     }
