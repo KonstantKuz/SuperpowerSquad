@@ -273,7 +273,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Upgrade
+  m_Text: UpgradeUnit
 --- !u!1 &5991339907675376811
 GameObject:
   m_ObjectHideFlags: 0

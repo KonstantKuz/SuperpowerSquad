@@ -1,9 +1,12 @@
 ﻿using SuperMaxim.Messaging;
 using Survivors.EnemySpawn;
 using Survivors.EnemySpawn.Config;
+using Survivors.Location;
 using Survivors.Loot.Service;
 using Survivors.Session.Messages;
 using Survivors.Squad.Upgrade;
+using Survivors.Squad.Config;
+using Survivors.Squad.Model;
 using Survivors.Units;
 using Survivors.Units.Service;
 using Zenject;
@@ -16,19 +19,26 @@ namespace Survivors.Session
         [Inject] private EnemyWavesSpawner _enemyWavesSpawner;
         [Inject] private EnemyWavesConfig _enemyWavesConfig;
         [Inject] private UnitFactory _unitFactory;
-        [Inject] private UnitService _unitService;
+        [Inject] private UnitService _unitService;        
+        [Inject] private World _world;      
+        [Inject] private SquadConfig _squadConfig;
         [Inject] private IMessenger _messenger;
         [Inject] private UpgradeService _upgradeService;
 
         public void Start()
         {
+            InitSquad();
             _lootService.Init();
             _upgradeService.Init();
             _unitFactory.CreatePlayerUnit(UnitFactory.SIMPLE_PLAYER_ID);
             _enemyWavesSpawner.StartSpawn(_enemyWavesConfig);
             _unitService.OnPlayerUnitDeath += OnPlayerUnitDeath;
         }
-
+        private void InitSquad()
+        {
+            var model = new SquadModel(_squadConfig.Params);
+            _world.Squad.Init(model);
+        }
         private void OnPlayerUnitDeath(IUnit unit)
         {
             if (_unitService.HasUnitOfType(UnitType.PLAYER)) {

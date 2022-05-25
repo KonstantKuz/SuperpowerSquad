@@ -7,9 +7,9 @@ using JetBrains.Annotations;
 using LegionMaster.Extension;
 using SuperMaxim.Core.Extensions;
 using Survivors.Location;
+using Survivors.Modifiers.Config;
 using Survivors.Squad.Upgrade.Config;
 using Survivors.Units;
-using Survivors.Units.Modifiers;
 using Survivors.Units.Service;
 using Zenject;
 
