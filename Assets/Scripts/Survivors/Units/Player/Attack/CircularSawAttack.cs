@@ -28,6 +28,7 @@ namespace Survivors.Units.Player.Attack
             {
                 Dispose();
             }
+            _disposable = new CompositeDisposable();
             
             _owner = unit as Unit;
             if (!(unit.Model.AttackModel is PlayerAttackModel attackModel))
@@ -40,7 +41,7 @@ namespace Survivors.Units.Player.Attack
             
             var projectileParams = attackModel.CreateProjectileParams();
             _circularSawWeapon.Init(_squad.Destination.transform, projectileParams);
-            attackModel.ShotCountAsReactiveProperty.Subscribe(it => Fire((int)it));
+            attackModel.ShotCount.Subscribe(CreateSaws).AddTo(_disposable);
         }
 
         public void OnDeath()
@@ -48,7 +49,7 @@ namespace Survivors.Units.Player.Attack
             Dispose();
         }
 
-        private void Fire(int count)
+        private void CreateSaws(int count)
         {
             _circularSawWeapon.CleanUp();
             for (int i = 0; i < count; i++)

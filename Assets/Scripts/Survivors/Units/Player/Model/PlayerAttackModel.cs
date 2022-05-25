@@ -41,9 +41,7 @@ namespace Survivors.Units.Player.Model
         public float ProjectileSpeed => _projectileSpeed.Value;
 
         public int ClipSize => _config.ClipSize;
-
-        public int ShotCount => (int)_shotCount.Value;
-        public IReadOnlyReactiveProperty<float> ShotCountAsReactiveProperty => _shotCount.ReactiveValue;
+        public IReadOnlyReactiveProperty<int> ShotCount => _shotCount.ReactiveValue.Select(it => (int) it).ToReactiveProperty();
 
         public ProjectileParams CreateProjectileParams()
         {
@@ -51,7 +49,7 @@ namespace Survivors.Units.Player.Model
                     Speed = ProjectileSpeed,        
                     DamageRadius = DamageRadius,
                     AttackDistance = AttackDistance,
-                    Count = ShotCount
+                    Count = ShotCount.Value
             };
         }
     }

@@ -10,14 +10,12 @@ namespace Survivors.Units.Weapon
 {
     public class CircularSawWeapon : MonoBehaviour
     {
-        [SerializeField] private float _rotationSpeedMultiplier;
         [SerializeField] private CircularSaw _circularSawPrefab;
 
         private Transform _rotateAround;
         private ProjectileParams _projectileParams;
         private Transform _sawsRoot;
         private List<CircularSaw> _saws;
-        private float _currentAngle;
 
         [Inject] private World _world;
         [Inject] private WorldObjectFactory _worldObjectFactory;
@@ -49,8 +47,7 @@ namespace Survivors.Units.Weapon
 
         private void Update()
         {
-            _currentAngle += _projectileParams.Speed * _rotationSpeedMultiplier * Time.deltaTime;
-            _sawsRoot.localRotation = Quaternion.Euler(0, _currentAngle, 0);
+            _sawsRoot.localRotation *= Quaternion.Euler(0, _projectileParams.Speed * Time.deltaTime, 0);
             _sawsRoot.position = _rotateAround.position;
         }
 
