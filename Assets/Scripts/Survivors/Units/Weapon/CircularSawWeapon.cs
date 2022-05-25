@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Survivors.Location;
 using Survivors.Location.Service;
+using Survivors.Squad.Formation;
 using Survivors.Units.Weapon.Projectiles;
 using UnityEngine;
 using Zenject;
@@ -26,7 +27,6 @@ namespace Survivors.Units.Weapon
             _projectileParams = projectileParams;
             _sawsRoot = new GameObject("SawsRoot").transform;
             _sawsRoot.SetParent(_world.SpawnContainer.transform);
-            
             _saws = new List<CircularSaw>();
         }
         
@@ -36,6 +36,16 @@ namespace Survivors.Units.Weapon
             saw.Init(targetType, _projectileParams, hitCallback);
             saw.transform.SetParent(_sawsRoot);
             _saws.Add(saw);
+            PlaceSaws();
+        }
+        
+        public void UpdateParams(ProjectileParams projectileParams)
+        {
+            _projectileParams = projectileParams;
+            foreach (var saw in _saws)
+            {
+                saw.SetParams(_projectileParams);
+            }
             PlaceSaws();
         }
 
@@ -53,8 +63,8 @@ namespace Survivors.Units.Weapon
 
         private void PlaceSaws()
         {
-            float angleStep = 360f / _saws.Count;
-            float currentPlaceAngle = 0;
+            var angleStep = 360f / _saws.Count;
+            var currentPlaceAngle = 0f;
             for (int i = 0; i < _saws.Count; i++)
             {
                 _saws[i].SetLocalPlaceByAngle(currentPlaceAngle);                                        

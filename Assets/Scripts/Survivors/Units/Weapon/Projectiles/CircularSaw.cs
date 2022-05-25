@@ -22,6 +22,11 @@ namespace Survivors.Units.Weapon.Projectiles
             transform.localPosition = 
                 Quaternion.AngleAxis(angle, transform.parent.up) * Vector3.forward * _projectileParams.AttackDistance;
         }
+
+        public void SetParams(ProjectileParams projectileParams)
+        {
+            _projectileParams = projectileParams;
+        }
         
         public void OnTriggerEnter(Collider collider)
         {

@@ -4,9 +4,14 @@ namespace Survivors.Squad.Formation
 {
     public class CircleFormation: ISquadFormation
     {
+        public float GetSize(float unitRadius, int unitsCount)
+        {
+            return unitsCount == 1 ? 0 : unitsCount * unitRadius / Mathf.PI / 2;
+        }
+
         public Vector3 GetUnitOffset(int unitIdx, float unitRadius, int unitsCount)
         {
-            var formationRadius = unitsCount == 1 ? 0 : unitsCount * unitRadius / Mathf.PI / 2;
+            var formationRadius = GetSize(unitRadius, unitsCount);
             var angle = 360 * unitIdx / unitsCount;
             return Quaternion.AngleAxis(angle, Vector3.up) * Vector3.right * formationRadius;
         }

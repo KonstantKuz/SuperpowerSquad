@@ -42,11 +42,7 @@ namespace Survivors.Units.Player.Attack
             var projectileParams = attackModel.CreateProjectileParams();
             _circularSawWeapon.Init(_squad.Destination.transform, projectileParams);
             attackModel.ShotCount.Subscribe(CreateSaws).AddTo(_disposable);
-        }
-
-        public void OnDeath()
-        {
-            Dispose();
+            _squad.UnitsCount.Subscribe(UpdateRadius).AddTo(_disposable);
         }
 
         private void CreateSaws(int count)
@@ -56,6 +52,18 @@ namespace Survivors.Units.Player.Attack
             {
                 _circularSawWeapon.AddSaw(_owner.SelfTarget.UnitType.GetTargetUnitType(), DoDamage);
             }
+        }
+
+        private void UpdateRadius(int squadCount)
+        {
+            var projectileParams = _playerAttackModel.CreateProjectileParams();
+            projectileParams.AttackDistance += _squad.FormationSize;
+            _circularSawWeapon.UpdateParams(projectileParams);
+        }
+
+        public void OnDeath()
+        {
+            Dispose();
         }
 
         private void DoDamage(GameObject target)
