@@ -7,6 +7,7 @@ using JetBrains.Annotations;
 using LegionMaster.Extension;
 using SuperMaxim.Core.Extensions;
 using Survivors.Location;
+using Survivors.Modifiers;
 using Survivors.Modifiers.Config;
 using Survivors.Squad.Upgrade.Config;
 using Survivors.Units;
@@ -109,6 +110,10 @@ namespace Survivors.Squad.Upgrade
             {
                 var upgradeConfig = _config.GetUpgradeConfig(upgradeId, level);
                 if (upgradeConfig.Type == UpgradeType.Unit) continue;
+                
+                var modifierConfig = _modifierConfigs.Get(upgradeConfig.ModifierId);
+                if (modifierConfig.Target == ModifierTarget.Squad) continue;
+                
                 var modifier = CreateModifier(upgradeConfig);
                 newUnit.AddModifier(modifier);
             }
