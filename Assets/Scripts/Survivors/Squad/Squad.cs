@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Assertions;
@@ -7,9 +8,8 @@ using EasyButtons;
 using Feofun.Config;
 using Survivors.Session;
 using Feofun.Modifiers;
-using LegionMaster.Extension;
+using JetBrains.Annotations;
 using Survivors.Modifiers;
-using Survivors.Modifiers.Config;
 using Survivors.Squad.Formation;
 using Survivors.Squad.Model;
 using Survivors.Units;
@@ -37,8 +37,7 @@ namespace Survivors.Squad
         [Inject] private Joystick _joystick;
         [Inject] private UnitFactory _unitFactory;
         [Inject] private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
-        [Inject] private StringKeyedConfigCollection<ParameterUpgradeConfig> _modifierConfigs;
-        [Inject] private ModifierFactory _modifierFactory;
+        public IEnumerable<Unit> Units => _units;
 
         public SquadModel Model => _model;
         private bool Initialized => _model != null;
@@ -84,9 +83,29 @@ namespace Survivors.Squad
             Model.AddModifier(modifier);
         }
 
-        public void AddUnitModifier(IModifier modifier)
+        public void AddUnitModifier(IModifier modifier, [CanBeNull]string unitId = null)
         {
-            _units.ForEach(unit => unit.AddModifier(modifier));
+            var units = _units;
+            if (unitId != null)
+            {
+                units = _units.Where(it => it.Model.Id == unitId).ToList();
+            }
+            units.ForEach(unit => unit.AddModifier(modifier));
+        }
+
+        public void AddModifier(IModifier modifier, ModifierTarget target, [CanBeNull]string unitId = null)
+        {
+            switch (target)
+            {
+                case ModifierTarget.Unit:
+                    AddUnitModifier(modifier, unitId);
+                    break;
+                case ModifierTarget.Squad:
+                    AddSquadModifier(modifier);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
 
         [Button]
@@ -98,35 +117,6 @@ namespace Survivors.Squad
             Assert.IsTrue(_units.Count > 0);
             var nextUnit = _playerUnitConfigs.Values[_units.Count % _playerUnitConfigs.Values.Count];
             _unitFactory.CreatePlayerUnit(nextUnit.Id);
-        }
-
-        /*
-        * This is test function. Remove later
-        */
-        public void AddRandomUnitUpgrade()
-        {
-            var config = GetRandomUpgradeConfig(ModifierTarget.Unit);
-            var modifier = _modifierFactory.Create(config.ModifierConfig);
-            Debug.Log($"Adding modifier {config.Id}");
-            AddUnitModifier(modifier);
-        }
-
-        /*
-        * This is test function. Remove later
-        */
-        private ParameterUpgradeConfig GetRandomUpgradeConfig(ModifierTarget target) =>
-                _modifierConfigs.Values.Where(it => it.Target == target).ToList().Random();
-
-        [Button]
-        /*
-         * This is test function. Remove later
-         */
-        public void AddRandomSquadUpgrade()
-        {
-            var config = GetRandomUpgradeConfig(ModifierTarget.Squad);
-            var modifier = _modifierFactory.Create(config.ModifierConfig);
-            Debug.Log($"Adding modifier {config.Id}");
-            AddSquadModifier(modifier);
         }
 
         [Button]

@@ -20,12 +20,13 @@ namespace Survivors.Units.Service
         [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
         [Inject] private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
 
-        public void CreatePlayerUnit(string unitId)
+        public Unit CreatePlayerUnit(string unitId)
         {
             var unitObj = _worldObjectFactory.CreateObject(unitId);
             var unit = unitObj.GetComponentInChildren<Unit>()
                        ?? throw new NullReferenceException($"Unit is null, objectId:= {unitId}, gameObject:= {unitObj.name}");
             ConfigurePlayerUnit(unit);
+            return unit;
         }
 
         private void ConfigurePlayerUnit(Unit unit)

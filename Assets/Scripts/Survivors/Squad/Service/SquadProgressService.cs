@@ -6,14 +6,14 @@ using UnityEngine.Assertions;
 
 namespace Survivors.Squad.Service
 {
-    public class SquadUpgradeService
+    public class SquadProgressService
     {
         private readonly SquadProgressRepository _repository;
         private readonly StringKeyedConfigCollection<SquadLevelConfig> _levelConfig;
 
         public SquadProgress Progress => _repository.Get() ?? new SquadProgress();
         
-        public SquadUpgradeService(SquadProgressRepository repository, 
+        public SquadProgressService(SquadProgressRepository repository, 
                                      StringKeyedConfigCollection<SquadLevelConfig> levelConfig)
         {
             _repository = repository;

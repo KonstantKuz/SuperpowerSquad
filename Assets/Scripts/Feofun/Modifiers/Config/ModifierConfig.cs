@@ -18,7 +18,7 @@ namespace Feofun.Modifiers.Config
 
         public string ParameterName => _parameterName;
 
-        public float Value => _value;
+        public float Value => _value; 
 
     }
 }
