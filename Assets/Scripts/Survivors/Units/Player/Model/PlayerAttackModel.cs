@@ -4,6 +4,7 @@ using Survivors.Units.Model;
 using Survivors.Units.Modifiers;
 using Survivors.Units.Player.Config;
 using Survivors.Units.Weapon.Projectiles;
+using UniRx;
 
 namespace Survivors.Units.Player.Model
 {
@@ -42,6 +43,7 @@ namespace Survivors.Units.Player.Model
         public int ClipSize => _config.ClipSize;
 
         public int ShotCount => (int)_shotCount.Value;
+        public IReadOnlyReactiveProperty<float> ShotCountAsReactiveProperty => _shotCount.ReactiveValue;
 
         public ProjectileParams CreateProjectileParams()
         {

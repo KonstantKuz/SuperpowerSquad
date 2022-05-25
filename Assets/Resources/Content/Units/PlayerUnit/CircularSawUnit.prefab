@@ -12,6 +12,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d464911c71b0ec14dbedc0bdff24e275, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _circularSawWeapon: {fileID: 7154825310223214610}
+--- !u!114 &7154825310223214610
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9168141253341438199}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5852dff8fd2c46a6a1f48257c7e1b6d3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _rotationSpeedMultiplier: 20
   _circularSawPrefab: {fileID: -3151884757855942882, guid: b03c079f6096b254cb02618eb84bb955, type: 3}
 --- !u!1001 &3920995920394443207
 PrefabInstance:
@@ -116,7 +130,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 106005451642109113, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3254496561695502929, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
       propertyPath: m_Name
@@ -205,6 +219,11 @@ PrefabInstance:
 --- !u!1 &6010361435319938591 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 3254496561695502929, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
+  m_PrefabInstance: {fileID: 9098217379886046286}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &9168141253341438199 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 106005451642109113, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
   m_PrefabInstance: {fileID: 9098217379886046286}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &615576430309882713 stripped

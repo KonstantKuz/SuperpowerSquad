@@ -31,7 +31,7 @@ namespace Survivors.Units.Weapon.Projectiles
             var contact = other.GetContact(0);
             TryHit(other.gameObject, contact.point, contact.normal);
         }
-        protected static bool CanDamageTarget(Collider targetCollider, UnitType type, [CanBeNull] out ITarget target)
+        public static bool CanDamageTarget(Collider targetCollider, UnitType type, [CanBeNull] out ITarget target)
         {
             target = null;
             if (!targetCollider.TryGetComponent(out ITarget targetComponent)) {

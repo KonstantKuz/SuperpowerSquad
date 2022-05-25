@@ -5,25 +5,30 @@ using Survivors.Location.Service;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Player.Model;
 using Survivors.Units.Target;
+using Survivors.Units.Weapon;
 using Survivors.Units.Weapon.Projectiles;
+using UniRx;
 using UnityEngine;
 using Zenject;
 
 namespace Survivors.Units.Player.Attack
 {
-    public class CircularSawOwner : MonoBehaviour, IUnitInitializable
+    public class CircularSawAttack : MonoBehaviour, IUnitInitializable, IUnitDeathEventReceiver
     {
-        [SerializeField] private CircularSaw _circularSawPrefab;
+        [SerializeField] private CircularSawWeapon _circularSawWeapon;
 
         private Unit _owner;
         private Squad.Squad _squad;
         private PlayerAttackModel _playerAttackModel;
-        private List<CircularSaw> _currentSaws;
+        private CompositeDisposable _disposable;
 
-        [Inject] private WorldObjectFactory _worldObjectFactory;
-        
         public void Init(IUnit unit)
         {
+            if (_disposable != null)
+            {
+                Dispose();
+            }
+            
             _owner = unit as Unit;
             if (!(unit.Model.AttackModel is PlayerAttackModel attackModel))
             {
@@ -32,33 +37,23 @@ namespace Survivors.Units.Player.Attack
 
             _playerAttackModel = attackModel;
             _squad = _owner.gameObject.RequireComponentInParent<Squad.Squad>();
-            _currentSaws = new List<CircularSaw>();
             
             var projectileParams = attackModel.CreateProjectileParams();
-            for (int i = 0; i < attackModel.ClipSize; i++)
-            {
-                AddNewSaw(projectileParams);
-            }
+            _circularSawWeapon.Init(_squad.Destination.transform, projectileParams);
+            attackModel.ShotCountAsReactiveProperty.Subscribe(it => Fire((int)it));
         }
 
-        public void AddNewSaw(ProjectileParams projectileParams)
+        public void OnDeath()
         {
-            var newSaw = CreateSaw();
-            _currentSaws.Add(newSaw);
-            newSaw.SetRotationCenter(_squad.Destination.transform);
-            newSaw.Launch(_owner.SelfTarget, projectileParams, DoDamage);
-            
-            PlaceSaws();
+            Dispose();
         }
 
-        private void PlaceSaws()
+        private void Fire(int count)
         {
-            float angleStep = 360 / _currentSaws.Count;
-            float currentPlaceAngle = 0;
-            for (int i = 0; i < _currentSaws.Count; i++)
+            _circularSawWeapon.CleanUp();
+            for (int i = 0; i < count; i++)
             {
-                _currentSaws[i].SetPlaceAngle(currentPlaceAngle);
-                currentPlaceAngle += angleStep;
+                _circularSawWeapon.AddSaw(_owner.SelfTarget.UnitType.GetTargetUnitType(), DoDamage);
             }
         }
 
@@ -69,9 +64,11 @@ namespace Survivors.Units.Player.Attack
             Debug.Log($"Damage applied, target:= {target.name}");
         }
 
-        private CircularSaw CreateSaw()
+        private void Dispose()
         {
-            return _worldObjectFactory.CreateObject(_circularSawPrefab.gameObject).GetComponent<CircularSaw>();
+            _circularSawWeapon.CleanUp();
+            _disposable?.Dispose();
+            _disposable = null;
         }
     }
 }

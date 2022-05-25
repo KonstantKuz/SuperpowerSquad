@@ -4,44 +4,35 @@ using UnityEngine;
 
 namespace Survivors.Units.Weapon.Projectiles
 {
-    public class CircularSaw : Projectile
+    public class CircularSaw : MonoBehaviour
     {
-        [SerializeField] private float _interpolationSpeed;
+        private UnitType _targetType;
+        private ProjectileParams _projectileParams;
+        private Action<GameObject> _hitCallback;
         
-        private Transform _rotationCenter;
-        private float _currentPlaceAngle;
-
-        public void SetRotationCenter(Transform center)
+        public void Init(UnitType targetType, ProjectileParams projectileParams, Action<GameObject> hitCallBack)
         {
-            _rotationCenter = center;
-        }
-        
-        public void SetPlaceAngle(float angle)
-        {
-            _currentPlaceAngle = angle;
-        }
-        
-        public override void Launch(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback)
-        {
-            Params = projectileParams;
-            HitCallback = hitCallback;
-            TargetType = target.UnitType.GetTargetUnitType();
+            _targetType = targetType;
+            _projectileParams = projectileParams;
+            _hitCallback = hitCallBack;
         }
 
+        public void SetLocalPlaceByAngle(float angle)
+        {
+            transform.localPosition = 
+                Quaternion.AngleAxis(angle, transform.parent.up) * Vector3.forward * _projectileParams.AttackDistance;
+        }
+        
         public void OnTriggerEnter(Collider collider)
         {
-            if (!CanDamageTarget(collider, TargetType, out var target)) {
+            if (!Projectile.CanDamageTarget(collider, _targetType, out var target)) {
                 return;
             }
-            TryHit(collider.gameObject, transform.position, -transform.forward);
-        }
-
-        private void Update()
-        {
-            _currentPlaceAngle += Params.Speed * Time.deltaTime;
-            var targetPosition = _rotationCenter.position + 
-                                         Quaternion.AngleAxis(_currentPlaceAngle, _rotationCenter.up) * _rotationCenter.forward * Params.AttackDistance;
-            transform.position = Vector3.Lerp(transform.position, targetPosition, _interpolationSpeed);
+            Projectile.TryHitTargetsInRadius(transform.position, 
+                _projectileParams.DamageRadius,
+                _targetType,
+                null,
+                _hitCallback);
         }
     }
 }
