@@ -51,7 +51,7 @@ namespace Survivors.Squad.Upgrade.Config
 
         public string GetUnitName(string upgradeId)
         {
-            return GetLevelConfigs(upgradeId)[0].ModifierId;
+            return upgradeId;
         }
     }
 }
