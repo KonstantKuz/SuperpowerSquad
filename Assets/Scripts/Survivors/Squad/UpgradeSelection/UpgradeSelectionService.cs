@@ -1,14 +1,20 @@
 ﻿using Survivors.Session;
 using Survivors.Squad.Service;
+using Survivors.Squad.Upgrade;
+using Survivors.Squad.UpgradeSelection.Config;
 using UniRx;
 using Zenject;
 
-namespace Survivors.Squad.Upgrade
+namespace Survivors.Squad.UpgradeSelection
 {
     public class UpgradeSelectionService : IWorldCleanUp
     {
         [Inject]
-        private SquadProgressService _squadProgressService;
+        private SquadProgressService _squadProgressService;       
+        [Inject]
+        private UpgradeService _upgradeService;      
+        [Inject]
+        private UpgradeSelectionConfig _upgradeSelectionConfig;
         
         private CompositeDisposable _disposable;
 

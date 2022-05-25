@@ -8,6 +8,7 @@ using Survivors.Squad.Upgrade;
 using Survivors.Squad.Config;
 using Survivors.Squad.Model;
 using Survivors.Squad.Service;
+using Survivors.Squad.UpgradeSelection;
 using Survivors.Units;
 using Survivors.Units.Service;
 using Zenject;
