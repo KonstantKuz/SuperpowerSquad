@@ -30,11 +30,10 @@ namespace Survivors.App
 
             ConfigsInstaller.Install(Container);
             UnitServicesInstaller.Install(Container);
+            ModifiersInstaller.Install(Container);            
             SquadServicesInstaller.Install(Container);
             _worldServicesInstaller.Install(Container);
             _uiInstaller.Install(Container);
-            ModifiersInstaller.Install(Container);
-            SquadInstaller.Install(Container);
         }
     }
 }
