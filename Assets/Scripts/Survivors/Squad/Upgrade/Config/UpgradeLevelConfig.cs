@@ -2,7 +2,7 @@
 
 namespace Survivors.Squad.Upgrade.Config
 {
-    public class UpgradeConfig
+    public class UpgradeLevelConfig
     {
         [DataMember]
         public UpgradeType Type;

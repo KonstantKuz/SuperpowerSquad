@@ -7,15 +7,15 @@ namespace Survivors.Squad.Upgrade.Config
     public class UpgradeBranchConfig
     {
         public readonly string Id;
-        private readonly IReadOnlyList<UpgradeConfig> _levels;
+        private readonly IReadOnlyList<UpgradeLevelConfig> _levels;
 
-        public UpgradeBranchConfig(string id, IReadOnlyList<UpgradeConfig> levels)
+        public UpgradeBranchConfig(string id, IReadOnlyList<UpgradeLevelConfig> levels)
         {
             Id = id;
             _levels = levels;
         }
 
-        public UpgradeConfig GetLevel(int level)
+        public UpgradeLevelConfig GetLevel(int level)
         {
             if (level <= 0 || level >= MaxLevel)
             {

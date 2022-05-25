@@ -15,7 +15,7 @@ namespace Survivors.Squad.Upgrade.Config
 
         public void Load(Stream stream)
         {
-            _upgradeBranches = new CsvSerializer().ReadNestedTable<UpgradeConfig>(stream)
+            _upgradeBranches = new CsvSerializer().ReadNestedTable<UpgradeLevelConfig>(stream)
                 .ToDictionary(it => it.Key, it => new UpgradeBranchConfig(it.Key, it.Value));
         }
 
@@ -29,7 +29,7 @@ namespace Survivors.Squad.Upgrade.Config
             return _upgradeBranches[upgradeBranchId];
         }
 
-        public UpgradeConfig GetUpgradeConfig(string upgradeBranchId, int level)
+        public UpgradeLevelConfig GetUpgradeConfig(string upgradeBranchId, int level)
         {
             var branch = GetUpgradeBranch(upgradeBranchId);
             return branch.GetLevel(level);
