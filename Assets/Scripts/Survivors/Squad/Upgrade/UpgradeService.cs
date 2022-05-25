@@ -61,7 +61,7 @@ namespace Survivors.Squad.Upgrade
             switch (upgradeConfig.Type)
             {
                 case UpgradeType.Unit:
-                    AddUnit(upgradeConfig);
+                    AddUnit(upgradeId);
                     break;
                 case UpgradeType.Modifier:
                     AddModifier(upgradeConfig, upgradeId);
@@ -80,7 +80,7 @@ namespace Survivors.Squad.Upgrade
 
         private IModifier CreateModifier(UpgradeConfig upgradeConfig)
         {
-            var modifierConfig = _modifierConfigs.Get(upgradeConfig.ImprovementId).ModifierConfig;
+            var modifierConfig = _modifierConfigs.Get(upgradeConfig.ModifierId).ModifierConfig;
             var modifier = _modifierFactory.Create(modifierConfig);
             return modifier;
         }
@@ -93,9 +93,9 @@ namespace Survivors.Squad.Upgrade
                 allSquadUnits.Where(it => it.Model.Id == _config.GetUnitName(upgradeId));
         }
 
-        private void AddUnit(UpgradeConfig upgradeConfig)
+        private void AddUnit(string unitId)
         {
-            var unit = _unitFactory.CreatePlayerUnit(upgradeConfig.ImprovementId);
+            var unit = _unitFactory.CreatePlayerUnit(unitId);
             AddExistingModifiers(unit);
         }
 

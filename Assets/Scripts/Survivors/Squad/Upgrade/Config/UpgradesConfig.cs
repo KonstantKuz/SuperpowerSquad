@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Feofun.Config;
 using Feofun.Config.Csv;
 using JetBrains.Annotations;
@@ -45,12 +46,12 @@ namespace Survivors.Squad.Upgrade.Config
 
         public bool IsUnitUpgrade(string upgradeId)
         {
-            return GetLevelConfigs(upgradeId)[0].Type == UpgradeType.Unit;
+            return GetLevelConfigs(upgradeId).Any(it => it.Type == UpgradeType.Unit);
         }
 
         public string GetUnitName(string upgradeId)
         {
-            return GetLevelConfigs(upgradeId)[0].ImprovementId;
+            return GetLevelConfigs(upgradeId)[0].ModifierId;
         }
     }
 }

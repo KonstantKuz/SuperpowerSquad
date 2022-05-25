@@ -7,6 +7,6 @@ namespace Survivors.Squad.Upgrade.Config
         [DataMember]
         public UpgradeType Type;
         [DataMember]
-        public string ImprovementId;
+        public string ModifierId;
     }
 }
