@@ -24,7 +24,7 @@ namespace Survivors.Squad.Upgrade.Config
                 .ToDictionary(it => it.Key, it => (IUpgradeLevelList)it.Value);
         }
 
-        private IReadOnlyList<UpgradeConfig> GetLevelConfigs(string upgradeId)
+        private IUpgradeLevelList GetLevelConfigs(string upgradeId)
         {
             if (!_upgrades.ContainsKey(upgradeId))
             {
