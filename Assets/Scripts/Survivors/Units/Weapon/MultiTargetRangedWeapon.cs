@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using LegionMaster.Extension;
+using Feofun.Extension;
 using Survivors.Units.Player.Attack;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles;

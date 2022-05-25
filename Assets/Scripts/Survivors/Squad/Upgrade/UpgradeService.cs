@@ -2,12 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Feofun.Config;
+using Feofun.Extension;
 using Feofun.Modifiers;
 using JetBrains.Annotations;
-using LegionMaster.Extension;
 using Survivors.Location;
 using Survivors.Modifiers;
 using Survivors.Modifiers.Config;
+using Survivors.Session;
 using Survivors.Squad.Upgrade.Config;
 using Survivors.Units;
 using Survivors.Units.Service;
@@ -16,31 +17,21 @@ using Zenject;
 namespace Survivors.Squad.Upgrade
 {
     [PublicAPI]
-    public class UpgradeService
+    public class UpgradeService : IWorldCleanUp
     {
-        private SquadUpgradeState _squadUpgradeState;
-        
         [Inject] private UpgradesConfig _config;
-
         [Inject] private World _world;
-
         [Inject] private UnitFactory _unitFactory;
-
         [Inject] private ModifierFactory _modifierFactory;
+        [Inject] private SquadUpgradeRepository _repository;
         
         [Inject] private StringKeyedConfigCollection<ParameterUpgradeConfig> _modifierConfigs;
-
+        private SquadUpgradeState SquadUpgradeState => _repository.Require();
         public void Init()
         {
-            _squadUpgradeState = InitSquadState();
+            _repository.Set(CreateSquadState());
         }
-
-        private static SquadUpgradeState InitSquadState()
-        {
-            var squadState = new SquadUpgradeState();
-            squadState.IncreaseLevel(UnitFactory.SIMPLE_PLAYER_ID);
-            return squadState;
-        }
+        private static SquadUpgradeState CreateSquadState() => new SquadUpgradeState();
 
         public void AddRandomUpgrade()
         {
@@ -49,10 +40,12 @@ namespace Survivors.Squad.Upgrade
         
         public void Upgrade(string upgradeBranchId)
         {
-            var level = _squadUpgradeState.GetLevel(upgradeBranchId);
+            var level = SquadUpgradeState.GetLevel(upgradeBranchId);
             if (level >= _config.GetMaxLevel(upgradeBranchId)) return;
-            _squadUpgradeState.IncreaseLevel(upgradeBranchId);
-            ApplyUpgrade(upgradeBranchId, _squadUpgradeState.GetLevel(upgradeBranchId));
+            var state = SquadUpgradeState;
+            state.IncreaseLevel(upgradeBranchId);
+            SaveState(state);
+            ApplyUpgrade(upgradeBranchId, SquadUpgradeState.GetLevel(upgradeBranchId));
         }
 
         private void ApplyUpgrade(string upgradeBranchId, int level)
@@ -107,7 +100,7 @@ namespace Survivors.Squad.Upgrade
 
         private IEnumerable<Tuple<string, int>> GetAbilitiesUpgrades()
         {
-            foreach (var upgrade in _squadUpgradeState.Upgrades)
+            foreach (var upgrade in SquadUpgradeState.Upgrades)
             {
                 var upgradeBranch = _config.GetUpgradeBranch(upgrade.Key);
                 if (upgradeBranch.IsUnitBranch) continue;
@@ -120,11 +113,23 @@ namespace Survivors.Squad.Upgrade
 
         private IEnumerable<Tuple<string, int>> GetUnitUpgrades(string unitId)
         {
-            var unitLevel = _squadUpgradeState.GetLevel(unitId);
+            var unitLevel = SquadUpgradeState.GetLevel(unitId);
             for (int level = 1; level < unitLevel; level++)
             {
                 yield return new Tuple<string, int>(unitId, level);
             }
+        }
+        private void SaveState(SquadUpgradeState state)
+        {
+            _repository.Set(state);
+        }
+        private void ResetProgress()
+        {
+            _repository.Delete();
+        }
+        public void OnWorldCleanUp()
+        {
+            ResetProgress();
         }
     }
 }

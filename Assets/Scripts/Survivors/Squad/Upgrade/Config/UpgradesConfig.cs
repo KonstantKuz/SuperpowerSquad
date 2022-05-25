@@ -5,24 +5,24 @@ using System.Linq;
 using Feofun.Config;
 using Feofun.Config.Csv;
 using JetBrains.Annotations;
+using Survivors.Squad.UpgradeSelection;
 
 namespace Survivors.Squad.Upgrade.Config
 {
     [PublicAPI]
-    public class UpgradesConfig: ILoadableConfig
+    public class UpgradesConfig : ILoadableConfig
     {
         private IReadOnlyDictionary<string, UpgradeBranchConfig> _upgradeBranches;
 
         public void Load(Stream stream)
         {
             _upgradeBranches = new CsvSerializer().ReadNestedTable<UpgradeLevelConfig>(stream)
-                .ToDictionary(it => it.Key, it => new UpgradeBranchConfig(it.Key, it.Value));
+                                                  .ToDictionary(it => it.Key, it => new UpgradeBranchConfig(it.Key, it.Value));
         }
 
         public UpgradeBranchConfig GetUpgradeBranch(string upgradeBranchId)
         {
-            if (!_upgradeBranches.ContainsKey(upgradeBranchId))
-            {
+            if (!_upgradeBranches.ContainsKey(upgradeBranchId)) {
                 throw new Exception($"No upgrades for id {upgradeBranchId} in upgrades config");
             }
 
@@ -39,7 +39,11 @@ namespace Survivors.Squad.Upgrade.Config
         {
             return GetUpgradeBranch(upgradeBranchId).MaxLevel;
         }
-
+        public IEnumerable<string> GetUpgradeBranchIds(UpgradeBranchType type)
+        {
+            return _upgradeBranches.Where(it => it.Value.IsUnitBranch == (type == UpgradeBranchType.Unit))
+                                   .Select(it => it.Key);
+        }
         public IEnumerable<string> GetUpgradeBranchIds() => _upgradeBranches.Keys;
     }
 }

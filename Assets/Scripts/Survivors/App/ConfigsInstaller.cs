@@ -31,7 +31,7 @@ namespace Survivors.App
                 .RegisterSingle<SquadConfig>(Configs.SQUAD)
                 .RegisterStringKeyedCollection<ParameterUpgradeConfig>(Configs.MODIFIERS)
                 .RegisterSingle<UpgradesConfig>(Configs.UPGRADES)     
-                .RegisterSingle<UpgradeSelectionConfig>(Configs.CONSTANTS);
+                .RegisterSingle<UpgradeBranchSelectionConfig>(Configs.CONSTANTS);
         }
     }
 }

@@ -1,6 +1,5 @@
 Id,Type,ModifierId
-StandardUnit,Unit,
-,Modifier,AttackDamage10
+StandardUnit,Modifier,AttackDamage10
 ,Modifier,Health100
 ,Modifier,AttackDamage10
 ,Unit,

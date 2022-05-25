@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityRandom = UnityEngine.Random;
 
-namespace LegionMaster.Extension
+namespace Feofun.Extension
 {
     public static class ListExtension
     {
@@ -11,6 +11,20 @@ namespace LegionMaster.Extension
             int randomNumber = UnityRandom.Range(0, collection.Count);
             return collection[randomNumber];
         }
+
+        public static IEnumerable<T> Random<T>(this IReadOnlyList<T> collection, int randomCount)
+        {
+            if (randomCount < 0) {
+                throw new ArgumentOutOfRangeException(nameof(randomCount), "Random count is out of range, randomCount < 0");
+            }
+            if (randomCount > collection.Count) {
+                throw new ArgumentOutOfRangeException(nameof(randomCount), "Random count is out of range, randomCount > collection.Count");
+            }
+            for (int i = 0; i < randomCount; i++) {
+                yield return collection.Random();
+            }
+        }
+
         public static T Random<T>(this IReadOnlyList<T> collection, int minInclusive, int maxExclusive, int seed = 0)
         {
             if (maxExclusive > collection.Count) {
