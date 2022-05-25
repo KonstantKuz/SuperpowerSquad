@@ -1,11 +1,10 @@
-using Survivors.Session;
 using Survivors.UI.Hud.Unit;
 using UnityEngine;
 using Zenject;
 
 namespace Survivors.Units.Component.Hud
 {
-    public class UnitHudOwner : MonoBehaviour, IUnitInitializable, IUnitDeathEventReceiver, IWorldCleanUp
+    public class UnitHudOwner : MonoBehaviour, IUnitInitializable, IUnitDeathEventReceiver
     {
         [SerializeField] private UnitHudPresenter _hudPrefab;
         [SerializeField] private Transform _hudPlace;
@@ -22,15 +21,22 @@ namespace Survivors.Units.Component.Hud
             _hudPresenter = _container.InstantiatePrefabForComponent<UnitHudPresenter>(_hudPrefab);
             _hudPresenter.Init(this, _hudPlace);
         }
-
+        private void OnDestroy()
+        {
+            CleanUp();
+        }
         public void OnDeath()
         {
-            _hudPresenter.OnUnitDeath();
+            CleanUp();
         }
-
-        public void OnWorldCleanUp()
+        private void CleanUp()
         {
+            if (_hudPresenter == null) {
+                return;
+            }
             _hudPresenter.OnUnitDeath();
+            _hudPresenter = null;
+
         }
     }
 }

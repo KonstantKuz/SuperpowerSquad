@@ -1,4 +1,4 @@
-﻿namespace Survivors.Units.Modifiers
+﻿namespace Survivors.Modifiers
 {
     public static class Parameters
     {
@@ -8,5 +8,8 @@
         public const string HEALTH = "Health";
         public const string DAMAGE_RADIUS = "DamageRadius";
         public const string SHOT_COUNT = "ShotCount";
+        public const string SPEED = "Speed";    
+        public const string COLLECT_RADIUS = "CollectRadius";
+
     }
 }
