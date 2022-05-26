@@ -46,7 +46,7 @@ namespace Survivors.Units.Player.Movement
                 Stop();
             }
 
-            UpdateSpeedWithDistanceToDestination();
+            IncreaseSpeedWithDistanceToDestination();
             UpdateAnimationRotateValues();
         }
         public void MoveTo(Vector3 destination)
@@ -105,7 +105,7 @@ namespace Survivors.Units.Player.Movement
         private double GetRadian(float signedAngle) => Mathf.Deg2Rad * signedAngle;
         private float GetRotateSignedAngle() => Vector2.SignedAngle(transform.forward.ToVector2XZ(), _rotationRoot.forward.ToVector2XZ());
 
-        private void UpdateSpeedWithDistanceToDestination()
+        private void IncreaseSpeedWithDistanceToDestination()
         {
             if (_agent.isStopped)
             {
