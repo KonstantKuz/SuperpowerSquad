@@ -26,7 +26,7 @@ namespace Survivors.Squad.Upgrade
         [Inject] private SquadUpgradeRepository _repository;
         
         [Inject] private StringKeyedConfigCollection<ParameterUpgradeConfig> _modifierConfigs;
-        private SquadUpgradeState SquadUpgradeState => _repository.Require();
+        public SquadUpgradeState SquadUpgradeState => _repository.Require();
         public void Init()
         {
             _repository.Set(CreateSquadState());
@@ -40,8 +40,7 @@ namespace Survivors.Squad.Upgrade
         
         public void Upgrade(string upgradeBranchId)
         {
-            var level = SquadUpgradeState.GetLevel(upgradeBranchId);
-            if (level >= _config.GetMaxLevel(upgradeBranchId)) return;
+            if (SquadUpgradeState.IsMaxLevel(upgradeBranchId, _config)) return;
             var state = SquadUpgradeState;
             state.IncreaseLevel(upgradeBranchId);
             SaveState(state);

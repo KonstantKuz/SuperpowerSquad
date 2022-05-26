@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization;
 using Feofun.Config;
@@ -30,7 +29,7 @@ namespace Survivors.Squad.UpgradeSelection.Config
         {
             return type switch {
                     UpgradeBranchType.Unit => MaxUnitUpgradeBranchCount,
-                    UpgradeBranchType.Ability => _maxAbilityUpgradeBranchCount,
+                    UpgradeBranchType.Ability => MaxAbilityUpgradeBranchCount,
                     _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
             };
         }

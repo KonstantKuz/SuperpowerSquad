@@ -9,7 +9,9 @@ using Survivors.Squad.Upgrade;
 using Survivors.Squad.Upgrade.Config;
 using Survivors.Squad.UpgradeSelection.Config;
 using Survivors.UI.Dialog;
+using Survivors.UI.Dialog.Model;
 using UniRx;
+using UnityEngine;
 using Zenject;
 
 namespace Survivors.Squad.UpgradeSelection
@@ -17,16 +19,23 @@ namespace Survivors.Squad.UpgradeSelection
     public class UpgradeSelectionService : IWorldCleanUp
     {
         private const int PROPOSED_UPGRADE_COUNT = 3;
-      
-        [Inject] private SquadProgressService _squadProgressService;
-        [Inject] private UpgradeBranchSelectionConfig _upgradeSelectionConfig;
-        [Inject] private UpgradesConfig _upgradesConfig;
-        [Inject] private DialogManager _dialogManager;
-        [Inject] private SquadUpgradeRepository _repository;
-        
+
+        [Inject]
+        private SquadProgressService _squadProgressService;
+        [Inject]
+        private UpgradeBranchSelectionConfig _upgradeSelectionConfig;
+        [Inject]
+        private UpgradesConfig _upgradesConfig;
+        [Inject]
+        private DialogManager _dialogManager;
+        [Inject]
+        private SquadUpgradeRepository _repository;
+        [Inject]
+        private UpgradeService _upgradeService;
+
         private CompositeDisposable _disposable;
         private SquadUpgradeState SquadUpgradeState => _repository.Require();
-        
+
         public void Init()
         {
             _disposable?.Dispose();
@@ -41,20 +50,28 @@ namespace Survivors.Squad.UpgradeSelection
             }
             TryShowUpgradeDialog();
         }
-        
-        private void TryShowUpgradeDialog()
+
+        public void TryShowUpgradeDialog()
         {
             var randomUpgradeIds = GetRandomUpgradeIds(PROPOSED_UPGRADE_COUNT).ToList();
             if (randomUpgradeIds.IsEmpty()) {
+                Debug.Log("Empty Upgrades");
                 return;
             }
-            _dialogManager.Show<UpgradeDialog, UpgradeDialogInitModel>(new UpgradeDialogInitModel(randomUpgradeIds));
+            randomUpgradeIds.ForEach(it => { Debug.Log($"RandomUpgradeId:= {it}, level:= {SquadUpgradeState.GetLevel(it) + 1}"); });
+
+            _dialogManager.Show<UpgradeDialog, UpgradeDialogInitModel>(new UpgradeDialogInitModel(randomUpgradeIds, OnUpgrade));
+        }
+
+        private void OnUpgrade(string upgradeBranchId)
+        {
+            _upgradeService.Upgrade(upgradeBranchId);
         }
 
         private IEnumerable<string> GetRandomUpgradeIds(int upgradeCount)
         {
             var upgradeBranchIds = EnumExt.Values<UpgradeBranchType>().SelectMany(GetAvailableUpgradeBranchIds).ToList();
-            return upgradeBranchIds.Count <= upgradeCount ? upgradeBranchIds : upgradeBranchIds.Random(upgradeCount);
+            return upgradeBranchIds.Count <= upgradeCount ? upgradeBranchIds : upgradeBranchIds.RandomUnique(upgradeCount);
         }
 
         private IEnumerable<string> GetAvailableUpgradeBranchIds(UpgradeBranchType branchType)

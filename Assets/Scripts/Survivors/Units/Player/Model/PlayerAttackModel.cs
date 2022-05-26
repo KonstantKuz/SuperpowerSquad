@@ -21,8 +21,10 @@ namespace Survivors.Units.Player.Model
             _config = config;
             _attackDamage = new FloatModifiableParameter(Parameters.ATTACK_DAMAGE, _config.AttackDamage, parameterOwner);
             _attackTime = new FloatModifiableParameter(Parameters.ATTACK_TIME, _config.AttackTime, parameterOwner);
+            
             _projectileSpeed = new FloatModifiableParameter(Parameters.PROJECTILE_SPEED, _config.ProjectileSpeed, parameterOwner);
             _damageRadius = new FloatModifiableParameter(Parameters.DAMAGE_RADIUS, _config.DamageRadius, parameterOwner);
+            
             _shotCount = new FloatModifiableParameter(Parameters.SHOT_COUNT, 1, parameterOwner);
         }
 

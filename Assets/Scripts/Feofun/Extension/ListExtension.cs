@@ -12,7 +12,7 @@ namespace Feofun.Extension
             return collection[randomNumber];
         }
 
-        public static IEnumerable<T> Random<T>(this IReadOnlyList<T> collection, int randomCount)
+        public static IEnumerable<T> RandomUnique<T>(this List<T> collection, int randomCount)
         {
             if (randomCount < 0) {
                 throw new ArgumentOutOfRangeException(nameof(randomCount), "Random count is out of range, randomCount < 0");
@@ -21,7 +21,9 @@ namespace Feofun.Extension
                 throw new ArgumentOutOfRangeException(nameof(randomCount), "Random count is out of range, randomCount > collection.Count");
             }
             for (int i = 0; i < randomCount; i++) {
-                yield return collection.Random();
+                var item = collection.Random();
+                collection.Remove(item);
+                yield return item;
             }
         }
 
