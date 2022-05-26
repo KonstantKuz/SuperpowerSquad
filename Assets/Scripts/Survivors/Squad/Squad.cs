@@ -24,8 +24,6 @@ namespace Survivors.Squad
     public class Squad : MonoBehaviour, IWorldCleanUp
     {
         [SerializeField]
-        private float _unitSpeedScale;
-        [SerializeField]
         private float _unitSize;
 
         private readonly IReactiveCollection<Unit> _units = new List<Unit>().ToReactiveCollection();
@@ -33,7 +31,6 @@ namespace Survivors.Squad
 
         private SquadModel _model;
         private SquadDestination _destination;
-        private IReadOnlyReactiveProperty<float> _unitSpeed;
         
         [Inject] private Joystick _joystick;
         [Inject] private UnitFactory _unitFactory;
@@ -54,7 +51,6 @@ namespace Survivors.Squad
         public void Init(SquadModel model)
         {
             _model = model;
-            _unitSpeed = _model.Speed.Select(speed => speed * _unitSpeedScale).ToReactiveProperty();
 
             foreach (var component in GetComponentsInChildren<ISquadInitializable>()) {
                 component.Init(this);
@@ -65,7 +61,7 @@ namespace Survivors.Squad
         {
             unit.transform.SetParent(transform);
             unit.transform.position = GetSpawnPosition();
-            unit.MovementController.Init(_unitSpeed);
+            unit.MovementController.Init(_model.Speed);
             unit.OnDeath += OnUnitDeath;
             _units.Add(unit);
         }

@@ -20,18 +20,21 @@ namespace Survivors.Units.Player.Movement
         private Transform _rotationRoot;
         [SerializeField]
         private float _rotationSpeed = 10;
+        [SerializeField] 
+        private float _speedMultiplier;
 
         private NavMeshAgent _agent;
         private Animator _animator;
         private CompositeDisposable _disposable;
         private NavMeshAgent Agent => _agent ??= GetComponent<NavMeshAgent>();
         private bool IsDestinationReached => _agent.remainingDistance < _agent.stoppingDistance;
+        private float _squadSpeed;
 
-        public void Init(IReadOnlyReactiveProperty<float> speed)
+        public void Init(IReadOnlyReactiveProperty<float> squadSpeed)
         {
             _disposable?.Dispose();
             _disposable = new CompositeDisposable();
-            speed.Subscribe(value => Agent.speed = value).AddTo(_disposable);
+            squadSpeed.Subscribe(value => _squadSpeed = value).AddTo(_disposable);
         }
         private void Awake()
         {
@@ -39,9 +42,12 @@ namespace Survivors.Units.Player.Movement
         }
         private void Update()
         {
+            IncreaseSpeedWithDistanceToDestination();
+            
             if (!Agent.isStopped && IsDestinationReached) {
                 Stop();
             }
+            
             UpdateAnimationRotateValues();
         }
         public void MoveTo(Vector3 destination)
@@ -99,5 +105,13 @@ namespace Survivors.Units.Player.Movement
         }
         private double GetRadian(float signedAngle) => Mathf.Deg2Rad * signedAngle;
         private float GetRotateSignedAngle() => Vector2.SignedAngle(transform.forward.ToVector2XZ(), _rotationRoot.forward.ToVector2XZ());
+
+        private void IncreaseSpeedWithDistanceToDestination()
+        {
+            _agent.speed = _squadSpeed * DynamicSpeedMultiplier;
+        }
+
+        private float DynamicSpeedMultiplier => 1.0f + Mathf.Pow(Mathf.Max(0.0f,
+            _agent.remainingDistance - _agent.stoppingDistance), 2) * _speedMultiplier;
     }
 }
