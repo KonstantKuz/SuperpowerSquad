@@ -9,6 +9,7 @@ using Feofun.Config;
 using Survivors.Session;
 using Feofun.Modifiers;
 using JetBrains.Annotations;
+using SuperMaxim.Core.Extensions;
 using Survivors.Modifiers;
 using Survivors.Squad.Formation;
 using Survivors.Squad.Model;
@@ -23,25 +24,24 @@ namespace Survivors.Squad
     public class Squad : MonoBehaviour, IWorldScope
     {
         [SerializeField]
-        private float _unitSpeedScale;
-        [SerializeField]
         private float _unitSize;
 
-        private readonly List<Unit> _units = new List<Unit>();
+        private readonly IReactiveCollection<Unit> _units = new List<Unit>().ToReactiveCollection();
         private readonly ISquadFormation _formation = new CircleFormation();
 
-        private SquadDestination _destination;
         private SquadModel _model;
-        private IReadOnlyReactiveProperty<float> _unitSpeed;
+        private SquadDestination _destination;
         
         [Inject] private Joystick _joystick;
         [Inject] private UnitFactory _unitFactory;
         [Inject] private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
-        public IEnumerable<Unit> Units => _units;
 
-        public SquadModel Model => _model;
         private bool Initialized => _model != null;
-        
+        public SquadModel Model => _model;
+        public SquadDestination Destination => _destination;
+        public IReadOnlyReactiveProperty<int> UnitsCount => _units.ObserveCountChanged().ToReactiveProperty();
+        public float SquadRadius => _formation.GetMaxSize(_unitSize, _units.Count) / 2;
+
         public void Awake()
         {
             _destination = GetComponentInChildren<SquadDestination>();
@@ -51,7 +51,7 @@ namespace Survivors.Squad
         public void Init(SquadModel model)
         {
             _model = model;
-            _unitSpeed = _model.Speed.Select(speed => speed * _unitSpeedScale).ToReactiveProperty();
+
             foreach (var component in GetComponentsInChildren<ISquadInitializable>()) {
                 component.Init(this);
             }
@@ -61,7 +61,7 @@ namespace Survivors.Squad
         {
             unit.transform.SetParent(transform);
             unit.transform.position = GetSpawnPosition();
-            unit.MovementController.Init(_unitSpeed);
+            unit.MovementController.Init(_model.Speed);
             unit.OnDeath += OnUnitDeath;
             _units.Add(unit);
         }
@@ -85,7 +85,7 @@ namespace Survivors.Squad
 
         public void AddUnitModifier(IModifier modifier, [CanBeNull]string unitId = null)
         {
-            var units = _units;
+            var units = _units.ToList();
             if (unitId != null)
             {
                 units = _units.Where(it => it.Model.Id == unitId).ToList();

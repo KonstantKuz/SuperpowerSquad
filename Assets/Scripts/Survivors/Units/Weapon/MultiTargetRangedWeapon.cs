@@ -21,8 +21,9 @@ namespace Survivors.Units.Weapon
             var singleShotParams = new ProjectileParams
             {
                 Count = 1,
+                Speed = projectileParams.Speed,
                 DamageRadius = projectileParams.DamageRadius,
-                Speed = projectileParams.Speed
+                AttackDistance = projectileParams.AttackDistance
             };
             foreach (var target in targets)
             {
