@@ -10,7 +10,7 @@ using UniRx.Triggers;
 
 namespace Survivors.Location.Service
 {
-    public class WorldObjectFactory : MonoBehaviour
+    public class WorldObjectFactory : MonoBehaviour, IWorldScope
     {
         private const string OBJECT_PREFABS_PATH_ROOT = "Content/";
 
@@ -82,6 +82,16 @@ namespace Survivors.Location.Service
         {
             _disposable?.Dispose();
             _disposable = null;
+        }
+
+        public void OnWorldInit()
+        {
+           
+        }
+
+        public void OnWorldCleanUp()
+        {
+            DestroyAllObjects();
         }
     }
 }

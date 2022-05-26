@@ -9,7 +9,7 @@ using Zenject;
 
 namespace Survivors.Squad.Service
 {
-    public class SquadProgressService : IWorldCleanUp
+    public class SquadProgressService : IWorldScope
     {
         [Inject]
         private SquadProgressRepository _repository;
@@ -19,8 +19,7 @@ namespace Survivors.Squad.Service
         private IntReactiveProperty _level;
         public IObservable<int> LevelAsObservable => _level;
         private SquadProgress Progress => _repository.Get() ?? new SquadProgress();
-        
-        public void Init()
+        public void OnWorldInit()
         {
             _level = new IntReactiveProperty(Progress.Level);
         }

@@ -1,12 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using EasyButtons;
 using Feofun.App;
 using SuperMaxim.Core.Extensions;
-using Survivors.Location.Service;
 using Survivors.Session;
 using UnityEngine;
-using Zenject;
 
 namespace Survivors.Location
 {
@@ -18,9 +15,6 @@ namespace Survivors.Location
         private GameObject _spawnContainer;
         [SerializeField]
         private Squad.Squad _squad;
-
-        [Inject]
-        private WorldObjectFactory _worldObjectFactory;
 
         public Transform Ground => _ground;
         public GameObject SpawnContainer => _spawnContainer;
@@ -36,20 +30,29 @@ namespace Survivors.Location
         public void Pause()
         {
             Time.timeScale = 0;
-        } 
+        }
+
         public void UnPause()
         {
             Time.timeScale = 1;
         }
 
-        [Button]
+        public void Init()
+        {
+            GetAllOf<IWorldScope>()
+                    .ForEach(it => it.OnWorldInit());
+        }
+
         public void CleanUp()
         {
-            var services = AppContext.Container.ResolveAll<IWorldCleanUp>();
-            services.ForEach(it => it.OnWorldCleanUp());
-            var gameObjects = GetObjectComponents<IWorldCleanUp>().Except(services);
-            gameObjects.ForEach(it => it.OnWorldCleanUp());
-            _worldObjectFactory.DestroyAllObjects();
+            GetAllOf<IWorldScope>()
+                    .ForEach(it => it.OnWorldCleanUp());
+        }
+
+        private IEnumerable<T> GetAllOf<T>()
+        {
+            return AppContext.Container.ResolveAll<T>()
+                             .Union(GetObjectComponents<T>());
         }
 
         private List<T> GetObjectComponents<T>()

@@ -18,7 +18,7 @@ using Zenject;
 namespace Survivors.Squad.Upgrade
 {
     [PublicAPI]
-    public class UpgradeService : IWorldCleanUp
+    public class UpgradeService : IWorldScope
     {
         [Inject] private UpgradesConfig _config;
         [Inject] private World _world;
@@ -28,7 +28,8 @@ namespace Survivors.Squad.Upgrade
         
         [Inject] private StringKeyedConfigCollection<ParameterUpgradeConfig> _modifierConfigs;
         public SquadUpgradeState SquadUpgradeState => _repository.Require();
-        public void Init()
+      
+        public void OnWorldInit()
         {
             _repository.Set(CreateSquadState());
         }
@@ -132,5 +133,7 @@ namespace Survivors.Squad.Upgrade
         {
             ResetProgress();
         }
+
+
     }
 }

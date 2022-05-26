@@ -14,7 +14,7 @@ using Random = UnityEngine.Random;
 
 namespace Survivors.EnemySpawn
 {
-    public class EnemyWavesSpawner : MonoBehaviour, IWorldCleanUp
+    public class EnemyWavesSpawner : MonoBehaviour, IWorldScope
     {
         [SerializeField] private float _minOutOfViewOffset = 2f;
         [SerializeField] private float _outOfViewOffsetMultiplier = 0.2f;
@@ -25,6 +25,10 @@ namespace Survivors.EnemySpawn
         [Inject] private UnitFactory _unitFactory;
         [Inject] private World _world;
 
+        public void OnWorldInit()
+        {
+            
+        }
         public void StartSpawn(EnemyWavesConfig enemyWavesConfig)
         {
             Dispose();

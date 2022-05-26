@@ -17,7 +17,7 @@ using Zenject;
 
 namespace Survivors.Squad.UpgradeSelection
 {
-    public class UpgradeSelectionService : IWorldCleanUp
+    public class UpgradeSelectionService : IWorldScope
     {
         private const int PROPOSED_UPGRADE_COUNT = 3;
 
@@ -39,13 +39,13 @@ namespace Survivors.Squad.UpgradeSelection
         private CompositeDisposable _disposable;
         private SquadUpgradeState SquadUpgradeState => _repository.Require();
 
-        public void Init()
+        public void OnWorldInit()
         {
             _disposable?.Dispose();
             _disposable = new CompositeDisposable();
             _squadProgressService.LevelAsObservable.Subscribe(OnSquadLevelUpgrade).AddTo(_disposable);
         }
-
+        
         private void OnSquadLevelUpgrade(int level)
         {
             if (level <= 1) {
@@ -86,12 +86,11 @@ namespace Survivors.Squad.UpgradeSelection
             }
             return upgradeBranchIds.Where(id => !SquadUpgradeState.IsMaxLevel(id, _upgradesConfig));
         }
-
+        
         public void OnWorldCleanUp()
         {
             Dispose();
         }
-
         private void Dispose()
         {
             _disposable?.Dispose();

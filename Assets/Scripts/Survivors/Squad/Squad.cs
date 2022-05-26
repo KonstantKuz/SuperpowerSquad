@@ -20,7 +20,7 @@ using Unit = Survivors.Units.Unit;
 
 namespace Survivors.Squad
 {
-    public class Squad : MonoBehaviour, IWorldCleanUp
+    public class Squad : MonoBehaviour, IWorldScope
     {
         [SerializeField]
         private float _unitSpeedScale;
@@ -165,6 +165,11 @@ namespace Survivors.Squad
         private Vector3 GetSpawnPosition()
         {
             return _destination.transform.position + _formation.GetSpawnOffset(_unitSize, _units.Count);
+        }
+
+        public void OnWorldInit()
+        {
+            
         }
 
         public void OnWorldCleanUp()
