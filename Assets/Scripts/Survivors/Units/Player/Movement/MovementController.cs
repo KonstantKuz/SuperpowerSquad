@@ -30,11 +30,11 @@ namespace Survivors.Units.Player.Movement
         private bool IsDestinationReached => _agent.remainingDistance < _agent.stoppingDistance;
         private float _squadSpeed;
 
-        public void Init(IReadOnlyReactiveProperty<float> speed)
+        public void Init(IReadOnlyReactiveProperty<float> squadSpeed)
         {
             _disposable?.Dispose();
             _disposable = new CompositeDisposable();
-            speed.Subscribe(value => _squadSpeed = value).AddTo(_disposable);
+            squadSpeed.Subscribe(value => _squadSpeed = value).AddTo(_disposable);
         }
         private void Awake()
         {
@@ -42,11 +42,12 @@ namespace Survivors.Units.Player.Movement
         }
         private void Update()
         {
+            IncreaseSpeedWithDistanceToDestination();
+            
             if (!Agent.isStopped && IsDestinationReached) {
                 Stop();
             }
-
-            IncreaseSpeedWithDistanceToDestination();
+            
             UpdateAnimationRotateValues();
         }
         public void MoveTo(Vector3 destination)
@@ -107,14 +108,10 @@ namespace Survivors.Units.Player.Movement
 
         private void IncreaseSpeedWithDistanceToDestination()
         {
-            if (_agent.isStopped)
-            {
-                _agent.speed = _squadSpeed;
-                return;
-            }
-
-            _agent.speed = _squadSpeed * (1.0f + Mathf.Pow(Mathf.Max(0.0f,
-                _agent.remainingDistance - _agent.stoppingDistance), 2) * _speedMultiplier);
+            _agent.speed = _squadSpeed * DynamicSpeedMultiplier;
         }
+
+        private float DynamicSpeedMultiplier => 1.0f + Mathf.Pow(Mathf.Max(0.0f,
+            _agent.remainingDistance - _agent.stoppingDistance), 2) * _speedMultiplier;
     }
 }
