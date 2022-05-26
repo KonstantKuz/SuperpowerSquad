@@ -152,6 +152,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _rotationRoot: {fileID: 7626905009210850996}
   _rotationSpeed: 10
+  _speedMultiplier: 5
 --- !u!114 &8226988932255853753
 MonoBehaviour:
   m_ObjectHideFlags: 0
