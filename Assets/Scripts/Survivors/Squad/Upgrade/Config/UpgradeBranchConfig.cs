@@ -18,7 +18,7 @@ namespace Survivors.Squad.Upgrade.Config
 
         public UpgradeLevelConfig GetLevel(int level)
         {
-            if (level <= 0 || level >= MaxLevel)
+            if (level <= 0 || level > MaxLevel)
             {
                 throw new Exception($"Wrong upgrade level {level} for id {Id}");
             }

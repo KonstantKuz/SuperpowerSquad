@@ -37,7 +37,7 @@ namespace Survivors.Session
             _squadProgressService.Init();
             _upgradeSelectionService.Init();
             _unitFactory.CreatePlayerUnit(UnitFactory.SIMPLE_PLAYER_ID);
-           // _enemyWavesSpawner.StartSpawn(_enemyWavesConfig);
+            _enemyWavesSpawner.StartSpawn(_enemyWavesConfig);
             _unitService.OnPlayerUnitDeath += OnPlayerUnitDeath;
         }
         private void InitSquad()
