@@ -41,8 +41,7 @@ namespace Survivors.Units.Player.Attack
         {
             Assert.IsNull(_weaponTimer);
             _playerAttackModel = (PlayerAttackModel) unit.Model.AttackModel;
-            _weaponTimer =
-                    new ReloadableWeaponTimer(_playerAttackModel.ClipSize, _playerAttackModel.AttackTime, _playerAttackModel.ClipReloadTime);
+            _weaponTimer = new ReloadableWeaponTimer(_playerAttackModel.ClipSize, _playerAttackModel.AttackTime, _playerAttackModel.ClipReloadTime);
             UpdateAnimationSpeed(_weaponTimer.AttackInterval);
             if (HasWeaponAnimationHandler) {
                 _weaponAnimationHandler.OnFireEvent += Fire;
