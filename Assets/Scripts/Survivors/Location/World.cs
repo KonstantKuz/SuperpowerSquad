@@ -12,14 +12,18 @@ namespace Survivors.Location
 {
     public class World : MonoBehaviour
     {
-        [SerializeField] private Transform _ground;
-        [SerializeField] private GameObject _spawnContainer;   
-        [SerializeField] private Squad.Squad _squad;
+        [SerializeField]
+        private Transform _ground;
+        [SerializeField]
+        private GameObject _spawnContainer;
+        [SerializeField]
+        private Squad.Squad _squad;
 
-        [Inject] private WorldObjectFactory _worldObjectFactory;
+        [Inject]
+        private WorldObjectFactory _worldObjectFactory;
 
         public Transform Ground => _ground;
-        public GameObject SpawnContainer => _spawnContainer;  
+        public GameObject SpawnContainer => _spawnContainer;
         public Squad.Squad Squad => _squad;
 
         public Vector3 GetGroundIntersection(Ray withRay)
@@ -29,6 +33,15 @@ namespace Survivors.Location
             return withRay.GetPoint(intersectionDist);
         }
 
+        public void Pause()
+        {
+            Time.timeScale = 0;
+        } 
+        public void UnPause()
+        {
+            Time.timeScale = 1;
+        }
+
         [Button]
         public void CleanUp()
         {
@@ -36,23 +49,17 @@ namespace Survivors.Location
             services.ForEach(it => it.OnWorldCleanUp());
             var gameObjects = GetObjectComponents<IWorldCleanUp>().Except(services);
             gameObjects.ForEach(it => it.OnWorldCleanUp());
-            
             _worldObjectFactory.DestroyAllObjects();
         }
 
-        public List<T> GetObjectComponents<T>()
+        private List<T> GetObjectComponents<T>()
         {
-            return GetObjects()
-                .Where(go => go.GetComponent<T>() != null)
-                .Select(go => go.GetComponent<T>())
-                .ToList();
+            return GetObjects().Where(go => go.GetComponent<T>() != null).Select(go => go.GetComponent<T>()).ToList();
         }
 
-        public List<GameObject> GetObjects()
+        private List<GameObject> GetObjects()
         {
-            return GetComponentsInChildren<Transform>(true)
-                .Select(it => it.gameObject)
-                .ToList();
+            return GetComponentsInChildren<Transform>(true).Select(it => it.gameObject).ToList();
         }
     }
 }

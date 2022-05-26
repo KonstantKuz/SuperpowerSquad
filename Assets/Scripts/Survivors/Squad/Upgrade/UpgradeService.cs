@@ -12,6 +12,7 @@ using Survivors.Session;
 using Survivors.Squad.Upgrade.Config;
 using Survivors.Units;
 using Survivors.Units.Service;
+using UnityEngine;
 using Zenject;
 
 namespace Survivors.Squad.Upgrade
@@ -45,6 +46,7 @@ namespace Survivors.Squad.Upgrade
             state.IncreaseLevel(upgradeBranchId);
             SaveState(state);
             ApplyUpgrade(upgradeBranchId, SquadUpgradeState.GetLevel(upgradeBranchId));
+            Debug.Log($"Upgrade:={upgradeBranchId} applied");
         }
 
         private void ApplyUpgrade(string upgradeBranchId, int level)

@@ -1,7 +1,5 @@
-﻿using Feofun.Config;
-using Feofun.UI.Components;
+﻿using Feofun.UI.Components;
 using Feofun.UI.Dialog;
-using Survivors.Modifiers.Config;
 using Survivors.Squad.Upgrade;
 using Survivors.Squad.Upgrade.Config;
 using Survivors.UI.Dialog.Model;
@@ -22,15 +20,13 @@ namespace Survivors.UI.Dialog
         private UpgradeService _upgradeService;
         [Inject]
         private UpgradesConfig _upgradesConfig;
-        [Inject]
-        private StringKeyedConfigCollection<ParameterUpgradeConfig> _modifierConfigs;
 
         private UpgradeDialogModel _model;
 
         public void Init(UpgradeDialogInitModel initModel)
         {
-            _model = new UpgradeDialogModel(initModel, _upgradesConfig, _upgradeService.SquadUpgradeState, _modifierConfigs, OnUpgrade);
-            _view.Init(_model.Upgrades);
+            _model = new UpgradeDialogModel(initModel, _upgradesConfig, _upgradeService.SquadUpgradeState, OnUpgrade);
+            _view.Init(_model);
         }
 
         private void OnUpgrade(string upgradeBranchId)

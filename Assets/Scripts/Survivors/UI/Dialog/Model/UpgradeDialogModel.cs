@@ -12,23 +12,20 @@ namespace Survivors.UI.Dialog.Model
     {
         private readonly List<UpgradeItemModel> _upgrades;
         private readonly UpgradesConfig _upgradesConfig;
-        private readonly SquadUpgradeState _upgradeState;    
-        private readonly UpgradeDialogInitModel _initModel;
-        private readonly StringKeyedConfigCollection<ParameterUpgradeConfig> _modifierConfigs;
-
+        private readonly SquadUpgradeState _upgradeState;
         public IReadOnlyCollection<UpgradeItemModel> Upgrades => _upgrades;
-        public UpgradeDialogInitModel InitModel => _initModel;
+        public UpgradeDialogInitModel InitModel { get; }  
+        public string Level { get; }
         public UpgradeDialogModel(UpgradeDialogInitModel initModel,
                                   UpgradesConfig upgradesConfig,
                                   SquadUpgradeState upgradeState,
-                                  StringKeyedConfigCollection<ParameterUpgradeConfig> modifierConfigs,
                                   Action<string> onUpgrade)
         {
-            _initModel = initModel;
+            InitModel = initModel;
+            Level = initModel.Level.ToString();
             _upgradesConfig = upgradesConfig;
             _upgradeState = upgradeState;
-            _modifierConfigs = modifierConfigs;
-            _upgrades = _initModel.UpgradeBranchIds.Select(id => BuildUpgradeItemModel(id, onUpgrade)).ToList();
+            _upgrades = InitModel.UpgradeBranchIds.Select(id => BuildUpgradeItemModel(id, onUpgrade)).ToList();
         }
 
         private UpgradeItemModel BuildUpgradeItemModel(string upgradeBranchId, Action<string> onUpgrade)
@@ -42,7 +39,7 @@ namespace Survivors.UI.Dialog.Model
                     NextLevel = nextLevel.ToString(),
                     Modifier = nextUpgradeLevelConfig.Type == UpgradeType.Unit
                                        ? $"Add unit: {upgradeBranchId}"
-                                       : _modifierConfigs.Get(nextUpgradeLevelConfig.ModifierId).ToString(),
+                                       : nextUpgradeLevelConfig.ModifierId,
                     OnClick = () => onUpgrade?.Invoke(upgradeBranchId),
             };
         }

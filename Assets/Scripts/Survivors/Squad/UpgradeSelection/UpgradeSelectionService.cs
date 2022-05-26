@@ -3,6 +3,7 @@ using System.Linq;
 using Feofun.Extension;
 using Feofun.UI.Dialog;
 using ModestTree;
+using Survivors.Location;
 using Survivors.Session;
 using Survivors.Squad.Service;
 using Survivors.Squad.Upgrade;
@@ -31,7 +32,9 @@ namespace Survivors.Squad.UpgradeSelection
         [Inject]
         private SquadUpgradeRepository _repository;
         [Inject]
-        private UpgradeService _upgradeService;
+        private UpgradeService _upgradeService;    
+        [Inject]
+        private World _world;
 
         private CompositeDisposable _disposable;
         private SquadUpgradeState SquadUpgradeState => _repository.Require();
@@ -48,23 +51,23 @@ namespace Survivors.Squad.UpgradeSelection
             if (level <= 1) {
                 return;
             }
-            TryShowUpgradeDialog();
+            TryShowUpgradeDialog(level);
         }
 
-        public void TryShowUpgradeDialog()
+        private void TryShowUpgradeDialog(int level)
         {
             var randomUpgradeIds = GetRandomUpgradeIds(PROPOSED_UPGRADE_COUNT).ToList();
             if (randomUpgradeIds.IsEmpty()) {
-                Debug.Log("Empty Upgrades");
+                Debug.Log("Empty upgrades list");
                 return;
             }
-            randomUpgradeIds.ForEach(it => { Debug.Log($"RandomUpgradeId:= {it}, level:= {SquadUpgradeState.GetLevel(it) + 1}"); });
-
-            _dialogManager.Show<UpgradeDialog, UpgradeDialogInitModel>(new UpgradeDialogInitModel(randomUpgradeIds, OnUpgrade));
+            _dialogManager.Show<UpgradeDialog, UpgradeDialogInitModel>(new UpgradeDialogInitModel(level, randomUpgradeIds, OnUpgrade));
+            _world.Pause();
         }
 
         private void OnUpgrade(string upgradeBranchId)
         {
+            _world.UnPause();
             _upgradeService.Upgrade(upgradeBranchId);
         }
 

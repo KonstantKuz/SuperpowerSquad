@@ -21,10 +21,10 @@ namespace Survivors.UI.Dialog.View
         
         public void Init(UpgradeItemModel model)
         {
-            _type.text = model.UpgradeTypeName;
-            _name.text = model.UpgradeName;
-            _nextLevel.text = model.UpgradeName;
-            _modifier.text = model.Modifier;
+            _type.text += model.UpgradeTypeName;
+            _name.text += model.UpgradeName;
+            _nextLevel.text += model.NextLevel;
+            _modifier.text += model.Modifier;
             _button.Init(model.OnClick);
         }
     }
