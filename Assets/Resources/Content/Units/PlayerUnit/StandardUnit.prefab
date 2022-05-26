@@ -44,6 +44,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _barrel: {fileID: 1143356745896943787}
+  _aimInXZPlane: 0
   _ammo: {fileID: 460837788804016623, guid: ee9d5b56f51a94240abb3f70fb881720, type: 3}
   _angleBetweenShots: 3
 --- !u!1 &3254496561695502929
@@ -98,7 +99,7 @@ NavMeshAgent:
   m_AgentTypeID: 0
   m_Radius: 0.5
   m_Speed: 3.5
-  m_Acceleration: 8
+  m_Acceleration: 100
   avoidancePriority: 50
   m_AngularSpeed: 120
   m_StoppingDistance: 0.1
