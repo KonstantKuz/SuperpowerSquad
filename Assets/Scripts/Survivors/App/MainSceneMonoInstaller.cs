@@ -5,7 +5,6 @@ using Survivors.Modifiers;
 using Survivors.Squad;
 using Survivors.UI;
 using Survivors.Units.Installer;
-using Survivors.Units;
 using UnityEngine;
 using Zenject;
 

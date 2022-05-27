@@ -15,20 +15,24 @@ namespace Survivors.Units.Player.Model
         private readonly FloatModifiableParameter _attackTime;
         private readonly FloatModifiableParameter _projectileSpeed;
         private readonly FloatModifiableParameter _damageRadius;
-        private readonly FloatModifiableParameter _shotCount;
+        private readonly FloatModifiableParameter _shotCount;   
+        private readonly FloatModifiableParameter _attackDistance;
 
         public PlayerAttackModel(PlayerAttackConfig config, IModifiableParameterOwner parameterOwner)
         {
             _config = config;
             _attackDamage = new FloatModifiableParameter(Parameters.ATTACK_DAMAGE, _config.AttackDamage, parameterOwner);
             _attackTime = new FloatModifiableParameter(Parameters.ATTACK_TIME, _config.AttackTime, parameterOwner);
+            _attackDistance = new FloatModifiableParameter(Parameters.ATTACK_DISTANCE, _config.AttackDistance, parameterOwner);
+            
             _projectileSpeed = new FloatModifiableParameter(Parameters.PROJECTILE_SPEED, _config.ProjectileSpeed, parameterOwner);
             _damageRadius = new FloatModifiableParameter(Parameters.DAMAGE_RADIUS, _config.DamageRadius, parameterOwner);
+            
             _shotCount = new FloatModifiableParameter(Parameters.SHOT_COUNT, 1, parameterOwner);
         }
 
         public float TargetSearchRadius => AttackDistance;
-        public float AttackDistance => _config.AttackDistance;
+        public float AttackDistance => _attackDistance.Value;
 
         public float DamageRadius => _damageRadius.Value;
 
@@ -36,7 +40,7 @@ namespace Survivors.Units.Player.Model
 
         public float ClipReloadTime => _config.ClipReloadTime;
 
-        public float AttackTime => _attackTime.Value;
+        public IReadOnlyReactiveProperty<float> AttackTime => _attackTime.ReactiveValue;
 
         public float ProjectileSpeed => _projectileSpeed.Value;
 

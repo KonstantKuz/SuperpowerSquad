@@ -11,5 +11,6 @@ namespace Survivors.Config
         public const string SQUAD_LEVEL = "SquadLevel";
         public const string MODIFIERS = "Modifiers";
         public const string UPGRADES = "Upgrades";
+        public const string CONSTANTS = "Constants";
     }
 }

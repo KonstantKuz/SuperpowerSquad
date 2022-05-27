@@ -5,6 +5,8 @@ namespace Survivors.Units.Player.Config
     [DataContract]
     public class PlayerAttackConfig
     {
+        private const int DEFAULT_CLIP_SIZE = 1;
+        
         [DataMember(Name = "AttackDistance")]
         private float _attackDistance;
 
@@ -22,23 +24,19 @@ namespace Survivors.Units.Player.Config
 
         [DataMember(Name = "ProjectileSpeed")]
         private float _projectileSpeed;
-
-        [DataMember(Name = "ClipSize")]
-        private int _clipSize;      
         
-
         public float AttackDistance => _attackDistance;
-        
+
         public float DamageRadius => _damageRadius;
-        
+
         public int AttackDamage => _attackDamage;
-        
+
         public float ClipReloadTime => _clipReloadTime;
-        
+
         public float AttackTime => _attackTime;
-        
+
         public float ProjectileSpeed => _projectileSpeed;
 
-        public int ClipSize => _clipSize;
+        public int ClipSize => DEFAULT_CLIP_SIZE;
     }
 }

@@ -1,25 +1,23 @@
 using System.Collections.Generic;
 using System.Linq;
-using EasyButtons;
 using Feofun.App;
 using SuperMaxim.Core.Extensions;
-using Survivors.Location.Service;
 using Survivors.Session;
 using UnityEngine;
-using Zenject;
 
 namespace Survivors.Location
 {
-    public class World : MonoBehaviour
+    public class World : RootContainer
     {
-        [SerializeField] private Transform _ground;
-        [SerializeField] private GameObject _spawnContainer;   
-        [SerializeField] private Squad.Squad _squad;
-
-        [Inject] private WorldObjectFactory _worldObjectFactory;
+        [SerializeField]
+        private Transform _ground;
+        [SerializeField]
+        private GameObject _spawnContainer;
+        [SerializeField]
+        private Squad.Squad _squad;
 
         public Transform Ground => _ground;
-        public GameObject SpawnContainer => _spawnContainer;  
+        public GameObject SpawnContainer => _spawnContainer;
         public Squad.Squad Squad => _squad;
 
         public Vector3 GetGroundIntersection(Ray withRay)
@@ -29,30 +27,32 @@ namespace Survivors.Location
             return withRay.GetPoint(intersectionDist);
         }
 
-        [Button]
+        public void Pause()
+        {
+            Time.timeScale = 0;
+        }
+
+        public void UnPause()
+        {
+            Time.timeScale = 1;
+        }
+
+        public void Setup()
+        {
+            GetAllOf<IWorldScope>().ForEach(it => it.OnWorldSetup());
+        }
+
         public void CleanUp()
         {
-            var services = AppContext.Container.ResolveAll<IWorldCleanUp>();
-            services.ForEach(it => it.OnWorldCleanUp());
-            var gameObjects = GetObjectComponents<IWorldCleanUp>().Except(services);
-            gameObjects.ForEach(it => it.OnWorldCleanUp());
-            
-            _worldObjectFactory.DestroyAllObjects();
+            GetAllOf<IWorldScope>().ForEach(it => it.OnWorldCleanUp());
         }
 
-        public List<T> GetObjectComponents<T>()
+        private IEnumerable<T> GetAllOf<T>()
         {
-            return GetObjects()
-                .Where(go => go.GetComponent<T>() != null)
-                .Select(go => go.GetComponent<T>())
-                .ToList();
+            return GetDISubscribers<T>().Union(GetChildrenSubscribers<T>());
         }
+        private static List<T> GetDISubscribers<T>() => AppContext.Container.ResolveAll<T>();
 
-        public List<GameObject> GetObjects()
-        {
-            return GetComponentsInChildren<Transform>(true)
-                .Select(it => it.gameObject)
-                .ToList();
-        }
+
     }
 }
