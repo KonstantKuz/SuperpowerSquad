@@ -10,10 +10,6 @@ namespace Feofun.UI.Dialog
         }
         public void Hide()
         {
-            DeActivate();
-        }
-        public void DeActivate()
-        {
             gameObject.SetActive(false);
         }
     }

@@ -22,7 +22,7 @@ namespace Survivors.Loot
         private List<Tween> _movingLoots = new List<Tween>();
         private CompositeDisposable _disposable;
         
-        public void OnWorldInit()
+        public void OnWorldSetup()
         {
             _disposable?.Dispose();
             _disposable = new CompositeDisposable();

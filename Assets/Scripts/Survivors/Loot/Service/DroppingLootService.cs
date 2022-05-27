@@ -22,7 +22,7 @@ namespace Survivors.Loot.Service
         [Inject] private WorldObjectFactory _worldObjectFactory;
         [Inject] private StringKeyedConfigCollection<DroppingLootConfig> _droppingLoots;
         
-        public void OnWorldInit()
+        public void OnWorldSetup()
         {
             _unitService.OnEnemyUnitDeath += TrySpawnLoot;
         }

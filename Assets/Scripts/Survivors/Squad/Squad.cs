@@ -168,7 +168,7 @@ namespace Survivors.Squad
             return _destination.transform.position + _formation.GetSpawnOffset(_unitSize, _units.Count);
         }
 
-        public void OnWorldInit()
+        public void OnWorldSetup()
         {
         }
 

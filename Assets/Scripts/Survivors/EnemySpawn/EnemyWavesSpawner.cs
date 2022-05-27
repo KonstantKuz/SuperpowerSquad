@@ -25,7 +25,7 @@ namespace Survivors.EnemySpawn
         [Inject] private UnitFactory _unitFactory;
         [Inject] private World _world;
 
-        public void OnWorldInit()
+        public void OnWorldSetup()
         {
             
         }

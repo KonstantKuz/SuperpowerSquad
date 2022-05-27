@@ -41,7 +41,7 @@ namespace Survivors.Squad.Upgrade.Config
         }
         public IEnumerable<string> GetUpgradeBranchIds(UpgradeBranchType type)
         {
-            return _upgradeBranches.Where(it => it.Value.IsUnitBranch == (type == UpgradeBranchType.Unit))
+            return _upgradeBranches.Where(it => it.Value.BranchType == type)
                                    .Select(it => it.Key);
         }
         public IEnumerable<string> GetUpgradeBranchIds() => _upgradeBranches.Keys;

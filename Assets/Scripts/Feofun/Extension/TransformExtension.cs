@@ -15,7 +15,7 @@ namespace Feofun.Extension
 
         public static void DestroyAllChildren(this Transform transform)
         {
-            for (var i = 0; i < transform.childCount; i++) {
+            for (var i = transform.childCount - 1; i >= 0; i--) {
                 var child = transform.GetChild(i);
                 if (!child.gameObject) continue;
                 Object.Destroy(child.gameObject);

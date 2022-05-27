@@ -6,9 +6,11 @@ namespace Survivors.Squad.Progress
 {
     public class SquadProgress
     {
-        public int Level = 1;
+        public const int DEFAULT_LEVEL = 1;
+        
+        public int Level = DEFAULT_LEVEL;
         public int Exp;
-
+        public static SquadProgress Create() => new SquadProgress();
         public bool IsMaxLevel(StringKeyedConfigCollection<SquadLevelConfig> levels) => Level > levels.Values.Count;
 
         public int MaxExpForCurrentLevel(StringKeyedConfigCollection<SquadLevelConfig> levels) => CurrentLevelConfig(levels).ExpToNextLevel;

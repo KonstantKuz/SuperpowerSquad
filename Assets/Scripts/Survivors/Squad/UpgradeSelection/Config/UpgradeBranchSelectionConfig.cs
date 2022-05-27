@@ -10,14 +10,14 @@ namespace Survivors.Squad.UpgradeSelection.Config
     {
         private UpgradeBranchSelectionConfig _config;
 
-        [DataMember(Name = "MaxUnitUpgradeBranchCount")]
-        private int _maxUnitUpgradeBranchCount;
-        [DataMember(Name = "MaxAbilityUpgradeBranchCount")]
-        private int _maxAbilityUpgradeBranchCount;
+        [DataMember(Name = "MaxUnitUpgrade")]
+        private int _maxUnitUpgrade;
+        [DataMember(Name = "MaxAbilityUpgrade")]
+        private int _maxAbilityUpgrade;
 
-        public int MaxUnitUpgradeBranchCount => _config._maxUnitUpgradeBranchCount;
+        public int MaxUnitUpgrade => _config._maxUnitUpgrade;
 
-        public int MaxAbilityUpgradeBranchCount => _config._maxAbilityUpgradeBranchCount;
+        public int MaxAbilityUpgrade => _config._maxAbilityUpgrade;
         
 
         public void Load(Stream stream)
@@ -25,11 +25,11 @@ namespace Survivors.Squad.UpgradeSelection.Config
             _config = new CsvSerializer().ReadSingleObject<UpgradeBranchSelectionConfig>(stream);
         }
         
-        public int GetMaxUpgradeBranchCount(UpgradeBranchType type)
+        public int GetMaxUpgradeCount(UpgradeBranchType type)
         {
             return type switch {
-                    UpgradeBranchType.Unit => MaxUnitUpgradeBranchCount,
-                    UpgradeBranchType.Ability => MaxAbilityUpgradeBranchCount,
+                    UpgradeBranchType.Unit => MaxUnitUpgrade,
+                    UpgradeBranchType.Ability => MaxAbilityUpgrade,
                     _ => throw new ArgumentOutOfRangeException(nameof(type), type, null)
             };
         }

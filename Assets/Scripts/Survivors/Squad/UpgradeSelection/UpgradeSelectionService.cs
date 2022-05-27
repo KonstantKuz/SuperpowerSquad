@@ -39,11 +39,11 @@ namespace Survivors.Squad.UpgradeSelection
         private CompositeDisposable _disposable;
         private SquadUpgradeState SquadUpgradeState => _repository.Require();
 
-        public void OnWorldInit()
+        public void OnWorldSetup()
         {
             _disposable?.Dispose();
             _disposable = new CompositeDisposable();
-            _squadProgressService.LevelAsObservable.Subscribe(OnSquadLevelUpgrade).AddTo(_disposable);
+            _squadProgressService.Level.Subscribe(OnSquadLevelUpgrade).AddTo(_disposable);
         }
         
         private void OnSquadLevelUpgrade(int level)
@@ -74,14 +74,14 @@ namespace Survivors.Squad.UpgradeSelection
         private IEnumerable<string> GetRandomUpgradeIds(int upgradeCount)
         {
             var upgradeBranchIds = EnumExt.Values<UpgradeBranchType>().SelectMany(GetAvailableUpgradeBranchIds).ToList();
-            return upgradeBranchIds.Count <= upgradeCount ? upgradeBranchIds : upgradeBranchIds.RandomUnique(upgradeCount);
+            return upgradeBranchIds.Count <= upgradeCount ? upgradeBranchIds : upgradeBranchIds.RandomizedRange(upgradeCount);
         }
 
         private IEnumerable<string> GetAvailableUpgradeBranchIds(UpgradeBranchType branchType)
         {
             var upgradeBranchIds = _upgradesConfig.GetUpgradeBranchIds(branchType).ToList();
             var appliedBranchIds = upgradeBranchIds.Intersect(SquadUpgradeState.GetUpgradeBranchIds()).ToList();
-            if (appliedBranchIds.Count >= _upgradeSelectionConfig.GetMaxUpgradeBranchCount(branchType)) {
+            if (appliedBranchIds.Count >= _upgradeSelectionConfig.GetMaxUpgradeCount(branchType)) {
                 upgradeBranchIds = appliedBranchIds;
             }
             return upgradeBranchIds.Where(id => !SquadUpgradeState.IsMaxLevel(id, _upgradesConfig));
