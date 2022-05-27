@@ -9,6 +9,8 @@ namespace Survivors.Squad.Upgrade
 
         public int GetLevel(string upgradeBranchId) => _upgradeLevels.ContainsKey(upgradeBranchId) ? _upgradeLevels[upgradeBranchId] : 0;
 
+        public static SquadUpgradeState Create() => new SquadUpgradeState();
+
         public void IncreaseLevel(string upgradeBranchId)
         {
             if (!_upgradeLevels.ContainsKey(upgradeBranchId))

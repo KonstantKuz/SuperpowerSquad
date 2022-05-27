@@ -11,17 +11,18 @@ namespace Survivors.Squad.Service
 {
     public class SquadProgressService : IWorldScope
     {
+        private readonly IntReactiveProperty _level = new IntReactiveProperty(SquadProgress.DEFAULT_LEVEL);
+        
         [Inject]
         private SquadProgressRepository _repository;
         [Inject]
         private StringKeyedConfigCollection<SquadLevelConfig> _levelConfig;
-        
-        private IntReactiveProperty _level;
-        public IObservable<int> LevelAsObservable => _level;
-        private SquadProgress Progress => _repository.Get() ?? new SquadProgress();
+        public IObservable<int> Level => _level;
+        private SquadProgress Progress => _repository.Require();
         public void OnWorldSetup()
         {
-            _level = new IntReactiveProperty(Progress.Level);
+            _repository.Set(SquadProgress.Create());
+            _level.Value = Progress.Level;
         }
         public void AddExp(int amount)
         {
@@ -39,7 +40,7 @@ namespace Survivors.Squad.Service
         private void ResetProgress()
         {
             _repository.Delete();
-            _level.Value = Progress.Level;
+            _level.Value = SquadProgress.DEFAULT_LEVEL;
         }
         public void OnWorldCleanUp()
         {

@@ -32,9 +32,8 @@ namespace Survivors.Squad.Upgrade
       
         public void OnWorldSetup()
         {
-            _repository.Set(CreateSquadState());
+            _repository.Set(SquadUpgradeState.Create());
         }
-        private static SquadUpgradeState CreateSquadState() => new SquadUpgradeState();
 
         public void AddRandomUpgrade()
         {
