@@ -24,13 +24,23 @@ namespace Feofun.Extension
             if (randomCount > collection.Count) {
                 throw new ArgumentOutOfRangeException(nameof(randomCount), "Random count is out of range, randomCount > collection.Count");
             }
-            for (int i = 0; i < randomCount; i++) {
-                var item = collection.Random();
-                collection.Remove(item);
-                yield return item;
+            var random = new Random();
+            var availableCount = collection.Count;
+            var neededCount = randomCount;
+            foreach (var item in collection)
+            { 
+                if (random.Next(availableCount) < neededCount)
+                {
+                    neededCount--;
+                    yield return item;
+                    if (neededCount == 0) {
+                        break;
+                    }
+                }
+                availableCount--;
             }
-        }
 
+        }
         public static T Random<T>(this IReadOnlyList<T> collection, int minInclusive, int maxExclusive, int seed = 0)
         {
             if (maxExclusive > collection.Count) {
