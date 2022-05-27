@@ -10,6 +10,7 @@ using Survivors.Modifiers;
 using Survivors.Modifiers.Config;
 using Survivors.Session;
 using Survivors.Squad.Upgrade.Config;
+using Survivors.Squad.UpgradeSelection;
 using Survivors.Units;
 using Survivors.Units.Service;
 using UnityEngine;
@@ -105,7 +106,7 @@ namespace Survivors.Squad.Upgrade
             foreach (var upgrade in SquadUpgradeState.Upgrades)
             {
                 var upgradeBranch = _config.GetUpgradeBranch(upgrade.Key);
-                if (upgradeBranch.IsUnitBranch) continue;
+                if (upgradeBranch.BranchType == UpgradeBranchType.Unit) continue;
                 for (int level = 1; level <= upgrade.Value; level++)
                 {
                     yield return new Tuple<string, int>(upgrade.Key, level);

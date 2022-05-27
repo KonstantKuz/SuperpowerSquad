@@ -81,7 +81,7 @@ namespace Survivors.Squad.UpgradeSelection
         {
             var upgradeBranchIds = _upgradesConfig.GetUpgradeBranchIds(branchType).ToList();
             var appliedBranchIds = upgradeBranchIds.Intersect(SquadUpgradeState.GetUpgradeBranchIds()).ToList();
-            if (appliedBranchIds.Count >= _upgradeSelectionConfig.GetMaxUpgradeBranchCount(branchType)) {
+            if (appliedBranchIds.Count >= _upgradeSelectionConfig.GetMaxUpgradeCount(branchType)) {
                 upgradeBranchIds = appliedBranchIds;
             }
             return upgradeBranchIds.Where(id => !SquadUpgradeState.IsMaxLevel(id, _upgradesConfig));
