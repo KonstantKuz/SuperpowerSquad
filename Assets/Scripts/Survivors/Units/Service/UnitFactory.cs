@@ -26,12 +26,12 @@ namespace Survivors.Units.Service
             var unit = unitObj.GetComponentInChildren<Unit>()
                        ?? throw new NullReferenceException($"Unit is null, objectId:= {unitId}, gameObject:= {unitObj.name}");
             ConfigurePlayerUnit(unit);
+            _world.Squad.AddUnit(unit);
             return unit;
         }
 
         private void ConfigurePlayerUnit(Unit unit)
         {
-            _world.Squad.AddUnit(unit);
             var config = _playerUnitConfigs.Get(unit.ObjectId);
             var model = new PlayerUnitModel(config);
             unit.Init(model);

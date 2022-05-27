@@ -1,6 +1,5 @@
 ﻿using System;
 using Survivors.Units.Component;
-using Survivors.Units.Component.Hud;
 using Survivors.Units.Model;
 using UniRx;
 using UnityEngine;

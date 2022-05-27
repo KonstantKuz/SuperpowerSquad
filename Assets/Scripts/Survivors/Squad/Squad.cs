@@ -10,10 +10,11 @@ using Survivors.Session;
 using Feofun.Modifiers;
 using JetBrains.Annotations;
 using SuperMaxim.Core.Extensions;
+using Survivors.Extension;
 using Survivors.Modifiers;
 using Survivors.Squad.Formation;
 using Survivors.Squad.Model;
-using Survivors.Units;
+using Survivors.Units.Component.Health;
 using Survivors.Units.Player.Config;
 using Survivors.Units.Service;
 using UniRx;
@@ -30,12 +31,17 @@ namespace Survivors.Squad
         private readonly ISquadFormation _formation = new CircleFormation();
 
         private SquadModel _model;
+        private IDamageable _damageable;
         private SquadDestination _destination;
-        
-        [Inject] private Joystick _joystick;
-        [Inject] private UnitFactory _unitFactory;
-        [Inject] private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
 
+        [Inject]
+        private Joystick _joystick;
+        [Inject]
+        private UnitFactory _unitFactory;
+        [Inject]
+        private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
+
+        public event Action OnDeath;
         private bool Initialized => _model != null;
         public SquadModel Model => _model;
         public SquadDestination Destination => _destination;
@@ -44,17 +50,26 @@ namespace Survivors.Squad
 
         public void Awake()
         {
-            _destination = GetComponentInChildren<SquadDestination>();
+            _destination = gameObject.RequireComponentInChildren<SquadDestination>();
+            _damageable = gameObject.RequireComponent<IDamageable>();
             SetUnitPositions();
         }
 
         public void Init(SquadModel model)
         {
             _model = model;
-
+            _damageable.OnDeath += Kill;
             foreach (var component in GetComponentsInChildren<ISquadInitializable>()) {
                 component.Init(this);
             }
+        }
+
+        private void Kill()
+        {
+            _damageable.OnDeath -= Kill;
+            _units.ForEach(it => it.Kill());
+            OnDeath?.Invoke();
+            _units.Clear();
         }
 
         public void AddUnit(Unit unit)
@@ -62,41 +77,27 @@ namespace Survivors.Squad
             unit.transform.SetParent(transform);
             unit.transform.position = GetSpawnPosition();
             unit.MovementController.Init(_model.Speed);
-            unit.OnDeath += OnUnitDeath;
+            _model.AddHealth(unit.Model);
             _units.Add(unit);
         }
-
-        private void OnUnitDeath(IUnit unit)
-        {
-            RemoveUnit(unit as Unit);
-        }
-
-        public void RemoveUnit(Unit unit)
-        {
-            Assert.IsTrue(_units.Contains(unit));
-            _units.Remove(unit);
-            unit.OnDeath -= OnUnitDeath;
-        }
-
+        
         public void AddSquadModifier(IModifier modifier)
         {
             Model.AddModifier(modifier);
         }
 
-        public void AddUnitModifier(IModifier modifier, [CanBeNull]string unitId = null)
+        public void AddUnitModifier(IModifier modifier, [CanBeNull] string unitId = null)
         {
             var units = _units.ToList();
-            if (unitId != null)
-            {
+            if (unitId != null) {
                 units = _units.Where(it => it.Model.Id == unitId).ToList();
             }
             units.ForEach(unit => unit.AddModifier(modifier));
         }
 
-        public void AddModifier(IModifier modifier, ModifierTarget target, [CanBeNull]string unitId = null)
+        public void AddModifier(IModifier modifier, ModifierTarget target, [CanBeNull] string unitId = null)
         {
-            switch (target)
-            {
+            switch (target) {
                 case ModifierTarget.Unit:
                     AddUnitModifier(modifier, unitId);
                     break;
@@ -169,7 +170,6 @@ namespace Survivors.Squad
 
         public void OnWorldInit()
         {
-            
         }
 
         public void OnWorldCleanUp()

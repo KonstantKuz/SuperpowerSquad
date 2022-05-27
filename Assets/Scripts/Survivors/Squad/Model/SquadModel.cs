@@ -1,7 +1,9 @@
 ﻿using Feofun.Modifiers;
+using Feofun.Modifiers.Modifiers;
 using Feofun.Modifiers.Parameters;
 using Survivors.Modifiers;
 using Survivors.Squad.Config;
+using Survivors.Units.Model;
 using UniRx;
 
 namespace Survivors.Squad.Model
@@ -15,8 +17,15 @@ namespace Survivors.Squad.Model
         {
             _speed = new FloatModifiableParameter(Parameters.SPEED, config.Speed, this);
             _collectRadius = new FloatModifiableParameter(Parameters.COLLECT_RADIUS, config.CollectRadius, this);
+            HealthModel = new SquadHealthModel(this);
         }
 
+        public void AddHealth(IUnitModel unitModel)
+        {
+            AddModifier(new AddValueModifier(Parameters.HEALTH, unitModel.HealthModel.MaxHealth.Value));
+        }
+
+        public IHealthModel HealthModel { get; }
         public IReadOnlyReactiveProperty<float> Speed => _speed.ReactiveValue;
         public IReadOnlyReactiveProperty<float> CollectRadius => _collectRadius.ReactiveValue;
     }

@@ -1,6 +1,6 @@
 using Feofun.UI;
+using Survivors.Squad.Component.Hud;
 using Survivors.Units.Component;
-using Survivors.Units.Component.Hud;
 using UnityEngine;
 using Zenject;
 
@@ -14,12 +14,12 @@ namespace Survivors.UI.Hud.Unit
         
         [Inject] private UIRoot _uiRoot;
 
-        public void Init(UnitHudOwner unitHudOwner, Transform hudPlace)
+        public void Init(HudOwner hudOwner, Transform hudPlace)
         {
             transform.SetParent(_uiRoot.HudContainer);
             _hudPlace = hudPlace;
             
-            InitHealthBar(unitHudOwner.HealthBarOwner);
+            InitHealthBar(hudOwner.HealthBarOwner);
         }
 
         public void OnUnitDeath()

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Feofun.Modifiers;
 using JetBrains.Annotations;
-using SuperMaxim.Core.Extensions;
 
 namespace Survivors.Units.Service
 {

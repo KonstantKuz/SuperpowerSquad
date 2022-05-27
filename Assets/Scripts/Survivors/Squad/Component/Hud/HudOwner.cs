@@ -1,10 +1,12 @@
 using Survivors.UI.Hud.Unit;
+using Survivors.Units;
+using Survivors.Units.Component;
 using UnityEngine;
 using Zenject;
 
-namespace Survivors.Units.Component.Hud
+namespace Survivors.Squad.Component.Hud
 {
-    public class UnitHudOwner : MonoBehaviour, IUnitInitializable, IUnitDeathEventReceiver
+    public class HudOwner : MonoBehaviour, ISquadInitializable, IUnitDeathEventReceiver
     {
         [SerializeField] private UnitHudPresenter _hudPrefab;
         [SerializeField] private Transform _hudPlace;
@@ -15,8 +17,7 @@ namespace Survivors.Units.Component.Hud
         [Inject] private DiContainer _container;
 
         public IHealthBarOwner HealthBarOwner => _healthBarOwner ?? GetComponent<IHealthBarOwner>();
-        
-        public void Init(IUnit unit)
+        public void Init(Squad squad)
         {
             _hudPresenter = _container.InstantiatePrefabForComponent<UnitHudPresenter>(_hudPrefab);
             _hudPresenter.Init(this, _hudPlace);
@@ -38,5 +39,7 @@ namespace Survivors.Units.Component.Hud
             _hudPresenter = null;
 
         }
+
+
     }
 }

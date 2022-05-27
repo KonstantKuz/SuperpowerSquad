@@ -16,37 +16,35 @@ namespace Survivors.Session
         [Inject] private EnemyWavesSpawner _enemyWavesSpawner;
         [Inject] private EnemyWavesConfig _enemyWavesConfig;
         [Inject] private UnitFactory _unitFactory;
-        [Inject] private UnitService _unitService;        
         [Inject] private World _world;      
         [Inject] private SquadConfig _squadConfig;
         [Inject] private IMessenger _messenger;
+
+        private Squad.Squad Squad => _world.Squad;
         public void OnWorldInit()
         {
-            _unitService.OnPlayerUnitDeath += OnPlayerUnitDeath;
+            Squad.OnDeath += OnSquadDeath;
         }
         public void Start()
         {
             InitSquad();
             _unitFactory.CreatePlayerUnit(UnitFactory.SIMPLE_PLAYER_ID);
-            _enemyWavesSpawner.StartSpawn(_enemyWavesConfig);
+            //_enemyWavesSpawner.StartSpawn(_enemyWavesConfig);
           
         }
         private void InitSquad()
         {
             var model = new SquadModel(_squadConfig.Params);
-            _world.Squad.Init(model);
+            Squad.Init(model);
         }
-        private void OnPlayerUnitDeath(IUnit unit)
+        private void OnSquadDeath()
         {
-            if (_unitService.HasUnitOfType(UnitType.PLAYER)) {
-                return;
-            }
             EndSession(UnitType.ENEMY);
         }
 
         private void EndSession(UnitType winner)
         {
-            _unitService.OnPlayerUnitDeath -= OnPlayerUnitDeath;
+            Squad.OnDeath -= OnSquadDeath;
             _messenger.Publish(new SessionEndMessage {
                     Winner = winner,
             });
@@ -54,7 +52,7 @@ namespace Survivors.Session
         
         public void OnWorldCleanUp()
         {
-            _unitService.OnPlayerUnitDeath -= OnPlayerUnitDeath;
+            Squad.OnDeath -= OnSquadDeath;
         }
     }
 }
