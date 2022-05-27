@@ -74,7 +74,7 @@ namespace Survivors.Squad.UpgradeSelection
         private IEnumerable<string> GetRandomUpgradeIds(int upgradeCount)
         {
             var upgradeBranchIds = EnumExt.Values<UpgradeBranchType>().SelectMany(GetAvailableUpgradeBranchIds).ToList();
-            return upgradeBranchIds.Count <= upgradeCount ? upgradeBranchIds : upgradeBranchIds.RandomizedRange(upgradeCount);
+            return upgradeBranchIds.Count <= upgradeCount ? upgradeBranchIds : upgradeBranchIds.SelectRandomElements(upgradeCount);
         }
 
         private IEnumerable<string> GetAvailableUpgradeBranchIds(UpgradeBranchType branchType)

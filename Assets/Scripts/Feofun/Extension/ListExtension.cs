@@ -5,18 +5,16 @@ using UnityRandom = UnityEngine.Random;
 namespace Feofun.Extension
 {
     public static class ListExtension
-    {
-        public static HashSet<T> ToHashSet<T>(this IEnumerable<T> source)
-        {
-            return new HashSet<T>(source);
-        }
+    { 
         public static T Random<T>(this IReadOnlyList<T> collection)
         {
             int randomNumber = UnityRandom.Range(0, collection.Count);
             return collection[randomNumber];
         }
-   
-        public static IEnumerable<T> RandomizedRange<T>(this List<T> collection, int randomCount)
+        /// <summary>
+        /// The algorithm is taken from: https://stackoverflow.com/questions/48087/select-n-random-elements-from-a-listt-in-c-sharp
+        /// </summary>
+        public static IEnumerable<T> SelectRandomElements<T>(this List<T> collection, int randomCount)
         {
             if (randomCount < 0) {
                 throw new ArgumentOutOfRangeException(nameof(randomCount), "Random count is out of range, randomCount < 0");

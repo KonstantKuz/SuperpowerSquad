@@ -16,7 +16,7 @@ namespace Survivors.Squad.Upgrade.Config
         {
             Id = id;
             _levels = levels;
-            BranchType = IsUnitBranch ? UpgradeBranchType.Unit : UpgradeBranchType.Ability;
+            BranchType = _levels.Any(it => it.Type == UpgradeType.Unit) ? UpgradeBranchType.Unit : UpgradeBranchType.Ability;
         }
 
         public UpgradeLevelConfig GetLevel(int level)
@@ -28,7 +28,6 @@ namespace Survivors.Squad.Upgrade.Config
 
             return _levels[level - 1];
         }
-        private bool IsUnitBranch => _levels.Any(it => it.Type == UpgradeType.Unit);
         public int MaxLevel => _levels.Count;
         public string BranchUnitName => BranchType == UpgradeBranchType.Unit ? Id : null;
     }
