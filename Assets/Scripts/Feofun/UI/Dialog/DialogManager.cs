@@ -10,13 +10,13 @@ namespace Feofun.UI.Dialog
 {
     public class DialogManager : MonoBehaviour
     {
-        private HashSet<BaseDialog> _dialogs;
+        private List<BaseDialog> _dialogs;
 
         private readonly List<BaseDialog> _activeDialogs = new List<BaseDialog>();
 
         private void Awake()
         {
-            _dialogs = GetComponentsInChildren<BaseDialog>(true).ToHashSet();
+            _dialogs = GetComponentsInChildren<BaseDialog>(true).ToList();
             DeActivateAll();
         }
 
