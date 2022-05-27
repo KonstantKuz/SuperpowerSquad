@@ -17,84 +17,48 @@ namespace Survivors.Units.Player.Movement
         private readonly int _horizontalMotionHash = Animator.StringToHash("HorizontalMotion");
 
         [SerializeField]
-        private Transform _rotationRoot;
-        [SerializeField]
         private float _rotationSpeed = 10;
-        [SerializeField] 
-        private float _speedMultiplier;
-
-        private NavMeshAgent _agent;
+        
         private Animator _animator;
         private CompositeDisposable _disposable;
-        private NavMeshAgent Agent => _agent ??= GetComponent<NavMeshAgent>();
-        private bool IsDestinationReached => _agent.remainingDistance < _agent.stoppingDistance;
-        private float _squadSpeed;
+        public bool HasTarget { get; private set; }
 
-        public void Init(IReadOnlyReactiveProperty<float> squadSpeed)
-        {
-            _disposable?.Dispose();
-            _disposable = new CompositeDisposable();
-            squadSpeed.Subscribe(value => _squadSpeed = value).AddTo(_disposable);
-        }
         private void Awake()
         {
             _animator = GetComponentInChildren<Animator>();
         }
-        private void Update()
+        
+        public void PlayAnimation(bool isMoving)
         {
-            IncreaseSpeedWithDistanceToDestination();
-            
-            if (!Agent.isStopped && IsDestinationReached) {
-                Stop();
-            }
-            
-            UpdateAnimationRotateValues();
-        }
-        public void MoveTo(Vector3 destination)
-        {
-            Agent.destination = destination;
-            if (IsDestinationReached) {
-                Stop();
-                return;
-            }
-            Agent.isStopped = false;
-            _animator.Play(_runHash);
+            _animator.Play(isMoving ? _runHash : _idleHash);
+            UpdateAnimationRotateValues(isMoving);
         }
 
+        public void RotateTo(Vector3 targetPos)
+        {
+            var lookAtDirection = (targetPos - transform.position).XZ().normalized;
+            var lookAt = Quaternion.LookRotation(lookAtDirection, transform.up);
+            transform.rotation = Quaternion.Lerp(transform.rotation, lookAt, Time.deltaTime * _rotationSpeed);
+        }
         public void RotateToTarget([CanBeNull] Transform target)
         {
             if (target != null) {
+                HasTarget = true;
                 RotateTo(target.position);
             } else {
-                Rotate(Quaternion.LookRotation(transform.forward));
+                HasTarget = false;
             }
         }
         
         public void OnDeath()
         {
-            Stop();
             _disposable?.Dispose();
             _disposable = null;
         }
         
-        private void Stop()
+        private void UpdateAnimationRotateValues(bool isMoving)
         {
-            Agent.isStopped = true;
-            _animator.Play(_idleHash);
-        }
-        private void RotateTo(Vector3 targetPos)
-        {
-            var lookAtDirection = (targetPos - _rotationRoot.position).XZ().normalized;
-            var lookAt = Quaternion.LookRotation(lookAtDirection, _rotationRoot.up);
-            Rotate(lookAt);
-        }
-        private void Rotate(Quaternion lookAt)
-        {
-            _rotationRoot.rotation = Quaternion.Lerp(_rotationRoot.rotation, lookAt, Time.deltaTime * _rotationSpeed);
-        }
-        private void UpdateAnimationRotateValues()
-        {
-            if (IsDestinationReached || Agent.isStopped) {
+            if (!isMoving) {
                 _animator.SetFloat(_horizontalMotionHash, 0);
                 _animator.SetFloat(_verticalMotionHash, 0);
                 return;
@@ -104,14 +68,6 @@ namespace Survivors.Units.Player.Movement
             _animator.SetFloat(_verticalMotionHash, (float) Math.Cos(GetRadian(signedAngle)));
         }
         private double GetRadian(float signedAngle) => Mathf.Deg2Rad * signedAngle;
-        private float GetRotateSignedAngle() => Vector2.SignedAngle(transform.forward.ToVector2XZ(), _rotationRoot.forward.ToVector2XZ());
-
-        private void IncreaseSpeedWithDistanceToDestination()
-        {
-            _agent.speed = _squadSpeed * DynamicSpeedMultiplier;
-        }
-
-        private float DynamicSpeedMultiplier => 1.0f + Mathf.Pow(Mathf.Max(0.0f,
-            _agent.remainingDistance - _agent.stoppingDistance), 2) * _speedMultiplier;
+        private float GetRotateSignedAngle() => Vector2.SignedAngle(transform.forward.ToVector2XZ(), transform.forward.ToVector2XZ());
     }
 }
