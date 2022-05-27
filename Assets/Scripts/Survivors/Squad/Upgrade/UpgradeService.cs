@@ -29,7 +29,7 @@ namespace Survivors.Squad.Upgrade
         [Inject] private StringKeyedConfigCollection<ParameterUpgradeConfig> _modifierConfigs;
         public SquadUpgradeState SquadUpgradeState => _repository.Require();
       
-        public void OnWorldInit()
+        public void OnWorldSetup()
         {
             _repository.Set(CreateSquadState());
         }

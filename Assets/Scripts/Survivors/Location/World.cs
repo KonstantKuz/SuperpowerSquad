@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Survivors.Location
 {
-    public class World : MonoBehaviour
+    public class World : RootContainer
     {
         [SerializeField]
         private Transform _ground;
@@ -37,32 +37,22 @@ namespace Survivors.Location
             Time.timeScale = 1;
         }
 
-        public void Init()
+        public void Setup()
         {
-            GetAllOf<IWorldScope>()
-                    .ForEach(it => it.OnWorldInit());
+            GetAllOf<IWorldScope>().ForEach(it => it.OnWorldSetup());
         }
 
         public void CleanUp()
         {
-            GetAllOf<IWorldScope>()
-                    .ForEach(it => it.OnWorldCleanUp());
+            GetAllOf<IWorldScope>().ForEach(it => it.OnWorldCleanUp());
         }
 
         private IEnumerable<T> GetAllOf<T>()
         {
-            return AppContext.Container.ResolveAll<T>()
-                             .Union(GetObjectComponents<T>());
+            return GetDISubscribers<T>().Union(GetChildrenSubscribers<T>());
         }
+        private static List<T> GetDISubscribers<T>() => AppContext.Container.ResolveAll<T>();
 
-        private List<T> GetObjectComponents<T>()
-        {
-            return GetObjects().Where(go => go.GetComponent<T>() != null).Select(go => go.GetComponent<T>()).ToList();
-        }
 
-        private List<GameObject> GetObjects()
-        {
-            return GetComponentsInChildren<Transform>(true).Select(it => it.gameObject).ToList();
-        }
     }
 }

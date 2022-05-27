@@ -39,7 +39,7 @@ namespace Survivors.Squad.UpgradeSelection
         private CompositeDisposable _disposable;
         private SquadUpgradeState SquadUpgradeState => _repository.Require();
 
-        public void OnWorldInit()
+        public void OnWorldSetup()
         {
             _disposable?.Dispose();
             _disposable = new CompositeDisposable();

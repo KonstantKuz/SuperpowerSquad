@@ -2,7 +2,7 @@
 {
     public interface IWorldScope
     {
-        void OnWorldInit();
+        void OnWorldSetup();
         void OnWorldCleanUp();
     }
 }

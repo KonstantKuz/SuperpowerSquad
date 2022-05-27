@@ -1,26 +1,28 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Feofun.Extension;
 using Feofun.UI.Components;
+using SuperMaxim.Core.Extensions;
 using UnityEngine;
 
 namespace Feofun.UI.Dialog
 {
     public class DialogManager : MonoBehaviour
     {
-        private List<BaseDialog> _dialogs;
+        private HashSet<BaseDialog> _dialogs;
 
         private readonly List<BaseDialog> _activeDialogs = new List<BaseDialog>();
 
         private void Awake()
         {
-            _dialogs = GetComponentsInChildren<BaseDialog>(true).ToList();
+            _dialogs = GetComponentsInChildren<BaseDialog>(true).ToHashSet();
             DeActivateAll();
         }
 
         private void DeActivateAll()
         {
-            _dialogs.ForEach(it => it.DeActivate());
+            _dialogs.ForEach(it => it.Hide());
         }
         public void Show<TDialog>() where TDialog : BaseDialog
         {

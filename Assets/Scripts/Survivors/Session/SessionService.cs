@@ -20,7 +20,7 @@ namespace Survivors.Session
         [Inject] private World _world;      
         [Inject] private SquadConfig _squadConfig;
         [Inject] private IMessenger _messenger;
-        public void OnWorldInit()
+        public void OnWorldSetup()
         {
             _unitService.OnPlayerUnitDeath += OnPlayerUnitDeath;
         }

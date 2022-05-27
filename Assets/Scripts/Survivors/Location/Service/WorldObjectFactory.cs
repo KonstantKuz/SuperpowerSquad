@@ -84,7 +84,7 @@ namespace Survivors.Location.Service
             _disposable = null;
         }
 
-        public void OnWorldInit()
+        public void OnWorldSetup()
         {
            
         }

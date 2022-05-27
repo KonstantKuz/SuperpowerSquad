@@ -19,7 +19,7 @@ namespace Survivors.Squad.Service
         private IntReactiveProperty _level;
         public IObservable<int> LevelAsObservable => _level;
         private SquadProgress Progress => _repository.Get() ?? new SquadProgress();
-        public void OnWorldInit()
+        public void OnWorldSetup()
         {
             _level = new IntReactiveProperty(Progress.Level);
         }

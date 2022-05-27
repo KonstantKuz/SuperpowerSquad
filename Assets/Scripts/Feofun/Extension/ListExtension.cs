@@ -11,7 +11,10 @@ namespace Feofun.Extension
             int randomNumber = UnityRandom.Range(0, collection.Count);
             return collection[randomNumber];
         }
-
+        public static HashSet<T> ToHashSet<T>(this IEnumerable<T> source)
+        {
+            return new HashSet<T>(source);
+        }
         public static IEnumerable<T> RandomUnique<T>(this List<T> collection, int randomCount)
         {
             if (randomCount < 0) {
