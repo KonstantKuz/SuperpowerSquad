@@ -1,2 +1,2 @@
 Id,Type,EnemyId,Amount,DropChance
-SmallExp,Exp,SimpleEnemy,10,0.3
+SmallExp,Exp,SimpleEnemy,5,0.6
