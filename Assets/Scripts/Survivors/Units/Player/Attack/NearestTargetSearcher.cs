@@ -10,7 +10,7 @@ using Zenject;
 namespace Survivors.Units.Player.Attack
 {
     [RequireComponent(typeof(ITarget))]
-    public class NearestTargetSearcher : MonoBehaviour, IUnitInitializable, ITargetSearcher
+    public class NearestTargetSearcher : MonoBehaviour, IInitializable<IUnit>, ITargetSearcher
     {
         [Inject]
         private TargetService _targetService;

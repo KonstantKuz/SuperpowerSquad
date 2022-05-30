@@ -13,7 +13,7 @@ using Zenject;
 
 namespace Survivors.Units.Player.Attack
 {
-    public class CircularSawAttack : MonoBehaviour, IUnitInitializable, IUnitDeathEventReceiver
+    public class CircularSawAttack : MonoBehaviour, IInitializable<IUnit>, IUnitDeathEventReceiver
     {
         [SerializeField] private CircularSawWeapon _circularSawWeapon;
 

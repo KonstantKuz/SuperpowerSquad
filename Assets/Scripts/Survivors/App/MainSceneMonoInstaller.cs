@@ -3,6 +3,7 @@ using SuperMaxim.Messaging;
 using Survivors.Location;
 using Survivors.Modifiers;
 using Survivors.Squad;
+using Survivors.Squad.Installer;
 using Survivors.UI;
 using Survivors.Units.Installer;
 using UnityEngine;

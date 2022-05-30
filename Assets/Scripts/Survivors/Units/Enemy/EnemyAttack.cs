@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Survivors.Units.Enemy
 {
     [RequireComponent(typeof(EnemyAi))]
-    public class EnemyAttack : MonoBehaviour, IUnitInitializable, IUpdatableUnitComponent
+    public class EnemyAttack : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent
     {
         private EnemyAi _enemyAi;
         private BaseWeapon _weapon;

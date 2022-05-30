@@ -12,8 +12,10 @@ using JetBrains.Annotations;
 using SuperMaxim.Core.Extensions;
 using Survivors.Extension;
 using Survivors.Modifiers;
+using Survivors.Squad.Component;
 using Survivors.Squad.Formation;
 using Survivors.Squad.Model;
+using Survivors.Units;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Player.Config;
 using Survivors.Units.Service;
@@ -59,7 +61,7 @@ namespace Survivors.Squad
         {
             _model = model;
             _damageable.OnDeath += Kill;
-            foreach (var component in GetComponentsInChildren<ISquadInitializable>()) {
+            foreach (var component in GetComponentsInChildren<IInitializable<Squad>>()) {
                 component.Init(this);
             }
         }

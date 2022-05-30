@@ -1,8 +1,9 @@
-﻿using Survivors.Units.Component.Health;
+﻿using Survivors.Units;
+using Survivors.Units.Component.Health;
 
 namespace Survivors.Squad.Component
 {
-    public class SquadWithHealth : Health, ISquadInitializable
+    public class SquadWithHealth : Health, IInitializable<Squad>
     {
         public void Init(Squad squad)
         {

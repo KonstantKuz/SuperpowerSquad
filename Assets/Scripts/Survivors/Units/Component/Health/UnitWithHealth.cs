@@ -1,6 +1,6 @@
 ﻿namespace Survivors.Units.Component.Health
 {
-    public class UnitWithHealth : Health, IUnitInitializable
+    public class UnitWithHealth : Health, IInitializable<IUnit>
     {
         public void Init(IUnit unit)
         {

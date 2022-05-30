@@ -1,11 +1,12 @@
 using Survivors.UI.Hud.Unit;
+using Survivors.Units;
 using Survivors.Units.Component;
 using UnityEngine;
 using Zenject;
 
 namespace Survivors.Squad.Component.Hud
 {
-    public class HudOwner : MonoBehaviour, ISquadInitializable
+    public class HudOwner : MonoBehaviour, IInitializable<Squad>
     {
         [SerializeField] private UnitHudPresenter _hudPrefab;
         [SerializeField] private Transform _hudPlace;

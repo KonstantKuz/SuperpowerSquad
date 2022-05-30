@@ -3,13 +3,14 @@ using DG.Tweening;
 using Survivors.Loot.Service;
 using Survivors.Session;
 using Survivors.Squad;
+using Survivors.Units;
 using UniRx;
 using UnityEngine;
 using Zenject;
 
 namespace Survivors.Loot
 {
-    public class LootCollector : MonoBehaviour, IWorldScope, ISquadInitializable
+    public class LootCollector : MonoBehaviour, IWorldScope, IInitializable<Squad.Squad>
     {
         [SerializeField]
         private float _collectTime;

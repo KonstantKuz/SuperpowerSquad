@@ -1,6 +1,6 @@
 ﻿namespace Survivors.Units
 {
-    public interface IUpdatableUnitComponent
+    public interface IUpdatableComponent
     {
         void OnTick();
     }

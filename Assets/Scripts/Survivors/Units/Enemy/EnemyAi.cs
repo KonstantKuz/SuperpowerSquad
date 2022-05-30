@@ -10,7 +10,7 @@ using Zenject;
 namespace Survivors.Units.Enemy
 {
     [RequireComponent(typeof(NavMeshAgent))]
-    public class EnemyAi : MonoBehaviour, IUnitInitializable, IUpdatableUnitComponent
+    public class EnemyAi : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent
     {
         private NavMeshAgent _agent;
         private ITarget _target;
