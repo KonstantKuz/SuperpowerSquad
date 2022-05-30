@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using Survivors.Units.Model;
@@ -29,7 +30,18 @@ namespace Survivors.Units.Player.Attack
         [CanBeNull]
         public ITarget Find()
         {
-            return GetAllOrderedByDistance().FirstOrDefault();
+            ITarget rez = null;
+            var minDistance = Mathf.Infinity;
+            var pos = transform.position;
+            foreach (var target in _targetService.AllTargetsOfType(_targetType))
+            {
+                var dist = Vector3.Distance(pos, target.Root.position);
+                if (dist >= minDistance || dist > SearchDistance) continue;
+                minDistance = dist;
+                rez = target;
+            }
+            
+            return rez;
         }
 
         public IEnumerable<ITarget> GetAllOrderedByDistance()

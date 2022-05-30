@@ -24,6 +24,7 @@ namespace Survivors.Units.Enemy
             get => _target;
             private set
             {
+                if (_target == value) return;
                 if (_target != null)
                 {
                     _target.OnTargetInvalid -= ClearTarget;

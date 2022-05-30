@@ -179,7 +179,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6750970296098963895}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.2, z: 0}
+  m_LocalPosition: {x: 0, y: 2.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 8671649382020092166}
@@ -259,7 +259,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _hudPrefab: {fileID: 5908310967132934326, guid: 60ee3281ab8997e478d99f0a185cdf69, type: 3}
   _hudPlace: {fileID: 5330639236914749494}
-  _hudPlaceOffset: 0.2
+  _hudPlaceOffset: 0.3
 --- !u!114 &4477187146966790282
 MonoBehaviour:
   m_ObjectHideFlags: 0
