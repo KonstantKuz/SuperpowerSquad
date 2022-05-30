@@ -34,12 +34,9 @@ namespace Survivors.Squad
         private IDamageable _damageable;
         private SquadDestination _destination;
 
-        [Inject]
-        private Joystick _joystick;
-        [Inject]
-        private SquadFactory _squadFactory;
-        [Inject]
-        private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
+        [Inject] private Joystick _joystick;
+        [Inject] private SquadFactory _squadFactory;
+        [Inject] private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
 
         public event Action OnDeath;
         private bool Initialized => _model != null;
@@ -47,7 +44,9 @@ namespace Survivors.Squad
         public SquadDestination Destination => _destination;
         public IReadOnlyReactiveProperty<int> UnitsCount => _units.ObserveCountChanged().ToReactiveProperty();
         public float SquadRadius => _formation.GetMaxSize(_unitSize, _units.Count) / 2;
-
+        public bool IsMoving => _joystick.Direction.sqrMagnitude > 0;
+        public Vector3 MoveDirection => new Vector3(_joystick.Horizontal, 0, _joystick.Vertical);
+        
         public void Awake()
         {
             _destination = gameObject.RequireComponentInChildren<SquadDestination>();
@@ -74,19 +73,17 @@ namespace Survivors.Squad
 
         public void AddUnit(Unit unit)
         {
-            unit.transform.SetParent(transform);
-            unit.transform.position = GetSpawnPosition();
-            unit.MovementController.Init(_model.Speed);
+            unit.transform.SetParent(_destination.transform);
             _model.AddHealth(unit.Model);
             _units.Add(unit);
         }
         
-        public void AddSquadModifier(IModifier modifier)
+        private void AddSquadModifier(IModifier modifier)
         {
             Model.AddModifier(modifier);
         }
 
-        public void AddUnitModifier(IModifier modifier, [CanBeNull] string unitId = null)
+        private void AddUnitModifier(IModifier modifier, [CanBeNull] string unitId = null)
         {
             var units = _units.ToList();
             if (unitId != null) {
@@ -143,11 +140,11 @@ namespace Survivors.Squad
             if (!Initialized) {
                 return;
             }
-            if (_joystick.Direction.sqrMagnitude > 0) {
-                Move(new Vector3(_joystick.Horizontal, 0, _joystick.Vertical));
+            if (IsMoving) {
+                Move(MoveDirection);
             }
-
-            UpdateUnitDestinations();
+            SetUnitPositions();
+            UpdateUnitsAnimations();
         }
 
         private void Move(Vector3 joystickDirection)
@@ -156,13 +153,10 @@ namespace Survivors.Squad
             _destination.transform.position += delta;
         }
 
-        private void UpdateUnitDestinations()
+        private void UpdateUnitsAnimations()
         {
-            for (int unitIdx = 0; unitIdx < _units.Count; unitIdx++) {
-                _units[unitIdx].MovementController.MoveTo(GetUnitPosition(unitIdx));
-            }
+            _units.ForEach(it => { it.MovementController.UpdateAnimation(MoveDirection); });
         }
-
         private Vector3 GetSpawnPosition()
         {
             return _destination.transform.position + _formation.GetSpawnOffset(_unitSize, _units.Count);
