@@ -28,6 +28,7 @@ namespace Survivors.UI.Screen.World
         [PublicAPI]
         public void Init()
         {
+            _world.Setup();
             _sessionService.Start();
             _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
         }

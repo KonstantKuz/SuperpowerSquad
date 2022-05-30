@@ -1,30 +1,29 @@
-﻿using Feofun.Config;
+﻿using System;
+using Feofun.Config;
+using Survivors.Session;
 using Survivors.Squad.Config;
 using Survivors.Squad.Progress;
-using UnityEngine;
+using UniRx;
 using UnityEngine.Assertions;
+using Zenject;
 
 namespace Survivors.Squad.Service
 {
-    public class SquadProgressService
+    public class SquadProgressService : IWorldScope
     {
-        private readonly SquadProgressRepository _repository;
-        private readonly StringKeyedConfigCollection<SquadLevelConfig> _levelConfig;
-
-        public SquadProgress Progress => _repository.Get() ?? new SquadProgress();
+        private readonly IntReactiveProperty _level = new IntReactiveProperty(SquadProgress.DEFAULT_LEVEL);
         
-        public SquadProgressService(SquadProgressRepository repository, 
-                                     StringKeyedConfigCollection<SquadLevelConfig> levelConfig)
+        [Inject]
+        private SquadProgressRepository _repository;
+        [Inject]
+        private StringKeyedConfigCollection<SquadLevelConfig> _levelConfig;
+        public IObservable<int> Level => _level;
+        private SquadProgress Progress => _repository.Require();
+        public void OnWorldSetup()
         {
-            _repository = repository;
-            _levelConfig = levelConfig;
+            _repository.Set(SquadProgress.Create());
+            _level.Value = Progress.Level;
         }
-
-        public void ResetProgress()
-        {
-            _repository.Delete();
-        }
-
         public void AddExp(int amount)
         {
             Assert.IsTrue(amount >= 0, "Added amount of Exp should be non-negative");
@@ -36,6 +35,16 @@ namespace Survivors.Squad.Service
         private void SetProgress(SquadProgress progress)
         {
             _repository.Set(progress);
+            _level.Value = progress.Level;
+        }
+        private void ResetProgress()
+        {
+            _repository.Delete();
+            _level.Value = SquadProgress.DEFAULT_LEVEL;
+        }
+        public void OnWorldCleanUp()
+        {
+            ResetProgress();
         }
     }
 }

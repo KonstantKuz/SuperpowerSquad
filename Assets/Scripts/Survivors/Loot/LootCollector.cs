@@ -9,7 +9,7 @@ using Zenject;
 
 namespace Survivors.Loot
 {
-    public class LootCollector : MonoBehaviour, IWorldCleanUp, ISquadInitializable
+    public class LootCollector : MonoBehaviour, IWorldScope, ISquadInitializable
     {
         [SerializeField]
         private float _collectTime;
@@ -21,11 +21,14 @@ namespace Survivors.Loot
 
         private List<Tween> _movingLoots = new List<Tween>();
         private CompositeDisposable _disposable;
-
-        public void Init(Squad.Squad squad)
+        
+        public void OnWorldSetup()
         {
             _disposable?.Dispose();
             _disposable = new CompositeDisposable();
+        }
+        public void Init(Squad.Squad squad)
+        {
             squad.Model.CollectRadius.Subscribe(radius => _collider.radius = radius).AddTo(_disposable);
         }
 
@@ -47,7 +50,7 @@ namespace Survivors.Loot
                 Destroy(loot.gameObject);
             };
         }
-
+        
         public void OnWorldCleanUp()
         {
             _movingLoots.ForEach(it => it.Kill());

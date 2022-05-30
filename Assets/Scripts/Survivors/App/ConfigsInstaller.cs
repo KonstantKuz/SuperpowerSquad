@@ -11,6 +11,7 @@ using Survivors.Squad;
 using Survivors.Squad.Upgrade;
 using Survivors.Squad.Config;
 using Survivors.Squad.Upgrade.Config;
+using Survivors.Squad.UpgradeSelection.Config;
 using Survivors.Units.Player.Config;
 using Zenject;
 
@@ -29,7 +30,8 @@ namespace Survivors.App
                 .RegisterStringKeyedCollection<SquadLevelConfig>(Configs.SQUAD_LEVEL)
                 .RegisterSingle<SquadConfig>(Configs.SQUAD)
                 .RegisterStringKeyedCollection<ParameterUpgradeConfig>(Configs.MODIFIERS)
-                .RegisterSingle<UpgradesConfig>(Configs.UPGRADES);
+                .RegisterSingle<UpgradesConfig>(Configs.UPGRADES)     
+                .RegisterSingle<UpgradeBranchSelectionConfig>(Configs.CONSTANTS);
         }
     }
 }

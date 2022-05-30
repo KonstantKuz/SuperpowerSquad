@@ -1,7 +1,8 @@
 ﻿namespace Survivors.Session
 {
-    public interface IWorldCleanUp
+    public interface IWorldScope
     {
+        void OnWorldSetup();
         void OnWorldCleanUp();
     }
 }

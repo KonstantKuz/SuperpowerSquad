@@ -14,7 +14,7 @@ using Random = UnityEngine.Random;
 
 namespace Survivors.Loot.Service
 {
-    public class DroppingLootService : IWorldCleanUp
+    public class DroppingLootService : IWorldScope
     {
         [Inject] private World _world;
         [Inject] private SquadProgressService _squadProgressService;
@@ -22,11 +22,11 @@ namespace Survivors.Loot.Service
         [Inject] private WorldObjectFactory _worldObjectFactory;
         [Inject] private StringKeyedConfigCollection<DroppingLootConfig> _droppingLoots;
         
-        public void Init()
+        public void OnWorldSetup()
         {
             _unitService.OnEnemyUnitDeath += TrySpawnLoot;
         }
-
+        
         public void TrySpawnLoot(IUnit unit)
         {
             var lootConfig = _droppingLoots.Values.FirstOrDefault(it => it.EnemyId == unit.Model.Id);
@@ -65,5 +65,6 @@ namespace Survivors.Loot.Service
         {
             _unitService.OnEnemyUnitDeath -= TrySpawnLoot;
         }
+
     }
 }

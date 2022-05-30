@@ -1,5 +1,4 @@
-﻿using System;
-using Survivors.Squad.Upgrade;
+﻿using Survivors.Squad.Upgrade;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
