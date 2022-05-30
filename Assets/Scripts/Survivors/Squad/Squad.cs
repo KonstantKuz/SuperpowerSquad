@@ -6,7 +6,6 @@ using UnityEngine.Assertions;
 using Zenject;
 using EasyButtons;
 using Feofun.Config;
-using Survivors.Session;
 using Feofun.Modifiers;
 using JetBrains.Annotations;
 using SuperMaxim.Core.Extensions;
@@ -18,13 +17,12 @@ using Survivors.Squad.Model;
 using Survivors.Units;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Player.Config;
-using Survivors.Units.Service;
 using UniRx;
 using Unit = Survivors.Units.Unit;
 
 namespace Survivors.Squad
 {
-    public class Squad : MonoBehaviour, IWorldScope
+    public class Squad : MonoBehaviour
     {
         [SerializeField]
         private float _unitSize;
@@ -39,7 +37,7 @@ namespace Survivors.Squad
         [Inject]
         private Joystick _joystick;
         [Inject]
-        private UnitFactory _unitFactory;
+        private SquadFactory _squadFactory;
         [Inject]
         private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
 
@@ -119,7 +117,7 @@ namespace Survivors.Squad
         {
             Assert.IsTrue(_units.Count > 0);
             var nextUnit = _playerUnitConfigs.Values[_units.Count % _playerUnitConfigs.Values.Count];
-            _unitFactory.CreatePlayerUnit(nextUnit.Id);
+            _squadFactory.CreatePlayerUnit(nextUnit.Id);
         }
 
         [Button]
@@ -169,12 +167,7 @@ namespace Survivors.Squad
         {
             return _destination.transform.position + _formation.GetSpawnOffset(_unitSize, _units.Count);
         }
-
-        public void OnWorldSetup()
-        {
-        }
-
-        public void OnWorldCleanUp()
+        private void OnDestroy()
         {
             _units.Clear();
             _model = null;
