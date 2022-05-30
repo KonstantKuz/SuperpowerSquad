@@ -13,7 +13,8 @@ namespace Survivors.Units.Enemy
     [RequireComponent(typeof(NavMeshAgent))]
     public class EnemyAi : MonoBehaviour, IUnitInitializable, IUpdatableUnitComponent
     {
-        private const float ADDITIONAL_SQUAD_RADIUS = 5f;
+        [SerializeField] private float _squadAdditionalRadius = 5f;
+        [SerializeField] private float _targetResetDistance = 2f;
         
         private NavMeshAgent _agent;
         private ITarget _target;
@@ -23,7 +24,10 @@ namespace Survivors.Units.Enemy
 
         private float DistanceToSquad =>
             Vector3.Distance(transform.position, _world.Squad.Destination.transform.position);
-        private bool IsSquadNear => DistanceToSquad <= _world.Squad.SquadRadius + ADDITIONAL_SQUAD_RADIUS;
+        private bool IsSquadNearby => DistanceToSquad <= _world.Squad.SquadRadius + _squadAdditionalRadius;
+        private float DistanceToTarget => CurrentTarget == null ?
+            Mathf.Infinity : Vector3.Distance(transform.position, CurrentTarget.Root.position);
+        private bool IsTargetNearby => DistanceToTarget <= _targetResetDistance;
 
         public NavMeshAgent NavMeshAgent => _agent;
         
@@ -60,7 +64,7 @@ namespace Survivors.Units.Enemy
 
         public void OnTick()
         {
-            if (IsSquadNear)
+            if (IsRequiredAnyTarget() || IsRequiredNearestTarget())
             {
                 FindTarget();
             }
@@ -75,6 +79,16 @@ namespace Survivors.Units.Enemy
             _agent.isStopped = false;
         }
 
+        private bool IsRequiredAnyTarget()
+        {
+            return !IsSquadNearby && !IsTargetNearby;
+        }
+
+        private bool IsRequiredNearestTarget()
+        {
+            return IsSquadNearby && !IsTargetNearby;
+        }
+        
         private void FindTarget()
         {
             CurrentTarget = _targetSearcher.Find();
