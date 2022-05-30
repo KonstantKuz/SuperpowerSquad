@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using Feofun.Components;
+using JetBrains.Annotations;
 using Survivors.Extension;
 using Survivors.Units.Enemy.Model;
 using Survivors.Units.Player.Attack;

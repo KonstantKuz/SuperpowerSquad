@@ -1,4 +1,6 @@
-﻿namespace Survivors.Units.Component.Health
+﻿using Feofun.Components;
+
+namespace Survivors.Units.Component.Health
 {
     public class UnitWithHealth : Health, IInitializable<IUnit>
     {

@@ -1,4 +1,4 @@
-﻿namespace Survivors.Units
+﻿namespace Feofun.Components
 {
     public interface IInitializable<T>
             where T : class

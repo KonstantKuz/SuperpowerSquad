@@ -1,6 +1,7 @@
 ﻿using System;
 using Survivors.Extension;
 using EasyButtons;
+using Feofun.Components;
 using Feofun.Modifiers;
 using SuperMaxim.Core.Extensions;
 using Survivors.Location.Model;

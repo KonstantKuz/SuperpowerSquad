@@ -21,7 +21,8 @@ namespace Survivors.Squad
         
         public Squad CreateSquad()
         {
-            var model = new SquadModel(_squadConfig.Params, _playerUnitConfigs.Get(UnitFactory.SIMPLE_PLAYER_ID).Health);
+            var startingMaxHealth = _playerUnitConfigs.Get(UnitFactory.SIMPLE_PLAYER_ID).Health;
+            var model = new SquadModel(_squadConfig.Params, startingMaxHealth);
             var squad = _worldObjectFactory.CreateObject(SQUAD_NAME, _world.transform).RequireComponent<Squad>();
             squad.transform.SetPositionAndRotation(_world.Spawn.transform.position, _world.Spawn.transform.rotation);
             squad.Init(model);

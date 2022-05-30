@@ -22,9 +22,9 @@ namespace Survivors.Squad.Model
 
         public void AddUnit(IUnitModel unitModel)
         {
-            AddModifier(new AddValueModifier(Parameters.HEALTH, unitModel.HealthModel.MaxHealth.Value));
+            var addHealthModifier = new AddValueModifier(Parameters.HEALTH, unitModel.HealthModel.MaxHealth.Value);
+            AddModifier(addHealthModifier);
         }
-
         public IHealthModel HealthModel { get; }
         public IReadOnlyReactiveProperty<float> Speed => _speed.ReactiveValue;
         public IReadOnlyReactiveProperty<float> CollectRadius => _collectRadius.ReactiveValue;

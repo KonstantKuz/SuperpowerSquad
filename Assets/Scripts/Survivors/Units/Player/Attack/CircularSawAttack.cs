@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using Feofun.Components;
 using Survivors.Extension;
 using Survivors.Location.Service;
 using Survivors.Units.Component.Health;

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using DG.Tweening;
+using Feofun.Components;
 using Survivors.Loot.Service;
 using Survivors.Units;
 using UniRx;

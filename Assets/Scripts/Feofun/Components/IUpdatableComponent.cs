@@ -1,4 +1,4 @@
-﻿namespace Survivors.Units
+﻿namespace Feofun.Components
 {
     public interface IUpdatableComponent
     {

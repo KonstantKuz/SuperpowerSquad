@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Feofun.Components;
 using JetBrains.Annotations;
 using Survivors.Units.Model;
 using Survivors.Units.Player.Model;
