@@ -41,7 +41,9 @@ namespace Survivors.Squad
         public SquadDestination Destination => _destination;
         public IReadOnlyReactiveProperty<int> UnitsCount => _units.ObserveCountChanged().ToReactiveProperty();
         public float SquadRadius => _formation.GetMaxSize(_unitSize, _units.Count) / 2;
-
+        public bool IsMoving => _joystick.Direction.sqrMagnitude > 0;
+        public Vector3 MoveDirection => new Vector3(_joystick.Horizontal, 0, _joystick.Vertical);
+        
         public void Awake()
         {
             _destination = GetComponentInChildren<SquadDestination>();
@@ -59,9 +61,7 @@ namespace Survivors.Squad
 
         public void AddUnit(Unit unit)
         {
-            unit.transform.SetParent(transform);
-            unit.transform.position = GetSpawnPosition();
-            unit.MovementController.Init(_model.Speed);
+            unit.transform.SetParent(_destination.transform);
             unit.OnDeath += OnUnitDeath;
             _units.Add(unit);
         }
@@ -75,6 +75,7 @@ namespace Survivors.Squad
         {
             Assert.IsTrue(_units.Contains(unit));
             _units.Remove(unit);
+            unit.transform.SetParent(null);
             unit.OnDeath -= OnUnitDeath;
         }
 
@@ -142,11 +143,12 @@ namespace Survivors.Squad
             if (!Initialized) {
                 return;
             }
-            if (_joystick.Direction.sqrMagnitude > 0) {
-                Move(new Vector3(_joystick.Horizontal, 0, _joystick.Vertical));
+            if (IsMoving) {
+                Move(MoveDirection);
             }
 
-            UpdateUnitDestinations();
+            SetUnitPositions();
+            UpdateUnitsAnimations();
         }
 
         private void Move(Vector3 joystickDirection)
@@ -155,11 +157,9 @@ namespace Survivors.Squad
             _destination.transform.position += delta;
         }
 
-        private void UpdateUnitDestinations()
+        private void UpdateUnitsAnimations()
         {
-            for (int unitIdx = 0; unitIdx < _units.Count; unitIdx++) {
-                _units[unitIdx].MovementController.MoveTo(GetUnitPosition(unitIdx));
-            }
+            _units.ForEach(it => { it.MovementController.UpdateAnimation(MoveDirection); });
         }
 
         private Vector3 GetSpawnPosition()
