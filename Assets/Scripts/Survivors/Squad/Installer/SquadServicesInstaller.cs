@@ -10,12 +10,12 @@ namespace Survivors.Squad.Installer
     {
         public static void Install(DiContainer container)
         {
-            container.Bind<SquadFactory>().AsSingle();      
+            container.Bind<SquadFactory>().AsSingle();
             container.BindInterfacesAndSelfTo<SquadProgressService>().AsSingle();
             container.BindInterfacesAndSelfTo<UpgradeService>().AsSingle();
             container.BindInterfacesAndSelfTo<UpgradeSelectionService>().AsSingle();   
             
-            container.Bind<SquadProgressRepository>().AsSingle();
+            container.Bind<SquadProgressRepository>().AsSingle();           
             container.Bind<SquadUpgradeRepository>().AsSingle();  
         }
     }

@@ -257,7 +257,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b9c1dbc409d68794b856557412180aac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _hudPrefab: {fileID: 5908310967132934326, guid: 60ee3281ab8997e478d99f0a185cdf69, type: 3}
+  _hudPrefab: {fileID: 2952826858694922931, guid: 60ee3281ab8997e478d99f0a185cdf69, type: 3}
   _hudPlace: {fileID: 5330639236914749494}
   _hudPlaceOffset: 0.3
 --- !u!114 &4477187146966790282

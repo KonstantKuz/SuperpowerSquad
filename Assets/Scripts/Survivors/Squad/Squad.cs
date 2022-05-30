@@ -17,6 +17,7 @@ using Survivors.Squad.Model;
 using Survivors.Units;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Player.Config;
+using Survivors.Units.Service;
 using UniRx;
 using Unit = Survivors.Units.Unit;
 
@@ -35,7 +36,7 @@ namespace Survivors.Squad
         private SquadDestination _destination;
 
         [Inject] private Joystick _joystick;
-        [Inject] private SquadFactory _squadFactory;
+        [Inject] private UnitFactory _unitFactory;
         [Inject] private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
 
         public event Action OnDeath;
@@ -114,7 +115,7 @@ namespace Survivors.Squad
         {
             Assert.IsTrue(_units.Count > 0);
             var nextUnit = _playerUnitConfigs.Values[_units.Count % _playerUnitConfigs.Values.Count];
-            _squadFactory.CreatePlayerUnit(nextUnit.Id);
+            _unitFactory.CreatePlayerUnit(nextUnit.Id);
         }
 
         [Button]

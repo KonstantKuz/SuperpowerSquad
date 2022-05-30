@@ -23,7 +23,7 @@ namespace Survivors.Squad.Upgrade
     {
         [Inject] private UpgradesConfig _config;
         [Inject] private World _world;
-        [Inject] private SquadFactory _squadFactory;
+        [Inject] private UnitFactory _unitFactory;
         [Inject] private ModifierFactory _modifierFactory;
         [Inject] private SquadUpgradeRepository _repository;
         
@@ -77,7 +77,7 @@ namespace Survivors.Squad.Upgrade
 
         private void AddUnit(string unitId)
         {
-            var unit = _squadFactory.CreatePlayerUnit(unitId);
+            var unit = _unitFactory.CreatePlayerUnit(unitId);
             AddExistingModifiers(unit);
         }
 
