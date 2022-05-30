@@ -159,13 +159,7 @@ namespace Survivors.Squad
 
         private void UpdateUnitsAnimations()
         {
-            _units.ForEach(it =>
-            {
-                it.MovementController.PlayAnimation(IsMoving);
-                if (it.MovementController.HasTarget) return;
-                var targetPos = it.transform.position + MoveDirection;
-                it.MovementController.RotateTo(targetPos);
-            });
+            _units.ForEach(it => { it.MovementController.PlayMove(MoveDirection); });
         }
 
         private Vector3 GetSpawnPosition()

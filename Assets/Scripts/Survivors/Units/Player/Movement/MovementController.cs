@@ -27,14 +27,21 @@ namespace Survivors.Units.Player.Movement
         {
             _animator = GetComponentInChildren<Animator>();
         }
-        
-        public void PlayAnimation(bool isMoving)
+
+        public void PlayMove(Vector3 moveDirection)
         {
-            _animator.Play(isMoving ? _runHash : _idleHash);
-            UpdateAnimationRotateValues(isMoving);
+            PlayAnimation(moveDirection.sqrMagnitude > 0);
+            UpdateAnimationRotateValues(moveDirection);
+            if (HasTarget) return;
+            RotateTo(transform.position + moveDirection);
         }
 
-        public void RotateTo(Vector3 targetPos)
+        private void PlayAnimation(bool isMoving)
+        {
+            _animator.Play(isMoving ? _runHash : _idleHash);
+        }
+
+        private void RotateTo(Vector3 targetPos)
         {
             var lookAtDirection = (targetPos - transform.position).XZ().normalized;
             var lookAt = Quaternion.LookRotation(lookAtDirection, transform.up);
@@ -56,18 +63,18 @@ namespace Survivors.Units.Player.Movement
             _disposable = null;
         }
         
-        private void UpdateAnimationRotateValues(bool isMoving)
+        private void UpdateAnimationRotateValues(Vector3 moveDirection)
         {
-            if (!isMoving) {
+            if (moveDirection.sqrMagnitude <= 0) {
                 _animator.SetFloat(_horizontalMotionHash, 0);
                 _animator.SetFloat(_verticalMotionHash, 0);
                 return;
             }
-            var signedAngle = GetRotateSignedAngle();
+            var signedAngle = GetRotateSignedAngle(moveDirection);
             _animator.SetFloat(_horizontalMotionHash, (float) Math.Sin(GetRadian(signedAngle)));
             _animator.SetFloat(_verticalMotionHash, (float) Math.Cos(GetRadian(signedAngle)));
         }
         private double GetRadian(float signedAngle) => Mathf.Deg2Rad * signedAngle;
-        private float GetRotateSignedAngle() => Vector2.SignedAngle(transform.forward.ToVector2XZ(), transform.forward.ToVector2XZ());
+        private float GetRotateSignedAngle(Vector3 moveDirection) => Vector2.SignedAngle(transform.forward.ToVector2XZ(), moveDirection.ToVector2XZ());
     }
 }
