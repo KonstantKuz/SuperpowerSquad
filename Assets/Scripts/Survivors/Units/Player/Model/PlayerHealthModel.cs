@@ -12,9 +12,10 @@ namespace Survivors.Units.Player.Model
 
         public PlayerHealthModel(float maxHealth, IModifiableParameterOwner parameterOwner)
         {
+            StartingMaxHealth = maxHealth;
             _maxHealth = new FloatModifiableParameter(Parameters.HEALTH, maxHealth, parameterOwner);
         }
-
+        public float StartingMaxHealth { get; }
         public IReadOnlyReactiveProperty<float> MaxHealth => _maxHealth.ReactiveValue;
     }
 }

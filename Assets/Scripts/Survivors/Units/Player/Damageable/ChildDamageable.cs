@@ -1,5 +1,6 @@
 ﻿using System;
 using JetBrains.Annotations;
+using Survivors.Squad.Component;
 using Survivors.Units.Component.Health;
 using UnityEngine;
 
@@ -13,7 +14,7 @@ namespace Survivors.Units.Player.Damageable
         public event Action OnDeath;
         public event Action OnDamageTaken;
         public bool DamageEnabled { get; set; } = true;
-        private IDamageable ParentDamageable => _parentDamageable ??= GetComponentInParent<IDamageable>();
+        private IDamageable ParentDamageable => _parentDamageable ??= transform.parent.GetComponentInParent<IDamageable>();
         public void TakeDamage(float damage)
         {
             if (!DamageEnabled) {

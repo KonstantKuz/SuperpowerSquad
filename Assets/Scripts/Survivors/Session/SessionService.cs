@@ -3,8 +3,6 @@ using Survivors.EnemySpawn;
 using Survivors.EnemySpawn.Config;
 using Survivors.Location;
 using Survivors.Session.Messages;
-using Survivors.Squad.Config;
-using Survivors.Squad.Model;
 using Survivors.Units;
 using Survivors.Units.Service;
 using Zenject;
@@ -17,8 +15,7 @@ namespace Survivors.Session
         [Inject] private EnemyWavesConfig _enemyWavesConfig;
         [Inject] private UnitFactory _unitFactory;
         [Inject] private UnitService _unitService;        
-        [Inject] private World _world;      
-        [Inject] private SquadConfig _squadConfig;
+        [Inject] private World _world;
         [Inject] private IMessenger _messenger;
         public void OnWorldSetup()
         {
@@ -33,8 +30,7 @@ namespace Survivors.Session
         }
         private void InitSquad()
         {
-            var model = new SquadModel(_squadConfig.Params);
-            _world.Squad.Init(model);
+            _world.Squad.Init(_unitFactory.CreateSquadModel());
         }
         private void OnPlayerUnitDeath(IUnit unit)
         {

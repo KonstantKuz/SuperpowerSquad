@@ -11,8 +11,9 @@ namespace Survivors.Units.Component.Health
         private IHealthModel _healthModel;
         private ReactiveProperty<float> _currentHealth;
         private IDisposable _disposable;
-        
-        public float MaxValue => _healthModel.MaxHealth.Value;
+
+        public float StartingMaxValue => _healthModel.StartingMaxHealth;
+        public IReadOnlyReactiveProperty<float> MaxValue => _healthModel.MaxHealth;
         public IObservable<float> CurrentValue => _currentHealth;
         public bool DamageEnabled { get; set; }
         
@@ -51,7 +52,7 @@ namespace Survivors.Units.Component.Health
         
         private void ChangeHealth(float delta)
         {
-            _currentHealth.Value = Mathf.Min(Mathf.Max(0, _currentHealth.Value + delta), MaxValue);
+            _currentHealth.Value = Mathf.Min(Mathf.Max(0, _currentHealth.Value + delta), MaxValue.Value);
         }
         
         private void OnDestroy()

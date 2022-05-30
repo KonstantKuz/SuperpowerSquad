@@ -1,10 +1,12 @@
 ﻿using System;
+using UniRx;
 
 namespace Survivors.Units.Component
 {
     public interface IHealthBarOwner
     {
-        float MaxValue { get; }
+        float StartingMaxValue { get; }
+        IReadOnlyReactiveProperty<float> MaxValue { get; }
         IObservable<float> CurrentValue { get; }
     }
 }

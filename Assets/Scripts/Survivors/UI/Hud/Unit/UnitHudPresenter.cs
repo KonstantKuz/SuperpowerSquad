@@ -21,12 +21,6 @@ namespace Survivors.UI.Hud.Unit
             
             InitHealthBar(hudOwner.HealthBarOwner);
         }
-
-        public void OnUnitDeath()
-        {
-            Destroy(gameObject);
-        }
-
         private void InitHealthBar(IHealthBarOwner healthBarOwner)
         {
             var model = new HealthBarModel(healthBarOwner);
@@ -35,8 +29,7 @@ namespace Survivors.UI.Hud.Unit
 
         private void Update()
         {
-            if (_hudPlace == null)
-            {
+            if (_hudPlace == null) {
                 return;
             }
 
