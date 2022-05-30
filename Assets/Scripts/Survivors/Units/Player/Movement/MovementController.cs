@@ -28,7 +28,7 @@ namespace Survivors.Units.Player.Movement
             _animator = GetComponentInChildren<Animator>();
         }
 
-        public void PlayMove(Vector3 moveDirection)
+        public void UpdateAnimation(Vector3 moveDirection)
         {
             PlayAnimation(moveDirection.sqrMagnitude > 0);
             UpdateAnimationRotateValues(moveDirection);
