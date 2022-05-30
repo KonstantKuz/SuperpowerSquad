@@ -1,5 +1,6 @@
 ﻿using JetBrains.Annotations;
 using Survivors.Extension;
+using Survivors.Location;
 using Survivors.Units.Enemy.Model;
 using Survivors.Units.Player.Attack;
 using Survivors.Units.Target;
@@ -12,9 +13,17 @@ namespace Survivors.Units.Enemy
     [RequireComponent(typeof(NavMeshAgent))]
     public class EnemyAi : MonoBehaviour, IUnitInitializable, IUpdatableUnitComponent
     {
+        private const float ADDITIONAL_SQUAD_RADIUS = 5f;
+        
         private NavMeshAgent _agent;
         private ITarget _target;
         private ITargetSearcher _targetSearcher;
+
+        [Inject] private World _world;
+
+        private float DistanceToSquad =>
+            Vector3.Distance(transform.position, _world.Squad.Destination.transform.position);
+        private bool IsSquadNear => DistanceToSquad <= _world.Squad.SquadRadius + ADDITIONAL_SQUAD_RADIUS;
 
         public NavMeshAgent NavMeshAgent => _agent;
         
@@ -51,7 +60,10 @@ namespace Survivors.Units.Enemy
 
         public void OnTick()
         {
-            FindTarget();
+            if (IsSquadNear)
+            {
+                FindTarget();
+            }
 
             if (CurrentTarget == null)
             {
