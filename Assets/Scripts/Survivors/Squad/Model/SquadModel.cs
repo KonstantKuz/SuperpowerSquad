@@ -20,7 +20,7 @@ namespace Survivors.Squad.Model
             HealthModel = new SquadHealthModel(this, startingMaxHealth);
         }
 
-        public void AddHealth(IUnitModel unitModel)
+        public void AddUnit(IUnitModel unitModel)
         {
             AddModifier(new AddValueModifier(Parameters.HEALTH, unitModel.HealthModel.MaxHealth.Value));
         }

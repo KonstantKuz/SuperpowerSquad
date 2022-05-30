@@ -74,7 +74,7 @@ namespace Survivors.Squad
         public void AddUnit(Unit unit)
         {
             unit.transform.SetParent(_destination.transform);
-            _model.AddHealth(unit.Model);
+            _model.AddUnit(unit.Model);
             _units.Add(unit);
         }
         

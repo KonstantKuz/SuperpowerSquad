@@ -58,7 +58,5 @@ namespace Survivors.Squad
             var model = new PlayerUnitModel(config);
             unit.Init(model);
         }
-
-      
     }
 }

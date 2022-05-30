@@ -1,12 +1,11 @@
 ﻿using System;
 using JetBrains.Annotations;
-using Survivors.Squad.Component;
 using Survivors.Units.Component.Health;
 using UnityEngine;
 
 namespace Survivors.Units.Player.Damageable
 {
-    public class ChildDamageable : MonoBehaviour, IDamageable
+    public class DamageableChild : MonoBehaviour, IDamageable
     {
         [CanBeNull]
         private IDamageable _parentDamageable;
