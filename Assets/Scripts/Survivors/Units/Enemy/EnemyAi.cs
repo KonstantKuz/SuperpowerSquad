@@ -1,6 +1,7 @@
 ﻿using Feofun.Components;
 using JetBrains.Annotations;
 using Survivors.Extension;
+using Survivors.Location;
 using Survivors.Units.Enemy.Model;
 using Survivors.Units.Player.Attack;
 using Survivors.Units.Target;
@@ -13,9 +14,17 @@ namespace Survivors.Units.Enemy
     [RequireComponent(typeof(NavMeshAgent))]
     public class EnemyAi : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent
     {
+        [SerializeField] private float _targetSelectionDistance = 10f;
+        
         private NavMeshAgent _agent;
         private ITarget _target;
         private ITargetSearcher _targetSearcher;
+
+        [Inject] private World _world;
+
+        private Vector3 SquadPosition => _world.Squad.Destination.transform.position;
+        private float DistanceToSquad =>
+            Vector3.Distance(transform.position, SquadPosition);
 
         public NavMeshAgent NavMeshAgent => _agent;
         
@@ -52,6 +61,12 @@ namespace Survivors.Units.Enemy
 
         public void OnTick()
         {
+            if (DistanceToSquad > _targetSelectionDistance) 
+            {
+                _agent.destination = SquadPosition;
+                return;
+            }
+            
             FindTarget();
 
             if (CurrentTarget == null)
