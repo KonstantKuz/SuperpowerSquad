@@ -9,7 +9,9 @@ namespace Survivors.Camera
     public class CameraFollowBehavior : MonoBehaviour, IInitializable<Squad.Squad>
     {
         [SerializeField] 
-        private float _sizeToDistanceCoeff;
+        private float _initialDistance;
+        [SerializeField] 
+        private float _distanceMultiplier;
 
         [SerializeField] 
         private float _shiftDownCoeff = 1;
@@ -21,12 +23,14 @@ namespace Survivors.Camera
         private float _distanceToObject;
         private IDisposable _disposable;
         private Tweener _animation;
+        private float _initialSquadSize;
 
         public void Init(Squad.Squad owner)
         {
             _disposable?.Dispose();
             _squad = owner;
-            _distanceToObject = GetDistanceToObject();
+            _initialSquadSize = _squad.SquadRadius;
+            _distanceToObject = _initialDistance;
             _disposable = _squad.UnitsCount.Subscribe(it => OnSquadSizeChanged());
         }
 
@@ -52,6 +56,6 @@ namespace Survivors.Camera
             _animation.OnComplete(() => _animation = null);
         }
 
-        private float GetDistanceToObject() => _squad.SquadRadius * _sizeToDistanceCoeff;
+        private float GetDistanceToObject() => _initialDistance + (_squad.SquadRadius - _initialSquadSize) * _distanceMultiplier;
     }
 }

@@ -111,7 +111,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3904fda15694c55b18fbfbf180efa03, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _sizeToDistanceCoeff: 15
+  _initialDistance: 30
+  _distanceMultiplier: 5
+  _shiftDownCoeff: 1
   _cameraSwitchTime: 1
 --- !u!114 &2747964323612514369
 MonoBehaviour:
