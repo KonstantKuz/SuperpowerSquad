@@ -13,7 +13,7 @@ namespace Survivors.Units.Weapon
     {
         private const int MIN_SEGMENTS_COUNT = 2;
         private const int DEGREES_PER_SEGMENT = 3;
-        private const float VERTS_ANGLE_OFFSET = 90f;
+        private const float DIRECTION_CORRECTION_ANGLE = 90f;
         
         [SerializeField] private Material _material;
 
@@ -74,7 +74,7 @@ namespace Survivors.Units.Weapon
 
         private void CalculateVerts(float angle, float radius)
         {
-            var currentAngle = VERTS_ANGLE_OFFSET -angle / 2;
+            var currentAngle = DIRECTION_CORRECTION_ANGLE - angle / 2;
             for (int i = 1; i < _verts.Length; i += 3)
             {
                 _verts[i] = GetVertPositionAtAngle(currentAngle, radius);
