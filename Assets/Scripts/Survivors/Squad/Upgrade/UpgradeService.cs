@@ -59,7 +59,7 @@ namespace Survivors.Squad.Upgrade
             switch (upgradeConfig.Type)
             {
                 case UpgradeType.Unit:
-                    Assert.IsFalse(upgradeConfig.TargetAllUnits);
+                    Assert.IsFalse(upgradeConfig.IsTargetAllUnits);
                     AddUnit(upgradeConfig.TargetId);
                     break;
                 case UpgradeType.Modifier: {
@@ -114,7 +114,7 @@ namespace Survivors.Squad.Upgrade
                 for (int level = 1; level <= upgrade.Value; level++) {
 
                     var levelConfig = upgradeBranch.GetLevel(level);
-                    if (levelConfig.TargetAllUnits || unitId.Equals(levelConfig.TargetId)) {
+                    if (levelConfig.IsTargetAllUnits || unitId.Equals(levelConfig.TargetId)) {
                         yield return new Tuple<string, int>(upgrade.Key, level);
                     }
                 }

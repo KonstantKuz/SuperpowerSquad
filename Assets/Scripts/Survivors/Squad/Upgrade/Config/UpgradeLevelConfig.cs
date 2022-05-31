@@ -13,6 +13,6 @@ namespace Survivors.Squad.Upgrade.Config
         [CanBeNull]
         [DataMember]
         public string TargetId;
-        public bool TargetAllUnits => string.IsNullOrEmpty(TargetId);
+        public bool IsTargetAllUnits => string.IsNullOrEmpty(TargetId);
     }
 }
