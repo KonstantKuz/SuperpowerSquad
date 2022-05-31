@@ -50,8 +50,16 @@ namespace Survivors.Camera
 
         private void OnSquadSizeChanged()
         {
+            var newDistance = GetDistanceToObject();
+            if (Mathf.Abs(_distanceToObject - newDistance) <= Mathf.Epsilon) return;
+            
+            PlayDistanceChangeAnimation(newDistance);
+        }
+
+        private void PlayDistanceChangeAnimation(float newDistance)
+        {
             _animation?.Kill();
-            _animation = DOTween.To(() => _distanceToObject, value => { _distanceToObject = value; }, GetDistanceToObject(),
+            _animation = DOTween.To(() => _distanceToObject, value => { _distanceToObject = value; }, newDistance,
                 _cameraSwitchTime);
             _animation.OnComplete(() => _animation = null);
         }
