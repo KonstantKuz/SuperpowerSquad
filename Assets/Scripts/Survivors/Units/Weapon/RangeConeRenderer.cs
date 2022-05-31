@@ -1,4 +1,5 @@
-﻿using EasyButtons;
+﻿using System;
+using EasyButtons;
 using Survivors.Extension;
 using UnityEngine;
 
@@ -15,8 +16,6 @@ namespace Survivors.Units.Weapon
         private const float VERTS_ANGLE_OFFSET = 90f;
         
         [SerializeField] private Material _material;
-        private float _radius;
-        private float _angle;
 
         private float _segments;
         private float _segmentAngle;
@@ -41,31 +40,23 @@ namespace Survivors.Units.Weapon
         [Button]
         private void CreateTest()
         {
-            Build(10, 130);
+            Build(130, 10);
         }
 
-        public void Build(float radius, float angle)
+        public void Build(float angle, float radius)
         {
-            if (radius == _radius || angle == _angle)
-            {
-                return;
-            }
-            
-            _radius = radius;
-            _angle = angle;
-            
-            CalculateSegments();
+            CalculateSegments(angle);
             PrepareMeshData();
-            CalculateVerts();
+            CalculateVerts(angle, radius);
             CalculateTriangles();
             SetUvs();
             UpdateMesh();
         }
 
-        private void CalculateSegments()
+        private void CalculateSegments(float angle)
         {
-            _segments = Mathf.Max(MIN_SEGMENTS_COUNT, _angle / DEGREES_PER_SEGMENT);
-            _segmentAngle = _angle / _segments;
+            _segments = Mathf.Max(MIN_SEGMENTS_COUNT, angle / DEGREES_PER_SEGMENT);
+            _segmentAngle = angle / _segments;
         }
 
         private void PrepareMeshData()
@@ -81,21 +72,21 @@ namespace Survivors.Units.Weapon
             }
         }
 
-        private void CalculateVerts()
+        private void CalculateVerts(float angle, float radius)
         {
-            var currentAngle = VERTS_ANGLE_OFFSET -_angle / 2;
+            var currentAngle = VERTS_ANGLE_OFFSET -angle / 2;
             for (int i = 1; i < _verts.Length; i += 3)
             {
-                _verts[i] = GetVertPositionAtAngle(currentAngle);
+                _verts[i] = GetVertPositionAtAngle(currentAngle, radius);
                 currentAngle += _segmentAngle;
-                _verts[i + 1] = GetVertPositionAtAngle(currentAngle);
+                _verts[i + 1] = GetVertPositionAtAngle(currentAngle, radius);
             }
         }
 
-        private Vector3 GetVertPositionAtAngle(float angle)
+        private Vector3 GetVertPositionAtAngle(float angle, float radius)
         {
-            var x = Mathf.Cos(Mathf.Deg2Rad * angle) * _radius;
-            var z = Mathf.Sin(Mathf.Deg2Rad * angle) * _radius;
+            var x = Mathf.Cos(Mathf.Deg2Rad * angle) * radius;
+            var z = Mathf.Sin(Mathf.Deg2Rad * angle) * radius;
             return new Vector3(x, 0, z);
         }
 

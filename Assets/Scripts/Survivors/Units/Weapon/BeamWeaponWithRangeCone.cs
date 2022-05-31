@@ -12,7 +12,7 @@ namespace Survivors.Units.Weapon
         public override void Fire(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             base.Fire(target, projectileParams, hitCallback);
-            _rangeConeRenderer.Build(projectileParams.AttackDistance, projectileParams.DamageAngle);
+            _rangeConeRenderer.Build(projectileParams.DamageAngle, projectileParams.AttackDistance);
         }
     }
 }
