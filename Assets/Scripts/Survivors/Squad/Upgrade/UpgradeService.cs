@@ -48,7 +48,7 @@ namespace Survivors.Squad.Upgrade
             state.IncreaseLevel(upgradeBranchId);
             SaveState(state);
             ApplyUpgrade(upgradeBranchId, SquadUpgradeState.GetLevel(upgradeBranchId));
-            Debug.Log($"Upgrade:={upgradeBranchId} applied");
+            Debug.Log($"Upgrade:={upgradeBranchId} applied, level:= {state.GetLevel(upgradeBranchId)}");
         }
 
         private void ApplyUpgrade(string upgradeBranchId, int level)
@@ -62,9 +62,10 @@ namespace Survivors.Squad.Upgrade
                     Assert.IsFalse(upgradeConfig.TargetAllUnits);
                     AddUnit(upgradeConfig.TargetId);
                     break;
-                case UpgradeType.Modifier:
+                case UpgradeType.Modifier: {
                     AddModifier(upgradeConfig);
                     break;
+                }
                 default:
                     throw new ArgumentOutOfRangeException();
             }
