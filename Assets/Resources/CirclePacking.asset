@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54af9ec30cb84f1a9097430a0e5aafd3, type: 3}
   m_Name: CirclePacking
   m_EditorClassIdentifier: 
-  Packings:
+  _positions:
   - X: 0
     Y: 0
   - X: -0.5
