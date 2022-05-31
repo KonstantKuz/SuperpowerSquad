@@ -1,5 +1,5 @@
 ﻿using System;
-using Survivors.Units.Target;
+using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
 
 namespace Survivors.Units.Weapon.Projectiles
@@ -7,10 +7,10 @@ namespace Survivors.Units.Weapon.Projectiles
     public class CircularSaw : MonoBehaviour
     {
         private UnitType _targetType;
-        private ProjectileParams _projectileParams;
+        private IProjectileParams _projectileParams;
         private Action<GameObject> _hitCallback;
         
-        public void Init(UnitType targetType, ProjectileParams projectileParams, Action<GameObject> hitCallBack)
+        public void Init(UnitType targetType, IProjectileParams projectileParams, Action<GameObject> hitCallBack)
         {
             _targetType = targetType;
             _projectileParams = projectileParams;
@@ -23,7 +23,7 @@ namespace Survivors.Units.Weapon.Projectiles
                 Quaternion.AngleAxis(angle, transform.parent.up) * Vector3.forward * _projectileParams.AttackDistance;
         }
 
-        public void UpdateParams(ProjectileParams projectileParams)
+        public void UpdateParams(IProjectileParams projectileParams)
         {
             _projectileParams = projectileParams;
         }

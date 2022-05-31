@@ -1,13 +1,12 @@
 using System;
-using System.Collections.Generic;
 using Feofun.Components;
 using Survivors.Extension;
-using Survivors.Location.Service;
+using Survivors.Location;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Player.Model;
-using Survivors.Units.Target;
 using Survivors.Units.Weapon;
 using Survivors.Units.Weapon.Projectiles;
+using Survivors.Units.Weapon.Projectiles.Params;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -18,6 +17,9 @@ namespace Survivors.Units.Player.Attack
     {
         [SerializeField] private CircularSawWeapon _circularSawWeapon;
 
+        [Inject]
+        private World _world;
+        
         private Unit _owner;
         private Squad.Squad _squad;
         private PlayerAttackModel _playerAttackModel;
@@ -25,10 +27,7 @@ namespace Survivors.Units.Player.Attack
 
         public void Init(IUnit unit)
         {
-            if (_disposable != null)
-            {
-                Dispose();
-            }
+            Dispose();
             _disposable = new CompositeDisposable();
             
             _owner = unit as Unit;
@@ -38,7 +37,7 @@ namespace Survivors.Units.Player.Attack
             }
 
             _playerAttackModel = attackModel;
-            _squad = _owner.gameObject.RequireComponentInParent<Squad.Squad>();
+            _squad = _world.Squad;
             
             var projectileParams = GetSawParamsForSquad();
             _circularSawWeapon.Init(_squad.Destination.transform, projectileParams);
@@ -48,7 +47,7 @@ namespace Survivors.Units.Player.Attack
 
         private void CreateSaws(int count)
         {
-            _circularSawWeapon.CleanUp();
+            _circularSawWeapon.CleanUpSaws();
             for (int i = 0; i < count; i++)
             {
                 _circularSawWeapon.AddSaw(_owner.SelfTarget.UnitType.GetTargetUnitType(), DoDamage);
@@ -61,10 +60,10 @@ namespace Survivors.Units.Player.Attack
             _circularSawWeapon.UpdateParams(projectileParams);
         }
 
-        private ProjectileParams GetSawParamsForSquad()
+        private ModifiableProjectileParams GetSawParamsForSquad()
         {
-            var projectileParams = _playerAttackModel.CreateProjectileParams();
-            projectileParams.AttackDistance += _squad.SquadRadius;
+            var projectileParams = _playerAttackModel.CreateModifiableProjectileParams();
+            projectileParams.AdditionalAttackDistance += _squad.SquadRadius;
             return projectileParams;
         }
 

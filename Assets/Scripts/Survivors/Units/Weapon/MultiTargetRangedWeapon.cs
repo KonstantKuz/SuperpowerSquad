@@ -4,7 +4,7 @@ using System.Linq;
 using Feofun.Extension;
 using Survivors.Units.Player.Attack;
 using Survivors.Units.Target;
-using Survivors.Units.Weapon.Projectiles;
+using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -14,7 +14,7 @@ namespace Survivors.Units.Weapon
     {
         [SerializeField] private NearestTargetSearcher _targetSearcher;
         
-        public override void Fire(ITarget firstTarget, ProjectileParams projectileParams, Action<GameObject> hitCallback)
+        public override void Fire(ITarget firstTarget, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             Assert.IsNotNull(projectileParams);
             var targets = FindAdditionalTargets(firstTarget, projectileParams.Count, projectileParams.DamageRadius);

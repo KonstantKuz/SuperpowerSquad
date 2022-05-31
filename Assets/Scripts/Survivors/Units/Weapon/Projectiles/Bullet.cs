@@ -1,6 +1,7 @@
 ﻿using System;
 using Survivors.Location.Service;
 using Survivors.Units.Target;
+using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
 using Zenject;
 
@@ -19,7 +20,7 @@ namespace Survivors.Units.Weapon.Projectiles
         
         private float _timeLeft;
 
-        public override void Launch(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback)
+        public override void Launch(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             base.Launch(target, projectileParams, hitCallback);
             SetupBullet();

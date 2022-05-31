@@ -40,7 +40,8 @@ namespace Survivors.Squad
         [Inject] private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
 
         public event Action OnDeath;
-        private bool Initialized => _model != null;
+        
+        public bool IsAlive { get; set; }
         public SquadModel Model => _model;
         public SquadDestination Destination => _destination;
         public IReadOnlyReactiveProperty<int> UnitsCount => _units.ObserveCountChanged().ToReactiveProperty();
@@ -62,10 +63,12 @@ namespace Survivors.Squad
             foreach (var component in GetComponentsInChildren<IInitializable<Squad>>()) {
                 component.Init(this);
             }
+            IsAlive = true;
         }
 
         private void Kill()
         {
+            IsAlive = false;
             _damageable.OnDeath -= Kill;
             _units.ForEach(it => it.Kill());
             OnDeath?.Invoke();
@@ -139,7 +142,7 @@ namespace Survivors.Squad
 
         private void Update()
         {
-            if (!Initialized) {
+            if (!IsAlive) {
                 return;
             }
             if (IsMoving) {
