@@ -13,8 +13,7 @@ namespace Survivors.Units.Enemy
     [RequireComponent(typeof(NavMeshAgent))]
     public class EnemyAi : MonoBehaviour, IUnitInitializable, IUpdatableUnitComponent
     {
-        [SerializeField] private float _squadAdditionalRadius = 5f;
-        [SerializeField] private float _targetResetDistance = 2f;
+        [SerializeField] private float _targetSelectionDistance = 10f;
         
         private NavMeshAgent _agent;
         private ITarget _target;
@@ -22,12 +21,9 @@ namespace Survivors.Units.Enemy
 
         [Inject] private World _world;
 
+        private Vector3 SquadPosition => _world.Squad.Destination.transform.position;
         private float DistanceToSquad =>
-            Vector3.Distance(transform.position, _world.Squad.Destination.transform.position);
-        private bool IsSquadNearby => DistanceToSquad <= _world.Squad.SquadRadius + _squadAdditionalRadius;
-        private float DistanceToTarget => CurrentTarget == null ?
-            Mathf.Infinity : Vector3.Distance(transform.position, CurrentTarget.Root.position);
-        private bool IsTargetNearby => DistanceToTarget <= _targetResetDistance;
+            Vector3.Distance(transform.position, SquadPosition);
 
         public NavMeshAgent NavMeshAgent => _agent;
         
@@ -64,10 +60,13 @@ namespace Survivors.Units.Enemy
 
         public void OnTick()
         {
-            if (IsRequiredAnyTarget() || IsRequiredNearestTarget())
+            if (DistanceToSquad > _targetSelectionDistance) 
             {
-                FindTarget();
+                _agent.destination = SquadPosition;
+                return;
             }
+            
+            FindTarget();
 
             if (CurrentTarget == null)
             {
@@ -79,16 +78,6 @@ namespace Survivors.Units.Enemy
             _agent.isStopped = false;
         }
 
-        private bool IsRequiredAnyTarget()
-        {
-            return !IsSquadNearby && !IsTargetNearby;
-        }
-
-        private bool IsRequiredNearestTarget()
-        {
-            return IsSquadNearby && !IsTargetNearby;
-        }
-        
         private void FindTarget()
         {
             CurrentTarget = _targetSearcher.Find();
