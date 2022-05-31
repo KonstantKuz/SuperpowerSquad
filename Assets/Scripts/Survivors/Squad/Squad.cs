@@ -45,7 +45,7 @@ namespace Survivors.Squad
         public SquadModel Model => _model;
         public SquadDestination Destination => _destination;
         public IReadOnlyReactiveProperty<int> UnitsCount => _unitCount ??= _units.ObserveCountChanged().ToReactiveProperty();
-        public float SquadRadius => _formation.GetMaxSize(_unitSize, _units.Count) / 2;
+        public float SquadRadius { get; private set; }
         public bool IsMoving => _joystick.Direction.sqrMagnitude > 0;
         public Vector3 MoveDirection => new Vector3(_joystick.Horizontal, 0, _joystick.Vertical);
         
@@ -78,6 +78,8 @@ namespace Survivors.Squad
             unit.transform.SetParent(_destination.transform);
             _model.AddUnit(unit.Model);
             _units.Add(unit);
+            SetUnitPositions();
+            UpdateSquadRadius();
         }
         
         private void AddSquadModifier(IModifier modifier)
@@ -167,6 +169,18 @@ namespace Survivors.Squad
         {
             _units.Clear();
             _model = null;
+        }
+
+        private void UpdateSquadRadius()
+        {
+            var radius = _unitSize;
+            var center = _destination.transform.position;
+            foreach (var unit in _units)
+            {
+                radius = Mathf.Max(radius, Vector3.Distance(unit.transform.position, center) + _unitSize);
+            }
+
+            SquadRadius = radius;
         }
     }
 }
