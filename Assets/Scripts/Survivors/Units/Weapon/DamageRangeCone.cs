@@ -26,21 +26,21 @@ namespace Survivors.Units.Weapon
 
         private void Awake()
         {
-            var MeshF = gameObject.RequireComponent<MeshFilter>();
-            var MeshR = gameObject.RequireComponent<MeshRenderer>();
+            var meshFilter = gameObject.RequireComponent<MeshFilter>();
+            var meshRenderer = gameObject.RequireComponent<MeshRenderer>();
 
-            MeshR.material = _material;
-            _mesh = MeshF.mesh;
+            meshRenderer.material = _material;
+            _mesh = meshFilter.mesh;
         }
 
         // test creation
         [Button]
         private void CreateTest()
         {
-            Create(10, 30);
+            Build(10, 30);
         }
         
-        public void Create(float radius, float angle)
+        public void Build(float radius, float angle)
         {
             if (radius == _radius || angle == _angle)
             {
