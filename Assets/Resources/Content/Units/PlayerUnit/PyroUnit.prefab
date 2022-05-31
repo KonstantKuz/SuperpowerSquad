@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _barrel: {fileID: 1312274636268225353}
   _beam: {fileID: 5497661428694648794, guid: 26bea9183413de14b81ea7028f0fde3b, type: 3}
-  _damageRangeCone: {fileID: 4361495390347427018}
+  _rangeConeRenderer: {fileID: 4361495390347427018}
 --- !u!1001 &2155014422790022114
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -232,7 +232,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4463038415581843846, guid: b4bc7ae88aaf122449600934b6eebc96, type: 3}
       propertyPath: m_Name
-      value: DamageRangeCone
+      value: RangeConeRenderer
       objectReference: {fileID: 0}
     - target: {fileID: 9091741608788274001, guid: b4bc7ae88aaf122449600934b6eebc96, type: 3}
       propertyPath: m_RootOrder

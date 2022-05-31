@@ -8,8 +8,12 @@ namespace Survivors.Units.Weapon
 
     [RequireComponent(typeof(MeshFilter))]
     [RequireComponent(typeof(MeshRenderer))]
-    public class DamageRangeCone : MonoBehaviour
+    public class RangeConeRenderer : MonoBehaviour
     {
+        private const int MIN_SEGMENTS_COUNT = 2;
+        private const int DEGREES_PER_SEGMENT = 3;
+        private const float VERTS_ANGLE_OFFSET = 90f;
+        
         [SerializeField] private Material _material;
         private float _radius;
         private float _angle;
@@ -37,9 +41,9 @@ namespace Survivors.Units.Weapon
         [Button]
         private void CreateTest()
         {
-            Build(10, 30);
+            Build(10, 130);
         }
-        
+
         public void Build(float radius, float angle)
         {
             if (radius == _radius || angle == _angle)
@@ -50,65 +54,72 @@ namespace Survivors.Units.Weapon
             _radius = radius;
             _angle = angle;
             
-            // Grab the Mesh off the gameObject
-            //myMesh = gameObject.GetComponent<MeshFilter>().mesh;
+            CalculateSegments();
+            PrepareMeshData();
+            CalculateVerts();
+            CalculateTriangles();
+            SetUvs();
+            UpdateMesh();
+        }
 
-            //Clear the mesh
-            _mesh.Clear();
+        private void CalculateSegments()
+        {
+            _segments = Mathf.Max(MIN_SEGMENTS_COUNT, _angle / DEGREES_PER_SEGMENT);
+            _segmentAngle = _angle / _segments;
+        }
 
-            // Calculate actual pythagorean angle
-            _actualAngle = 90.0f - _angle;
-
-            _segments = Mathf.Max(2, _angle / 2);
-            // Segment Angle
-            _segmentAngle = _angle * 2 / _segments;
-
-            // Initialise the array lengths
+        private void PrepareMeshData()
+        {
             _verts = new Vector3[(int) _segments * 3];
             _normals = new Vector3[(int) _segments * 3];
             _triangles = new int[(int) _segments * 3];
             _uvs = new Vector2[(int) _segments * 3];
-
-            // Initialise the Array to origin Points
             for (int i = 0; i < _verts.Length; i++)
             {
                 _verts[i] = new Vector3(0, 0, 0);
                 _normals[i] = Vector3.up;
             }
+        }
 
-            // Create a dummy angle
-            float a = _actualAngle;
-
-            // Create the Vertices
+        private void CalculateVerts()
+        {
+            var currentAngle = VERTS_ANGLE_OFFSET -_angle / 2;
             for (int i = 1; i < _verts.Length; i += 3)
             {
-                _verts[i] = new Vector3(Mathf.Cos(Mathf.Deg2Rad * a) * _radius, // x
-                    0, // y
-                    Mathf.Sin(Mathf.Deg2Rad * a) * _radius); // z
-
-                a += _segmentAngle;
-                print(a);
-
-                _verts[i + 1] = new Vector3(Mathf.Cos(Mathf.Deg2Rad * a) * _radius, // x
-                    0, // y
-                    Mathf.Sin(Mathf.Deg2Rad * a) * _radius); // z          
+                _verts[i] = GetVertPositionAtAngle(currentAngle);
+                currentAngle += _segmentAngle;
+                _verts[i + 1] = GetVertPositionAtAngle(currentAngle);
             }
+        }
 
-            // Create Triangle
+        private Vector3 GetVertPositionAtAngle(float angle)
+        {
+            var x = Mathf.Cos(Mathf.Deg2Rad * angle) * _radius;
+            var z = Mathf.Sin(Mathf.Deg2Rad * angle) * _radius;
+            return new Vector3(x, 0, z);
+        }
+
+        private void CalculateTriangles()
+        {
             for (int i = 0; i < _triangles.Length; i += 3)
             {
                 _triangles[i] = 0;
                 _triangles[i + 1] = i + 2;
                 _triangles[i + 2] = i + 1;
             }
+        }
 
-            // Generate planar UV Coordinates
+        private void SetUvs()
+        {
             for (int i = 0; i < _uvs.Length; i++)
             {
                 _uvs[i] = new Vector2(_verts[i].x, _verts[i].z);
             }
+        }
 
-            // Put all these back on the mesh
+        private void UpdateMesh()
+        {
+            _mesh.Clear();
             _mesh.vertices = _verts;
             _mesh.normals = _normals;
             _mesh.triangles = _triangles;

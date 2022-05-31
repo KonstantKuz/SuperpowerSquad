@@ -7,12 +7,12 @@ namespace Survivors.Units.Weapon
 {
     public class BeamWeaponWithRangeCone : BeamWeapon
     {
-        [SerializeField] private DamageRangeCone _damageRangeCone;
+        [SerializeField] private RangeConeRenderer _rangeConeRenderer;
 
         public override void Fire(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             base.Fire(target, projectileParams, hitCallback);
-            _damageRangeCone.Build(projectileParams.AttackDistance, projectileParams.DamageAngle);
+            _rangeConeRenderer.Build(projectileParams.AttackDistance, projectileParams.DamageAngle);
         }
     }
 }
