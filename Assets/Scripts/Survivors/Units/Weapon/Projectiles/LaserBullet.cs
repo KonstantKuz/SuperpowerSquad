@@ -18,7 +18,7 @@ namespace Survivors.Units.Weapon.Projectiles
 
         private void SetWidth(float width)
         {
-            if (width == 0) {
+            if (Mathf.Abs(width) < Mathf.Epsilon) {
                 return;
             }
             _lineRenderer.startWidth = width;      
