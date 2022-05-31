@@ -27,7 +27,7 @@ namespace Survivors.Squad
     {
         [SerializeField] private float _unitSize;
 
-        private readonly ISquadFormation _formation = new CircleFormation();
+        private ISquadFormation _formation;
 
         private readonly IReactiveCollection<Unit> _units = new List<Unit>().ToReactiveCollection();
         private IDamageable _damageable;
@@ -51,6 +51,7 @@ namespace Survivors.Squad
 
         public void Awake()
         {
+            _formation = new FilledCircleFormation();
             Destination = gameObject.RequireComponentInChildren<SquadDestination>();
             _damageable = gameObject.RequireComponent<IDamageable>();
             UpdateFormationAndRadius();
@@ -165,11 +166,6 @@ namespace Survivors.Squad
         private void UpdateUnitsAnimations()
         {
             _units.ForEach(it => { it.MovementController.UpdateAnimation(MoveDirection); });
-        }
-
-        private Vector3 GetSpawnPosition()
-        {
-            return Destination.transform.position + _formation.GetSpawnOffset(_unitSize, _units.Count);
         }
 
         private void UpdateSquadRadius()
