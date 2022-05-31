@@ -1,10 +1,20 @@
-﻿using Survivors.Units.Component.Health;
+﻿using System;
+using Survivors.Units.Component.Health;
+using Survivors.Units.Target;
 using UnityEngine;
 
 namespace Survivors.Units.Weapon.Projectiles
 {
     public class FireBeam : Beam
     {
+        [SerializeField] private DamageRangeCone _damageRangeCone;
+
+        public override void Launch(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback, Transform barrel)
+        {
+            base.Launch(target, projectileParams, hitCallback, barrel);
+            _damageRangeCone.Create(projectileParams.AttackDistance, projectileParams.DamageAngle);
+        }
+
         protected override void TryHit(GameObject target)
         {
             TryHitTargetsInCone();

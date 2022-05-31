@@ -23,7 +23,7 @@ namespace Survivors.Units.Weapon.Projectiles
         
         private float HitTime => _maxLifeTime * _ratioHitTime;
 
-        public void Launch(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback, Transform barrel)
+        public virtual void Launch(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback, Transform barrel)
         {
             Assert.IsNotNull(target);
             ProjectileParams = projectileParams;

@@ -1,12 +1,14 @@
-﻿using Survivors.Extension;
+﻿using EasyButtons;
+using Survivors.Extension;
 using UnityEngine;
 
 namespace Survivors.Units.Weapon
 {
-// https://forum.unity.com/threads/how-to-make-a-mesh-for-fov.152317/ 
+    // source https://forum.unity.com/threads/how-to-make-a-mesh-for-fov.152317/ 
+
     [RequireComponent(typeof(MeshFilter))]
     [RequireComponent(typeof(MeshRenderer))]
-    public class FovMesh : MonoBehaviour
+    public class DamageRangeCone : MonoBehaviour
     {
         [SerializeField] private Material _material;
         private float _radius;
@@ -22,20 +24,32 @@ namespace Survivors.Units.Weapon
         private int[] _triangles;
         private Vector2[] _uvs;
 
-        void Start()
+        private void Awake()
         {
             var MeshF = gameObject.RequireComponent<MeshFilter>();
             var MeshR = gameObject.RequireComponent<MeshRenderer>();
 
             MeshR.material = _material;
             _mesh = MeshF.mesh;
-
-            //BUILD THE MESH
-            buildMesh();
         }
 
-        void buildMesh()
+        // test creation
+        [Button]
+        private void CreateTest()
         {
+            Create(10, 30);
+        }
+        
+        public void Create(float radius, float angle)
+        {
+            if (radius == _radius || angle == _angle)
+            {
+                return;
+            }
+            
+            _radius = radius;
+            _angle = angle;
+            
             // Grab the Mesh off the gameObject
             //myMesh = gameObject.GetComponent<MeshFilter>().mesh;
 
