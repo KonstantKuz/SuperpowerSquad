@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using Feofun.Components;
+using JetBrains.Annotations;
 using Survivors.Extension;
 using Survivors.Location;
 using Survivors.Units.Enemy.Model;
@@ -11,7 +12,7 @@ using Zenject;
 namespace Survivors.Units.Enemy
 {
     [RequireComponent(typeof(NavMeshAgent))]
-    public class EnemyAi : MonoBehaviour, IUnitInitializable, IUpdatableUnitComponent
+    public class EnemyAi : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent
     {
         [SerializeField] private float _targetSelectionDistance = 10f;
         

@@ -1,5 +1,4 @@
 using Feofun.Modifiers;
-using Survivors.Units.Enemy.Model;
 
 namespace Survivors.Units.Model
 {

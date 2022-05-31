@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Feofun.Components;
 using JetBrains.Annotations;
 using ModestTree;
 using Survivors.Extension;
@@ -13,7 +14,7 @@ namespace Survivors.Units.Player.Attack
 {
     [RequireComponent(typeof(ITargetSearcher))]
     [RequireComponent(typeof(MovementController))]
-    public class PlayerAttack : MonoBehaviour, IUnitInitializable, IUpdatableUnitComponent
+    public class PlayerAttack : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent
     {
         private static readonly int AttackSpeedMultiplierHash = Animator.StringToHash("AttackSpeedMultiplier");
         private static readonly int AttackHash = Animator.StringToHash("Attack");

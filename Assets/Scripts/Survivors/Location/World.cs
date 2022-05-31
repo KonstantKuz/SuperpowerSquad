@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Feofun.App;
+using JetBrains.Annotations;
 using SuperMaxim.Core.Extensions;
 using Survivors.Session;
 using UnityEngine;
@@ -12,13 +13,13 @@ namespace Survivors.Location
         [SerializeField]
         private Transform _ground;
         [SerializeField]
-        private GameObject _spawnContainer;
-        [SerializeField]
-        private Squad.Squad _squad;
+        private GameObject _spawn;
 
         public Transform Ground => _ground;
-        public GameObject SpawnContainer => _spawnContainer;
-        public Squad.Squad Squad => _squad;
+        public GameObject Spawn => _spawn;
+    
+        [CanBeNull]
+        public Squad.Squad Squad { get; set; }
 
         public Vector3 GetGroundIntersection(Ray withRay)
         {
@@ -45,6 +46,7 @@ namespace Survivors.Location
         public void CleanUp()
         {
             GetAllOf<IWorldScope>().ForEach(it => it.OnWorldCleanUp());
+            Squad = null;
         }
 
         private IEnumerable<T> GetAllOf<T>()

@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 using DG.Tweening;
+using Feofun.Components;
 using Survivors.Loot.Service;
-using Survivors.Session;
-using Survivors.Squad;
+using Survivors.Units;
 using UniRx;
 using UnityEngine;
 using Zenject;
 
 namespace Survivors.Loot
 {
-    public class LootCollector : MonoBehaviour, IWorldScope, ISquadInitializable
+    public class LootCollector : MonoBehaviour, IInitializable<Squad.Squad>
     {
         [SerializeField]
         private float _collectTime;
@@ -22,13 +22,10 @@ namespace Survivors.Loot
         private List<Tween> _movingLoots = new List<Tween>();
         private CompositeDisposable _disposable;
         
-        public void OnWorldSetup()
+        public void Init(Squad.Squad squad)
         {
             _disposable?.Dispose();
             _disposable = new CompositeDisposable();
-        }
-        public void Init(Squad.Squad squad)
-        {
             squad.Model.CollectRadius.Subscribe(radius => _collider.radius = radius).AddTo(_disposable);
         }
 
@@ -50,8 +47,7 @@ namespace Survivors.Loot
                 Destroy(loot.gameObject);
             };
         }
-        
-        public void OnWorldCleanUp()
+        public void OnDestroy()
         {
             _movingLoots.ForEach(it => it.Kill());
             _disposable?.Dispose();
