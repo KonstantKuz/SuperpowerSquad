@@ -100,6 +100,7 @@ namespace Survivors.Squad
                     AddUnitModifier(modifier, unitId);
                     break;
                 case ModifierTarget.Squad:
+                    Assert.IsNull(unitId);
                     AddSquadModifier(modifier);
                     break;
                 default:
