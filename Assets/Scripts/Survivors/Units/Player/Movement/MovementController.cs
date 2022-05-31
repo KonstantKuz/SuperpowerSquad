@@ -44,6 +44,7 @@ namespace Survivors.Units.Player.Movement
         private void RotateTo(Vector3 targetPos)
         {
             var lookAtDirection = (targetPos - transform.position).XZ().normalized;
+            if (lookAtDirection == Vector3.zero) { return; }
             var lookAt = Quaternion.LookRotation(lookAtDirection, transform.up);
             transform.rotation = Quaternion.Lerp(transform.rotation, lookAt, Time.deltaTime * _rotationSpeed);
         }
