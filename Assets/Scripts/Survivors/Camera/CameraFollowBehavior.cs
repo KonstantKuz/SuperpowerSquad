@@ -12,6 +12,9 @@ namespace Survivors.Camera
         private float _sizeToDistanceCoeff;
 
         [SerializeField] 
+        private float _shiftDownCoeff = 1;
+
+        [SerializeField] 
         private float _cameraSwitchTime;
         
         private Squad.Squad _squad;
@@ -30,7 +33,8 @@ namespace Survivors.Camera
         private void Update()
         {
             var cameraTransform = UnityEngine.Camera.main.transform;
-            cameraTransform.position = transform.position - _distanceToObject * cameraTransform.forward;
+            var focusPos = transform.position - _shiftDownCoeff * _squad.SquadRadius * Vector3.forward;
+            cameraTransform.position = focusPos - _distanceToObject * cameraTransform.forward;
         }
 
         private void OnDestroy()
