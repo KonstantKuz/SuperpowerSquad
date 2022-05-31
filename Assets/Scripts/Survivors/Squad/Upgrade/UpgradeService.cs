@@ -14,6 +14,7 @@ using Survivors.Squad.UpgradeSelection;
 using Survivors.Units;
 using Survivors.Units.Service;
 using UnityEngine;
+using UnityEngine.Assertions;
 using Zenject;
 
 namespace Survivors.Squad.Upgrade
@@ -58,21 +59,22 @@ namespace Survivors.Squad.Upgrade
             switch (upgradeConfig.Type)
             {
                 case UpgradeType.Unit:
-                    AddUnit(upgradeBranch.BranchUnitName);
+                    Assert.IsFalse(upgradeConfig.TargetAllUnits);
+                    AddUnit(upgradeConfig.TargetId);
                     break;
                 case UpgradeType.Modifier:
-                    AddModifier(upgradeConfig, upgradeBranch.BranchUnitName);
+                    AddModifier(upgradeConfig);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
         }
 
-        private void AddModifier(UpgradeLevelConfig upgradeLevelConfig, [CanBeNull] string unitName)
+        private void AddModifier(UpgradeLevelConfig upgradeLevelConfig)
         {
             var modifierConfig = _modifierConfigs.Get(upgradeLevelConfig.ModifierId);
             var modifier = _modifierFactory.Create(modifierConfig.ModifierConfig);
-            _world.Squad.AddModifier(modifier, modifierConfig.Target, unitName);
+            _world.Squad.AddModifier(modifier, modifierConfig.Target, upgradeLevelConfig.TargetId);
         }
 
         private void AddUnit(string unitId)
@@ -83,9 +85,10 @@ namespace Survivors.Squad.Upgrade
 
         private void AddExistingModifiers(Unit newUnit)
         {
+            var unitId = newUnit.Model.Id;
             var existingUpgrades = new List<Tuple<string, int>>();
-            existingUpgrades.AddRange(GetUnitUpgrades(newUnit.Model.Id));
-            existingUpgrades.AddRange(GetAbilitiesUpgrades());
+            existingUpgrades.AddRange(GetUnitUpgrades(unitId));
+            existingUpgrades.AddRange(GetAbilitiesUpgrades(unitId));
             
             foreach (var (upgradeId, level) in existingUpgrades)
             {
@@ -100,15 +103,19 @@ namespace Survivors.Squad.Upgrade
             }
         }
 
-        private IEnumerable<Tuple<string, int>> GetAbilitiesUpgrades()
+        private IEnumerable<Tuple<string, int>> GetAbilitiesUpgrades(string unitId)
         {
             foreach (var upgrade in SquadUpgradeState.Upgrades)
             {
                 var upgradeBranch = _config.GetUpgradeBranch(upgrade.Key);
                 if (upgradeBranch.BranchType == UpgradeBranchType.Unit) continue;
-                for (int level = 1; level <= upgrade.Value; level++)
-                {
-                    yield return new Tuple<string, int>(upgrade.Key, level);
+
+                for (int level = 1; level <= upgrade.Value; level++) {
+
+                    var levelConfig = upgradeBranch.GetLevel(level);
+                    if (levelConfig.TargetAllUnits || unitId.Equals(levelConfig.TargetId)) {
+                        yield return new Tuple<string, int>(upgrade.Key, level);
+                    }
                 }
             }
         }
@@ -118,6 +125,7 @@ namespace Survivors.Squad.Upgrade
             var unitLevel = SquadUpgradeState.GetLevel(unitId);
             for (int level = 1; level < unitLevel; level++)
             {
+
                 yield return new Tuple<string, int>(unitId, level);
             }
         }
