@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Survivors.Squad
+namespace Survivors.Squad.Component
 {
     public class SquadDestination : MonoBehaviour
     {

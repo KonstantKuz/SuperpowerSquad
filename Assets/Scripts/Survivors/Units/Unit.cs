@@ -1,6 +1,7 @@
 ﻿using System;
 using Survivors.Extension;
 using EasyButtons;
+using Feofun.Components;
 using Feofun.Modifiers;
 using SuperMaxim.Core.Extensions;
 using Survivors.Location.Model;
@@ -19,7 +20,7 @@ namespace Survivors.Units
         [Inject]
         private UnitService _unitService;
 
-        private IUpdatableUnitComponent[] _updatables;
+        private IUpdatableComponent[] _updatables;
         private IDamageable _damageable;
         private IUnitDeath _death;
         private ITarget _selfTarget;
@@ -38,7 +39,7 @@ namespace Survivors.Units
         {
             Model = model;
 
-            _updatables = GetComponentsInChildren<IUpdatableUnitComponent>();
+            _updatables = GetComponentsInChildren<IUpdatableComponent>();
             _damageable = gameObject.RequireComponent<IDamageable>();
             _death = gameObject.RequireComponent<IUnitDeath>();
             _selfTarget = gameObject.RequireComponent<ITarget>();
@@ -48,7 +49,7 @@ namespace Survivors.Units
             _unitService.Add(this);
             IsAlive = true;
             
-            foreach (var component in GetComponentsInChildren<IUnitInitializable>()) {
+            foreach (var component in GetComponentsInChildren<IInitializable<IUnit>>()) {
                 component.Init(this);
             }
         }

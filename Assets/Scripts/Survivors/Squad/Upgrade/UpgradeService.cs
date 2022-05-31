@@ -68,7 +68,7 @@ namespace Survivors.Squad.Upgrade
             }
         }
 
-        private void AddModifier(UpgradeLevelConfig upgradeLevelConfig, [CanBeNull]string unitName)
+        private void AddModifier(UpgradeLevelConfig upgradeLevelConfig, [CanBeNull] string unitName)
         {
             var modifierConfig = _modifierConfigs.Get(upgradeLevelConfig.ModifierId);
             var modifier = _modifierFactory.Create(modifierConfig.ModifierConfig);

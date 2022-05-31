@@ -1,4 +1,5 @@
-﻿using Survivors.Extension;
+﻿using Feofun.Components;
+using Survivors.Extension;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Enemy.Model;
 using Survivors.Units.Weapon;
@@ -7,7 +8,7 @@ using UnityEngine;
 namespace Survivors.Units.Enemy
 {
     [RequireComponent(typeof(EnemyAi))]
-    public class EnemyAttack : MonoBehaviour, IUnitInitializable, IUpdatableUnitComponent
+    public class EnemyAttack : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent
     {
         private EnemyAi _enemyAi;
         private BaseWeapon _weapon;

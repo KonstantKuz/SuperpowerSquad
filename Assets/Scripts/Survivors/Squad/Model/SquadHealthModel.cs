@@ -4,17 +4,18 @@ using Survivors.Modifiers;
 using Survivors.Units.Model;
 using UniRx;
 
-namespace Survivors.Units.Player.Model
+namespace Survivors.Squad.Model
 {
-    public class PlayerHealthModel : IHealthModel
+    public class SquadHealthModel : IHealthModel
     {
         private readonly FloatModifiableParameter _maxHealth;
 
-        public PlayerHealthModel(float maxHealth, IModifiableParameterOwner parameterOwner)
+        public SquadHealthModel(IModifiableParameterOwner parameterOwner, float startingMaxHealth)
         {
-            StartingMaxHealth = maxHealth;
-            _maxHealth = new FloatModifiableParameter(Parameters.HEALTH, maxHealth, parameterOwner);
+            StartingMaxHealth = startingMaxHealth;
+            _maxHealth = new FloatModifiableParameter(Parameters.HEALTH, 0, parameterOwner);
         }
+
         public float StartingMaxHealth { get; }
         public IReadOnlyReactiveProperty<float> MaxHealth => _maxHealth.ReactiveValue;
     }
