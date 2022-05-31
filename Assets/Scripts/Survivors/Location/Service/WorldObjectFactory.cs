@@ -49,7 +49,7 @@ namespace Survivors.Location.Service
 
         public GameObject CreateObject(GameObject prefab, [CanBeNull] Transform container = null)
         {
-            var parentContainer = container == null ? _world.SpawnContainer.transform : container.transform;
+            var parentContainer = container == null ? _world.Spawn.transform : container.transform;
             var createdGameObject = _container.InstantiatePrefab(prefab, parentContainer);
             _createdObjects.Add(createdGameObject);
             createdGameObject.OnDestroyAsObservable().Subscribe((o) => OnDestroyObject(createdGameObject)).AddTo(_disposable);

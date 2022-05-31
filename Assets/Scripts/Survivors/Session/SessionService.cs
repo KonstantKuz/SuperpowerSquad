@@ -3,8 +3,7 @@ using Survivors.EnemySpawn;
 using Survivors.EnemySpawn.Config;
 using Survivors.Location;
 using Survivors.Session.Messages;
-using Survivors.Squad.Config;
-using Survivors.Squad.Model;
+using Survivors.Squad;
 using Survivors.Units;
 using Survivors.Units.Service;
 using Zenject;
@@ -15,46 +14,43 @@ namespace Survivors.Session
     {
         [Inject] private EnemyWavesSpawner _enemyWavesSpawner;
         [Inject] private EnemyWavesConfig _enemyWavesConfig;
-        [Inject] private UnitFactory _unitFactory;
-        [Inject] private UnitService _unitService;        
-        [Inject] private World _world;      
-        [Inject] private SquadConfig _squadConfig;
+        [Inject] private UnitFactory _unitFactory;     
+        [Inject] private SquadFactory _squadFactory; 
+        [Inject] private World _world;
         [Inject] private IMessenger _messenger;
+        
         public void OnWorldSetup()
         {
-            _unitService.OnPlayerUnitDeath += OnPlayerUnitDeath;
+            
         }
         public void Start()
         {
-            InitSquad();
+            var squad = _squadFactory.CreateSquad();
+            _world.Squad = squad;
+            squad.OnDeath += OnSquadDeath;
             _unitFactory.CreatePlayerUnit(UnitFactory.SIMPLE_PLAYER_ID);
             _enemyWavesSpawner.StartSpawn(_enemyWavesConfig);
-          
         }
-        private void InitSquad()
+        private void OnSquadDeath()
         {
-            var model = new SquadModel(_squadConfig.Params);
-            _world.Squad.Init(model);
-        }
-        private void OnPlayerUnitDeath(IUnit unit)
-        {
-            if (_unitService.HasUnitOfType(UnitType.PLAYER)) {
-                return;
-            }
             EndSession(UnitType.ENEMY);
         }
-
         private void EndSession(UnitType winner)
         {
-            _unitService.OnPlayerUnitDeath -= OnPlayerUnitDeath;
+            Dispose();
             _messenger.Publish(new SessionEndMessage {
                     Winner = winner,
             });
         }
-        
+        private void Dispose()
+        {
+            if (_world.Squad != null) {
+                _world.Squad.OnDeath -= OnSquadDeath;
+            }
+        }
         public void OnWorldCleanUp()
         {
-            _unitService.OnPlayerUnitDeath -= OnPlayerUnitDeath;
+            Dispose();
         }
     }
 }

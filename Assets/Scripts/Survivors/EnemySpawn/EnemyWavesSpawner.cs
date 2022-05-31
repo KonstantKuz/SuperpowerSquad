@@ -6,6 +6,7 @@ using Feofun.Extension;
 using Survivors.EnemySpawn.Config;
 using Survivors.Location;
 using Survivors.Session;
+using Survivors.Squad;
 using Survivors.Units.Enemy;
 using Survivors.Units.Service;
 using UnityEngine;

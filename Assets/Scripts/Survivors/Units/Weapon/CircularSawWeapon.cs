@@ -26,7 +26,7 @@ namespace Survivors.Units.Weapon
             _rotationCenter = rotateAround;
             _projectileParams = projectileParams;
             _sawsRoot = new GameObject("SawsRoot").transform;
-            _sawsRoot.SetParent(_world.SpawnContainer.transform);
+            _sawsRoot.SetParent(_world.Spawn.transform);
             _saws = new List<CircularSaw>();
         }
         
