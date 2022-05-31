@@ -29,6 +29,7 @@ namespace Survivors.Squad
         private float _unitSize;
 
         private readonly IReactiveCollection<Unit> _units = new List<Unit>().ToReactiveCollection();
+        private IReadOnlyReactiveProperty<int> _unitCount;
         private readonly ISquadFormation _formation = new CircleFormation();
 
         private SquadModel _model;
@@ -43,7 +44,7 @@ namespace Survivors.Squad
         private bool Initialized => _model != null;
         public SquadModel Model => _model;
         public SquadDestination Destination => _destination;
-        public IReadOnlyReactiveProperty<int> UnitsCount => _units.ObserveCountChanged().ToReactiveProperty();
+        public IReadOnlyReactiveProperty<int> UnitsCount => _unitCount ??= _units.ObserveCountChanged().ToReactiveProperty();
         public float SquadRadius => _formation.GetMaxSize(_unitSize, _units.Count) / 2;
         public bool IsMoving => _joystick.Direction.sqrMagnitude > 0;
         public Vector3 MoveDirection => new Vector3(_joystick.Horizontal, 0, _joystick.Vertical);
