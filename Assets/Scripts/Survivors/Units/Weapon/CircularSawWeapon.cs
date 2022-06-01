@@ -25,13 +25,14 @@ namespace Survivors.Units.Weapon
 
         private bool Initialized => _sawsRoot != null;
 
+        private List<CircularSaw> Saws => _saws ??= new List<CircularSaw>();
+
         public void Init(Transform rotationCenter, IProjectileParams projectileParams)
         {
             _rotationCenter = rotationCenter;
             _projectileParams = projectileParams;
             _sawsRoot = new GameObject("SawsRoot").transform;
             _sawsRoot.SetParent(_world.Spawn.transform);
-            _saws = new List<CircularSaw>();
         }
         
         public void AddSaw(UnitType targetType, Action<GameObject> hitCallback)
@@ -39,7 +40,7 @@ namespace Survivors.Units.Weapon
             var saw = CreateSaw();
             saw.Init(targetType, _projectileParams, hitCallback);
             saw.transform.SetParent(_sawsRoot);
-            _saws.Add(saw);
+            Saws.Add(saw);
             PlaceSaws();
         }
         
@@ -57,6 +58,7 @@ namespace Survivors.Units.Weapon
         {
             _saws?.ForEach(Destroy);
             _saws?.Clear();
+            _saws = null;
         } 
         public void CleanUp()
         {

@@ -57,6 +57,6 @@ namespace Survivors.Units.Player.Model
                     Count = ShotCount.Value
             };
         }
-        public ModifiableProjectileParams CreateModifiableProjectileParams() => new ModifiableProjectileParams(this);
+        public PlayerProjectileParams CreatePlayerProjectileParams() => new PlayerProjectileParams(this);
     }
 }

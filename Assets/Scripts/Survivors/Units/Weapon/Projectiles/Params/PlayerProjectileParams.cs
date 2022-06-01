@@ -2,7 +2,7 @@
 
 namespace Survivors.Units.Weapon.Projectiles.Params
 {
-    public class ModifiableProjectileParams : IProjectileParams
+    public class PlayerProjectileParams : IProjectileParams
     {
         private PlayerAttackModel _attackModel;
         public float AdditionalAttackDistance { get; set; }
@@ -12,7 +12,7 @@ namespace Survivors.Units.Weapon.Projectiles.Params
         public float AttackDistance => AdditionalAttackDistance + _attackModel.AttackDistance;
         public int Count => _attackModel.ShotCount.Value;
 
-        public ModifiableProjectileParams(PlayerAttackModel attackModel)
+        public PlayerProjectileParams(PlayerAttackModel attackModel)
         {
             _attackModel = attackModel;
             AdditionalAttackDistance = 0;

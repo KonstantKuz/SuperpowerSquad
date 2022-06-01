@@ -60,9 +60,7 @@ namespace Survivors.Squad
         {
             _model = model;
             _damageable.OnDeath += Kill;
-            foreach (var component in GetComponentsInChildren<IInitializable<Squad>>()) {
-                component.Init(this);
-            }
+            InitializeSquadComponents(gameObject);
             IsAlive = true;
         }
 
@@ -80,8 +78,16 @@ namespace Survivors.Squad
             unit.transform.SetParent(_destination.transform);
             _model.AddUnit(unit.Model);
             _units.Add(unit);
+            InitializeSquadComponents(unit.gameObject);
         }
-        
+
+        private void InitializeSquadComponents(GameObject owner)
+        {
+            foreach (var component in owner.GetComponentsInChildren<IInitializable<Squad>>()) {
+                component.Init(this);
+            }
+        }
+
         private void AddSquadModifier(IModifier modifier)
         {
             Model.AddModifier(modifier);
