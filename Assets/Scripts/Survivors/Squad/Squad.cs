@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
-using UnityEngine.Assertions;
-using Zenject;
 using EasyButtons;
 using Feofun.Components;
 using Feofun.Config;
@@ -19,51 +16,60 @@ using Survivors.Units.Component.Health;
 using Survivors.Units.Player.Config;
 using Survivors.Units.Service;
 using UniRx;
+using UnityEngine;
+using UnityEngine.Assertions;
+using Zenject;
 using Unit = Survivors.Units.Unit;
 
 namespace Survivors.Squad
 {
     public class Squad : MonoBehaviour
     {
-        [SerializeField]
-        private float _unitSize;
+        [SerializeField] private float _unitSize;
 
-        private readonly IReactiveCollection<Unit> _units = new List<Unit>().ToReactiveCollection();
         private readonly ISquadFormation _formation = new CircleFormation();
-
-        private SquadModel _model;
+        private readonly IReactiveCollection<Unit> _units = new List<Unit>().ToReactiveCollection();
+        
         private IDamageable _damageable;
-        private SquadDestination _destination;
+        private IReadOnlyReactiveProperty<int> _unitCount;        
 
         [Inject] private Joystick _joystick;
-        [Inject] private UnitFactory _unitFactory;
         [Inject] private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
-
-        public event Action OnDeath;
+        [Inject] private UnitFactory _unitFactory;
         
-        public bool IsAlive { get; set; }
-        public SquadModel Model => _model;
-        public SquadDestination Destination => _destination;
-        public IReadOnlyReactiveProperty<int> UnitsCount => _units.ObserveCountChanged().ToReactiveProperty();
-        public float SquadRadius => _formation.GetMaxSize(_unitSize, _units.Count) / 2;
+        private bool IsAlive { get; set; }
+        
+        public SquadModel Model { get; private set; }
+        public SquadDestination Destination { get; private set; }
+        public IReadOnlyReactiveProperty<int> UnitsCount => _unitCount ??= _units.ObserveCountChanged().ToReactiveProperty();
+        public float SquadRadius { get; private set; }
         public bool IsMoving => _joystick.Direction.sqrMagnitude > 0;
         public Vector3 MoveDirection => new Vector3(_joystick.Horizontal, 0, _joystick.Vertical);
         
-        public void Awake()
-        {
-            _destination = gameObject.RequireComponentInChildren<SquadDestination>();
-            _damageable = gameObject.RequireComponent<IDamageable>();
-            SetUnitPositions();
-        }
-
+        public event Action OnDeath;        
+        
         public void Init(SquadModel model)
         {
-            _model = model;
+            Model = model;
             _damageable.OnDeath += Kill;
             InitializeSquadComponents(gameObject);
             IsAlive = true;
+        }        
+
+        public void Awake()
+        {
+            Destination = gameObject.RequireComponentInChildren<SquadDestination>();
+            _damageable = gameObject.RequireComponent<IDamageable>();
+            UpdateFormationAndRadius();
         }
 
+        private void Update()
+        {
+            if (!IsAlive) return;
+            if (IsMoving) Move(MoveDirection);
+            SetUnitPositions();
+            UpdateUnitsAnimations();
+        }
         private void Kill()
         {
             IsAlive = false;
@@ -71,40 +77,26 @@ namespace Survivors.Squad
             _units.ForEach(it => it.Kill());
             OnDeath?.Invoke();
             _units.Clear();
+        }  
+        private void OnDestroy()
+        {
+            _units.Clear();
+            Model = null;
         }
 
         public void AddUnit(Unit unit)
         {
-            unit.transform.SetParent(_destination.transform);
-            _model.AddUnit(unit.Model);
+            unit.transform.SetParent(Destination.transform);
+            Model.AddUnit(unit.Model);
             _units.Add(unit);
             InitializeSquadComponents(unit.gameObject);
-        }
-
-        private void InitializeSquadComponents(GameObject owner)
-        {
-            foreach (var component in owner.GetComponentsInChildren<IInitializable<Squad>>()) {
-                component.Init(this);
-            }
-        }
-
-        private void AddSquadModifier(IModifier modifier)
-        {
-            Model.AddModifier(modifier);
-        }
-
-        private void AddUnitModifier(IModifier modifier, [CanBeNull] string unitId = null)
-        {
-            var units = _units.ToList();
-            if (unitId != null) {
-                units = _units.Where(it => it.Model.Id == unitId).ToList();
-            }
-            units.ForEach(unit => unit.AddModifier(modifier));
+            UpdateFormationAndRadius();
         }
 
         public void AddModifier(IModifier modifier, ModifierTarget target, [CanBeNull] string unitId = null)
         {
-            switch (target) {
+            switch (target)
+            {
                 case ModifierTarget.Unit:
                     AddUnitModifier(modifier, unitId);
                     break;
@@ -114,6 +106,13 @@ namespace Survivors.Squad
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
+            }
+        }
+        
+        private void InitializeSquadComponents(GameObject owner)
+        {
+            foreach (var component in owner.GetComponentsInChildren<IInitializable<Squad>>()) {
+                component.Init(this);
             }
         }
 
@@ -131,51 +130,59 @@ namespace Survivors.Squad
         [Button]
         private void SwitchSquadCenterVisibility()
         {
-            _destination.SwitchVisibility();
+            Destination.SwitchVisibility();
         }
+        
+        private void AddSquadModifier(IModifier modifier)
+        {
+            Model.AddModifier(modifier);
+        }
+
+        private void AddUnitModifier(IModifier modifier, [CanBeNull] string unitId = null)
+        {
+            var units = _units.ToList();
+            if (unitId != null) units = _units.Where(it => it.Model.Id == unitId).ToList();
+            units.ForEach(unit => unit.AddModifier(modifier));
+        }        
 
         private void SetUnitPositions()
         {
-            for (int unitIdx = 0; unitIdx < _units.Count; unitIdx++) {
+            for (var unitIdx = 0; unitIdx < _units.Count; unitIdx++)
                 _units[unitIdx].transform.position = GetUnitPosition(unitIdx);
-            }
         }
 
         private Vector3 GetUnitPosition(int unitIdx)
         {
-            return _destination.transform.position + _formation.GetUnitOffset(unitIdx, _unitSize, _units.Count);
-        }
-
-        private void Update()
-        {
-            if (!IsAlive) {
-                return;
-            }
-            if (IsMoving) {
-                Move(MoveDirection);
-            }
-            SetUnitPositions();
-            UpdateUnitsAnimations();
+            return Destination.transform.position + _formation.GetUnitOffset(unitIdx, _unitSize, _units.Count);
         }
 
         private void Move(Vector3 joystickDirection)
         {
-            var delta = _model.Speed.Value * joystickDirection * Time.deltaTime;
-            _destination.transform.position += delta;
+            var delta = Model.Speed.Value * joystickDirection * Time.deltaTime;
+            Destination.transform.position += delta;
         }
 
         private void UpdateUnitsAnimations()
         {
             _units.ForEach(it => { it.MovementController.UpdateAnimation(MoveDirection); });
         }
-        private Vector3 GetSpawnPosition()
+
+        private void UpdateSquadRadius()
         {
-            return _destination.transform.position + _formation.GetSpawnOffset(_unitSize, _units.Count);
+            var radius = _unitSize;
+            var center = Destination.transform.position;
+            foreach (var unit in _units)
+                radius = Mathf.Max(radius, Vector3.Distance(unit.transform.position, center) + _unitSize);
+
+            SquadRadius = radius;
         }
-        private void OnDestroy()
+        
+        private void UpdateFormationAndRadius()
         {
-            _units.Clear();
-            _model = null;
+            SetUnitPositions();
+            UpdateSquadRadius();
         }
+
+           
     }
 }
