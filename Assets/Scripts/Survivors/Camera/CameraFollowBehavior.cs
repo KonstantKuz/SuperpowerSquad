@@ -23,15 +23,15 @@ namespace Survivors.Camera
         private float _distanceToTarget;
         private IDisposable _disposable;
         private Tweener _animation;
-        private float _initialTargetSize;
+        private float _initialTargetRadius;
 
         public void Init(Squad.Squad owner)
         {
             _disposable?.Dispose();
             _target = owner;
-            _initialTargetSize = _target.SquadRadius;
+            _initialTargetRadius = _target.SquadRadius;
             _distanceToTarget = _initialDistance;
-            _disposable = _target.UnitsCount.Subscribe(it => OnTargetSizeChanged());
+            _disposable = _target.UnitsCount.Subscribe(it => OnTargetRadiusChanged());
         }
 
         private void Update()
@@ -48,7 +48,7 @@ namespace Survivors.Camera
             _disposable?.Dispose();
         }
 
-        private void OnTargetSizeChanged()
+        private void OnTargetRadiusChanged()
         {
             var newDistance = GetDistanceToTarget();
             if (Mathf.Abs(_distanceToTarget - newDistance) <= Mathf.Epsilon) return;
@@ -64,6 +64,6 @@ namespace Survivors.Camera
             _animation.OnComplete(() => _animation = null);
         }
 
-        private float GetDistanceToTarget() => _initialDistance + (_target.SquadRadius - _initialTargetSize) * _distanceMultiplier;
+        private float GetDistanceToTarget() => _initialDistance + (_target.SquadRadius - _initialTargetRadius) * _distanceMultiplier;
     }
 }
