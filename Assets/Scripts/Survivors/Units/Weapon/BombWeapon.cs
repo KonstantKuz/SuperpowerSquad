@@ -19,7 +19,7 @@ namespace Survivors.Units.Weapon
             
             for (int i = 0; i < projectileParams.Count; i++) {
                 var targetPos = target.Center.position;
-                if (spreadAngles[i] != 0) {
+                if (!spreadAngles[i].IsZero()) {
                     targetPos = GetTargetPositionOfSpreadAngle(target.Center.position, spreadAngles[i], projectileParams.DamageRadius);
                 }
                 Fire(targetPos, target, projectileParams, hitCallback);
@@ -28,8 +28,8 @@ namespace Survivors.Units.Weapon
         
         private IEnumerable<float> GetSpreadInAngle(int count)
         {
+            var halfSumOfAngles = AngleBetweenShots * (int) Math.Ceiling((decimal) count / 2);
             for (int i = 1; i <= count; i++) {
-                var halfSumOfAngles = AngleBetweenShots * (int) Math.Ceiling((decimal) count / 2);
                 yield return AngleBetweenShots * i - halfSumOfAngles;
             }
         }
