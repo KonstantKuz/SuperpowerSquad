@@ -148,13 +148,24 @@ namespace Survivors.Squad
 
         private void SetUnitPositions()
         {
-            for (var unitIdx = 0; unitIdx < _units.Count; unitIdx++)
-                _units[unitIdx].transform.position = GetUnitPosition(unitIdx);
+            //place long ranged units inside formations (close to center) and close ranged units to outer layers of formations            
+            var unitsOrderedByRange = _units.ToList().OrderByDescending(it => it.Model.AttackModel.AttackDistance).ToList();
+            var positionsOrderedByDistance = GetUnitOffsets().OrderBy(it => it.magnitude).ToList();
+            for (var unitIdx = 0; unitIdx < unitsOrderedByRange.Count; unitIdx++)
+            {
+                unitsOrderedByRange[unitIdx].transform.position = Destination.transform.position + positionsOrderedByDistance[unitIdx];
+            }
         }
 
-        private Vector3 GetUnitPosition(int unitIdx)
+        private List<Vector3> GetUnitOffsets()
         {
-            return Destination.transform.position + _formation.GetUnitOffset(unitIdx, _unitSize, _units.Count);
+            var rez = new List<Vector3>();
+            for (int i = 0; i < _units.Count; i++)
+            {
+                rez.Add(_formation.GetUnitOffset(i, _unitSize, _units.Count));
+            }
+
+            return rez;
         }
 
         private void Move(Vector3 joystickDirection)
