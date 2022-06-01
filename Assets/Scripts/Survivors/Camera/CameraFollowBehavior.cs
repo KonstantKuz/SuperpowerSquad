@@ -19,26 +19,26 @@ namespace Survivors.Camera
         [SerializeField] 
         private float _cameraSwitchTime;
         
-        private Squad.Squad _squad;
-        private float _distanceToObject;
+        private Squad.Squad _target;
+        private float _distanceToTarget;
         private IDisposable _disposable;
         private Tweener _animation;
-        private float _initialSquadSize;
+        private float _initialTargetSize;
 
         public void Init(Squad.Squad owner)
         {
             _disposable?.Dispose();
-            _squad = owner;
-            _initialSquadSize = _squad.SquadRadius;
-            _distanceToObject = _initialDistance;
-            _disposable = _squad.UnitsCount.Subscribe(it => OnSquadSizeChanged());
+            _target = owner;
+            _initialTargetSize = _target.SquadRadius;
+            _distanceToTarget = _initialDistance;
+            _disposable = _target.UnitsCount.Subscribe(it => OnTargetSizeChanged());
         }
 
         private void Update()
         {
             var cameraTransform = UnityEngine.Camera.main.transform;
-            var focusPos = transform.position - _shiftDownCoeff * _squad.SquadRadius * Vector3.forward;
-            cameraTransform.position = focusPos - _distanceToObject * cameraTransform.forward;
+            var focusPos = transform.position - _shiftDownCoeff * _target.SquadRadius * Vector3.forward;
+            cameraTransform.position = focusPos - _distanceToTarget * cameraTransform.forward;
         }
 
         private void OnDestroy()
@@ -48,10 +48,10 @@ namespace Survivors.Camera
             _disposable?.Dispose();
         }
 
-        private void OnSquadSizeChanged()
+        private void OnTargetSizeChanged()
         {
-            var newDistance = GetDistanceToObject();
-            if (Mathf.Abs(_distanceToObject - newDistance) <= Mathf.Epsilon) return;
+            var newDistance = GetDistanceToTarget();
+            if (Mathf.Abs(_distanceToTarget - newDistance) <= Mathf.Epsilon) return;
             
             PlayDistanceChangeAnimation(newDistance);
         }
@@ -59,11 +59,11 @@ namespace Survivors.Camera
         private void PlayDistanceChangeAnimation(float newDistance)
         {
             _animation?.Kill();
-            _animation = DOTween.To(() => _distanceToObject, value => { _distanceToObject = value; }, newDistance,
+            _animation = DOTween.To(() => _distanceToTarget, value => { _distanceToTarget = value; }, newDistance,
                 _cameraSwitchTime);
             _animation.OnComplete(() => _animation = null);
         }
 
-        private float GetDistanceToObject() => _initialDistance + (_squad.SquadRadius - _initialSquadSize) * _distanceMultiplier;
+        private float GetDistanceToTarget() => _initialDistance + (_target.SquadRadius - _initialTargetSize) * _distanceMultiplier;
     }
 }
