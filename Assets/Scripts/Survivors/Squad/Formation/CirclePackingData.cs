@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 namespace Survivors.Squad.Formation
@@ -13,19 +12,25 @@ namespace Survivors.Squad.Formation
         {
             public float X;
             public float Y;
-        }        
+        }    
+        
+        [Serializable]
+        public struct CirclePacking
+        {
+            public List<Pos> Positions;
+        }
         
         [SerializeField]
-        private List<Pos> _positions;
+        private List<CirclePacking> _packings;
 
         public Pos GetPos(int idx, int count)
         {
-            return _positions[idx + (count - 1) * count / 2];
+            return _packings[count - 1].Positions[idx];;
         }
 
-        public void SetData(Dictionary<int, List<Pos>> data)
+        public void SetData(List<CirclePacking> packings)
         {
-            _positions = data.OrderBy(it => it.Key).SelectMany(it => it.Value).ToList();
+            _packings = packings;
         }
     }
 }
