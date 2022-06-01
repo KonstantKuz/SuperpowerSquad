@@ -17,10 +17,9 @@ namespace Survivors.Units.Weapon.Projectiles
         [Inject] private WorldObjectFactory _objectFactory;
         private GameObject _highlighter;
 
-        public override void Launch(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback)
+        public void Launch(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback, Vector3 targetPos)
         {
             base.Launch(target, projectileParams, hitCallback);
-            var targetPos = target.Center.position;
             var moveTime = GetFlightTime(targetPos);
             var maxHeight = GetMaxHeight(targetPos, projectileParams.AttackDistance);
             CreateHighlighter(targetPos);
