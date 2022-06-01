@@ -54,7 +54,7 @@ namespace Survivors.Units.Player.Attack
         private void UpdateRadius(int squadCount)
         {
             var projectileParams = GetSawParamsForSquad();
-            _circularSawWeapon.UpdateParams(projectileParams);
+            _circularSawWeapon.OnParamsChanged(projectileParams);
         }
 
         private PlayerProjectileParams GetSawParamsForSquad()

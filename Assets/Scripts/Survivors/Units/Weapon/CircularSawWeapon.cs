@@ -44,12 +44,12 @@ namespace Survivors.Units.Weapon
             PlaceSaws();
         }
         
-        public void UpdateParams(IProjectileParams projectileParams)
+        public void OnParamsChanged(IProjectileParams projectileParams)
         {
             _projectileParams = projectileParams;
             foreach (var saw in _saws)
             {
-                saw.UpdateParams(_projectileParams);
+                saw.OnParamsChanged(_projectileParams);
             }
             PlaceSaws();
         }

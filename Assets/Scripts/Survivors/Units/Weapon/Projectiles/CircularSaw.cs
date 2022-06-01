@@ -23,7 +23,7 @@ namespace Survivors.Units.Weapon.Projectiles
                 Quaternion.AngleAxis(angle, transform.parent.up) * Vector3.forward * _projectileParams.AttackDistance;
         }
 
-        public void UpdateParams(IProjectileParams projectileParams)
+        public void OnParamsChanged(IProjectileParams projectileParams)
         {
             _projectileParams = projectileParams;
         }
