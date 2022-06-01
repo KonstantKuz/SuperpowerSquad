@@ -75,7 +75,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18b120911a6040e49aaf4126c58410d1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _followTarget: 1
+  _followTarget: 0
   _rotationSpeed: 20
   _maxLifeTime: 10
   _explosion: {fileID: 1836528195526790802, guid: f19e1685fb6476f4d83ad6b7d05bfd2e, type: 3}
@@ -98,15 +98,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8085541533067273539, guid: dbfce5751e90fce4a95d2b74e9e665d6, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8085541533067273539, guid: dbfce5751e90fce4a95d2b74e9e665d6, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8085541533067273539, guid: dbfce5751e90fce4a95d2b74e9e665d6, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8085541533067273539, guid: dbfce5751e90fce4a95d2b74e9e665d6, type: 3}
       propertyPath: m_LocalPosition.x
