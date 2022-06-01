@@ -26,28 +26,34 @@ namespace Survivors.Squad
     public class Squad : MonoBehaviour
     {
         [SerializeField] private float _unitSize;
-
+        
         private ISquadFormation _formation;
-
         private readonly IReactiveCollection<Unit> _units = new List<Unit>().ToReactiveCollection();
         private IDamageable _damageable;
+        private IReadOnlyReactiveProperty<int> _unitCount;        
 
         [Inject] private Joystick _joystick;
-
         [Inject] private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
-        private IReadOnlyReactiveProperty<int> _unitCount;
         [Inject] private UnitFactory _unitFactory;
+        
         private bool Initialized => Model != null;
+        
         public SquadModel Model { get; private set; }
-
         public SquadDestination Destination { get; private set; }
-
         public IReadOnlyReactiveProperty<int> UnitsCount =>
             _unitCount ??= _units.ObserveCountChanged().ToReactiveProperty();
-
         public float SquadRadius { get; private set; }
         public bool IsMoving => _joystick.Direction.sqrMagnitude > 0;
         public Vector3 MoveDirection => new Vector3(_joystick.Horizontal, 0, _joystick.Vertical);
+        
+        public event Action OnDeath;        
+        
+        public void Init(SquadModel model)
+        {
+            Model = model;
+            _damageable.OnDeath += Kill;
+            foreach (var component in GetComponentsInChildren<IInitializable<Squad>>()) component.Init(this);
+        }        
 
         public void Awake()
         {
@@ -71,47 +77,12 @@ namespace Survivors.Squad
             Model = null;
         }
 
-        public event Action OnDeath;
-
-        private void UpdateFormationAndRadius()
-        {
-            SetUnitPositions();
-            UpdateSquadRadius();
-        }
-
-        public void Init(SquadModel model)
-        {
-            Model = model;
-            _damageable.OnDeath += Kill;
-            foreach (var component in GetComponentsInChildren<IInitializable<Squad>>()) component.Init(this);
-        }
-
-        private void Kill()
-        {
-            _damageable.OnDeath -= Kill;
-            _units.ForEach(it => it.Kill());
-            OnDeath?.Invoke();
-            _units.Clear();
-        }
-
         public void AddUnit(Unit unit)
         {
             unit.transform.SetParent(Destination.transform);
             Model.AddUnit(unit.Model);
             _units.Add(unit);
             UpdateFormationAndRadius();
-        }
-
-        private void AddSquadModifier(IModifier modifier)
-        {
-            Model.AddModifier(modifier);
-        }
-
-        private void AddUnitModifier(IModifier modifier, [CanBeNull] string unitId = null)
-        {
-            var units = _units.ToList();
-            if (unitId != null) units = _units.Where(it => it.Model.Id == unitId).ToList();
-            units.ForEach(unit => unit.AddModifier(modifier));
         }
 
         public void AddModifier(IModifier modifier, ModifierTarget target, [CanBeNull] string unitId = null)
@@ -146,6 +117,18 @@ namespace Survivors.Squad
         {
             Destination.SwitchVisibility();
         }
+        
+        private void AddSquadModifier(IModifier modifier)
+        {
+            Model.AddModifier(modifier);
+        }
+
+        private void AddUnitModifier(IModifier modifier, [CanBeNull] string unitId = null)
+        {
+            var units = _units.ToList();
+            if (unitId != null) units = _units.Where(it => it.Model.Id == unitId).ToList();
+            units.ForEach(unit => unit.AddModifier(modifier));
+        }        
 
         private void SetUnitPositions()
         {
@@ -189,5 +172,19 @@ namespace Survivors.Squad
 
             SquadRadius = radius;
         }
+        
+        private void UpdateFormationAndRadius()
+        {
+            SetUnitPositions();
+            UpdateSquadRadius();
+        }
+
+        private void Kill()
+        {
+            _damageable.OnDeath -= Kill;
+            _units.ForEach(it => it.Kill());
+            OnDeath?.Invoke();
+            _units.Clear();
+        }        
     }
 }
