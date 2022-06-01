@@ -73,7 +73,7 @@ namespace Survivors.Units.Weapon.Projectiles
         {
             transform.position += transform.forward * Speed * Time.deltaTime;
 
-            if (LifeTime >= _initialCourseTime)
+            if (LifeTime >= _initialCourseTime && _followTarget)
             {
                 var lookRotation = Quaternion.LookRotation(_lastTargetPos - transform.position);
                 transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * _rotationSpeed);
