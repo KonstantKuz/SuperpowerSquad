@@ -5,6 +5,7 @@ using Survivors.Location;
 using Survivors.Units.Enemy.Model;
 using Survivors.Units.Player.Attack;
 using Survivors.Units.Target;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
@@ -61,6 +62,8 @@ namespace Survivors.Units.Enemy
 
         public void OnTick()
         {
+            _agent.radius = Mathf.Lerp(0.5f, 1.0f, (DistanceToSquad - 5) / (10 - 5));
+            
             if (DistanceToSquad > _targetSelectionDistance) 
             {
                 _agent.destination = SquadPosition;
