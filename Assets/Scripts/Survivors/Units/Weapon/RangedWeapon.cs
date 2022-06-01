@@ -5,6 +5,7 @@ using Survivors.Extension;
 using Survivors.Location.Service;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles;
+using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Zenject;
@@ -29,7 +30,7 @@ namespace Survivors.Units.Weapon
         [Inject]
         private WorldObjectFactory _objectFactory;
 
-        public override void Fire(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback)
+        public override void Fire(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             Assert.IsNotNull(projectileParams);
             var rotationToTarget = GetShootRotation(_barrelPos, target.Center.position, _aimInXZPlane);

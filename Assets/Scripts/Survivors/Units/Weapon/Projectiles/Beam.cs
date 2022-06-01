@@ -3,6 +3,7 @@ using System.Collections;
 using ModestTree;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Target;
+using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
 
 namespace Survivors.Units.Weapon.Projectiles
@@ -18,12 +19,12 @@ namespace Survivors.Units.Weapon.Projectiles
         protected ITarget Target;
         protected UnitType TargetType;
         protected Action<GameObject> HitCallback;
-        protected ProjectileParams ProjectileParams;
+        protected IProjectileParams ProjectileParams;
         protected Transform Barrel;
         
         private float HitTime => _maxLifeTime * _ratioHitTime;
 
-        public void Launch(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback, Transform barrel)
+        public void Launch(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback, Transform barrel)
         {
             Assert.IsNotNull(target);
             ProjectileParams = projectileParams;
