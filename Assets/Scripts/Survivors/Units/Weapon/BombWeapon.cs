@@ -29,7 +29,7 @@ namespace Survivors.Units.Weapon
         
         private IEnumerable<float> GetSpreadInAngle(int count)
         {
-            var halfCount = (int) Math.Ceiling((decimal) count / 2);
+            var halfCount = (int) Math.Ceiling((float) count / 2);
             foreach (var step in Enumerable.Range(-halfCount + 1, count))
             {
                 yield return AngleBetweenShots * step;
