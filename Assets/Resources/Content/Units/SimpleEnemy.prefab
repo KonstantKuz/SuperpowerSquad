@@ -154,6 +154,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _targetSelectionDistance: 10
+  _agentRadiusAfar: 1
+  _agentRadiusNear: 0.5
+  _agentDistanceAfar: 10
+  _agentDistanceNear: 5
 --- !u!114 &7586013564207719466
 MonoBehaviour:
   m_ObjectHideFlags: 0
