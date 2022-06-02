@@ -20,7 +20,7 @@ namespace Survivors.Units.Weapon
             for (int i = 0; i < projectileParams.Count; i++) {
                 var targetPos = target.Center.position;
                 if (!spreadAngles[i].IsZero()) {
-                    targetPos = GetTargetPositionOfSpreadAngle(target.Center.position, spreadAngles[i], projectileParams.DamageRadius);
+                    targetPos = GetShootPosition(target.Center.position, spreadAngles[i], projectileParams.DamageRadius);
                 }
                 Fire(targetPos, target, projectileParams, hitCallback);
             }
@@ -28,9 +28,10 @@ namespace Survivors.Units.Weapon
         
         private IEnumerable<float> GetSpreadInAngle(int count)
         {
-            var halfSumOfAngles = AngleBetweenShots * (int) Math.Ceiling((decimal) count / 2);
-            for (int i = 1; i <= count; i++) {
-                yield return AngleBetweenShots * i - halfSumOfAngles;
+            var halfCount = (int) Math.Ceiling((decimal) count / 2);
+            foreach (var step in Enumerable.Range(-halfCount + 1, count))
+            {
+                yield return AngleBetweenShots * step;
             }
         }
         private void Fire(Vector3 targetPos, ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback)
@@ -41,7 +42,7 @@ namespace Survivors.Units.Weapon
             bomb.Launch(target, projectileParams, hitCallback, targetPos);
         }
 
-        private Vector3 GetTargetPositionOfSpreadAngle(Vector3 targetPosition, float spreadAngle, float damageRadius)
+        private Vector3 GetShootPosition(Vector3 targetPosition, float spreadAngle, float damageRadius)
         {
             var spreadedDirection = Quaternion.Euler(0, spreadAngle, 0) * GetShootDirection(BarrelPos, targetPosition);
             var randomDistance = Random.Range(damageRadius, damageRadius * 2);
