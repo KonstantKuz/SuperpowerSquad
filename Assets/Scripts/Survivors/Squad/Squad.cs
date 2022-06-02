@@ -29,6 +29,7 @@ namespace Survivors.Squad
 
         private readonly ISquadFormation _formation = new CircleFormation();
         private readonly IReactiveCollection<Unit> _units = new List<Unit>().ToReactiveCollection();
+        
         private IDamageable _damageable;
         private IReadOnlyReactiveProperty<int> _unitCount;        
 
@@ -36,12 +37,11 @@ namespace Survivors.Squad
         [Inject] private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
         [Inject] private UnitFactory _unitFactory;
         
-        private bool Initialized => Model != null;
+        private bool IsAlive { get; set; }
         
         public SquadModel Model { get; private set; }
         public SquadDestination Destination { get; private set; }
-        public IReadOnlyReactiveProperty<int> UnitsCount =>
-            _unitCount ??= _units.ObserveCountChanged().ToReactiveProperty();
+        public IReadOnlyReactiveProperty<int> UnitsCount => _unitCount ??= _units.ObserveCountChanged().ToReactiveProperty();
         public float SquadRadius { get; private set; }
         public bool IsMoving => _joystick.Direction.sqrMagnitude > 0;
         public Vector3 MoveDirection => new Vector3(_joystick.Horizontal, 0, _joystick.Vertical);
@@ -52,7 +52,8 @@ namespace Survivors.Squad
         {
             Model = model;
             _damageable.OnDeath += Kill;
-            foreach (var component in GetComponentsInChildren<IInitializable<Squad>>()) component.Init(this);
+            InitializeSquadComponents(gameObject);
+            IsAlive = true;
         }        
 
         public void Awake()
@@ -64,12 +65,19 @@ namespace Survivors.Squad
 
         private void Update()
         {
-            if (!Initialized) return;
+            if (!IsAlive) return;
             if (IsMoving) Move(MoveDirection);
             SetUnitPositions();
             UpdateUnitsAnimations();
         }
-
+        private void Kill()
+        {
+            IsAlive = false;
+            _damageable.OnDeath -= Kill;
+            _units.ForEach(it => it.Kill());
+            OnDeath?.Invoke();
+            _units.Clear();
+        }  
         private void OnDestroy()
         {
             _units.Clear();
@@ -81,6 +89,7 @@ namespace Survivors.Squad
             unit.transform.SetParent(Destination.transform);
             Model.AddUnit(unit.Model);
             _units.Add(unit);
+            InitializeSquadComponents(unit.gameObject);
             UpdateFormationAndRadius();
         }
 
@@ -97,6 +106,13 @@ namespace Survivors.Squad
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
+            }
+        }
+        
+        private void InitializeSquadComponents(GameObject owner)
+        {
+            foreach (var component in owner.GetComponentsInChildren<IInitializable<Squad>>()) {
+                component.Init(this);
             }
         }
 
@@ -167,12 +183,6 @@ namespace Survivors.Squad
             UpdateSquadRadius();
         }
 
-        private void Kill()
-        {
-            _damageable.OnDeath -= Kill;
-            _units.ForEach(it => it.Kill());
-            OnDeath?.Invoke();
-            _units.Clear();
-        }        
+           
     }
 }

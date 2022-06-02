@@ -1,6 +1,7 @@
 ﻿using System;
 using Survivors.Location.Service;
 using Survivors.Units.Target;
+using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Zenject;
@@ -41,7 +42,7 @@ namespace Survivors.Units.Weapon.Projectiles
                 Explode(transform.position);
         }
 
-        public override void Launch(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback)
+        public override void Launch(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             base.Launch(target, projectileParams, hitCallback);
             SetTarget(target);
@@ -73,7 +74,7 @@ namespace Survivors.Units.Weapon.Projectiles
         {
             transform.position += transform.forward * Speed * Time.deltaTime;
 
-            if (LifeTime >= _initialCourseTime)
+            if (LifeTime >= _initialCourseTime && _followTarget)
             {
                 var lookRotation = Quaternion.LookRotation(_lastTargetPos - transform.position);
                 transform.rotation = Quaternion.Lerp(transform.rotation, lookRotation, Time.deltaTime * _rotationSpeed);

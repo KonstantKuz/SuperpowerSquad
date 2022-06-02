@@ -5,6 +5,7 @@ using ModestTree;
 using Survivors.Extension;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles;
+using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -12,7 +13,7 @@ namespace Survivors.Units.Weapon
 {
     public class BombWeapon : RangedWeapon
     {
-        public override void Fire(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback)
+        public override void Fire(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         { 
             Assert.IsNotNull(projectileParams);
             var spreadAngles = GetSpreadInAngle(projectileParams.Count).ToList();
@@ -34,7 +35,7 @@ namespace Survivors.Units.Weapon
                 yield return AngleBetweenShots * step;
             }
         }
-        private void Fire(Vector3 targetPos, ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback)
+        private void Fire(Vector3 targetPos, ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             var bomb = CreateBomb();
             var rotation = GetShootRotation(BarrelPos, targetPos, AimInXZPlane);

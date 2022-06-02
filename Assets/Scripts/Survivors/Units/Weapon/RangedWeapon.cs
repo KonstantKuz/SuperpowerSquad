@@ -5,6 +5,7 @@ using Survivors.Extension;
 using Survivors.Location.Service;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles;
+using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Zenject;
@@ -31,7 +32,7 @@ namespace Survivors.Units.Weapon
         protected Projectile Ammo => _ammo;
         protected float AngleBetweenShots => _angleBetweenShots;
 
-        public override void Fire(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback)
+        public override void Fire(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             Assert.IsNotNull(projectileParams);
             var rotationToTarget = GetShootRotation(BarrelPos, target.Center.position, _aimInXZPlane);
@@ -42,7 +43,7 @@ namespace Survivors.Units.Weapon
                 Fire(rotation, target, projectileParams, hitCallback);
             }
         }
-        private void Fire(Quaternion rotation, ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback)
+        private void Fire(Quaternion rotation, ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             var projectile = CreateProjectile();
             projectile.transform.SetPositionAndRotation(BarrelPos, rotation);

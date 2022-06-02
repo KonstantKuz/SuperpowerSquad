@@ -1,7 +1,7 @@
 Id,Health,AttackDistance,DamageRadius,AttackDamage,ClipReloadTime,AttackTime,ProjectileSpeed,ClipSize,DamageAngle
 StandardUnit,100,10,0,100,0,1,30,1,
 MachineGunnerUnit,100,20,0,30,0,0.25,30,1,
-RocketUnit,100,10,1,500,0,3,15,1,
+RocketUnit,100,10,1,500,0,3,10,1,
 PyroUnit,100,10,4,10,0,1.5,15,1,30
 SniperUnit,100,15,0.2,95,0,3,40,1,
 BomberUnit,100,10,2,15,0,2,15,1,

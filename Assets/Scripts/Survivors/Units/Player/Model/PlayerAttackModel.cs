@@ -4,6 +4,7 @@ using Survivors.Modifiers;
 using Survivors.Units.Model;
 using Survivors.Units.Player.Config;
 using Survivors.Units.Weapon.Projectiles;
+using Survivors.Units.Weapon.Projectiles.Params;
 using UniRx;
 
 namespace Survivors.Units.Player.Model
@@ -62,5 +63,6 @@ namespace Survivors.Units.Player.Model
                     Count = ShotCount.Value
             };
         }
+        public PlayerProjectileParams CreatePlayerProjectileParams() => new PlayerProjectileParams(this);
     }
 }

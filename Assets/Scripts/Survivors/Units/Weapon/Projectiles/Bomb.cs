@@ -3,6 +3,7 @@ using DG.Tweening;
 using Survivors.Extension;
 using Survivors.Location.Service;
 using Survivors.Units.Target;
+using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
 using Zenject;
 
@@ -20,8 +21,9 @@ namespace Survivors.Units.Weapon.Projectiles
         [Inject]
         private WorldObjectFactory _objectFactory;
         private GameObject _highlighter;
+        
+        public void Launch(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback, Vector3 targetPos)
 
-        public void Launch(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback, Vector3 targetPos)
         {
             base.Launch(target, projectileParams, hitCallback);
             var moveTime = GetFlightTime(targetPos);

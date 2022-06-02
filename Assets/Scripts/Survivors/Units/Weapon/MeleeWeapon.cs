@@ -1,14 +1,14 @@
 ﻿using System;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Target;
-using Survivors.Units.Weapon.Projectiles;
+using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
 
 namespace Survivors.Units.Weapon
 {
     public class MeleeWeapon : BaseWeapon
     {
-        public override void Fire(ITarget target, ProjectileParams chargeParams, Action<GameObject> hitCallback)
+        public override void Fire(ITarget target, IProjectileParams chargeParams, Action<GameObject> hitCallback)
         {
             var targetObj = target as MonoBehaviour;
             if (targetObj == null)
