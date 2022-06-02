@@ -21,16 +21,12 @@ namespace Survivors.Units.Weapon
         [Inject] private World _world;
         [Inject] private WorldObjectFactory _worldObjectFactory;
 
+        private CircularSawsRoot SawsRoot => _sawsRoot ??= GetOrCreateSawsRoot();
         public int SawsCount { get; set; }
         
         public void Init(Transform rotationCenter, IProjectileParams projectileParams)
         {
-            _sawsRoot = _world.Spawn.GetComponentInChildren<CircularSawsRoot>();
-            if (_sawsRoot != null) return;
-
-            _sawsRoot = new GameObject("SawsRoot").AddComponent<CircularSawsRoot>();
-            _sawsRoot.transform.SetParent(_world.Spawn.transform);
-            _sawsRoot.Init(rotationCenter, projectileParams.Speed);
+            SawsRoot.Init(rotationCenter, projectileParams.Speed);
         }
 
         public void AddSaw(UnitType targetType, IProjectileParams projectileParams, Action<GameObject> hitCallback)
@@ -62,6 +58,16 @@ namespace Survivors.Units.Weapon
         private CircularSaw CreateSaw()
         {
             return _worldObjectFactory.CreateObject(_circularSawPrefab.gameObject).RequireComponent<CircularSaw>();
+        }
+
+        private CircularSawsRoot GetOrCreateSawsRoot()
+        {
+            var existingRoot = _world.Spawn.GetComponentInChildren<CircularSawsRoot>();
+            if (existingRoot != null) return existingRoot;
+            
+            var newRoot = new GameObject("SawsRoot").AddComponent<CircularSawsRoot>();
+            newRoot.transform.SetParent(_world.Spawn.transform);
+            return newRoot;
         }
     }
 }
