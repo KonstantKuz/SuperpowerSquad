@@ -47,7 +47,7 @@ namespace Survivors.Units.Player.Attack
         {
             _circularSawWeapon.CleanUpSaws();
             var projectileParams = GetSawParamsForSquad();
-            var targetType = _ownerUnit.SelfTarget.UnitType.GetTargetUnitType();
+            var targetType = _ownerUnit.TargetUnitType;
             for (int i = 0; i < count; i++)
             {
                 _circularSawWeapon.AddSaw(targetType, projectileParams, DoDamage);
