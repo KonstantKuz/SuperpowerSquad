@@ -1,13 +1,12 @@
-﻿using Survivors.Units.Component.Health;
+﻿using System;
+using Survivors.Units.Component.Health;
+using Survivors.Units.Target;
 using UnityEngine;
 
 namespace Survivors.Units.Weapon.Projectiles
 {
     public class FireBeam : Beam
     {
-        [SerializeField]
-        private float _fireAngle = 30;
-
         protected override void TryHit(GameObject target)
         {
             TryHitTargetsInCone();
@@ -17,7 +16,7 @@ namespace Survivors.Units.Weapon.Projectiles
         {
             var hits = Projectile.GetHits(Barrel.position, ProjectileParams.AttackDistance, TargetType);
             foreach (var hit in hits) {
-                if (!IsTargetInsideCone(hit.transform.position, Barrel.position, Barrel.forward, _fireAngle)) {
+                if (!IsTargetInsideCone(hit.transform.position, Barrel.position, Barrel.forward, ProjectileParams.DamageAngle)) {
                     continue;
                 }
                 if (hit.TryGetComponent(out IDamageable damageable)) {

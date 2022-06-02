@@ -3,6 +3,7 @@ using System.Linq;
 using JetBrains.Annotations;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Target;
+using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
 using UnityEngine.Assertions;
 
@@ -12,10 +13,10 @@ namespace Survivors.Units.Weapon.Projectiles
     {
         protected Action<GameObject> HitCallback;
         protected UnitType TargetType;
-        protected ProjectileParams Params;
+        protected IProjectileParams Params;
         protected float Speed => Params.Speed;
 
-        public virtual void Launch(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback)
+        public virtual void Launch(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             Assert.IsNotNull(target);
             HitCallback = hitCallback;

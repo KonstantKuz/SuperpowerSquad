@@ -1,5 +1,6 @@
 ﻿using System;
 using Survivors.Units.Target;
+using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
 
 namespace Survivors.Units.Weapon.Projectiles
@@ -10,7 +11,7 @@ namespace Survivors.Units.Weapon.Projectiles
         private LineRenderer _lineRenderer;
         [SerializeField]
         private BoxCollider _collider;
-        public override void Launch(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback)
+        public override void Launch(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             base.Launch(target, projectileParams, hitCallback);
             SetWidth(projectileParams.DamageRadius);

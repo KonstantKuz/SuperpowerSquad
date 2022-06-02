@@ -2,6 +2,7 @@
 using Survivors.Location.Service;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles;
+using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
 using Zenject;
 
@@ -18,7 +19,7 @@ namespace Survivors.Units.Weapon
 
         public Vector3 BarrelPos { get; private set; }
 
-        public override void Fire(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback)
+        public override void Fire(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             var beam = CreateBeam();
             var rotationToTarget = RangedWeapon.GetShootRotation(BarrelPos, target.Center.position, true);
