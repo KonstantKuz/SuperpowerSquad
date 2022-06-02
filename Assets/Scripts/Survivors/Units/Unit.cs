@@ -27,10 +27,10 @@ namespace Survivors.Units
         private IUnitDeathEventReceiver[] _deathEventReceivers;
         private MovementController _movementController;
 
-        public ITarget SelfTarget => _selfTarget;
         public bool IsAlive { get; set; }
 
         public UnitType UnitType => _selfTarget.UnitType;
+        public UnitType TargetUnitType => _selfTarget.UnitType.GetTargetUnitType();
         public IUnitModel Model { get; private set; }
         public event Action<IUnit> OnDeath;
         public MovementController MovementController => _movementController ??= GetComponent<MovementController>();

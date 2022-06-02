@@ -42,12 +42,15 @@ namespace Survivors.Units.Player.Attack
             _attackModel.ShotCount.Subscribe(CreateSaws).AddTo(_disposable);
             _squad.UnitsCount.Subscribe(UpdateRadius).AddTo(_disposable);
         }
+        
         private void CreateSaws(int count)
         {
             _circularSawWeapon.CleanUpSaws();
+            var projectileParams = GetSawParamsForSquad();
+            var targetType = _ownerUnit.TargetUnitType;
             for (int i = 0; i < count; i++)
             {
-                _circularSawWeapon.AddSaw(_ownerUnit.SelfTarget.UnitType.GetTargetUnitType(), DoDamage);
+                _circularSawWeapon.AddSaw(targetType, projectileParams, DoDamage);
             }
         }
 
