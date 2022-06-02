@@ -5,7 +5,7 @@ using Survivors.Units.Component.Health;
 using Survivors.Units.Target;
 using UnityEngine;
 
-namespace Survivors.Units.Weapon
+namespace Survivors.Units.Weapon.Projectiles
 {
     public class Explosion : MonoBehaviour
     {
