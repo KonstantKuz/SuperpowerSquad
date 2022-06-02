@@ -9,6 +9,7 @@ using JetBrains.Annotations;
 using SuperMaxim.Core.Extensions;
 using Survivors.Extension;
 using Survivors.Modifiers;
+using Survivors.Session;
 using Survivors.Squad.Component;
 using Survivors.Squad.Formation;
 using Survivors.Squad.Model;
@@ -23,7 +24,7 @@ using Unit = Survivors.Units.Unit;
 
 namespace Survivors.Squad
 {
-    public class Squad : MonoBehaviour
+    public class Squad : MonoBehaviour, IWorldScope
     {
         [SerializeField] private float _unitSize;
         
@@ -71,6 +72,17 @@ namespace Survivors.Squad
             SetUnitPositions();
             UpdateUnitsAnimations();
         }
+        
+        public void OnWorldSetup()
+        {
+        }
+
+        public void OnWorldCleanUp()
+        {
+            _units.Clear();
+            Model = null;
+        }        
+        
         private void Kill()
         {
             IsAlive = false;
@@ -78,11 +90,6 @@ namespace Survivors.Squad
             _units.ForEach(it => it.Kill());
             OnDeath?.Invoke();
             _units.Clear();
-        }  
-        private void OnDestroy()
-        {
-            _units.Clear();
-            Model = null;
         }
 
         public void AddUnit(Unit unit)
