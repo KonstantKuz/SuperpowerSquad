@@ -13,11 +13,5 @@ namespace Survivors.Squad.Formation
             var angle = 360 * unitIdx / unitsCount;
             return Quaternion.AngleAxis(angle, Vector3.up) * Vector3.right * formationRadius;
         }
-
-        public Vector3 GetSpawnOffset(float unitRadius, int unitCountBefore)
-        {
-            var isUnitInCenter = unitCountBefore == SINGLE_UNIT_SQUAD; //the only squad size when there is a unit right in center
-            return isUnitInCenter ? GetUnitOffset(SINGLE_UNIT_SQUAD, unitRadius, SINGLE_UNIT_SQUAD + 1) : Vector3.zero;
-        }
     }
 }

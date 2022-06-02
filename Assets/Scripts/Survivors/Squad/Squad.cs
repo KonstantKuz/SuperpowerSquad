@@ -9,6 +9,7 @@ using JetBrains.Annotations;
 using SuperMaxim.Core.Extensions;
 using Survivors.Extension;
 using Survivors.Modifiers;
+using Survivors.Session;
 using Survivors.Squad.Component;
 using Survivors.Squad.Formation;
 using Survivors.Squad.Model;
@@ -23,11 +24,11 @@ using Unit = Survivors.Units.Unit;
 
 namespace Survivors.Squad
 {
-    public class Squad : MonoBehaviour
+    public class Squad : MonoBehaviour, IWorldScope
     {
         [SerializeField] private float _unitSize;
-
-        private readonly ISquadFormation _formation = new CircleFormation();
+        
+        private ISquadFormation _formation;
         private readonly IReactiveCollection<Unit> _units = new List<Unit>().ToReactiveCollection();
         
         private IDamageable _damageable;
@@ -58,6 +59,7 @@ namespace Survivors.Squad
 
         public void Awake()
         {
+            _formation = new FilledCircleFormation();
             Destination = gameObject.RequireComponentInChildren<SquadDestination>();
             _damageable = gameObject.RequireComponent<IDamageable>();
             UpdateFormationAndRadius();
@@ -70,6 +72,17 @@ namespace Survivors.Squad
             SetUnitPositions();
             UpdateUnitsAnimations();
         }
+        
+        public void OnWorldSetup()
+        {
+        }
+
+        public void OnWorldCleanUp()
+        {
+            _units.Clear();
+            Model = null;
+        }        
+        
         private void Kill()
         {
             IsAlive = false;
@@ -77,11 +90,6 @@ namespace Survivors.Squad
             _units.ForEach(it => it.Kill());
             OnDeath?.Invoke();
             _units.Clear();
-        }  
-        private void OnDestroy()
-        {
-            _units.Clear();
-            Model = null;
         }
 
         public void AddUnit(Unit unit)
@@ -147,13 +155,21 @@ namespace Survivors.Squad
 
         private void SetUnitPositions()
         {
-            for (var unitIdx = 0; unitIdx < _units.Count; unitIdx++)
-                _units[unitIdx].transform.position = GetUnitPosition(unitIdx);
+            //place long ranged units inside formations (close to center) and close ranged units to outer layers of formations            
+            var unitsOrderedByRange = _units.ToList().OrderByDescending(it => it.Model.AttackModel.AttackDistance).ToList();
+            var positionsOrderedByDistance = GetUnitOffsets().OrderBy(it => it.magnitude).ToList();
+            for (var unitIdx = 0; unitIdx < unitsOrderedByRange.Count; unitIdx++)
+            {
+                unitsOrderedByRange[unitIdx].transform.position = Destination.transform.position + positionsOrderedByDistance[unitIdx];
+            }
         }
 
-        private Vector3 GetUnitPosition(int unitIdx)
+        private IEnumerable<Vector3> GetUnitOffsets()
         {
-            return Destination.transform.position + _formation.GetUnitOffset(unitIdx, _unitSize, _units.Count);
+            for (int i = 0; i < _units.Count; i++)
+            {
+                yield return _formation.GetUnitOffset(i, _unitSize, _units.Count);
+            }
         }
 
         private void Move(Vector3 joystickDirection)
