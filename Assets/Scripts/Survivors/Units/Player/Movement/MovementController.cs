@@ -20,7 +20,6 @@ namespace Survivors.Units.Player.Movement
         private float _rotationSpeed = 10;
         
         private Animator _animator;
-        private CompositeDisposable _disposable;
         public bool HasTarget { get; private set; }
 
         private void Awake()
@@ -60,10 +59,16 @@ namespace Survivors.Units.Player.Movement
         
         public void OnDeath()
         {
-            _disposable?.Dispose();
-            _disposable = null;
+            StopAnimation();
         }
-        
+
+        private void StopAnimation()
+        {
+            _animator.Play(_idleHash);
+            _animator.SetFloat(_horizontalMotionHash, 0);
+            _animator.SetFloat(_verticalMotionHash, 0);
+        }
+
         private void UpdateAnimationRotateValues(Vector3 moveDirection)
         {
             if (moveDirection.sqrMagnitude <= 0) {

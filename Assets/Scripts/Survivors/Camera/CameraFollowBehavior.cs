@@ -40,7 +40,7 @@ namespace Survivors.Camera
             var focusPos = transform.position - _shiftDownCoeff * _target.SquadRadius * Vector3.forward;
             cameraTransform.position = focusPos - _distanceToTarget * cameraTransform.forward;
         }
-
+        
         private void OnDestroy()
         {
             _animation?.Kill();
