@@ -10,6 +10,8 @@ namespace Editor.Scripts
 {
     public class CirclePackingAssetBuilder
     {
+        private const string PACKING_DATA_PATH = "Assets/Content/CirclePacking";
+
         [MenuItem("Survivors/GenerateCirclePacking")]
         static void GenerateCirclePacking()
         {
@@ -18,8 +20,8 @@ namespace Editor.Scripts
              *  Они содержат координаты центров для каждого количества кругов
              *  Пока я скопировал в проект наборы до 40 кругов. Потребуется больше - можно добавить...
              */
-            var guids = AssetDatabase.FindAssets("t:TextAsset", new [] {"Assets/CirclePacking"});
-            var dict = new Dictionary<int, CirclePackingData.CirclePacking>();
+            var guids = AssetDatabase.FindAssets("t:TextAsset", new [] { PACKING_DATA_PATH });
+            var packings = new Dictionary<int, CirclePackingData.CirclePacking>();
             foreach (var guid in guids)
             {
                 var path = AssetDatabase.GUIDToAssetPath(guid);
@@ -32,21 +34,21 @@ namespace Editor.Scripts
                         .Select(ParseLine)
                         .ToList()
                 };
-                dict[packing.Positions.Count] = packing;
+                packings[packing.Positions.Count] = packing;
             }
             
             var asset = ScriptableObject.CreateInstance<CirclePackingData>();
-            asset.SetData(dict.OrderBy(it => it.Key).Select(it => it.Value).ToList());
-            AssetDatabase.CreateAsset(asset, "Assets/Resources/CirclePacking.asset");
+            asset.SetData(packings.OrderBy(it => it.Key).Select(it => it.Value).ToList());
+            AssetDatabase.CreateAsset(asset,  Path.Combine("Assets/Resources", FilledCircleFormation.CIRCLE_PACKING_ASSET_NAME + ".asset"));
             AssetDatabase.SaveAssets();
         }
 
-        private static CirclePackingData.Pos ParseLine(string line)
+        private static CirclePackingData.Position ParseLine(string line)
         {
             var items = line.Split(' ').Where(it => !string.IsNullOrEmpty(it)).ToList();
             var x = float.Parse(items[1], CultureInfo.InvariantCulture);
             var y = float.Parse(items[2], CultureInfo.InvariantCulture);
-            var pos = new CirclePackingData.Pos
+            var pos = new CirclePackingData.Position
             {
                 X = x,
                 Y = y

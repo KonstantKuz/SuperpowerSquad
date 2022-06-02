@@ -164,15 +164,12 @@ namespace Survivors.Squad
             }
         }
 
-        private List<Vector3> GetUnitOffsets()
+        private IEnumerable<Vector3> GetUnitOffsets()
         {
-            var rez = new List<Vector3>();
             for (int i = 0; i < _units.Count; i++)
             {
-                rez.Add(_formation.GetUnitOffset(i, _unitSize, _units.Count));
+                yield return _formation.GetUnitOffset(i, _unitSize, _units.Count);
             }
-
-            return rez;
         }
 
         private void Move(Vector3 joystickDirection)
