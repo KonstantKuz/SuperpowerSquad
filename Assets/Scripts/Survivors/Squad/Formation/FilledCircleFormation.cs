@@ -4,16 +4,17 @@ namespace Survivors.Squad.Formation
 {
     public class FilledCircleFormation: ISquadFormation
     {
+        public const string CIRCLE_PACKING_ASSET_NAME = "CirclePacking";
         private readonly CirclePackingData _packingData;
 
         public FilledCircleFormation()
         {
-            _packingData = Resources.Load<CirclePackingData>("CirclePacking");
+            _packingData = Resources.Load<CirclePackingData>(CIRCLE_PACKING_ASSET_NAME);
         }
 
         public Vector3 GetUnitOffset(int unitIdx, float unitRadius, int unitsCount)
         {
-            var pos = _packingData.GetPos(unitIdx, unitsCount);
+            var pos = _packingData.GetPosition(unitIdx, unitsCount);
             return GetRadius(unitRadius, unitsCount) * new Vector3(pos.X, 0, pos.Y);
         }
 

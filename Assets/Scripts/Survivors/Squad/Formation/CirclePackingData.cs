@@ -8,7 +8,7 @@ namespace Survivors.Squad.Formation
     public class CirclePackingData: ScriptableObject
     {
         [Serializable]
-        public struct Pos
+        public struct Position
         {
             public float X;
             public float Y;
@@ -17,15 +17,15 @@ namespace Survivors.Squad.Formation
         [Serializable]
         public struct CirclePacking
         {
-            public List<Pos> Positions;
+            public List<Position> Positions;
         }
         
         [SerializeField]
         private List<CirclePacking> _packings;
 
-        public Pos GetPos(int idx, int count)
+        public Position GetPosition(int positionIdx, int totalPositionCount)
         {
-            return _packings[count - 1].Positions[idx];;
+            return _packings[totalPositionCount - 1].Positions[positionIdx];;
         }
 
         public void SetData(List<CirclePacking> packings)
