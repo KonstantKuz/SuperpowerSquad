@@ -15,6 +15,10 @@ namespace Survivors.Units.Enemy
     public class EnemyAi : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent
     {
         [SerializeField] private float _targetSelectionDistance = 10f;
+        [SerializeField] private float _agentRadiusAfar;
+        [SerializeField] private float _agentRadiusNear;
+        [SerializeField] private float _agentDistanceAfar;
+        [SerializeField] private float _agentDistanceNear;
         
         private NavMeshAgent _agent;
         private ITarget _target;
@@ -61,6 +65,8 @@ namespace Survivors.Units.Enemy
 
         public void OnTick()
         {
+            UpdateAgentRadius();
+            
             if (DistanceToSquad > _targetSelectionDistance) 
             {
                 _agent.destination = SquadPosition;
@@ -77,6 +83,13 @@ namespace Survivors.Units.Enemy
 
             _agent.destination = CurrentTarget.Root.position;
             _agent.isStopped = false;
+        }
+
+        private void UpdateAgentRadius()
+        {
+            _agent.radius = Mathf.Lerp(_agentRadiusNear,
+                _agentRadiusAfar,
+                (DistanceToSquad - _agentDistanceNear) / (_agentDistanceAfar - _agentDistanceNear));
         }
 
         private void FindTarget()

@@ -18,5 +18,9 @@ namespace Survivors.Units.Enemy.Config
         public EnemyAttackConfig EnemyAttackConfig;
         [DataMember] 
         public DroppingLootConfig DroppingLootConfig;
+        [DataMember] 
+        public int HealthStep;
+        [DataMember]
+        public float ScaleStep;
     }
 }

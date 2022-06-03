@@ -27,14 +27,14 @@ namespace Survivors.Squad.Component.Hud
         {
             CleanUp();
             _disposable = new CompositeDisposable();
-            squad.UnitsCount.Subscribe(UpdateHudPlaceOffset).AddTo(_disposable);
+            squad.UnitsCount.Subscribe(it=>UpdateHudPlaceOffset(squad.SquadRadius)).AddTo(_disposable);
             _hudPresenter = _container.InstantiatePrefabForComponent<HudPresenter>(_hudPrefab);
             _hudPresenter.Init(this, _hudPlace);
         }
 
-        private void UpdateHudPlaceOffset(int unitCount)
+        private void UpdateHudPlaceOffset(float radius)
         {
-            _hudPresenter.UpdateHudPlaceOffset(unitCount * _hudPlaceOffset);
+            _hudPresenter.UpdateHudPlaceOffset(radius * _hudPlaceOffset);
         }
 
         private void OnDestroy()
