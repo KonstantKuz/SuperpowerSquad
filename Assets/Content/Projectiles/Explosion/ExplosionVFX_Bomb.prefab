@@ -19238,7 +19238,7 @@ GameObject:
   - component: {fileID: 1015011755233289296}
   - component: {fileID: 1015011755233350554}
   m_Layer: 0
-  m_Name: BazookaHit_2
+  m_Name: ExplosionVFX_Bomb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

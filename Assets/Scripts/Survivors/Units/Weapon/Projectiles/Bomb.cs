@@ -12,6 +12,10 @@ namespace Survivors.Units.Weapon.Projectiles
     public class Bomb : Projectile
     {
         [SerializeField]
+        private Vector2 _explosionRadiusRange;
+        [SerializeField]
+        private Vector2 _explosionScaleRange;
+        [SerializeField]
         private Vector2 _heightRange;
         [SerializeField]
         private Explosion _explosion;
@@ -51,7 +55,9 @@ namespace Survivors.Units.Weapon.Projectiles
 
         private void Explode(Vector3 pos)
         {
-            Explosion.Create(_objectFactory, _explosion, pos, Params.DamageRadius, TargetType, HitCallback);
+            var explosion = Explosion.Create(_objectFactory, _explosion, pos, Params.DamageRadius, TargetType, HitCallback);
+            var scaleMultiplier = MathLib.Remap(Params.DamageRadius, _explosionRadiusRange.x, _explosionRadiusRange.y, _explosionScaleRange.x, _explosionScaleRange.y);
+            explosion.transform.localScale *= scaleMultiplier;
             Destroy();
         }
 

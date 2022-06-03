@@ -48,8 +48,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86cfae2fe7f59b743a1b0ab682e40da7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _heightRange: {x: 1, y: 5}
-  _explosion: {fileID: 1836528195526790802, guid: f19e1685fb6476f4d83ad6b7d05bfd2e, type: 3}
+  _explosionRadiusRange: {x: 2, y: 6}
+  _explosionScaleRange: {x: 1, y: 3}
+  _heightRange: {x: 1, y: 7}
+  _explosion: {fileID: 1836528195526790802, guid: 1555fb1dd89f36d4382a203336e143e4, type: 3}
   _trail: {fileID: 393400335751093123}
 --- !u!54 &6482411132083869501
 Rigidbody:
