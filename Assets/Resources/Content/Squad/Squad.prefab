@@ -262,7 +262,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _hudPrefab: {fileID: 2952826858694922931, guid: 60ee3281ab8997e478d99f0a185cdf69, type: 3}
   _hudPlace: {fileID: 5330639236914749494}
-  _hudPlaceOffset: 0.3
+  _hudPlaceOffset: 1
 --- !u!114 &4477187146966790282
 MonoBehaviour:
   m_ObjectHideFlags: 0
