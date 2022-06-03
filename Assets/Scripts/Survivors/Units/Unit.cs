@@ -12,6 +12,7 @@ using Survivors.Units.Target;
 using Zenject;
 using Survivors.Units.Model;
 using Survivors.Units.Player.Movement;
+using UnityEngine;
 
 namespace Survivors.Units
 {
@@ -44,6 +45,7 @@ namespace Survivors.Units
             _death = gameObject.RequireComponent<IUnitDeath>();
             _selfTarget = gameObject.RequireComponent<ITarget>();
             _deathEventReceivers = GetComponentsInChildren<IUnitDeathEventReceiver>();
+            transform.localScale *= Model.Scale;
 
             _damageable.OnDeath += Kill;
             _unitService.Add(this);
