@@ -48,17 +48,17 @@ namespace Survivors.EnemySpawn
             {
                 yield return new WaitForSeconds(wave.SpawnTime - currentTime);
                 currentTime = wave.SpawnTime; 
-                SpawnNextWave(wave.Count);
+                SpawnNextWave(wave.Count, 1);
             } 
             Dispose();
         }
         
-        private void SpawnNextWave(int spawnCount)
+        public void SpawnNextWave(int spawnCount, int level)
         {
             var place = GetRandomPlaceForWave(spawnCount * _outOfViewOffsetMultiplier);
             for (int i = 0; i < spawnCount; i++) 
             {
-                SpawnEnemy(place);
+                SpawnEnemy(place, level);
             }
         }
         
@@ -108,9 +108,9 @@ namespace Survivors.EnemySpawn
             return place;
         }
 
-        private void SpawnEnemy(Vector3 place)
+        private void SpawnEnemy(Vector3 place, int level)
         {
-            var enemy = _unitFactory.CreateEnemy();
+            var enemy = _unitFactory.CreateEnemy(level);
             var enemyAi = enemy.GetComponent<EnemyAi>();
             enemyAi.NavMeshAgent.Warp(place);
         }
