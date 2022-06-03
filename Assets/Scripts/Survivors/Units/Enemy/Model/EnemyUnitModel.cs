@@ -8,8 +8,6 @@ namespace Survivors.Units.Enemy.Model
 {
     public class EnemyUnitModel : IUnitModel
     {
-        public const int MIN_LEVEL = 1;
-        
         public string Id { get; }
         public float MoveSpeed { get; }
         public IHealthModel HealthModel { get; }
@@ -19,12 +17,12 @@ namespace Survivors.Units.Enemy.Model
 
         public EnemyUnitModel(EnemyUnitConfig config, int level = 1)
         {
-            Assert.IsTrue(level >= MIN_LEVEL);
+            Assert.IsTrue(level >= EnemyUnitConfig.MIN_LEVEL);
             Id = config.Id;
             MoveSpeed = config.MoveSpeed;
             Level = level;
-            Scale = Mathf.Pow(config.ScaleStep, level - MIN_LEVEL);
-            HealthModel = new EnemyHealthModel(config.Health + (level - MIN_LEVEL) * config.HealthStep);
+            Scale = config.GetScaleForLevel(level);
+            HealthModel = new EnemyHealthModel(config.GetHealthForLevel(level));
             AttackModel = new EnemyAttackModel(config.EnemyAttackConfig);
         }
 

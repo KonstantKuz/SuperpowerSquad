@@ -2,12 +2,13 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Feofun.Config;
 using Feofun.Extension;
 using Survivors.EnemySpawn.Config;
 using Survivors.Location;
 using Survivors.Session;
-using Survivors.Squad;
 using Survivors.Units.Enemy;
+using Survivors.Units.Enemy.Config;
 using Survivors.Units.Service;
 using UnityEngine;
 using Zenject;
@@ -25,6 +26,7 @@ namespace Survivors.EnemySpawn
         
         [Inject] private UnitFactory _unitFactory;
         [Inject] private World _world;
+        [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
 
         public void OnWorldSetup()
         {
@@ -55,7 +57,7 @@ namespace Survivors.EnemySpawn
         
         private void SpawnNextWave(EnemyWaveConfig wave)
         {
-            var place = GetRandomPlaceForWave(wave.Count * _outOfViewOffsetMultiplier);
+            var place = GetRandomPlaceForWave(wave);
             SpawnWave(wave, place);
         }
 
@@ -67,8 +69,10 @@ namespace Survivors.EnemySpawn
             }
         }
 
-        public Vector3 GetRandomPlaceForWave(float waveRadius)
+        public Vector3 GetRandomPlaceForWave(EnemyWaveConfig wave)
         {
+            var enemyConfig = _enemyUnitConfigs.Get(wave.EnemyId);
+            var waveRadius = wave.Count * enemyConfig.GetScaleForLevel(wave.EnemyLevel);
             var camera = UnityEngine.Camera.main;
             var spawnSide = EnumExt.GetRandom<SpawnSide>();
             var randomViewportPoint = GetRandomPointOnViewportEdge(spawnSide);
