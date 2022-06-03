@@ -7,6 +7,10 @@ namespace Survivors.EnemySpawn.Config
         [DataMember]
         public int SpawnTime;
         [DataMember]
-        public int Count;
+        public int Count;    
+        [DataMember]
+        public string EnemyId;       
+        [DataMember]
+        public int EnemyLevel;
     }
 }
