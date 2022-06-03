@@ -52,24 +52,29 @@ namespace Survivors.EnemySpawn
             } 
             Dispose();
         }
-        
-        public void SpawnNextWave(int spawnCount, int level)
+
+        private void SpawnNextWave(int spawnCount, int level)
         {
-            var place = GetRandomPlaceForWave(spawnCount * _outOfViewOffsetMultiplier);
-            for (int i = 0; i < spawnCount; i++) 
+            var place = GetRandomPlaceForWave(spawnCount);
+            SpawnEnemiesInPlace(spawnCount, level, place);
+        }
+
+        public void SpawnEnemiesInPlace(int spawnCount, int level, Vector3 place)
+        {
+            for (int i = 0; i < spawnCount; i++)
             {
                 SpawnEnemy(place, level);
             }
         }
-        
-        private Vector3 GetRandomPlaceForWave(float waveRadius)
+
+        public Vector3 GetRandomPlaceForWave(float waveRadius)
         {
             var camera = UnityEngine.Camera.main;
             var spawnSide = EnumExt.GetRandom<SpawnSide>();
             var randomViewportPoint = GetRandomPointOnViewportEdge(spawnSide);
             var pointRay =  camera.ViewportPointToRay(randomViewportPoint);
             var place = _world.GetGroundIntersection(pointRay);
-            return GetSpawnPlaceWithOffset(place, spawnSide, waveRadius);
+            return GetSpawnPlaceWithOffset(place, spawnSide, waveRadius * _outOfViewOffsetMultiplier);
         }
 
         private Vector2 GetRandomPointOnViewportEdge(SpawnSide spawnSide)

@@ -1,5 +1,5 @@
-StartingHPS,300
-HPSSpeed,300
+StartingHPS,100
+HPSSpeed,10
 MinWaveSize,10
 MaxWaveSize,15
 MinInterval,2
