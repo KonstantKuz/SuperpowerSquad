@@ -1,5 +1,5 @@
 Id,Modifier,ParameterName,Value,Target
-AttackDamage5,AddValue,AttackDamage,5,Unit
+AttackDamage25,AddValue,AttackDamage,25,Unit
 AttackDamage10Percent,AddPercent,AttackDamage,10,Unit
 Health100,AddValue,Health,100,Unit
 Health200,AddValue,Health,200,Unit
@@ -7,8 +7,15 @@ ShotCount,AddValue,ShotCount,1,Unit
 AttackDistance1,AddValue,AttackDistance,1,Unit
 Health10Percent,AddPercent,Health,10,Unit
 AttackTime10Percent,AddPercent,AttackTime,-10,Unit
-AttackTime0.4,AddValue,AttackTime,-0.4,Unit
+AttackTime1,AddValue,AttackTime,-1,Unit
 CollectRadiusSquad1,AddValue,CollectRadius,1,Squad
 SpeedSquad0.5,AddValue,Speed,0.5,Squad
-DamageRadius1,AddValue,DamageRadius,1,Unit
+DamageRadius3,AddValue,DamageRadius,3,Unit
 ProjectileSpeed50,AddValue,ProjectileSpeed,50,Unit
+DamageAngle20,AddValue,DamageAngle,20,Unit
+ShotCount1,AddValue,ShotCount,1,Unit
+ProjectileSpeed10Percent,AddPercent,ProjectileSpeed,10,Unit
+AttackTime0.1,AddValue,AttackTime,-0.1,Unit
+AttackDamage10,AddValue,AttackDamage,10,Unit
+AttackDistance3,AddValue,AttackDistance,3,Unit
+AttackDamage50,AddValue,AttackDamage,50,Unit
