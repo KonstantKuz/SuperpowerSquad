@@ -5,7 +5,6 @@ using Survivors.EnemySpawn.Config;
 using Survivors.Session;
 using Survivors.Units.Enemy.Config;
 using Survivors.Units.Enemy.Model;
-using Survivors.Units.Service;
 using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
@@ -14,6 +13,8 @@ namespace Survivors.EnemySpawn
 {
     public class HpsSpawner : MonoBehaviour, IWorldScope
     {
+        private const string ENEMY_ID = "SimpleEnemy";
+        
         [SerializeField] private EnemyWavesSpawner _enemyWavesSpawner;
         private Coroutine _spawnCoroutine;
         
@@ -63,7 +64,7 @@ namespace Survivors.EnemySpawn
             Log($"Spawning wave of health {health}");
             var unitCount = Random.Range(Config.MinWaveSize, Config.MaxWaveSize + 1);
             var averageHealth = health / unitCount;
-            var enemyUnitConfig = _enemyUnitConfigs.Get(UnitFactory.SIMPLE_ENEMY_ID);
+            var enemyUnitConfig = _enemyUnitConfigs.Get(ENEMY_ID);
             var averageLevel = EnemyUnitModel.MIN_LEVEL + (averageHealth - enemyUnitConfig.Health) / enemyUnitConfig.HealthStep;
             var place = _enemyWavesSpawner.GetRandomPlaceForWave(unitCount); //TODO: user correct unit radius    
             
@@ -86,7 +87,12 @@ namespace Survivors.EnemySpawn
         private void SpawnWave(int count, int level, Vector3 place)
         {
             Log($"Spawning wave of {count} units of level {level}");
-            _enemyWavesSpawner.SpawnEnemiesInPlace(count, level, place);
+            _enemyWavesSpawner.SpawnWaveInPlace(new EnemyWaveConfig()
+            {
+                Count = count,
+                EnemyId = ENEMY_ID,
+                EnemyLevel = level
+            }, place);
         }
 
         private static void Log(string message)

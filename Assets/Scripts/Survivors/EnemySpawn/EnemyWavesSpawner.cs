@@ -56,12 +56,17 @@ namespace Survivors.EnemySpawn
         private void SpawnNextWave(EnemyWaveConfig wave)
         {
             var place = GetRandomPlaceForWave(wave.Count * _outOfViewOffsetMultiplier);
-            for (int i = 0; i < wave.Count; i++) 
+            SpawnWaveInPlace(wave, place);
+        }
+
+        public void SpawnWaveInPlace(EnemyWaveConfig wave, Vector3 place)
+        {
+            for (int i = 0; i < wave.Count; i++)
             {
                 SpawnEnemy(place, wave);
             }
         }
-        
+
         public Vector3 GetRandomPlaceForWave(float waveRadius)
         {
             var camera = UnityEngine.Camera.main;
