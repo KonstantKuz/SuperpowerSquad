@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using SuperMaxim.Core.Extensions;
 using Survivors.Units.Weapon.Projectiles;
 using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
@@ -10,7 +9,7 @@ namespace Survivors.Units.Weapon
     public class CircularSawsRoot : MonoBehaviour
     {
         private Transform _rotationCenter;
-        private float _rotationSpeed;
+        private IProjectileParams _projectileParams;
 
         private Dictionary<CircularSawWeapon, List<CircularSaw>> _sawsByOwner;
         
@@ -35,7 +34,7 @@ namespace Survivors.Units.Weapon
 
         public void OnParamsChanged(IProjectileParams projectileParams)
         {
-            _rotationSpeed = projectileParams.Speed;
+            _projectileParams = projectileParams;
             PlaceSaws();
         }
 
@@ -55,7 +54,7 @@ namespace Survivors.Units.Weapon
         {
             if(!Initialized) return;
             transform.position = _rotationCenter.position;
-            transform.localRotation *= Quaternion.Euler(0, _rotationSpeed * Time.deltaTime, 0);
+            transform.localRotation *= Quaternion.Euler(0, _projectileParams.Speed * Time.deltaTime, 0);
         }
     }
 }
