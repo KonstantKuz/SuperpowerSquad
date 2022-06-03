@@ -19,6 +19,6 @@ namespace Survivors.Units.Player.Model
         public string Id => _config.Id;
         public IHealthModel HealthModel { get; }
         public IAttackModel AttackModel => _playerAttackModel;
-        public float Scale => 1;
+        public float ScaleFactor => 1;
     }
 }

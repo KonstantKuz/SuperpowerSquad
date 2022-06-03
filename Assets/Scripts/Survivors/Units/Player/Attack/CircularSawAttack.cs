@@ -28,7 +28,7 @@ namespace Survivors.Units.Player.Attack
             _ownerUnit = unit as Unit;
             if (!(unit.Model.AttackModel is PlayerAttackModel attackModel))
             {
-                throw new ArgumentException("Unit must be a player unit.");
+                throw new ArgumentException($"Unit must be a player unit, gameObj:= {gameObject.name}");
             }
             _attackModel = attackModel;
         }
