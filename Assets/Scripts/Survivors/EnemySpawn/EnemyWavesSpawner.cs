@@ -48,25 +48,20 @@ namespace Survivors.EnemySpawn
             {
                 yield return new WaitForSeconds(wave.SpawnTime - currentTime);
                 currentTime = wave.SpawnTime; 
-                SpawnNextWave(wave.Count, 1);
+                SpawnNextWave(wave);
             } 
             Dispose();
         }
-
-        private void SpawnNextWave(int spawnCount, int level)
+        
+        private void SpawnNextWave(EnemyWaveConfig wave)
         {
-            var place = GetRandomPlaceForWave(spawnCount);
-            SpawnEnemiesInPlace(spawnCount, level, place);
-        }
-
-        public void SpawnEnemiesInPlace(int spawnCount, int level, Vector3 place)
-        {
-            for (int i = 0; i < spawnCount; i++)
+            var place = GetRandomPlaceForWave(wave.Count * _outOfViewOffsetMultiplier);
+            for (int i = 0; i < wave.Count; i++) 
             {
-                SpawnEnemy(place, level);
+                SpawnEnemy(place, wave);
             }
         }
-
+        
         public Vector3 GetRandomPlaceForWave(float waveRadius)
         {
             var camera = UnityEngine.Camera.main;
@@ -113,9 +108,9 @@ namespace Survivors.EnemySpawn
             return place;
         }
 
-        private void SpawnEnemy(Vector3 place, int level)
+        private void SpawnEnemy(Vector3 place, EnemyWaveConfig wave)
         {
-            var enemy = _unitFactory.CreateEnemy(level);
+            var enemy = _unitFactory.CreateEnemy(wave.EnemyId, wave.EnemyLevel);
             var enemyAi = enemy.GetComponent<EnemyAi>();
             enemyAi.NavMeshAgent.Warp(place);
         }
