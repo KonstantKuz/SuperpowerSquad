@@ -56,10 +56,10 @@ namespace Survivors.EnemySpawn
         private void SpawnNextWave(EnemyWaveConfig wave)
         {
             var place = GetRandomPlaceForWave(wave.Count * _outOfViewOffsetMultiplier);
-            SpawnWaveInPlace(wave, place);
+            SpawnWave(wave, place);
         }
 
-        public void SpawnWaveInPlace(EnemyWaveConfig wave, Vector3 place)
+        public void SpawnWave(EnemyWaveConfig wave, Vector3 place)
         {
             for (int i = 0; i < wave.Count; i++)
             {

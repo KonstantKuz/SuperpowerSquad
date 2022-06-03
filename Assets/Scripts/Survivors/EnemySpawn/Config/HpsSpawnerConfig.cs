@@ -1,7 +1,4 @@
-﻿using System.IO;
-using System.Runtime.Serialization;
-using Feofun.Config;
-using Feofun.Config.Csv;
+﻿using System.Runtime.Serialization;
 
 namespace Survivors.EnemySpawn.Config
 {
@@ -19,15 +16,7 @@ namespace Survivors.EnemySpawn.Config
         public float MinInterval;
         [DataMember]
         public float MaxInterval;
-    }
-
-    public class HpsSpawnerConfigLoader : ILoadableConfig
-    {
-        public HpsSpawnerConfig Config { get; private set; }
-        
-        public void Load(Stream stream)
-        {
-            Config = new CsvSerializer().ReadSingleObject<HpsSpawnerConfig>(stream);
-        }
+        [DataMember] 
+        public string EnemyId;
     }
 }

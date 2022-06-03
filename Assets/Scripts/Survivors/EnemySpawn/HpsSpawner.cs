@@ -13,8 +13,6 @@ namespace Survivors.EnemySpawn
 {
     public class HpsSpawner : MonoBehaviour, IWorldScope
     {
-        private const string ENEMY_ID = "SimpleEnemy";
-        
         [SerializeField] private EnemyWavesSpawner _enemyWavesSpawner;
         private Coroutine _spawnCoroutine;
         
@@ -55,16 +53,16 @@ namespace Survivors.EnemySpawn
                 yield return new WaitForSeconds(timeToNextWave);
                 time += timeToNextWave;
                 var health = timeToNextWave * (Config.StartingHPS + Config.HPSSpeed * time);
-                SpawnEnemies(health);
+                SpawnWave(health);
             }
         }
 
-        private void SpawnEnemies(float health)
+        private void SpawnWave(float health)
         {
             Log($"Spawning wave of health {health}");
             var unitCount = Random.Range(Config.MinWaveSize, Config.MaxWaveSize + 1);
             var averageHealth = health / unitCount;
-            var enemyUnitConfig = _enemyUnitConfigs.Get(ENEMY_ID);
+            var enemyUnitConfig = _enemyUnitConfigs.Get(Config.EnemyId);
             var averageLevel = EnemyUnitModel.MIN_LEVEL + (averageHealth - enemyUnitConfig.Health) / enemyUnitConfig.HealthStep;
             var place = _enemyWavesSpawner.GetRandomPlaceForWave(unitCount); //TODO: user correct unit radius    
             
@@ -74,23 +72,28 @@ namespace Survivors.EnemySpawn
             }
             else
             {
-                var partition = averageLevel % 1;
-                var highLevelCount = (int)(partition * unitCount);
-                var lowerLevelCount = Mathf.RoundToInt(unitCount - highLevelCount);
-                var lowerLevel = (int)Math.Floor(averageLevel);
-                var highLevel = lowerLevel + 1;
-                SpawnWave(highLevelCount, highLevel, place);
-                SpawnWave(lowerLevelCount, lowerLevel, place);
+                SpawnMixedWave(averageLevel, unitCount, place);
             }
+        }
+
+        private void SpawnMixedWave(float averageLevel, float unitCount, Vector3 place)
+        {
+            var partition = averageLevel % 1;
+            var highLevelCount = (int)(partition * unitCount);
+            var lowerLevelCount = Mathf.RoundToInt(unitCount - highLevelCount);
+            var lowerLevel = (int)Math.Floor(averageLevel);
+            var highLevel = lowerLevel + 1;
+            SpawnWave(highLevelCount, highLevel, place);
+            SpawnWave(lowerLevelCount, lowerLevel, place);
         }
 
         private void SpawnWave(int count, int level, Vector3 place)
         {
             Log($"Spawning wave of {count} units of level {level}");
-            _enemyWavesSpawner.SpawnWaveInPlace(new EnemyWaveConfig()
+            _enemyWavesSpawner.SpawnWave(new EnemyWaveConfig()
             {
                 Count = count,
-                EnemyId = ENEMY_ID,
+                EnemyId = Config.EnemyId,
                 EnemyLevel = level
             }, place);
         }
