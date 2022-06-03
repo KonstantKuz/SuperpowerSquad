@@ -12,44 +12,41 @@ namespace Survivors.Units.Weapon
         private Transform _rotationCenter;
         private float _rotationSpeed;
 
-        private List<CircularSaw> _saws;
+        private Dictionary<CircularSawWeapon, List<CircularSaw>> _sawsByOwner;
         
         private bool Initialized => _rotationCenter != null;
-        public List<CircularSaw> Saws => _saws ??= new List<CircularSaw>();
+        private Dictionary<CircularSawWeapon, List<CircularSaw>> SawsByOwner => _sawsByOwner ??= new Dictionary<CircularSawWeapon, List<CircularSaw>>();
 
-        public void Init(Transform rotationCenter, float rotationSpeed)
+        public void SetCenter(Transform rotationCenter)
         {
             _rotationCenter = rotationCenter;
-            _rotationSpeed = rotationSpeed;
         }
 
-        public void AddSaw(CircularSaw newSaw, CircularSawWeapon fromWeapon)
+        public void OnWeaponInit(CircularSawWeapon owner)
         {
-            fromWeapon.SawsCount++;
-            newSaw.transform.SetParent(transform);
-            Saws.Add(newSaw);
+            SawsByOwner[owner] = owner.OwnSaws;
             PlaceSaws();
+        }
+
+        public void OnWeaponCleanUp(CircularSawWeapon owner)
+        {
+            SawsByOwner.Remove(owner);
         }
 
         public void OnParamsChanged(IProjectileParams projectileParams)
         {
-            Saws.ForEach(it => it.OnParamsChanged(projectileParams));
+            _rotationSpeed = projectileParams.Speed;
             PlaceSaws();
-        }
-
-        public void CleanUpSaws(CircularSawWeapon fromWeapon)
-        {
-            _saws?.Take(fromWeapon.SawsCount).ForEach(Destroy);
-            fromWeapon.SawsCount = 0;
         }
 
         private void PlaceSaws()
         {
-            var angleStep = 360f / _saws.Count;
+            var saws = _sawsByOwner.Values.SelectMany(owner => owner).ToList();
+            var angleStep = 360f / saws.Count;
             var currentPlaceAngle = 0f;
-            for (int i = 0; i < _saws.Count; i++)
+            foreach (var saw in saws)
             {
-                _saws[i].SetLocalPlaceByAngle(currentPlaceAngle);                                        
+                saw.SetLocalPlaceByAngle(currentPlaceAngle);                                        
                 currentPlaceAngle += angleStep;
             }
         }
