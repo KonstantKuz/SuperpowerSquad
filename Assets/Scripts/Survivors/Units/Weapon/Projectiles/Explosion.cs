@@ -49,7 +49,7 @@ namespace Survivors.Units.Weapon.Projectiles
             }
         }
 
-        public static void Create(WorldObjectFactory objectFactory, 
+        public static GameObject Create(WorldObjectFactory objectFactory, 
             Explosion prefab, 
             Vector3 pos,
             float radius, 
@@ -58,7 +58,8 @@ namespace Survivors.Units.Weapon.Projectiles
         {
             var explosion = objectFactory.CreateObject(prefab.gameObject).GetComponent<Explosion>();
             explosion.transform.position = pos;
-            explosion.Create(radius, targetType, hitCallback);            
+            explosion.Create(radius, targetType, hitCallback);
+            return explosion.gameObject;
         }
     }
 }
