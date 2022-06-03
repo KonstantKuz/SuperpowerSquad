@@ -62,7 +62,7 @@ namespace Survivors.Units.Weapon.Projectiles
             Destroy(gameObject);
             
             _trail.transform.SetParent(null);
-            Destroy(_trail, _trail.time);
+            Destroy(_trail.gameObject, _trail.time);
         }
     }
 }
