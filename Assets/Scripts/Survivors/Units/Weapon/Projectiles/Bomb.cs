@@ -3,6 +3,7 @@ using DG.Tweening;
 using Survivors.Extension;
 using Survivors.Location.Service;
 using Survivors.Units.Target;
+using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
 using Zenject;
 
@@ -10,15 +11,20 @@ namespace Survivors.Units.Weapon.Projectiles
 {
     public class Bomb : Projectile
     {
-        [SerializeField] private Vector2 _heightRange;
+        [SerializeField] private float _heightMin;
+        [SerializeField] private float _heightMax;
+
+        [SerializeField] private float _explosionScaleMultiplier;
         [SerializeField] private Explosion _explosion;
+        [SerializeField] private TrailRenderer _trail;
 
-        [Inject] private WorldObjectFactory _objectFactory;
+        [Inject]
+        private WorldObjectFactory _objectFactory;
+        
+        public void Launch(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback, Vector3 targetPos)
 
-        public override void Launch(ITarget target, ProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             base.Launch(target, projectileParams, hitCallback);
-            var targetPos = target.Center.position;
             var moveTime = GetFlightTime(targetPos);
             var maxHeight = GetMaxHeight(targetPos, projectileParams.AttackDistance);
             var jumpMove = transform.DOJump(targetPos, maxHeight, 1, moveTime);
@@ -35,9 +41,9 @@ namespace Survivors.Units.Weapon.Projectiles
         private float GetMaxHeight(Vector3 targetPos, float maxDistance)
         {
             var distanceToTarget = Vector3.Distance(transform.position, targetPos);
-            return MathLib.Remap(distanceToTarget, 0, maxDistance, _heightRange.x, _heightRange.y);
+            return MathLib.Remap(distanceToTarget, 0, maxDistance, _heightMin, _heightMax);
         }
-        
+
         protected override void TryHit(GameObject target, Vector3 hitPos, Vector3 collisionNorm)
         {
             Explode(hitPos);
@@ -45,7 +51,8 @@ namespace Survivors.Units.Weapon.Projectiles
 
         private void Explode(Vector3 pos)
         {
-            Explosion.Create(_objectFactory, _explosion, pos, Params.DamageRadius, TargetType, HitCallback);
+            var explosion = Explosion.Create(_objectFactory, _explosion, pos, Params.DamageRadius, TargetType, HitCallback);
+            explosion.transform.localScale *= Params.DamageRadius * _explosionScaleMultiplier;
             Destroy();
         }
 
@@ -53,6 +60,9 @@ namespace Survivors.Units.Weapon.Projectiles
         {
             HitCallback = null;
             Destroy(gameObject);
+            
+            _trail.transform.SetParent(null);
+            Destroy(_trail.gameObject, _trail.time);
         }
     }
 }

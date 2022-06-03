@@ -13,7 +13,6 @@ namespace Survivors.Units.Service
     public class UnitFactory
     {
         public const string SIMPLE_PLAYER_ID = "StandardUnit";
-        private const string SIMPLE_ENEMY_ID = "SimpleEnemy";
         
         [Inject] private World _world;
         [Inject] private WorldObjectFactory _worldObjectFactory;
@@ -27,11 +26,11 @@ namespace Survivors.Units.Service
             _world.Squad.AddUnit(unit);
             return unit;
         }
-        public Unit CreateEnemy()
+        public Unit CreateEnemy(string unitId, int level)
         {
-            var enemy = _worldObjectFactory.CreateObject(SIMPLE_ENEMY_ID).RequireComponent<Unit>();
-            var config = _enemyUnitConfigs.Get(SIMPLE_ENEMY_ID);
-            var model = new EnemyUnitModel(config);
+            var enemy = _worldObjectFactory.CreateObject(unitId).RequireComponent<Unit>();
+            var config = _enemyUnitConfigs.Get(unitId);
+            var model = new EnemyUnitModel(config, level);
             enemy.Init(model);
             return enemy;
         }

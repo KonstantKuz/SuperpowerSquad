@@ -5,7 +5,7 @@ using Survivors.Units.Component.Health;
 using Survivors.Units.Target;
 using UnityEngine;
 
-namespace Survivors.Units.Weapon
+namespace Survivors.Units.Weapon.Projectiles
 {
     public class Explosion : MonoBehaviour
     {
@@ -49,7 +49,7 @@ namespace Survivors.Units.Weapon
             }
         }
 
-        public static void Create(WorldObjectFactory objectFactory, 
+        public static GameObject Create(WorldObjectFactory objectFactory, 
             Explosion prefab, 
             Vector3 pos,
             float radius, 
@@ -58,7 +58,8 @@ namespace Survivors.Units.Weapon
         {
             var explosion = objectFactory.CreateObject(prefab.gameObject).GetComponent<Explosion>();
             explosion.transform.position = pos;
-            explosion.Create(radius, targetType, hitCallback);            
+            explosion.Create(radius, targetType, hitCallback);
+            return explosion.gameObject;
         }
     }
 }

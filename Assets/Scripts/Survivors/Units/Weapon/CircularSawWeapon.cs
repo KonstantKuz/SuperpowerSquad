@@ -1,9 +1,12 @@
 ﻿using System;
-using System.Collections.Generic;
+using Feofun.Extension;
+using Survivors.Extension;
 using Survivors.Location;
 using Survivors.Location.Service;
+using Survivors.Session;
 using Survivors.Squad.Formation;
 using Survivors.Units.Weapon.Projectiles;
+using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
 using Zenject;
 
@@ -13,68 +16,58 @@ namespace Survivors.Units.Weapon
     {
         [SerializeField] private CircularSaw _circularSawPrefab;
 
-        private Transform _rotationCenter;
-        private ProjectileParams _projectileParams;
-        private Transform _sawsRoot;
-        private List<CircularSaw> _saws;
+        private CircularSawsRoot _sawsRoot;
 
         [Inject] private World _world;
         [Inject] private WorldObjectFactory _worldObjectFactory;
 
-        public void Init(Transform rotateAround, ProjectileParams projectileParams)
-        {
-            _rotationCenter = rotateAround;
-            _projectileParams = projectileParams;
-            _sawsRoot = new GameObject("SawsRoot").transform;
-            _sawsRoot.SetParent(_world.Spawn.transform);
-            _saws = new List<CircularSaw>();
-        }
+        private CircularSawsRoot SawsRoot => _sawsRoot ??= GetOrCreateSawsRoot();
+        public int SawsCount { get; set; }
         
-        public void AddSaw(UnitType targetType, Action<GameObject> hitCallback)
+        public void Init(Transform rotationCenter, IProjectileParams projectileParams)
+        {
+            SawsRoot.Init(rotationCenter, projectileParams.Speed);
+        }
+
+        public void AddSaw(UnitType targetType, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             var saw = CreateSaw();
-            saw.Init(targetType, _projectileParams, hitCallback);
-            saw.transform.SetParent(_sawsRoot);
-            _saws.Add(saw);
-            PlaceSaws();
+            saw.Init(targetType, projectileParams, hitCallback);
+            _sawsRoot.AddSaw(saw, this);
         }
         
-        public void UpdateParams(ProjectileParams projectileParams)
+        public void OnParamsChanged(IProjectileParams projectileParams)
         {
-            _projectileParams = projectileParams;
-            foreach (var saw in _saws)
-            {
-                saw.UpdateParams(_projectileParams);
-            }
-            PlaceSaws();
+            _sawsRoot.OnParamsChanged(projectileParams);
         }
 
+        public void CleanUpSaws()
+        {
+            if (_sawsRoot == null) return;
+            _sawsRoot.CleanUpSaws(this);
+        }
+        
         public void CleanUp()
         {
-            _saws.ForEach(Destroy);
-            _saws.Clear();
-        }
-
-        private void Update()
-        {
-            _sawsRoot.localRotation *= Quaternion.Euler(0, _projectileParams.Speed * Time.deltaTime, 0);
-            _sawsRoot.position = _rotationCenter.position;
-        }
-
-        private void PlaceSaws()
-        {
-            var angleStep = 360f / _saws.Count;
-            var currentPlaceAngle = 0f;
-            for (int i = 0; i < _saws.Count; i++)
-            {
-                _saws[i].SetLocalPlaceByAngle(currentPlaceAngle);                                        
-                currentPlaceAngle += angleStep;
+            CleanUpSaws();
+            if (_sawsRoot != null) {
+                Destroy(_sawsRoot.gameObject);
             }
         }
 
         private CircularSaw CreateSaw()
         {
-            return _worldObjectFactory.CreateObject(_circularSawPrefab.gameObject).GetComponent<CircularSaw>();
+            return _worldObjectFactory.CreateObject(_circularSawPrefab.gameObject).RequireComponent<CircularSaw>();
+        }
+
+        private CircularSawsRoot GetOrCreateSawsRoot()
+        {
+            var existingRoot = _world.Spawn.GetComponentInChildren<CircularSawsRoot>();
+            if (existingRoot != null) return existingRoot;
+            
+            var newRoot = new GameObject("SawsRoot").AddComponent<CircularSawsRoot>();
+            newRoot.transform.SetParent(_world.Spawn.transform);
+            return newRoot;
         }
     }
 }
