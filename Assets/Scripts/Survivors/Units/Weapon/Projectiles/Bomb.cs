@@ -11,16 +11,12 @@ namespace Survivors.Units.Weapon.Projectiles
 {
     public class Bomb : Projectile
     {
-        [SerializeField]
-        private Vector2 _explosionRadiusRange;
-        [SerializeField]
-        private Vector2 _explosionScaleRange;
-        [SerializeField]
-        private Vector2 _heightRange;
-        [SerializeField]
-        private Explosion _explosion;
-        [SerializeField]
-        private TrailRenderer _trail;
+        [SerializeField] private float _heightMin;
+        [SerializeField] private float _heightMax;
+
+        [SerializeField] private float _explosionScaleMultiplier;
+        [SerializeField] private Explosion _explosion;
+        [SerializeField] private TrailRenderer _trail;
 
         [Inject]
         private WorldObjectFactory _objectFactory;
@@ -45,7 +41,7 @@ namespace Survivors.Units.Weapon.Projectiles
         private float GetMaxHeight(Vector3 targetPos, float maxDistance)
         {
             var distanceToTarget = Vector3.Distance(transform.position, targetPos);
-            return MathLib.Remap(distanceToTarget, 0, maxDistance, _heightRange.x, _heightRange.y);
+            return MathLib.Remap(distanceToTarget, 0, maxDistance, _heightMin, _heightMax);
         }
 
         protected override void TryHit(GameObject target, Vector3 hitPos, Vector3 collisionNorm)
@@ -56,8 +52,7 @@ namespace Survivors.Units.Weapon.Projectiles
         private void Explode(Vector3 pos)
         {
             var explosion = Explosion.Create(_objectFactory, _explosion, pos, Params.DamageRadius, TargetType, HitCallback);
-            var scaleMultiplier = MathLib.Remap(Params.DamageRadius, _explosionRadiusRange.x, _explosionRadiusRange.y, _explosionScaleRange.x, _explosionScaleRange.y);
-            explosion.transform.localScale *= scaleMultiplier;
+            explosion.transform.localScale *= Params.DamageRadius * _explosionScaleMultiplier;
             Destroy();
         }
 
