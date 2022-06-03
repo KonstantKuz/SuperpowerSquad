@@ -29,14 +29,13 @@ namespace Survivors.Units.Weapon
         public void Init(Transform rotationCenter, UnitType targetType, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             CleanUpSaws();
-            SawsRoot.SetCenter(rotationCenter);
    
             for (int i = 0; i < projectileParams.Count; i++)
             {
                 AddSaw(targetType, projectileParams, hitCallback);
             }
 
-            SawsRoot.OnWeaponInit(this);
+            SawsRoot.OnWeaponInit(rotationCenter,this);
         }
 
         private void AddSaw(UnitType targetType, IProjectileParams projectileParams, Action<GameObject> hitCallback)

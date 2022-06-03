@@ -16,15 +16,16 @@ namespace Survivors.Units.Weapon
         private bool Initialized => _rotationCenter != null;
         private Dictionary<CircularSawWeapon, List<CircularSaw>> SawsByOwner => _sawsByOwner ??= new Dictionary<CircularSawWeapon, List<CircularSaw>>();
 
-        public void SetCenter(Transform rotationCenter)
+        public void OnWeaponInit(Transform rotationCenter, CircularSawWeapon owner)
         {
-            _rotationCenter = rotationCenter;
-        }
-
-        public void OnWeaponInit(CircularSawWeapon owner)
-        {
+            SetCenter(rotationCenter);
             SawsByOwner[owner] = owner.OwnSaws;
             PlaceSaws();
+        }
+
+        private void SetCenter(Transform rotationCenter)
+        {
+            _rotationCenter = rotationCenter;
         }
 
         public void OnWeaponCleanUp(CircularSawWeapon owner)
