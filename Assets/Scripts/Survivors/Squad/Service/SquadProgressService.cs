@@ -18,8 +18,8 @@ namespace Survivors.Squad.Service
         [Inject]
         private StringKeyedConfigCollection<SquadLevelConfig> _levelConfig;
         public IObservable<int> Level => _level;
-        public SquadProgress Progress => _repository.Require();
-        public int ExpToNextLevel => Progress.MaxExpForCurrentLevel(_levelConfig) - Progress.Exp;
+        private SquadProgress Progress => _repository.Require();
+        private int ExpToNextLevel => Progress.MaxExpForCurrentLevel(_levelConfig) - Progress.Exp;
         public void OnWorldSetup()
         {
             _repository.Set(SquadProgress.Create());
@@ -31,6 +31,11 @@ namespace Survivors.Squad.Service
             var progress = Progress;
             progress.AddExp(amount, _levelConfig);
             SetProgress(progress);
+        }
+
+        public void IncreaseLevel()
+        {
+            AddExp(ExpToNextLevel);
         }
 
         private void SetProgress(SquadProgress progress)

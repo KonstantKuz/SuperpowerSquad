@@ -17,7 +17,7 @@ namespace Survivors.UI.Screen.World
 
         private void AddExp()
         {
-            _squadProgressService.AddExp(_squadProgressService.ExpToNextLevel);
+            _squadProgressService.IncreaseLevel();
         }
     }
 }
