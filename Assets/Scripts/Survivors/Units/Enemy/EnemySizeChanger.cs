@@ -31,10 +31,7 @@ namespace Survivors.Units.Enemy
         private void OnDamageTaken()
         {
             var currentHealth = _health.CurrentValue.Value;
-            var level = (int) Mathf.Ceil(currentHealth / _enemyModel.Config.Health);
-            if (currentHealth <= 0) {
-                level = EnemyUnitModel.MIN_LEVEL;
-            }
+            var level = currentHealth <= 0 ? EnemyUnitModel.MIN_LEVEL : (int) Mathf.Ceil(currentHealth / _enemyModel.Config.Health);
             UpdateScale(_enemyModel.CalculateScaleFactor(level));
         }
         private void UpdateScale(float scaleFactor)
