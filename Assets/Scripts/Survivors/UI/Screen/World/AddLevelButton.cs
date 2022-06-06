@@ -6,11 +6,10 @@ using Zenject;
 namespace Survivors.UI.Screen.World
 {
     [RequireComponent(typeof(Button))]
-    public class AddExpButton : MonoBehaviour
+    public class AddLevelButton : MonoBehaviour
     {
-        [SerializeField]
-        private int _expCount;
         [Inject] private SquadProgressService _squadProgressService;
+        
         private void Awake()
         {
             GetComponent<Button>().onClick.AddListener(AddExp);
@@ -18,7 +17,7 @@ namespace Survivors.UI.Screen.World
 
         private void AddExp()
         {
-            _squadProgressService.AddExp(_expCount);
+            _squadProgressService.AddExp(_squadProgressService.ExpToNextLevel);
         }
     }
 }

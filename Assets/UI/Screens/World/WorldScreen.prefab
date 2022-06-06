@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3049069999847496581}
   - component: {fileID: 7298509195297108155}
   m_Layer: 5
-  m_Name: AddExp
+  m_Name: AddLevel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -487,7 +487,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: +10 Exp
+  m_Text: +1 Level
 --- !u!1001 &6214581522854633293
 PrefabInstance:
   m_ObjectHideFlags: 0
