@@ -1,6 +1,7 @@
-StartingHPS
-HPSSpeed
-MinWaveSize
-MaxWaveSize
-MinInterval
-MaxInterval
+StartingHPS,300
+HPSSpeed,300
+MinWaveSize,10
+MaxWaveSize,15
+MinInterval,2
+MaxInterval,3
+EnemyId,SimpleEnemy

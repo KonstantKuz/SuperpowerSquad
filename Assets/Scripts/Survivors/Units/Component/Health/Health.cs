@@ -14,7 +14,7 @@ namespace Survivors.Units.Component.Health
 
         public float StartingMaxValue => _healthModel.StartingMaxHealth;
         public IReadOnlyReactiveProperty<float> MaxValue => _healthModel.MaxHealth;
-        public IObservable<float> CurrentValue => _currentHealth;
+        public IReadOnlyReactiveProperty<float> CurrentValue => _currentHealth;
         public bool DamageEnabled { get; set; }
         
         public event Action OnDeath;

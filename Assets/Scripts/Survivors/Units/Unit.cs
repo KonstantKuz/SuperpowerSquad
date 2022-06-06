@@ -45,8 +45,7 @@ namespace Survivors.Units
             _death = gameObject.RequireComponent<IUnitDeath>();
             _selfTarget = gameObject.RequireComponent<ITarget>();
             _deathEventReceivers = GetComponentsInChildren<IUnitDeathEventReceiver>();
-            transform.localScale *= Model.Scale;
-
+            
             _damageable.OnDeath += Kill;
             _unitService.Add(this);
             IsAlive = true;
