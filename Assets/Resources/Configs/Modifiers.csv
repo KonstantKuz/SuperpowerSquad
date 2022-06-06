@@ -2,10 +2,10 @@ Id,Modifier,ParameterName,Value,Target
 ShotCount2,AddValue,ShotCount,2,Unit
 DamageAngle30,AddValue,DamageAngle,30,Unit
 AttackTime1.5,AddValue,AttackTime,-1.5,Unit
-DamageRadius3,AddValue,DamageRadius,3,Unit
+DamageRadius2,AddValue,DamageRadius,2,Unit
 ProjectileSpeed100,AddValue,ProjectileSpeed,100,Unit
 ShotCount1,AddValue,ShotCount,1,Unit
 AttackTime0.5,AddValue,AttackTime,-0.5,Unit
 ProjectileSpeed100Percent,AddPercent,ProjectileSpeed,100,Unit
 CollectRadiusSquad10,AddValue,CollectRadius,10,Squad
-SpeedSquad2,AddValue,Speed,3,Squad
+SpeedSquad3,AddValue,Speed,3,Squad
