@@ -12,7 +12,7 @@ namespace Survivors.Units.Weapon
         private Transform _rotationCenter;
         private IProjectileParams _projectileParams;
         private readonly List<CircularSawWeapon> _activeWeapons = new List<CircularSawWeapon>();
-        private bool Initialized => _projectileParams != null;
+        private bool Initialized => _projectileParams != null && _rotationCenter != null;
 
         public void Init(Squad.Squad squad)
         {
