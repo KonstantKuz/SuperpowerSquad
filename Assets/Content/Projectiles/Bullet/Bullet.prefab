@@ -99,6 +99,22 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8327978116598172915}
     m_Modifications:
+    - target: {fileID: 4790410339229657463, guid: 7299e10e4ba5442468ff77f16d8ee0f7, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4790410339229726557, guid: 7299e10e4ba5442468ff77f16d8ee0f7, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4790410339229726693, guid: 7299e10e4ba5442468ff77f16d8ee0f7, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4790410339229726693, guid: 7299e10e4ba5442468ff77f16d8ee0f7, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4790410339231160221, guid: 7299e10e4ba5442468ff77f16d8ee0f7, type: 3}
       propertyPath: InitialModule.startSizeY.minMaxState
       value: 3

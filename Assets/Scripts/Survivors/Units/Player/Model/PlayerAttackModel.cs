@@ -17,7 +17,6 @@ namespace Survivors.Units.Player.Model
         private readonly FloatModifiableParameter _projectileSpeed;
         private readonly FloatModifiableParameter _damageRadius;
         private readonly FloatModifiableParameter _damageAngle;
-        private readonly FloatModifiableParameter _shotCount;
         private readonly FloatModifiableParameter _attackDistance;
 
         public PlayerAttackModel(PlayerAttackConfig config, IModifiableParameterOwner parameterOwner)

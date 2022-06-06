@@ -1,55 +1,50 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using SuperMaxim.Core.Extensions;
+using Feofun.Components;
 using Survivors.Units.Weapon.Projectiles;
 using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
 
 namespace Survivors.Units.Weapon
 {
-    public class CircularSawsRoot : MonoBehaviour
+    public class CircularSawsRoot : MonoBehaviour, IInitializable<Squad.Squad>
     {
         private Transform _rotationCenter;
-        private float _rotationSpeed;
+        private IProjectileParams _projectileParams;
+        private readonly List<CircularSawWeapon> _activeWeapons = new List<CircularSawWeapon>();
+        private bool Initialized => _projectileParams != null && _rotationCenter != null;
 
-        private List<CircularSaw> _saws;
-        
-        private bool Initialized => _rotationCenter != null;
-        public List<CircularSaw> Saws => _saws ??= new List<CircularSaw>();
-
-        public void Init(Transform rotationCenter, float rotationSpeed)
+        public void Init(Squad.Squad squad)
         {
-            _rotationCenter = rotationCenter;
-            _rotationSpeed = rotationSpeed;
+            _rotationCenter = squad.Destination.transform;
         }
 
-        public void AddSaw(CircularSaw newSaw, CircularSawWeapon fromWeapon)
+        public void OnWeaponInit(CircularSawWeapon owner)
         {
-            fromWeapon.SawsCount++;
-            newSaw.transform.SetParent(transform);
-            Saws.Add(newSaw);
+            _activeWeapons.Add(owner);
+            PlaceSaws();
+        }
+        
+        public void OnWeaponCleanUp(CircularSawWeapon owner)
+        {
+            _activeWeapons.Remove(owner);
             PlaceSaws();
         }
 
         public void OnParamsChanged(IProjectileParams projectileParams)
         {
-            Saws.ForEach(it => it.OnParamsChanged(projectileParams));
+            _projectileParams = projectileParams;
             PlaceSaws();
-        }
-
-        public void CleanUpSaws(CircularSawWeapon fromWeapon)
-        {
-            _saws?.Take(fromWeapon.SawsCount).ForEach(Destroy);
-            fromWeapon.SawsCount = 0;
         }
 
         private void PlaceSaws()
         {
-            var angleStep = 360f / _saws.Count;
+            var saws = _activeWeapons.SelectMany(owner => owner.OwnedSaws).ToList();
+            var angleStep = 360f / saws.Count;
             var currentPlaceAngle = 0f;
-            for (int i = 0; i < _saws.Count; i++)
+            foreach (var saw in saws)
             {
-                _saws[i].SetLocalPlaceByAngle(currentPlaceAngle);                                        
+                saw.SetLocalPlaceByAngle(currentPlaceAngle);                                        
                 currentPlaceAngle += angleStep;
             }
         }
@@ -58,7 +53,7 @@ namespace Survivors.Units.Weapon
         {
             if(!Initialized) return;
             transform.position = _rotationCenter.position;
-            transform.localRotation *= Quaternion.Euler(0, _rotationSpeed * Time.deltaTime, 0);
+            transform.localRotation *= Quaternion.Euler(0, _projectileParams.Speed * Time.deltaTime, 0);
         }
     }
 }
