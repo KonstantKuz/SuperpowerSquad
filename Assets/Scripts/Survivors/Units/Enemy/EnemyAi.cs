@@ -19,16 +19,21 @@ namespace Survivors.Units.Enemy
         [SerializeField] private float _agentRadiusNear;
         [SerializeField] private float _agentDistanceAfar;
         [SerializeField] private float _agentDistanceNear;
-        
+
+        private ITarget _selfTarget;
+        private CapsuleCollider _collider;
         private NavMeshAgent _agent;
         private ITarget _target;
         private ITargetSearcher _targetSearcher;
 
         [Inject] private World _world;
 
+
         private Vector3 SquadPosition => _world.Squad.Destination.transform.position;
-        private float DistanceToSquad =>
-            Vector3.Distance(transform.position, SquadPosition);
+
+        private float SelfRadius => _collider.radius * transform.localScale.x;
+        private float DistanceToSquad => Vector3.Distance(_selfTarget.Root.position, SquadPosition) - SelfRadius;
+        public float DistanceToTarget => CurrentTarget == null ? float.MaxValue : Vector3.Distance(_selfTarget.Root.position, CurrentTarget.Root.position) - SelfRadius;
 
         public NavMeshAgent NavMeshAgent => _agent;
         
@@ -56,11 +61,12 @@ namespace Survivors.Units.Enemy
             var model = (EnemyUnitModel) unit.Model;
             _agent.speed = model.MoveSpeed;
         }
-
         private void Awake()
         {
             _agent = gameObject.RequireComponent<NavMeshAgent>();
+            _selfTarget = gameObject.RequireComponent<ITarget>();
             _targetSearcher = gameObject.RequireComponent<ITargetSearcher>();
+            _collider = gameObject.RequireComponent<CapsuleCollider>();
         }
 
         public void OnTick()
@@ -87,9 +93,8 @@ namespace Survivors.Units.Enemy
 
         private void UpdateAgentRadius()
         {
-            _agent.radius = Mathf.Lerp(_agentRadiusNear,
-                _agentRadiusAfar,
-                (DistanceToSquad - _agentDistanceNear) / (_agentDistanceAfar - _agentDistanceNear));
+            _agent.radius = Mathf.Lerp(_agentRadiusNear, _agentRadiusAfar, 
+                                       (DistanceToSquad - _agentDistanceNear) / (_agentDistanceAfar - _agentDistanceNear));
         }
 
         private void FindTarget()

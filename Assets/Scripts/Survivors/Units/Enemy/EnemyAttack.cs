@@ -45,12 +45,10 @@ namespace Survivors.Units.Enemy
         private bool CanAttack()
         {
             return _enemyAi.CurrentTarget != null 
-                   && DistanceToTarget <= _attackModel.AttackDistance 
+                   && _enemyAi.DistanceToTarget <= _attackModel.AttackDistance 
                    && _attackTimer >= _attackModel.AttackInterval;
         }
         
-        private float DistanceToTarget => Vector3.Distance(transform.position, _enemyAi.CurrentTarget.Root.position);
-
         private void Attack()
         {
             _weapon.Fire(_enemyAi.CurrentTarget, null, DoDamage);
