@@ -1,10 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Feofun.Components;
 using JetBrains.Annotations;
+using Survivors.Extension;
 using Survivors.Units.Model;
-using Survivors.Units.Player.Model;
 using Survivors.Units.Target;
 using UnityEngine;
 using Zenject;
@@ -17,7 +16,8 @@ namespace Survivors.Units.Player.Attack
         [Inject]
         private TargetService _targetService;
 
-        private IAttackModel _attackModel;
+        private IAttackModel _attackModel;    
+        private ITarget _selfTarget;
         private UnitType _targetType;
 
         private float SearchDistance => _attackModel.TargetSearchRadius;
@@ -25,7 +25,8 @@ namespace Survivors.Units.Player.Attack
         public void Init(IUnit unit)
         {
             _attackModel = unit.Model.AttackModel;
-            _targetType = GetComponent<ITarget>().UnitType.GetTargetUnitType();
+            _selfTarget = gameObject.RequireComponent<ITarget>();
+            _targetType = _selfTarget.UnitType.GetTargetUnitType();
         }
 
         [CanBeNull]
@@ -33,7 +34,7 @@ namespace Survivors.Units.Player.Attack
         {
             ITarget rez = null;
             var minDistance = Mathf.Infinity;
-            var pos = transform.position;
+            var pos = _selfTarget.Root.position;
             foreach (var target in _targetService.AllTargetsOfType(_targetType))
             {
                 var dist = Vector3.Distance(pos, target.Root.position);
@@ -49,10 +50,10 @@ namespace Survivors.Units.Player.Attack
         {
             return _targetService.AllTargetsOfType(_targetType)
                 .Where(IsDistanceReached)
-                .OrderBy(it => Vector3.Distance(it.Root.position, transform.position));
+                .OrderBy(it => Vector3.Distance(it.Root.position, _selfTarget.Root.position));
         }
 
         private bool IsDistanceReached(ITarget target) => 
-            Vector3.Distance(target.Root.position, transform.position) <= SearchDistance;
+            Vector3.Distance(target.Root.position, _selfTarget.Root.position) <= SearchDistance;
     }
 }
