@@ -42,14 +42,14 @@ namespace Survivors.Units.Weapon
         {
             var saw = CreateSaw();
             saw.Init(targetType, projectileParams, hitCallback);
-            saw.transform.SetParent(_sawsRoot.transform);
+            saw.transform.SetParent(SawsRoot.transform);
             OwnSaws.Add(saw);
         }
         
         public void OnParamsChanged(IProjectileParams projectileParams)
         {
             OwnSaws.ForEach(it => it.OnParamsChanged(projectileParams));
-            _sawsRoot.OnParamsChanged(projectileParams);
+            SawsRoot.OnParamsChanged(projectileParams);
         }
 
         public void CleanUp()
