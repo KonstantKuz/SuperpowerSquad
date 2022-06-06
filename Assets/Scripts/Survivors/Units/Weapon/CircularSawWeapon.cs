@@ -18,13 +18,13 @@ namespace Survivors.Units.Weapon
         [SerializeField] private CircularSaw _circularSawPrefab;
 
         private CircularSawsRoot _sawsRoot;
-        private List<CircularSaw> _ownSaws;
+        private readonly List<CircularSaw> _ownedSaws = new List<CircularSaw>();
 
         [Inject] private World _world;
         [Inject] private WorldObjectFactory _worldObjectFactory;
 
         private CircularSawsRoot SawsRoot => _sawsRoot ??= GetOrCreateSawsRoot();
-        public List<CircularSaw> OwnSaws => _ownSaws ??= new List<CircularSaw>();
+        public IReadOnlyList<CircularSaw> OwnedSaws => _ownedSaws;
 
         public void Init(Transform rotationCenter, UnitType targetType, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
@@ -43,12 +43,12 @@ namespace Survivors.Units.Weapon
             var saw = CreateSaw();
             saw.Init(targetType, projectileParams, hitCallback);
             saw.transform.SetParent(SawsRoot.transform);
-            OwnSaws.Add(saw);
+            _ownedSaws.Add(saw);
         }
         
         public void OnParamsChanged(IProjectileParams projectileParams)
         {
-            OwnSaws.ForEach(it => it.OnParamsChanged(projectileParams));
+            _ownedSaws.ForEach(it => it.OnParamsChanged(projectileParams));
             SawsRoot.OnParamsChanged(projectileParams);
         }
 
@@ -79,8 +79,8 @@ namespace Survivors.Units.Weapon
         {
             if (_sawsRoot == null) return;
             _sawsRoot.OnWeaponCleanUp(this);
-            OwnSaws.ForEach(it => Destroy(it.gameObject));
-            OwnSaws.Clear();
+            _ownedSaws.ForEach(it => Destroy(it.gameObject));
+            _ownedSaws.Clear();
         }
     }
 }

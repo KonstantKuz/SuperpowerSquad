@@ -11,15 +11,14 @@ namespace Survivors.Units.Weapon
         private Transform _rotationCenter;
         private IProjectileParams _projectileParams;
 
-        private Dictionary<CircularSawWeapon, List<CircularSaw>> _sawsByOwner;
+        private readonly List<CircularSawWeapon> _activeWeapons = new List<CircularSawWeapon>();
         
         private bool Initialized => _rotationCenter != null;
-        private Dictionary<CircularSawWeapon, List<CircularSaw>> SawsByOwner => _sawsByOwner ??= new Dictionary<CircularSawWeapon, List<CircularSaw>>();
 
         public void OnWeaponInit(Transform rotationCenter, CircularSawWeapon owner)
         {
+            _activeWeapons.Add(owner);
             SetCenter(rotationCenter);
-            SawsByOwner[owner] = owner.OwnSaws;
             PlaceSaws();
         }
 
@@ -30,7 +29,7 @@ namespace Survivors.Units.Weapon
 
         public void OnWeaponCleanUp(CircularSawWeapon owner)
         {
-            SawsByOwner.Remove(owner);
+            _activeWeapons.Remove(owner);
         }
 
         public void OnParamsChanged(IProjectileParams projectileParams)
@@ -41,7 +40,7 @@ namespace Survivors.Units.Weapon
 
         private void PlaceSaws()
         {
-            var saws = _sawsByOwner.Values.SelectMany(owner => owner).ToList();
+            var saws = _activeWeapons.SelectMany(owner => owner.OwnedSaws).ToList();
             var angleStep = 360f / saws.Count;
             var currentPlaceAngle = 0f;
             foreach (var saw in saws)
