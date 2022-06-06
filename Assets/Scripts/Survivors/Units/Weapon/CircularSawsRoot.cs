@@ -1,35 +1,34 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Feofun.Components;
 using Survivors.Units.Weapon.Projectiles;
 using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
 
 namespace Survivors.Units.Weapon
 {
-    public class CircularSawsRoot : MonoBehaviour
+    public class CircularSawsRoot : MonoBehaviour, IInitializable<Squad.Squad>
     {
         private Transform _rotationCenter;
         private IProjectileParams _projectileParams;
-
         private readonly List<CircularSawWeapon> _activeWeapons = new List<CircularSawWeapon>();
-        
-        private bool Initialized => _rotationCenter != null;
+        private bool Initialized => _projectileParams != null;
 
-        public void OnWeaponInit(Transform rotationCenter, CircularSawWeapon owner)
+        public void Init(Squad.Squad squad)
+        {
+            _rotationCenter = squad.Destination.transform;
+        }
+
+        public void OnWeaponInit(CircularSawWeapon owner)
         {
             _activeWeapons.Add(owner);
-            SetCenter(rotationCenter);
             PlaceSaws();
         }
-
-        private void SetCenter(Transform rotationCenter)
-        {
-            _rotationCenter = rotationCenter;
-        }
-
+        
         public void OnWeaponCleanUp(CircularSawWeapon owner)
         {
             _activeWeapons.Remove(owner);
+            PlaceSaws();
         }
 
         public void OnParamsChanged(IProjectileParams projectileParams)
