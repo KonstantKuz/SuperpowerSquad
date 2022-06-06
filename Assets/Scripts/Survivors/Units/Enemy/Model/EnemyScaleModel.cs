@@ -1,6 +1,4 @@
 ﻿using Survivors.Units.Enemy.Config;
-using UnityEngine;
-using UnityEngine.Assertions;
 
 namespace Survivors.Units.Enemy.Model
 {
@@ -14,10 +12,7 @@ namespace Survivors.Units.Enemy.Model
             _config = config;
             InitialScaleFactor = GetScaleFactor(level);
         }
-        public float GetScaleFactor(int level)
-        {
-            Assert.IsTrue(level >= EnemyUnitConfig.MIN_LEVEL);
-            return Mathf.Pow(_config.ScaleStep, level - EnemyUnitConfig.MIN_LEVEL);
-        }
+
+        public float GetScaleFactor(int level) => _config.GetScaleForLevel(level);
     }
 }

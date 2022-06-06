@@ -393,7 +393,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79ff066e7a284f8ab029117d16b0ac49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enemyWavesSpawner: {fileID: 1873516484607207762}
 --- !u!114 &1866441843583567248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -409,4 +408,4 @@ MonoBehaviour:
   _world: {fileID: 3088611838475355998}
   _worldObjectFactory: {fileID: 8743563882573435223}
   _enemyWavesSpawner: {fileID: 1873516484607207762}
-  _hpsSpawner: {fileID: 186752239828696303}
+  enemyHpsSpawner: {fileID: 186752239828696303}

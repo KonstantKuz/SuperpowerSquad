@@ -24,7 +24,7 @@ namespace Survivors.Units.Enemy.Model
             MoveSpeed = config.MoveSpeed;
             Level = level;
             ScaleModel = new EnemyScaleModel(config, level);
-            HealthModel = new EnemyHealthModel(config.Health + (level - EnemyUnitConfig.MIN_LEVEL) * config.HealthStep);
+            HealthModel = new EnemyHealthModel(config.GetHealthForLevel(level));
             AttackModel = new EnemyAttackModel(config.EnemyAttackConfig);
         }
 
