@@ -164,6 +164,26 @@ PrefabInstance:
       propertyPath: useRigidbodyForVelocity
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8279431754040462541, guid: dbfce5751e90fce4a95d2b74e9e665d6, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8279435110184825473, guid: dbfce5751e90fce4a95d2b74e9e665d6, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8279513218431286497, guid: dbfce5751e90fce4a95d2b74e9e665d6, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8279535195138948407, guid: dbfce5751e90fce4a95d2b74e9e665d6, type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8279535195138948407, guid: dbfce5751e90fce4a95d2b74e9e665d6, type: 3}
+      propertyPath: m_ReceiveShadows
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dbfce5751e90fce4a95d2b74e9e665d6, type: 3}
 --- !u!4 &5276141337665676143 stripped
