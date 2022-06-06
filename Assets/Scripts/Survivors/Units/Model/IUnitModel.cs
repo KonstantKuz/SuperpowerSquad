@@ -8,6 +8,5 @@ namespace Survivors.Units.Model
         IHealthModel HealthModel { get; }
         IAttackModel AttackModel { get; }
         void AddModifier(IModifier modifier);
-        float ScaleFactor { get; }
     }
 }

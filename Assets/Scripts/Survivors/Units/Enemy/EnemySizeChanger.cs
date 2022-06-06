@@ -12,6 +12,8 @@ namespace Survivors.Units.Enemy
         private Health _health;
         private EnemyUnitModel _enemyModel;
         private Vector3 _initialScale;
+        private EnemyScaleModel ScaleModel => _enemyModel.ScaleModel; 
+        
         private void Awake()
         {
             _initialScale = transform.localScale;
@@ -23,7 +25,7 @@ namespace Survivors.Units.Enemy
                 throw new ArgumentException($"Unit must be a enemy unit, gameObj:= {gameObject.name}");
             }
             _enemyModel = enemyModel;
-            UpdateScale(enemyModel.ScaleFactor);
+            UpdateScale(ScaleModel.InitialScaleFactor);
             _health = gameObject.RequireComponent<Health>();
             _health.OnDamageTaken += OnDamageTaken;
         }
@@ -31,8 +33,8 @@ namespace Survivors.Units.Enemy
         private void OnDamageTaken()
         {
             var currentHealth = _health.CurrentValue.Value;
-            var level = currentHealth <= 0 ? EnemyUnitModel.MIN_LEVEL : (int) Mathf.Ceil(currentHealth / _enemyModel.Config.Health);
-            UpdateScale(_enemyModel.CalculateScaleFactor(level));
+            var level = _enemyModel.CalculateLevelOfHealth(currentHealth);
+            UpdateScale(ScaleModel.GetScaleFactor(level));
         }
         private void UpdateScale(float scaleFactor)
         {
