@@ -28,7 +28,7 @@ namespace Survivors.Units.Player.Attack
             _ownerUnit = unit as Unit;
             if (!(unit.Model.AttackModel is PlayerAttackModel attackModel))
             {
-                throw new ArgumentException("Unit must be a player unit.");
+                throw new ArgumentException($"Unit must be a player unit, gameObj:= {gameObject.name}");
             }
             _attackModel = attackModel;
         }
@@ -37,21 +37,15 @@ namespace Survivors.Units.Player.Attack
             Assert.IsNotNull(_ownerUnit);      
             Assert.IsNotNull(_attackModel);
             _squad = squad;
-            var projectileParams = GetSawParamsForSquad();
-            _circularSawWeapon.Init(_squad.Destination.transform, projectileParams);
             _attackModel.ShotCount.Subscribe(CreateSaws).AddTo(_disposable);
             _squad.UnitsCount.Subscribe(UpdateRadius).AddTo(_disposable);
         }
         
         private void CreateSaws(int count)
         {
-            _circularSawWeapon.CleanUpSaws();
             var projectileParams = GetSawParamsForSquad();
             var targetType = _ownerUnit.TargetUnitType;
-            for (int i = 0; i < count; i++)
-            {
-                _circularSawWeapon.AddSaw(targetType, projectileParams, DoDamage);
-            }
+            _circularSawWeapon.Init(targetType, projectileParams, DoDamage);
         }
 
         private void UpdateRadius(int squadCount)
@@ -87,6 +81,5 @@ namespace Survivors.Units.Player.Attack
             _ownerUnit = null;
             _squad = null;
         }
-
     }
 }

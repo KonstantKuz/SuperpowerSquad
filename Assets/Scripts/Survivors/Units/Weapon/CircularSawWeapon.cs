@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Feofun.Extension;
 using Survivors.Extension;
 using Survivors.Location;
@@ -17,36 +18,40 @@ namespace Survivors.Units.Weapon
         [SerializeField] private CircularSaw _circularSawPrefab;
 
         private CircularSawsRoot _sawsRoot;
+        private readonly List<CircularSaw> _ownedSaws = new List<CircularSaw>();
 
         [Inject] private World _world;
         [Inject] private WorldObjectFactory _worldObjectFactory;
 
-        private CircularSawsRoot SawsRoot => _sawsRoot ??= GetOrCreateSawsRoot();
-        public int SawsCount { get; set; }
-        
-        public void Init(Transform rotationCenter, IProjectileParams projectileParams)
+        private CircularSawsRoot SawsRoot => _sawsRoot ??= _world.Squad.GetComponentInChildren<CircularSawsRoot>();
+        public IReadOnlyList<CircularSaw> OwnedSaws => _ownedSaws;
+
+        public void Init(UnitType targetType, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
-            SawsRoot.Init(rotationCenter, projectileParams.Speed);
+            CleanUpSaws();
+   
+            for (int i = 0; i < projectileParams.Count; i++)
+            {
+                AddSaw(targetType, projectileParams, hitCallback);
+            }
+
+            SawsRoot.OnWeaponInit(this);
         }
 
-        public void AddSaw(UnitType targetType, IProjectileParams projectileParams, Action<GameObject> hitCallback)
+        private void AddSaw(UnitType targetType, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             var saw = CreateSaw();
             saw.Init(targetType, projectileParams, hitCallback);
-            _sawsRoot.AddSaw(saw, this);
+            saw.transform.SetParent(SawsRoot.transform);
+            _ownedSaws.Add(saw);
         }
         
         public void OnParamsChanged(IProjectileParams projectileParams)
         {
-            _sawsRoot.OnParamsChanged(projectileParams);
+            _ownedSaws.ForEach(it => it.OnParamsChanged(projectileParams));
+            SawsRoot.OnParamsChanged(projectileParams);
         }
 
-        public void CleanUpSaws()
-        {
-            if (_sawsRoot == null) return;
-            _sawsRoot.CleanUpSaws(this);
-        }
-        
         public void CleanUp()
         {
             CleanUpSaws();
@@ -60,14 +65,12 @@ namespace Survivors.Units.Weapon
             return _worldObjectFactory.CreateObject(_circularSawPrefab.gameObject).RequireComponent<CircularSaw>();
         }
 
-        private CircularSawsRoot GetOrCreateSawsRoot()
+        private void CleanUpSaws()
         {
-            var existingRoot = _world.Spawn.GetComponentInChildren<CircularSawsRoot>();
-            if (existingRoot != null) return existingRoot;
-            
-            var newRoot = new GameObject("SawsRoot").AddComponent<CircularSawsRoot>();
-            newRoot.transform.SetParent(_world.Spawn.transform);
-            return newRoot;
+            if (_sawsRoot == null) return;
+            _sawsRoot.OnWeaponCleanUp(this);
+            _ownedSaws.ForEach(it => Destroy(it.gameObject));
+            _ownedSaws.Clear();
         }
     }
 }
