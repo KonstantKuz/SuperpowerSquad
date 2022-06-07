@@ -9,7 +9,7 @@ using UnityEngine;
 
 namespace Survivors.Units.Weapon.Projectiles
 {
-    public class FireBeam : Projectile
+    public class FlameCharge : Projectile
     {
         private const float MAX_FLAME_ANGLE = 80f;
         private const float MIN_POSSIBLE_EMISSION_DURATION = 0.05f;
@@ -20,6 +20,10 @@ namespace Survivors.Units.Weapon.Projectiles
         [SerializeField] private float _flameLifeTimeMultiplier = 1.1f;
         [SerializeField] private float _destroyDelay = 1f;
         [SerializeField] private ParticleSystem[] _flameParticles;
+        
+        private float _flameDistanceMin;
+        private float _flameDistanceMax;
+        private float _distanceTraveled;
 
         private float FlameThrowDuration =>  Mathf.Max(MIN_POSSIBLE_EMISSION_DURATION, _initialFlameWidth / Speed);
         private float FlameLifeTime =>_flameLifeTimeMultiplier * Params.AttackDistance / Speed;
@@ -49,40 +53,39 @@ namespace Survivors.Units.Weapon.Projectiles
         private IEnumerator BurnTargets()
         {
             var lifeTime = 0f;
-            var flameStartRadius = 0f;
-            var flameEndRadius = 0f;
-            var distanceTraveled = 0f;
             while (lifeTime < FlameLifeTime)
             {
-                var deltaTime = Time.deltaTime;
-                var deltaDistance = deltaTime * Speed;
-                lifeTime += deltaTime;
-                
-                flameEndRadius += deltaDistance;
-                if (lifeTime > FlameThrowDuration)
-                {
-                    flameStartRadius += deltaDistance;
-                }
-
-                distanceTraveled += deltaDistance;
-                if (distanceTraveled >= FlameWidth * DAMAGE_DISTANCE_STEP_MULTIPLIER)
-                {
-                    distanceTraveled = 0;
-                    TryHitTargetsInFlame(flameStartRadius, flameEndRadius);
-                }
-                
+                lifeTime += Time.deltaTime;
+                MoveFlame(lifeTime);
                 yield return null;
             }
             yield return new WaitForSeconds(_destroyDelay);
             Destroy(gameObject);
         }
 
-        private void TryHitTargetsInFlame(float flameStartRadius, float flameEndRadius)
+        private void MoveFlame(float lifeTime)
         {
-            var hits = GetHits(transform.position, flameEndRadius, TargetType);
+            var deltaDistance = Time.deltaTime * Speed;
+            _flameDistanceMax += deltaDistance;
+            if (lifeTime > FlameThrowDuration)
+            {
+                _flameDistanceMin += deltaDistance;
+            }
+
+            _distanceTraveled += deltaDistance;
+            if (_distanceTraveled >= FlameWidth * DAMAGE_DISTANCE_STEP_MULTIPLIER)
+            {
+                _distanceTraveled = 0;
+                TryHitTargetsInFlame(_flameDistanceMin, _flameDistanceMax);
+            }
+        }
+
+        private void TryHitTargetsInFlame(float flameDistanceMin, float flameDistanceMax)
+        {
+            var hits = GetHits(transform.position, flameDistanceMax, TargetType);
             foreach (var hit in hits)
             {
-                if (!IsTargetInsideFlame(hit.transform.position, flameStartRadius, flameEndRadius)) 
+                if (!IsTargetInsideFlame(hit.transform.position, flameDistanceMin, flameDistanceMax)) 
                 {
                     continue;
                 }
@@ -92,20 +95,20 @@ namespace Survivors.Units.Weapon.Projectiles
             }
         }
 
-        private bool IsTargetInsideFlame(Vector3 target, float flameStartRadius, float flameEndRadius)
+        private bool IsTargetInsideFlame(Vector3 target, float flameDistanceMin, float flameDistanceMax)
         {
-            return IsTargetInsideCone(target, transform.position, transform.forward, FlameAngle) &&
-                   IsTargetInsideDistanceRange(target, transform.position, flameStartRadius, flameEndRadius);
+            return IsInsideCone(target, transform.position, transform.forward, FlameAngle) &&
+                   IsInsideDistanceRange(target, transform.position, flameDistanceMin, flameDistanceMax);
         }
         
-        private static bool IsTargetInsideCone(Vector3 target, Vector3 coneOrigin, Vector3 coneDirection, float maxAngle)
+        private static bool IsInsideCone(Vector3 target, Vector3 coneOrigin, Vector3 coneDirection, float maxAngle)
         {
             var targetDirection = target - coneOrigin;
             var angle = Vector3.Angle(coneDirection, targetDirection.XZ());
             return angle <= maxAngle;
         }
 
-        private static bool IsTargetInsideDistanceRange(Vector3 target, Vector3 origin, float distanceMin, float distanceMax)
+        private static bool IsInsideDistanceRange(Vector3 target, Vector3 origin, float distanceMin, float distanceMax)
         {
             var distance = Vector3.Distance(origin, target);
             return distance > distanceMin && distance < distanceMax;

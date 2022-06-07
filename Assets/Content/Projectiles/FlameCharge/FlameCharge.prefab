@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7789061370550061189}
   - component: {fileID: 5497661428694648794}
   m_Layer: 10
-  m_Name: FireBeam
+  m_Name: FlameCharge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
