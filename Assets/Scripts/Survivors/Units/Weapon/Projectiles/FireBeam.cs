@@ -11,19 +11,23 @@ namespace Survivors.Units.Weapon.Projectiles
 {
     public class FireBeam : Projectile
     {
-        [SerializeField] private float _flameWidth = 2;
+        private const float MIN_POSSIBLE_EMISSION_DURATION = 0.05f;
+        private const float DAMAGE_DISTANCE_STEP_MULTIPLIER = 0.8f;
+        
+        [SerializeField] private float _initialFlameWidth = 3f;
         [SerializeField] private float _emissionCountMultiplier = 0.05f;
         [SerializeField] private float _flameLifeTimeMultiplier = 1.1f;
         [SerializeField] private float _destroyDelay = 1f;
         [SerializeField] private ParticleSystem[] _flameParticles;
 
-        private float FlameLifeTime => _flameLifeTimeMultiplier * Params.AttackDistance / Speed;
-        private float FlameThrowDuration => _flameWidth / Speed;
-
+        private float FlameThrowDuration =>  Mathf.Max(MIN_POSSIBLE_EMISSION_DURATION, _initialFlameWidth / Speed);
+        private float FlameLifeTime =>_flameLifeTimeMultiplier * Params.AttackDistance / Speed;
+        private float FlameWidth => FlameThrowDuration * Speed;
+        
         private float _lifeTime;
         private float _flameStartRadius;
         private float _flameEndRadius;
-        
+
         public override void Launch(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             base.Launch(target, projectileParams, hitCallback);
@@ -36,10 +40,10 @@ namespace Survivors.Units.Weapon.Projectiles
         {
             var mainModule = flame.main;
             mainModule.startSpeed = Speed;
-            mainModule.startLifetime = FlameLifeTime;
             mainModule.duration = FlameThrowDuration;
+            mainModule.startLifetime = FlameLifeTime;
             var shapeModule = flame.shape;
-            shapeModule.angle = Params.DamageAngle / 2;
+            shapeModule.angle = Params.DamageAngle;
             var emissionModule = flame.emission;
             emissionModule.rateOverTime = Params.DamageAngle * Params.AttackDistance * Speed * _emissionCountMultiplier;
         }
@@ -63,7 +67,7 @@ namespace Survivors.Units.Weapon.Projectiles
                 }
 
                 distanceTraveled += deltaDistance;
-                if (distanceTraveled > _flameWidth)
+                if (distanceTraveled >= FlameWidth * DAMAGE_DISTANCE_STEP_MULTIPLIER)
                 {
                     distanceTraveled = 0;
                     TryHitTargetsInFlame(_flameStartRadius, _flameEndRadius);
@@ -112,6 +116,10 @@ namespace Survivors.Units.Weapon.Projectiles
         
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(transform.position, _flameEndRadius);
+            
+            Gizmos.color = Color.blue;
+            Gizmos.DrawLine(transform.position, transform.position + Quaternion.AngleAxis(Params.DamageAngle, transform.up) * transform.forward * Params.AttackDistance);
+            Gizmos.DrawLine(transform.position, transform.position + Quaternion.AngleAxis(-Params.DamageAngle, transform.up) * transform.forward * Params.AttackDistance);
         }
     }
 }

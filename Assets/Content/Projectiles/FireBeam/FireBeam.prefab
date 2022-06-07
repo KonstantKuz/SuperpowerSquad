@@ -59,9 +59,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0fff768be77841a69c76fcd1860b2ffe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _flameWidth: 3
   _emissionCountMultiplier: 0.05
-  _durationBySpeedMultiplier: 0.01
-  _initialFlameThrowDuration: 0.5
   _flameLifeTimeMultiplier: 1.1
   _destroyDelay: 1
   _flameParticles:
