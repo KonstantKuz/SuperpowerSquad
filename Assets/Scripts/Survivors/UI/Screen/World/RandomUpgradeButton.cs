@@ -2,8 +2,6 @@
 using Feofun.Modifiers;
 using Survivors.Modifiers.Config;
 using Survivors.Squad.Upgrade;
-using Survivors.Squad.Upgrade.Config;
-using Survivors.Units.Service;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;

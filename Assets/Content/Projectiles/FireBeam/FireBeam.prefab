@@ -60,9 +60,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _emissionCountMultiplier: 0.05
-  _flameThrowDuration: 0.3
+  _durationBySpeedMultiplier: 0.01
+  _initialFlameThrowDuration: 0.5
   _flameLifeTimeMultiplier: 1.1
-  _damagePeriodMultiplier: 0.2
   _destroyDelay: 1
   _flameParticles:
   - {fileID: 8224970149389022511}

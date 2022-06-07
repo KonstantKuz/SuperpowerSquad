@@ -11,16 +11,18 @@ namespace Survivors.Units.Weapon.Projectiles
 {
     public class FireBeam : Projectile
     {
-        [SerializeField] private float _emissionCountMultiplier = 0.4f;
-        [SerializeField] private float _flameThrowDuration = 0.3f;
+        [SerializeField] private float _flameWidth = 2;
+        [SerializeField] private float _emissionCountMultiplier = 0.05f;
         [SerializeField] private float _flameLifeTimeMultiplier = 1.1f;
-        [SerializeField] private float _damagePeriodMultiplier = 0.2f;
         [SerializeField] private float _destroyDelay = 1f;
         [SerializeField] private ParticleSystem[] _flameParticles;
 
         private float FlameLifeTime => _flameLifeTimeMultiplier * Params.AttackDistance / Speed;
-        private float FlameWidth => _flameThrowDuration * Speed;
-        private float DamagePeriod => _damagePeriodMultiplier * FlameWidth / Speed;
+        private float FlameThrowDuration => _flameWidth / Speed;
+
+        private float _lifeTime;
+        private float _flameStartRadius;
+        private float _flameEndRadius;
         
         public override void Launch(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
@@ -35,7 +37,7 @@ namespace Survivors.Units.Weapon.Projectiles
             var mainModule = flame.main;
             mainModule.startSpeed = Speed;
             mainModule.startLifetime = FlameLifeTime;
-            mainModule.duration = _flameThrowDuration;
+            mainModule.duration = FlameThrowDuration;
             var shapeModule = flame.shape;
             shapeModule.angle = Params.DamageAngle / 2;
             var emissionModule = flame.emission;
@@ -44,25 +46,28 @@ namespace Survivors.Units.Weapon.Projectiles
 
         private IEnumerator BurnTargets()
         {
-            var lifeTime = 0f;
-            var flameStartRadius = 0f;
-            var flameEndRadius = 0f;
-            var damageTimer = 0f;
-            while (lifeTime < FlameLifeTime)
+            _lifeTime = 0f;
+            _flameStartRadius = 0f;
+            _flameEndRadius = 0f;
+            var distanceTraveled = 0f;
+            while (_lifeTime < FlameLifeTime)
             {
                 var deltaTime = Time.deltaTime;
-                lifeTime += deltaTime;
-                flameEndRadius += deltaTime * Speed;
-                if (lifeTime > _flameThrowDuration)
+                var deltaDistance = deltaTime * Speed;
+                _lifeTime += deltaTime;
+                
+                _flameEndRadius += deltaDistance;
+                if (_lifeTime > FlameThrowDuration)
                 {
-                    flameStartRadius += deltaTime * Speed;
+                    _flameStartRadius += deltaDistance;
                 }
 
-                damageTimer += deltaTime;
-                if (damageTimer > DamagePeriod)
+                distanceTraveled += deltaDistance;
+                if (distanceTraveled > _flameWidth)
                 {
-                    damageTimer = 0;
-                    TryHitTargetsInFlame(flameStartRadius, flameEndRadius);
+                    distanceTraveled = 0;
+                    TryHitTargetsInFlame(_flameStartRadius, _flameEndRadius);
+                    // Debug.Break();
                 }
                 
                 yield return null;
@@ -98,6 +103,15 @@ namespace Survivors.Units.Weapon.Projectiles
         {
             var distance = Vector3.Distance(origin, target);
             return distance > distanceMin && distance < distanceMax;
+        }
+
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, _flameStartRadius);
+        
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, _flameEndRadius);
         }
     }
 }
