@@ -1,2 +1,2 @@
 Id,Health,MoveSpeed,AttackRange,AttackDamage,AttackInterval,HealthStep,ScaleStep
-SimpleEnemy,100,4,1.25,5,2,100,1.2
+SimpleEnemy,100,4,1.25,10,2,100,1.1

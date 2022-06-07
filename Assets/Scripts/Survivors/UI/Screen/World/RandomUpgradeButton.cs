@@ -9,6 +9,7 @@ namespace Survivors.UI.Screen.World
     public class RandomUpgradeButton : MonoBehaviour
     {
         [Inject] private UpgradeService _upgradeService;
+
         private void Awake()
         {
             GetComponent<Button>().onClick.AddListener(AddRandomUpgrade);
