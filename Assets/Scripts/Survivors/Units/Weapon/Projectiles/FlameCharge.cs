@@ -57,6 +57,7 @@ namespace Survivors.Units.Weapon.Projectiles
             {
                 lifeTime += Time.deltaTime;
                 MoveFlame(lifeTime);
+                TryDamageInFlame();
                 yield return null;
             }
             yield return new WaitForSeconds(_destroyDelay);
@@ -66,13 +67,17 @@ namespace Survivors.Units.Weapon.Projectiles
         private void MoveFlame(float lifeTime)
         {
             var deltaDistance = Time.deltaTime * Speed;
+            _distanceTraveled += deltaDistance;
+
             _flameDistanceMax += deltaDistance;
             if (lifeTime > FlameThrowDuration)
             {
                 _flameDistanceMin += deltaDistance;
             }
+        }
 
-            _distanceTraveled += deltaDistance;
+        private void TryDamageInFlame()
+        {
             if (_distanceTraveled >= FlameWidth * DAMAGE_DISTANCE_STEP_MULTIPLIER)
             {
                 _distanceTraveled = 0;
