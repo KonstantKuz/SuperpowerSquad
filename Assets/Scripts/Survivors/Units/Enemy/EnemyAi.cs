@@ -25,6 +25,7 @@ namespace Survivors.Units.Enemy
         private NavMeshAgent _agent;
         private ITarget _target;
         private ITargetSearcher _targetSearcher;
+        private float _initialAgentRadius;
 
         [Inject] private World _world;
 
@@ -67,6 +68,7 @@ namespace Survivors.Units.Enemy
             _selfTarget = gameObject.RequireComponent<ITarget>();
             _targetSearcher = gameObject.RequireComponent<ITargetSearcher>();
             _collider = gameObject.RequireComponent<CapsuleCollider>();
+            _initialAgentRadius = _agent.radius;
         }
 
         public void OnTick()
@@ -93,7 +95,7 @@ namespace Survivors.Units.Enemy
 
         private void UpdateAgentRadius()
         {
-            _agent.radius = Mathf.Lerp(_agentRadiusNear, _agentRadiusAfar, 
+            _agent.radius = _initialAgentRadius +  Mathf.Lerp(_agentRadiusNear, _agentRadiusAfar, 
                                        (DistanceToSquad - _agentDistanceNear) / (_agentDistanceAfar - _agentDistanceNear));
         }
 
