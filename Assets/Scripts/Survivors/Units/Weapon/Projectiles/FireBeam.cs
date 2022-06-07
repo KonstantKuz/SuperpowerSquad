@@ -11,6 +11,7 @@ namespace Survivors.Units.Weapon.Projectiles
 {
     public class FireBeam : Projectile
     {
+        private const float MAX_FLAME_ANGLE = 80f;
         private const float MIN_POSSIBLE_EMISSION_DURATION = 0.05f;
         private const float DAMAGE_DISTANCE_STEP_MULTIPLIER = 0.8f;
         
@@ -23,11 +24,8 @@ namespace Survivors.Units.Weapon.Projectiles
         private float FlameThrowDuration =>  Mathf.Max(MIN_POSSIBLE_EMISSION_DURATION, _initialFlameWidth / Speed);
         private float FlameLifeTime =>_flameLifeTimeMultiplier * Params.AttackDistance / Speed;
         private float FlameWidth => FlameThrowDuration * Speed;
+        private float FlameAngle => Mathf.Clamp(Params.DamageAngle / 2, 0, MAX_FLAME_ANGLE);
         
-        private float _lifeTime;
-        private float _flameStartRadius;
-        private float _flameEndRadius;
-
         public override void Launch(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             base.Launch(target, projectileParams, hitCallback);
@@ -43,35 +41,34 @@ namespace Survivors.Units.Weapon.Projectiles
             mainModule.duration = FlameThrowDuration;
             mainModule.startLifetime = FlameLifeTime;
             var shapeModule = flame.shape;
-            shapeModule.angle = Params.DamageAngle;
+            shapeModule.angle = FlameAngle;
             var emissionModule = flame.emission;
-            emissionModule.rateOverTime = Params.DamageAngle * Params.AttackDistance * Speed * _emissionCountMultiplier;
+            emissionModule.rateOverTime = FlameAngle * Params.AttackDistance * Speed * _emissionCountMultiplier;
         }
 
         private IEnumerator BurnTargets()
         {
-            _lifeTime = 0f;
-            _flameStartRadius = 0f;
-            _flameEndRadius = 0f;
+            var lifeTime = 0f;
+            var flameStartRadius = 0f;
+            var flameEndRadius = 0f;
             var distanceTraveled = 0f;
-            while (_lifeTime < FlameLifeTime)
+            while (lifeTime < FlameLifeTime)
             {
                 var deltaTime = Time.deltaTime;
                 var deltaDistance = deltaTime * Speed;
-                _lifeTime += deltaTime;
+                lifeTime += deltaTime;
                 
-                _flameEndRadius += deltaDistance;
-                if (_lifeTime > FlameThrowDuration)
+                flameEndRadius += deltaDistance;
+                if (lifeTime > FlameThrowDuration)
                 {
-                    _flameStartRadius += deltaDistance;
+                    flameStartRadius += deltaDistance;
                 }
 
                 distanceTraveled += deltaDistance;
                 if (distanceTraveled >= FlameWidth * DAMAGE_DISTANCE_STEP_MULTIPLIER)
                 {
                     distanceTraveled = 0;
-                    TryHitTargetsInFlame(_flameStartRadius, _flameEndRadius);
-                    // Debug.Break();
+                    TryHitTargetsInFlame(flameStartRadius, flameEndRadius);
                 }
                 
                 yield return null;
@@ -85,8 +82,7 @@ namespace Survivors.Units.Weapon.Projectiles
             var hits = GetHits(transform.position, flameEndRadius, TargetType);
             foreach (var hit in hits)
             {
-                if (!IsTargetInsideCone(hit.transform.position, transform.position, transform.forward, Params.DamageAngle)
-                || !IsTargetInsideDistanceRange(hit.transform.position, transform.position, flameStartRadius, flameEndRadius)) 
+                if (!IsTargetInsideFlame(hit.transform.position, flameStartRadius, flameEndRadius)) 
                 {
                     continue;
                 }
@@ -94,6 +90,12 @@ namespace Survivors.Units.Weapon.Projectiles
                     HitCallback?.Invoke(hit.gameObject);
                 }
             }
+        }
+
+        private bool IsTargetInsideFlame(Vector3 target, float flameStartRadius, float flameEndRadius)
+        {
+            return IsTargetInsideCone(target, transform.position, transform.forward, FlameAngle) &&
+                   IsTargetInsideDistanceRange(target, transform.position, flameStartRadius, flameEndRadius);
         }
         
         private static bool IsTargetInsideCone(Vector3 target, Vector3 coneOrigin, Vector3 coneDirection, float maxAngle)
@@ -107,19 +109,6 @@ namespace Survivors.Units.Weapon.Projectiles
         {
             var distance = Vector3.Distance(origin, target);
             return distance > distanceMin && distance < distanceMax;
-        }
-
-        private void OnDrawGizmos()
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, _flameStartRadius);
-        
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(transform.position, _flameEndRadius);
-            
-            Gizmos.color = Color.blue;
-            Gizmos.DrawLine(transform.position, transform.position + Quaternion.AngleAxis(Params.DamageAngle, transform.up) * transform.forward * Params.AttackDistance);
-            Gizmos.DrawLine(transform.position, transform.position + Quaternion.AngleAxis(-Params.DamageAngle, transform.up) * transform.forward * Params.AttackDistance);
         }
     }
 }
