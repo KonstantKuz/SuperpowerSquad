@@ -31,7 +31,8 @@ namespace Survivors.App
                 .RegisterSingle<SquadConfig>(Configs.SQUAD)
                 .RegisterStringKeyedCollection<ParameterUpgradeConfig>(Configs.MODIFIERS)
                 .RegisterSingle<UpgradesConfig>(Configs.UPGRADES)     
-                .RegisterSingle<UpgradeBranchSelectionConfig>(Configs.CONSTANTS);
+                .RegisterSingle<UpgradeBranchSelectionConfig>(Configs.CONSTANTS)
+                .RegisterSingle<HpsSpawnerConfigLoader>(Configs.ENEMY_SPAWNER);
         }
     }
 }

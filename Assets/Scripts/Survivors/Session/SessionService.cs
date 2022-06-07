@@ -13,6 +13,7 @@ namespace Survivors.Session
     public class SessionService : IWorldScope
     {
         [Inject] private EnemyWavesSpawner _enemyWavesSpawner;
+        [Inject] private EnemyHpsSpawner _enemyHpsSpawner;
         [Inject] private EnemyWavesConfig _enemyWavesConfig;
         [Inject] private UnitFactory _unitFactory;     
         [Inject] private SquadFactory _squadFactory; 
@@ -30,6 +31,7 @@ namespace Survivors.Session
             squad.OnDeath += OnSquadDeath;
             _unitFactory.CreatePlayerUnit(UnitFactory.SIMPLE_PLAYER_ID);
             _enemyWavesSpawner.StartSpawn(_enemyWavesConfig);
+            _enemyHpsSpawner.StartSpawn();
         }
         private void OnSquadDeath()
         {

@@ -11,14 +11,16 @@ namespace Survivors.Units.Target
         [SerializeField]
         private UnitType _unitType;
         [SerializeField] 
-        private Transform _centerTarget;
+        private Transform _centerTarget;   
+        [SerializeField] 
+        private Transform _rootTarget;
 
         [Inject] 
         private TargetService _targetService;
 
         public string TargetId { get; private set; }
         public bool IsAlive { get; private set; } = true;
-        public Transform Root => transform;
+        public Transform Root => _rootTarget;
         public Transform Center => _centerTarget;
         public UnitType UnitType
         {
