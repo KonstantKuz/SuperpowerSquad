@@ -31,8 +31,10 @@ namespace Survivors.Units.Enemy
 
 
         private Vector3 SquadPosition => _world.Squad.Destination.transform.position;
-
-        private float SelfRadius => _collider.radius * transform.localScale.x;
+        private float AgentRadiusAfar => _agentRadiusAfar / Scale;   
+        private float AgentRadiusNear => _agentRadiusNear / Scale;
+        private float Scale => transform.localScale.x;
+        private float SelfRadius => _collider.radius * Scale;
         private float DistanceToSquad => Vector3.Distance(_selfTarget.Root.position, SquadPosition) - SelfRadius;
         public float DistanceToTarget => CurrentTarget == null ? float.MaxValue : Vector3.Distance(_selfTarget.Root.position, CurrentTarget.Root.position) - SelfRadius;
 
@@ -95,8 +97,8 @@ namespace Survivors.Units.Enemy
 
         private void UpdateAgentRadius()
         {
-            _agent.radius = _initialAgentRadius +  Mathf.Lerp(_agentRadiusNear, _agentRadiusAfar, 
-                                       (DistanceToSquad - _agentDistanceNear) / (_agentDistanceAfar - _agentDistanceNear));
+            _agent.radius = _initialAgentRadius + Mathf.Lerp(AgentRadiusNear, AgentRadiusAfar, 
+                                                             (DistanceToSquad - _agentDistanceNear) / (_agentDistanceAfar - _agentDistanceNear));
         }
 
         private void FindTarget()
