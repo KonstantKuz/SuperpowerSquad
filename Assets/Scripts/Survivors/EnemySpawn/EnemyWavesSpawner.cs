@@ -19,6 +19,7 @@ namespace Survivors.EnemySpawn
     public class EnemyWavesSpawner : MonoBehaviour, IWorldScope
     {
         private static int ENEMY_LAYER;
+        private static readonly Vector3 INVALID_SPAWN_PLACE = Vector3.one * 12345;
         
         [SerializeField] private int _maxFindPlaceAttemptCount = 5;
         [SerializeField] private float _minOutOfViewOffset = 2f;
@@ -71,6 +72,11 @@ namespace Survivors.EnemySpawn
 
         public void SpawnWave(EnemyWaveConfig wave, Vector3 place)
         {
+            if (place == INVALID_SPAWN_PLACE)
+            {
+                return;
+            }
+            
             for (int i = 0; i < wave.Count; i++)
             {
                 SpawnEnemy(place, wave);
@@ -81,7 +87,7 @@ namespace Survivors.EnemySpawn
         {
             var enemyConfig = _enemyUnitConfigs.Get(wave.EnemyId);
             var waveRadius = Mathf.Sqrt(wave.Count) * enemyConfig.GetScaleForLevel(wave.EnemyLevel);
-            var spawnSide = SpawnSide.Top;
+            var spawnSide = EnumExt.GetRandom<SpawnSide>();
             var spawnOffset = _minOutOfViewOffset + waveRadius * _outOfViewOffsetMultiplier;
 
             var spawnPlace = GetSpawnPlace(spawnSide, spawnOffset);
@@ -94,7 +100,7 @@ namespace Survivors.EnemySpawn
                 spawnPlace = GetSpawnPlace(spawnSide, spawnOffset);
             }
 
-            return spawnPlace;
+            return IsPlaceBusy(spawnPlace, waveRadius) ? INVALID_SPAWN_PLACE : spawnPlace;
         }
 
         private Vector3 GetSpawnPlace(SpawnSide spawnSide, float spawnOffset)
@@ -143,8 +149,9 @@ namespace Survivors.EnemySpawn
 
         private bool IsPlaceBusy(Vector3 place, float waveRadius)
         {
-            _spheres.Add(place, waveRadius);
-            _lifetimes.Add(place, 2);
+            if(!_spheres.ContainsKey(place)) _spheres.Add(place, waveRadius);
+            if(!_lifetimes.ContainsKey(place)) _lifetimes.Add(place, 2);
+            
             return Physics.CheckSphere(place, waveRadius, 1 << ENEMY_LAYER);
         }
 
