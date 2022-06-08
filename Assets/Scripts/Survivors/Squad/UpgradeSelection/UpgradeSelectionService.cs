@@ -10,7 +10,8 @@ using Survivors.Squad.Upgrade;
 using Survivors.Squad.Upgrade.Config;
 using Survivors.Squad.UpgradeSelection.Config;
 using Survivors.UI.Dialog;
-using Survivors.UI.Dialog.Model;
+using Survivors.UI.Dialog.UpgradeDialog;
+using Survivors.UI.Dialog.UpgradeDialog.Model;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -67,8 +68,8 @@ namespace Survivors.Squad.UpgradeSelection
 
         private void OnUpgrade(string upgradeBranchId)
         {
-            _world.UnPause();
             _upgradeService.Upgrade(upgradeBranchId);
+            _dialogManager.Show<PauseDialog>();
         }
 
         private IEnumerable<string> GetRandomUpgradeIds(int upgradeCount)
