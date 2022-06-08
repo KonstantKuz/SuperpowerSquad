@@ -1,6 +1,6 @@
 ﻿using System;
 using Feofun.Config;
-using Survivors.Player.Config;
+using Survivors.Enemy.Config;
 
 namespace Survivors.Player.Progress
 {
@@ -8,32 +8,28 @@ namespace Survivors.Player.Progress
     {
         private const int DEFAULT_LEVEL = 1;
 
-        public int Level { get; private set; }
-        public int Kills { get; private set; }
+        public int WinCount { get; private set; }
+
 
         private PlayerProgress()
         {
-            Level = DEFAULT_LEVEL;
+            WinCount = DEFAULT_LEVEL;
             Kills = 0;
         }
         public static PlayerProgress Create() => new PlayerProgress();
+        
+        public bool IsMaxLevel(StringKeyedConfigCollection<EnemyLevelConfig> levels) => WinCount > levels.Values.Count;
+        public int MaxKillsForCurrentLevel(StringKeyedConfigCollection<EnemyLevelConfig> levels) => CurrentLevelConfig(levels).KillCount;
 
-        public void ResetKills()
-        {
-            Kills = 0;
-        }
-        public bool IsMaxLevel(StringKeyedConfigCollection<PlayerLevelConfig> levels) => Level > levels.Values.Count;
-        public int MaxKillsForCurrentLevel(StringKeyedConfigCollection<PlayerLevelConfig> levels) => CurrentLevelConfig(levels).KillCountToNextLevel;
+        public EnemyLevelConfig CurrentLevelConfig(StringKeyedConfigCollection<EnemyLevelConfig> levels) =>
+                levels.Values[Math.Min(levels.Values.Count - 1, WinCount - 1)];
 
-        public PlayerLevelConfig CurrentLevelConfig(StringKeyedConfigCollection<PlayerLevelConfig> levels) =>
-                levels.Values[Math.Min(levels.Values.Count - 1, Level - 1)];
-
-        public void AddKill(StringKeyedConfigCollection<PlayerLevelConfig> levels)
+        public void AddKill(StringKeyedConfigCollection<EnemyLevelConfig> levels)
         {
             Kills++;
             while (Kills >= MaxKillsForCurrentLevel(levels) && !IsMaxLevel(levels)) {
                 Kills -= MaxKillsForCurrentLevel(levels);
-                Level++;
+                WinCount++;
             }
         }
     }

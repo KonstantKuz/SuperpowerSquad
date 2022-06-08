@@ -2,7 +2,6 @@
 using Survivors.EnemySpawn;
 using Survivors.EnemySpawn.Config;
 using Survivors.Location;
-using Survivors.Player.Service;
 using Survivors.Session.Messages;
 using Survivors.Squad;
 using Survivors.Units;
@@ -21,10 +20,12 @@ namespace Survivors.Session
         [Inject] private SquadFactory _squadFactory; 
         [Inject] private World _world;
         [Inject] private IMessenger _messenger;       
-        [Inject] private UnitService _unitService;      
-        [Inject] private PlayerProgressService _playerProgressService;
+        [Inject] private UnitService _unitService;
         [Inject] private CompositeDisposable _disposable;
 
+        private IntReactiveProperty _kills = new IntReactiveProperty(0);
+        public IReadOnlyReactiveProperty<int> Kills => _kills;
+        
         private Model.Session Session { get; set; }
 
         public void OnWorldSetup()
@@ -32,24 +33,19 @@ namespace Survivors.Session
             Dispose();
             _disposable = new CompositeDisposable();
             _unitService.OnEnemyUnitDeath += OnEnemyUnitDeath;
-            _playerProgressService.Level.Subscribe(OnLevelCompleted).AddTo(_disposable);
         }
-
-        private void OnLevelCompleted(int newLevel)
-        {
-            if (newLevel > Session.CurrentLevel) {
-                
-            }
-        }
-
+        
         private void OnEnemyUnitDeath(IUnit unit)
         {
-            _playerProgressService.AddKill();
+            Session.AddKill();
+            if (Session.IsMaxKills) {
+                EndSession(UnitType.PLAYER);
+            }
         }
 
         public void Start()
         {
-            Session = Model.Session.Build(_playerProgressService.Level.Value);
+            Session = Model.Session.Build();
             
             var squad = _squadFactory.CreateSquad();
             _world.Squad = squad;
@@ -65,6 +61,7 @@ namespace Survivors.Session
         private void EndSession(UnitType winner)
         {
             Dispose();
+            Session.SetWinnerByUnitType(winner);
             _messenger.Publish(new SessionEndMessage {
                     Winner = winner,
             });

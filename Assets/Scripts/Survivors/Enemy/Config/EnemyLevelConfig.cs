@@ -1,15 +1,15 @@
 ﻿using System.Runtime.Serialization;
 using Feofun.Config;
 
-namespace Survivors.Player.Config
+namespace Survivors.Enemy.Config
 {
     [DataContract]
-    public class PlayerLevelConfig : ICollectionItem<string>
+    public class EnemyLevelConfig : ICollectionItem<string>
     {
         [DataMember]
         public int Level;
         [DataMember]
-        public int KillCountToNextLevel;
+        public int KillCount;
         public string Id => Level.ToString();
     }
 }
