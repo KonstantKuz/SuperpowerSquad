@@ -379,6 +379,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 482cd254e84aa264d99532c3d24818e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _maxFindPlaceAttemptCount: 5
   _minOutOfViewOffset: 2
   _outOfViewOffsetMultiplier: 0.2
 --- !u!114 &186752239828696303

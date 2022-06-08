@@ -18,6 +18,9 @@ namespace Survivors.EnemySpawn
 {
     public class EnemyWavesSpawner : MonoBehaviour, IWorldScope
     {
+        private static int ENEMY_LAYER;
+        
+        [SerializeField] private int _maxFindPlaceAttemptCount = 5;
         [SerializeField] private float _minOutOfViewOffset = 2f;
         [SerializeField] private float _outOfViewOffsetMultiplier = 0.2f;
 
@@ -27,6 +30,11 @@ namespace Survivors.EnemySpawn
         [Inject] private UnitFactory _unitFactory;
         [Inject] private World _world;
         [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
+
+        private void Awake()
+        {
+            ENEMY_LAYER = LayerMask.NameToLayer("Enemy");
+        }
 
         public void OnWorldSetup()
         {
@@ -57,7 +65,7 @@ namespace Survivors.EnemySpawn
         
         private void SpawnNextWave(EnemyWaveConfig wave)
         {
-            var place = GetRandomPlaceForWave(wave);
+            var place = GetPlaceForWave(wave);
             SpawnWave(wave, place);
         }
 
@@ -69,16 +77,51 @@ namespace Survivors.EnemySpawn
             }
         }
 
-        public Vector3 GetRandomPlaceForWave(EnemyWaveConfig wave)
+        public Vector3 GetPlaceForWave(EnemyWaveConfig wave)
         {
             var enemyConfig = _enemyUnitConfigs.Get(wave.EnemyId);
-            var waveRadius = wave.Count * enemyConfig.GetScaleForLevel(wave.EnemyLevel);
+            var waveRadius = Mathf.Sqrt(wave.Count) * enemyConfig.GetScaleForLevel(wave.EnemyLevel);
+            var spawnSide = SpawnSide.Top;
+            var spawnOffset = _minOutOfViewOffset + waveRadius * _outOfViewOffsetMultiplier;
+
+            var spawnPlace = GetSpawnPlace(spawnSide, spawnOffset);
+
+            var attemptCount = 1;
+            while (IsPlaceBusy(spawnPlace, waveRadius) && attemptCount < _maxFindPlaceAttemptCount)
+            {
+                attemptCount++;
+                spawnOffset *= attemptCount;
+                spawnPlace = GetSpawnPlace(spawnSide, spawnOffset);
+            }
+
+            return spawnPlace;
+        }
+
+        private Vector3 GetSpawnPlace(SpawnSide spawnSide, float spawnOffset)
+        {
+            var camera = UnityEngine.Camera.main.transform;
+            var directionToTopSide = Vector3.ProjectOnPlane(camera.forward, _world.Ground.up).normalized;
+            var directionToRightSide = Vector3.ProjectOnPlane(camera.right, _world.Ground.up).normalized;
+
+            var randomPlace = GetRandomPlaceOnGround(spawnSide);
+            randomPlace += spawnSide switch
+            {
+                SpawnSide.Top => directionToTopSide * spawnOffset,
+                SpawnSide.Bottom => -directionToTopSide * spawnOffset,
+                SpawnSide.Right => directionToRightSide * spawnOffset,
+                SpawnSide.Left => -directionToRightSide * spawnOffset,
+                _ => Vector3.zero
+            };
+            return randomPlace;
+        }
+
+        private Vector3 GetRandomPlaceOnGround(SpawnSide spawnSide)
+        {
             var camera = UnityEngine.Camera.main;
-            var spawnSide = EnumExt.GetRandom<SpawnSide>();
             var randomViewportPoint = GetRandomPointOnViewportEdge(spawnSide);
             var pointRay =  camera.ViewportPointToRay(randomViewportPoint);
             var place = _world.GetGroundIntersection(pointRay);
-            return GetSpawnPlaceWithOffset(place, spawnSide, waveRadius * _outOfViewOffsetMultiplier);
+            return place;
         }
 
         private Vector2 GetRandomPointOnViewportEdge(SpawnSide spawnSide)
@@ -98,23 +141,27 @@ namespace Survivors.EnemySpawn
             }
         }
 
-        private Vector3 GetSpawnPlaceWithOffset(Vector3 place, SpawnSide spawnSide, float waveRadius)
+        private bool IsPlaceBusy(Vector3 place, float waveRadius)
         {
-            var camera = UnityEngine.Camera.main;
-            var spawnOffset = _minOutOfViewOffset + waveRadius;
-            var directionToTopSide = Vector3.ProjectOnPlane(camera.transform.forward, _world.Ground.up).normalized;
-            var directionToRightSide = Vector3.ProjectOnPlane(camera.transform.right, _world.Ground.up).normalized;
+            _spheres.Add(place, waveRadius);
+            _lifetimes.Add(place, 2);
+            return Physics.CheckSphere(place, waveRadius, 1 << ENEMY_LAYER);
+        }
 
-            place += spawnSide switch
+        private Dictionary<Vector3, float> _spheres = new Dictionary<Vector3, float>();
+        private Dictionary<Vector3, float> _lifetimes = new Dictionary<Vector3, float>();
+        private void OnDrawGizmos()
+        {
+            Gizmos.color = Color.red;
+            foreach (var sphere in _spheres)
             {
-                SpawnSide.Top => directionToTopSide * spawnOffset,
-                SpawnSide.Bottom => -directionToTopSide * spawnOffset,
-                SpawnSide.Right => directionToRightSide * spawnOffset,
-                SpawnSide.Left => -directionToRightSide * spawnOffset,
-                _ => Vector3.zero
-            };
-
-            return place;
+                _lifetimes[sphere.Key] -= Time.deltaTime;
+                if (_lifetimes[sphere.Key] <= 0)
+                {
+                    continue;
+                }
+                Gizmos.DrawWireSphere(sphere.Key, sphere.Value);
+            }
         }
 
         private void SpawnEnemy(Vector3 place, EnemyWaveConfig wave)

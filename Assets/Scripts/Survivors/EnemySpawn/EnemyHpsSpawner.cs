@@ -79,7 +79,7 @@ namespace Survivors.EnemySpawn
 
         private Vector3 GetWavePlace(float unitCount, int level)
         {
-            return _enemyWavesSpawner.GetRandomPlaceForWave(GetWaveConfig(Mathf.RoundToInt(unitCount), level));
+            return _enemyWavesSpawner.GetPlaceForWave(GetWaveConfig(Mathf.RoundToInt(unitCount), level));
         }
 
         private void SpawnMixedWave(float averageLevel, float unitCount)
