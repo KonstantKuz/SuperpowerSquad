@@ -6,7 +6,7 @@ using UniRx.Triggers;
 using UnityEngine.EventSystems;
 using Zenject;
 
-namespace Survivors.UI.Dialog
+namespace Survivors.UI.Dialog.PauseDialog
 {
     public class PauseDialog : BaseDialog
     {

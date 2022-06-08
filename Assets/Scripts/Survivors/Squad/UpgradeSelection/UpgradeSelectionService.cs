@@ -10,6 +10,7 @@ using Survivors.Squad.Upgrade;
 using Survivors.Squad.Upgrade.Config;
 using Survivors.Squad.UpgradeSelection.Config;
 using Survivors.UI.Dialog;
+using Survivors.UI.Dialog.PauseDialog;
 using Survivors.UI.Dialog.UpgradeDialog;
 using Survivors.UI.Dialog.UpgradeDialog.Model;
 using UniRx;
