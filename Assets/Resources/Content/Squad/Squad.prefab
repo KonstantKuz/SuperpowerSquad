@@ -155,7 +155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _initialDistance: 20
-  _distanceMultiplier: 3.5
+  _distanceMultiplier: 6
   _shiftDownCoeff: 1
   _cameraSwitchTime: 1
 --- !u!114 &2747964323612514369
@@ -170,7 +170,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9548bd048dc14a9e9fdc27946c652365, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _collectTime: 0.5
+  _collectSpeed: 10
   _collider: {fileID: 2678132323682739517}
 --- !u!54 &1172089039349224172
 Rigidbody:

@@ -1,5 +1,6 @@
 ﻿using Survivors.Location.Model;
 using Survivors.Loot.Config;
+using UnityEngine;
 
 namespace Survivors.Loot
 {
@@ -9,6 +10,12 @@ namespace Survivors.Loot
         public void Init(DroppingLootConfig config)
         {
             Config = config;
+            SetRandomRotation();
+        }
+
+        private void SetRandomRotation()
+        {
+            transform.localRotation = Quaternion.Euler(0, Random.Range(0f, 360f), 0);
         }
     }
 }
