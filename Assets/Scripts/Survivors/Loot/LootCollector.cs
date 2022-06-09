@@ -10,7 +10,7 @@ namespace Survivors.Loot
 {
     public class LootCollector : MonoBehaviour, IInitializable<Squad.Squad>
     {
-        private const float DISTANCE_PRECISION = 1f;
+        private const float LOOT_DESTROY_DISTANCE = 1f;
         
         [SerializeField]
         private float _collectSpeed = 1;
@@ -43,9 +43,9 @@ namespace Survivors.Loot
 
         private void Update()
         {
-            _movingLoots = _movingLoots.Where(it => it != null).ToList();
-            _movingLoots.ForEach(Move);
-            _movingLoots.ForEach(TryCollect);
+            var loots = _movingLoots.ToList();
+            loots.ForEach(Move);
+            loots.ForEach(TryCollect);
         }
 
         private void Move(DroppingLoot loot)
@@ -57,11 +57,12 @@ namespace Survivors.Loot
 
         private void TryCollect(DroppingLoot loot)
         {
-            if (Vector3.Distance(loot.transform.position, transform.position) > DISTANCE_PRECISION)
+            if (Vector3.Distance(loot.transform.position, transform.position) > LOOT_DESTROY_DISTANCE)
             {
                 return;
             }
             _lootService.OnLootCollected(loot.Config);
+            _movingLoots.Remove(loot);
             Destroy(loot.gameObject);
         }
 
