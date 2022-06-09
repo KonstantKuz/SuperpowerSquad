@@ -2,11 +2,12 @@
 using UnityEngine;
 using UnityEngine.Assertions;
 
-namespace Survivors.UI.Components
+namespace Feofun.UI.Components
 {
     public class BezierFollower : MonoBehaviour
     {
-        private const int CUBIC_BEZIER_CURVE_POINT_COUNT = 4;
+        private const int CUBIC_BEZIER_CURVE_POINT_COUNT = 4;      
+        private const int MAX_BEZIER_CURVE_TIME = 1;
         
         [SerializeField]
         private float _speed = 0.3f;
@@ -45,7 +46,7 @@ namespace Survivors.UI.Components
 
             _elapsedTime = 0f;
 
-            while (_elapsedTime < 1) {
+            while (_elapsedTime < MAX_BEZIER_CURVE_TIME) {
                 _elapsedTime += Time.fixedDeltaTime * _speed;
                 _target.transform.position = CalculateCubicBezierCurve(point0, point1, point2, point3, _elapsedTime);
                 yield return null;
