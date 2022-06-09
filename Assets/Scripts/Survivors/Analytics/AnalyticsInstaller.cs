@@ -14,6 +14,7 @@ namespace Survivors.Analytics
                 .WithArguments(new IAnalyticsImpl[]
                 {
                     new AppMetricaAnalyticsWrapper(),
+                    new AppsFlyerAnalyticsWrapper(),
                     //TODO: not a good decision - will cause bugs in FacebookAnalyticsWrapper that are only reproduced on android/ios
                     //and not in Editor
 #if !UNITY_EDITOR && !PLATFORM_STANDALONE
