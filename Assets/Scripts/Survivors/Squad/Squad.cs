@@ -10,7 +10,6 @@ using SuperMaxim.Core.Extensions;
 using Survivors.Extension;
 using Survivors.Location;
 using Survivors.Modifiers;
-using Survivors.Session;
 using Survivors.Squad.Component;
 using Survivors.Squad.Formation;
 using Survivors.Squad.Model;

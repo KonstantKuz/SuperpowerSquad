@@ -4,8 +4,10 @@ using System.Collections.Generic;
 using System.Linq;
 using Feofun.Config;
 using Feofun.Extension;
+using SuperMaxim.Messaging;
 using Survivors.Enemy.EnemySpawn.Config;
 using Survivors.Location;
+using Survivors.Session.Messages;
 using Survivors.Units.Enemy;
 using Survivors.Units.Enemy.Config;
 using Survivors.Units.Service;
@@ -25,18 +27,28 @@ namespace Survivors.Enemy.EnemySpawn
         
         [Inject] private UnitFactory _unitFactory;
         [Inject] private World _world;
+        [Inject] private IMessenger _messenger;
         [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
 
-        public void OnWorldSetup()
+        private void Awake()
         {
-            
+            _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
         }
+
         public void StartSpawn(EnemyWavesConfig enemyWavesConfig)
         {
             Dispose();
             var orderedConfigs = enemyWavesConfig.EnemySpawns.OrderBy(it => it.SpawnTime);
             _waves = new List<EnemyWaveConfig>(orderedConfigs);
             _spawnCoroutine = StartCoroutine(SpawnWaves());
+        }
+        public void OnWorldSetup()
+        {
+            
+        }
+        private void OnSessionFinished(SessionEndMessage evn)
+        {
+            Dispose();
         }
         public void OnWorldCleanUp()
         {
@@ -131,7 +143,10 @@ namespace Survivors.Enemy.EnemySpawn
                 _spawnCoroutine = null;
             }
         }
-
+        private void OnDestroy()
+        {
+            _messenger.Unsubscribe<SessionEndMessage>(OnSessionFinished);
+        }
         private enum SpawnSide
         {
             Top,

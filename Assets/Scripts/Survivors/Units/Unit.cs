@@ -12,7 +12,6 @@ using Survivors.Units.Target;
 using Zenject;
 using Survivors.Units.Model;
 using Survivors.Units.Player.Movement;
-using UnityEngine;
 
 namespace Survivors.Units
 {
@@ -25,10 +24,22 @@ namespace Survivors.Units
         private IDamageable _damageable;
         private IUnitDeath _death;
         private ITarget _selfTarget;
-        private IUnitDeathEventReceiver[] _deathEventReceivers;
+        private IUnitDeathEventReceiver[] _deathEventReceivers;   
+        private IUnitAliveEventReceiver[] _aliveEventReceivers;
         private MovementController _movementController;
+        private bool _isAlive;
 
-        public bool IsAlive { get; set; }
+        public bool IsAlive
+        {
+            get => _isAlive;
+            set
+            {
+                _isAlive = value;
+                if (!_isAlive) {
+                    _aliveEventReceivers.ForEach(it => it.OnUnAlive());
+                }
+            }
+        }
 
         public UnitType UnitType => _selfTarget.UnitType;
         public UnitType TargetUnitType => _selfTarget.UnitType.GetTargetUnitType();
@@ -44,7 +55,8 @@ namespace Survivors.Units
             _damageable = gameObject.RequireComponent<IDamageable>();
             _death = gameObject.RequireComponent<IUnitDeath>();
             _selfTarget = gameObject.RequireComponent<ITarget>();
-            _deathEventReceivers = GetComponentsInChildren<IUnitDeathEventReceiver>();
+            _deathEventReceivers = GetComponentsInChildren<IUnitDeathEventReceiver>();  
+            _aliveEventReceivers = GetComponentsInChildren<IUnitAliveEventReceiver>();
             
             _damageable.OnDeath += Kill;
             _unitService.Add(this);

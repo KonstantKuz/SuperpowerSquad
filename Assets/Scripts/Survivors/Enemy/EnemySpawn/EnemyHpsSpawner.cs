@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections;
 using Feofun.Config;
+using SuperMaxim.Messaging;
 using Survivors.Enemy.EnemySpawn.Config;
 using Survivors.Location;
+using Survivors.Session.Messages;
 using Survivors.Units.Enemy.Config;
 using UnityEngine;
 using Zenject;
@@ -15,26 +17,33 @@ namespace Survivors.Enemy.EnemySpawn
         private Coroutine _spawnCoroutine;
         
         [Inject] private EnemyWavesSpawner _enemyWavesSpawner;
-        [Inject] private HpsSpawnerConfigLoader _config;
+        [Inject] private HpsSpawnerConfigLoader _config;   
+        [Inject] private IMessenger _messenger;
         [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
         private HpsSpawnerConfig Config => _config.Config;
 
-        public void OnWorldSetup()
+        private void Awake()
         {
-            
+            _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
         }
-
-        public void OnWorldCleanUp()
-        {
-            Dispose();
-        }
-
+        
         public void StartSpawn()
         {
             Dispose();
             _spawnCoroutine = StartCoroutine(SpawnCoroutine());
         }
-        
+        public void OnWorldSetup()
+        {
+            
+        }
+        private void OnSessionFinished(SessionEndMessage evn)
+        {
+            Dispose();
+        }
+        public void OnWorldCleanUp()
+        {
+            Dispose();
+        }
         private void Dispose()
         {
             if (_spawnCoroutine == null) return;
@@ -110,7 +119,10 @@ namespace Survivors.Enemy.EnemySpawn
                 EnemyLevel = level
             };
         }
-
+        private void OnDestroy()
+        {
+            _messenger.Unsubscribe<SessionEndMessage>(OnSessionFinished);
+        }
         private static void Log(string message)
         {
 #if UNITY_EDITOR
