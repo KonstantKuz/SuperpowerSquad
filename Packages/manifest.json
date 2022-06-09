@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "appsflyer-unity-plugin": "https://github.com/AppsFlyerSDK/appsflyer-unity-plugin.git#upm",
     "com.bgtools.playerprefseditor": "https://github.com/Dysman/bgTools-playerPrefsEditor.git#upm",
     "com.coffee.ui-particle": "https://github.com/mob-sakai/ParticleEffectForUGUI.git",
     "com.gameanalytics.sdk": "https://github.com/GameAnalytics/GA-SDK-UNITY.git",
