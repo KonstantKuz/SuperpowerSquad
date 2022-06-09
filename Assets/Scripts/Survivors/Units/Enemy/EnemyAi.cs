@@ -12,7 +12,7 @@ using Zenject;
 namespace Survivors.Units.Enemy
 {
     [RequireComponent(typeof(NavMeshAgent))]
-    public class EnemyAi : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent, IUnitAliveEventReceiver
+    public class EnemyAi : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent, IUnitActiveEventReceiver
     {
         [SerializeField] private float _targetSelectionDistance = 10f;
         [SerializeField] private float _agentRadiusAfar;
@@ -111,7 +111,7 @@ namespace Survivors.Units.Enemy
             CurrentTarget = null;
         }
 
-        public void OnUnAlive()
+        public void OnInactive()
         {
             _agent.isStopped = true;
         }

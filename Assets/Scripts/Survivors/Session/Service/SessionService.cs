@@ -1,8 +1,12 @@
-﻿using SuperMaxim.Messaging;
-using Survivors.Enemy.EnemySpawn;
-using Survivors.Enemy.EnemySpawn.Config;
-using Survivors.Enemy.Service;
+﻿using System.Linq;
+using Feofun.Config;
+using SuperMaxim.Messaging;
+using Survivors.Enemy.Spawn;
+using Survivors.Enemy.Spawn.Config;
 using Survivors.Location;
+using Survivors.Player.Model;
+using Survivors.Player.Service;
+using Survivors.Session.Config;
 using Survivors.Session.Messages;
 using Survivors.Squad;
 using Survivors.Units;
@@ -25,12 +29,14 @@ namespace Survivors.Session.Service
         [Inject] private World _world;
         [Inject] private IMessenger _messenger;       
         [Inject] private UnitService _unitService;
-        [Inject] private SessionRepository _repository;     
-        [Inject] private EnemyService _enemyService;
-        
-        public IReadOnlyReactiveProperty<int> Kills => _kills;
+        [Inject] private SessionRepository _repository;
+        [Inject] private readonly StringKeyedConfigCollection<LevelMissionConfig> _levelsConfig;
+        [Inject] private PlayerProgressService _playerProgressService;
+        private PlayerProgress PlayerProgress => _playerProgressService.Progress;
         
         private Model.Session Session => _repository.Require();
+        
+        public IReadOnlyReactiveProperty<int> Kills => _kills;
         
         public void OnWorldSetup()
         {
@@ -45,12 +51,14 @@ namespace Survivors.Session.Service
             CreateSquad();
             SpawnUnits();
         }
+        public LevelMissionConfig GetLevelConfig() => _levelsConfig.Values[Mathf.Min(PlayerProgress.WinCount, _levelsConfig.Count() - 1)];
         private void CreateSession()
         {
-            var newSession = Model.Session.Build(_enemyService.GetLevelConfig());
+            var newSession = Model.Session.Build(GetLevelConfig());
             _repository.Set(newSession);
-            Debug.Log($"Kill enemies:= {_enemyService.GetLevelConfig().KillCount}");
+            Debug.Log($"Kill enemies:= {GetLevelConfig().KillCount}");
         }
+    
         private void CreateSquad()
         {
             var squad = _squadFactory.CreateSquad();
@@ -82,13 +90,13 @@ namespace Survivors.Session.Service
         private void EndSession(UnitType winner)
         {
             Dispose();
-            Session.SetWinnerByUnitType(winner);
+            Session.SetResultByUnitType(winner);
             
             _unitService.DeactivateAll();
-            _world.Squad.IsAlive = false;
+            _world.Squad.IsActive = false;
             
             _messenger.Publish(new SessionEndMessage {
-                    Result = Session.Winner.Value,
+                    Result = Session.Result.Value,
             });
         
         }
@@ -103,5 +111,6 @@ namespace Survivors.Session.Service
         {
             Dispose();
         }
+        
     }
 }

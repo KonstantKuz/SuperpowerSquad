@@ -7,7 +7,7 @@ using UnityEngine.AI;
 namespace Survivors.Units.Player.Movement
 {
     [RequireComponent(typeof(NavMeshAgent))]
-    public class MovementController : MonoBehaviour, IUnitDeathEventReceiver, IUnitAliveEventReceiver
+    public class MovementController : MonoBehaviour, IUnitDeathEventReceiver, IUnitActiveEventReceiver
     {
         private readonly int _runHash = Animator.StringToHash("Run");
         private readonly int _idleHash = Animator.StringToHash("Idle");
@@ -55,7 +55,7 @@ namespace Survivors.Units.Player.Movement
                 HasTarget = false;
             }
         }
-        public void OnUnAlive()
+        public void OnInactive()
         {
             StopAnimation();
         }

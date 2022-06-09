@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Survivors.Enemy.EnemySpawn.Config
+namespace Survivors.Enemy.Spawn.Config
 {
     public class EnemyWaveConfig
     {

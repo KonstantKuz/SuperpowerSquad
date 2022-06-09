@@ -5,7 +5,7 @@ using System.Linq;
 using Feofun.Config;
 using Feofun.Extension;
 using SuperMaxim.Messaging;
-using Survivors.Enemy.EnemySpawn.Config;
+using Survivors.Enemy.Spawn.Config;
 using Survivors.Location;
 using Survivors.Session.Messages;
 using Survivors.Units.Enemy;
@@ -15,9 +15,9 @@ using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
 
-namespace Survivors.Enemy.EnemySpawn
+namespace Survivors.Enemy.Spawn
 {
-    public class EnemyWavesSpawner : MonoBehaviour, IWorldScope
+    public class EnemyWavesSpawner : MonoBehaviour
     {
         [SerializeField] private float _minOutOfViewOffset = 2f;
         [SerializeField] private float _outOfViewOffsetMultiplier = 0.2f;
@@ -42,15 +42,7 @@ namespace Survivors.Enemy.EnemySpawn
             _waves = new List<EnemyWaveConfig>(orderedConfigs);
             _spawnCoroutine = StartCoroutine(SpawnWaves());
         }
-        public void OnWorldSetup()
-        {
-            
-        }
         private void OnSessionFinished(SessionEndMessage evn)
-        {
-            Dispose();
-        }
-        public void OnWorldCleanUp()
         {
             Dispose();
         }

@@ -1,5 +1,4 @@
-﻿using Survivors.Enemy.EnemySpawn;
-using Survivors.Enemy.Service;
+﻿using Survivors.Enemy.Spawn;
 using Survivors.Location.Service;
 using Survivors.Loot.Service;
 using Survivors.Session.Service;
@@ -24,10 +23,9 @@ namespace Survivors.Location
             container.BindInterfacesAndSelfTo<SessionService>().AsSingle();   
             container.Bind<SessionRepository>().AsSingle();
             
-            container.BindInterfacesAndSelfTo<EnemyWavesSpawner>().FromInstance(_enemyWavesSpawner);
+            container.Bind<EnemyWavesSpawner>().FromInstance(_enemyWavesSpawner);
+            container.Bind<EnemyHpsSpawner>().FromInstance(_enemyHpsSpawner).AsSingle();
             container.BindInterfacesAndSelfTo<DroppingLootService>().AsSingle();
-            container.BindInterfacesAndSelfTo<EnemyHpsSpawner>().FromInstance(_enemyHpsSpawner).AsSingle();
-            container.Bind<EnemyService>().AsSingle();
         }
     }
 }
