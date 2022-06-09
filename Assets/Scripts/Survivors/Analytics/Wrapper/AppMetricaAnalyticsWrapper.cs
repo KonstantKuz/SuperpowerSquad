@@ -11,7 +11,7 @@ namespace Survivors.Analytics.Wrapper
         public void Init()
         {
             Debug.Log("Starting initializing AppMetrica");
-            AppMetrica.Setup(OnActivation);
+            AppMetrica.Instance.OnActivation += OnActivation;
         }
         
         private void OnActivation(YandexAppMetricaConfig config)
