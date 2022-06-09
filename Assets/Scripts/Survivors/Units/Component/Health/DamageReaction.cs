@@ -51,14 +51,12 @@ namespace Survivors.Units.Component.Health
         private void PlayColorBlink()
         {
             var toBlinkColor = _renderer.material.DOColor(_blinkColor, BASE_COLOR, _colorBlinkDuration).SetEase(Ease.OutCubic);
-            _currentTweens.Add(toBlinkColor);
-            toBlinkColor.onComplete = () =>
-            {
-                _currentTweens.Remove(toBlinkColor);
-                var toOriginColor = _renderer.material.DOColor(_startColor, BASE_COLOR, _colorBlinkDuration).SetEase(Ease.InCubic);
-                _currentTweens.Add(toOriginColor);
-                toOriginColor.onComplete = () => _currentTweens.Remove(toOriginColor);
-            };
+            var toOriginColor = _renderer.material.DOColor(_startColor, BASE_COLOR, _colorBlinkDuration).SetEase(Ease.InCubic);
+
+            var sequence = DOTween.Sequence();
+            sequence.Append(toBlinkColor).Append(toOriginColor).Play();
+            _currentTweens.Add(sequence);
+            sequence.onComplete = () => { _currentTweens.Remove(sequence); };
         }
 
         private void Dispose()
