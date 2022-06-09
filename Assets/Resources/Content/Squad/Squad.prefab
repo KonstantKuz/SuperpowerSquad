@@ -155,7 +155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _initialDistance: 20
-  _distanceMultiplier: 3.5
+  _distanceMultiplier: 6
   _shiftDownCoeff: 1
   _cameraSwitchTime: 1
 --- !u!114 &2747964323612514369
