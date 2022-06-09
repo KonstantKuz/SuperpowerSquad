@@ -2,6 +2,7 @@
 using Feofun.App.Init;
 using JetBrains.Annotations;
 using Survivors.App;
+using Survivors.IOSTransparency;
 using UnityEditor;
 using UnityEngine;
 using Zenject;
@@ -34,6 +35,9 @@ namespace Survivors
         private void RunLoadableChains()
         {
             var initSequence = gameObject.AddComponent<AppInitSequence>();
+#if UNITY_IOS            
+            initSequence.AddStep<IosATTInitStep>();
+#endif
             initSequence.AddStep<StartGameInitStep>();
             initSequence.Next();
         }

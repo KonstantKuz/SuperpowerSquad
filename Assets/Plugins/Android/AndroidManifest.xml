@@ -9,5 +9,6 @@
       </intent-filter>
       <meta-data android:name="unityplayer.UnityActivity" android:value="true" />
     </activity>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
   </application>
 </manifest>
