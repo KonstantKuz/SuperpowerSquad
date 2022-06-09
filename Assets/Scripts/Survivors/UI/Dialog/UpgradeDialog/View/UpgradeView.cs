@@ -1,11 +1,11 @@
 ﻿using System.Collections.Generic;
 using Feofun.Extension;
 using SuperMaxim.Core.Extensions;
-using Survivors.UI.Dialog.Model;
+using Survivors.UI.Dialog.UpgradeDialog.Model;
 using TMPro;
 using UnityEngine;
 
-namespace Survivors.UI.Dialog.View
+namespace Survivors.UI.Dialog.UpgradeDialog.View
 {
     public class UpgradeView : MonoBehaviour
     {

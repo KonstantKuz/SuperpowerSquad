@@ -1,9 +1,9 @@
 ﻿using Feofun.UI.Components;
-using Survivors.UI.Dialog.Model;
+using Survivors.UI.Dialog.UpgradeDialog.Model;
 using TMPro;
 using UnityEngine;
 
-namespace Survivors.UI.Dialog.View
+namespace Survivors.UI.Dialog.UpgradeDialog.View
 {
     public class UpgradeItemView : MonoBehaviour
     {
