@@ -1,6 +1,7 @@
 ﻿using Feofun.App;
 using Feofun.App.Init;
 using JetBrains.Annotations;
+using Survivors.Analytics;
 using Survivors.App;
 using Survivors.IOSTransparency;
 using UnityEditor;
@@ -38,6 +39,7 @@ namespace Survivors
 #if UNITY_IOS            
             initSequence.AddStep<IosATTInitStep>();
 #endif
+            initSequence.AddStep<AnalyticsInitStep>();
             initSequence.AddStep<StartGameInitStep>();
             initSequence.Next();
         }

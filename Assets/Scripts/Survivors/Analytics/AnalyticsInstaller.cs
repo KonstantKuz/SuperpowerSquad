@@ -16,9 +16,9 @@ namespace Survivors.Analytics
                     new AppMetricaAnalyticsWrapper(),
                     //TODO: not a good decision - will cause bugs in FacebookAnalyticsWrapper that are only reproduced on android/ios
                     //and not in Editor
-//#if !UNITY_EDITOR && !PLATFORM_STANDALONE
+#if !UNITY_EDITOR && !PLATFORM_STANDALONE
                             new FacebookAnalyticsWrapper()
-//#endif
+#endif
                 }).NonLazy();
             
         }
