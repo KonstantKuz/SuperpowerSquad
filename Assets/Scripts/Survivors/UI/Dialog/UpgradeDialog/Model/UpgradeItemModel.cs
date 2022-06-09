@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Survivors.UI.Dialog.Model
+namespace Survivors.UI.Dialog.UpgradeDialog.Model
 {
     public class UpgradeItemModel
     {

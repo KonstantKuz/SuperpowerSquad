@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Survivors.UI.Dialog.Model
+namespace Survivors.UI.Dialog.UpgradeDialog.Model
 {
     public class UpgradeDialogInitModel
     {
