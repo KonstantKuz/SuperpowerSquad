@@ -1,10 +1,10 @@
-﻿using Survivors.Units;
+﻿using Survivors.Session.Model;
 
 namespace Survivors.Session.Messages
 {
     public struct SessionEndMessage
     {
-        public UnitType Winner;
-        
+        public SessionResult Result { get; set; }
+
     }
 }

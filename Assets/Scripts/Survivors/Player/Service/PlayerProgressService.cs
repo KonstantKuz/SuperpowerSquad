@@ -1,30 +1,33 @@
-﻿using Feofun.Config;
-using Survivors.Enemy.Config;
+﻿using SuperMaxim.Messaging;
 using Survivors.Player.Progress;
+using Survivors.Session.Messages;
+using Survivors.Session.Model;
 
 namespace Survivors.Player.Service
 {
     public class PlayerProgressService
     {
         private readonly PlayerProgressRepository _repository;
-        private readonly StringKeyedConfigCollection<EnemyLevelConfig> _levelConfig;
         
         public PlayerProgress Progress => _repository.Get() ?? PlayerProgress.Create();
 
-        public PlayerProgressService(PlayerProgressRepository repository,
-                                     StringKeyedConfigCollection<EnemyLevelConfig> levelConfig)
+        public PlayerProgressService(IMessenger messenger, 
+                                     PlayerProgressRepository repository)
         {
             _repository = repository;
-            _levelConfig = levelConfig;
+            messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
         }
 
-        public void AddWinCount()
+        private void OnSessionFinished(SessionEndMessage evn)
         {
             var progress = Progress;
-            progress.AddKill(_levelConfig);
+            progress.SessionCount++;
+            if (evn.Result == SessionResult.Win) {
+                progress.WinCount++;
+            }
             SetProgress(progress);
         }
-
+        
         private void SetProgress(PlayerProgress progress)
         {
             _repository.Set(progress);

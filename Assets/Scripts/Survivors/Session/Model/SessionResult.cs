@@ -1,6 +1,6 @@
 ﻿namespace Survivors.Session.Model
 {
-    public enum BattleResult
+    public enum SessionResult
     {
         Win,
         Lose

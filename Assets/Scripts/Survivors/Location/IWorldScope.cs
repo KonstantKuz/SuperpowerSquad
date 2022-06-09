@@ -1,4 +1,4 @@
-﻿namespace Survivors.Session
+﻿namespace Survivors.Location
 {
     public interface IWorldScope
     {

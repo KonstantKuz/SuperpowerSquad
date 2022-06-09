@@ -4,6 +4,7 @@ using JetBrains.Annotations;
 using SuperMaxim.Messaging;
 using Survivors.Session;
 using Survivors.Session.Messages;
+using Survivors.Session.Service;
 using Survivors.UI.Screen.Debriefing;
 using Survivors.Units;
 using UnityEngine;

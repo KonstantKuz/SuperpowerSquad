@@ -7,7 +7,7 @@ namespace Survivors.Session.Model
     {
         private readonly EnemyLevelConfig EnemyLevelConfig;
         public int Kills { get; private set; }
-        public BattleResult? Winner { get; private set; }
+        public SessionResult? Winner { get; private set; }
         
         public bool IsMaxKills => Kills >= EnemyLevelConfig.KillCount;
         
@@ -19,7 +19,7 @@ namespace Survivors.Session.Model
         
         public void SetWinnerByUnitType(UnitType unitType)
         {
-            Winner = unitType == UnitType.PLAYER ? BattleResult.Win : BattleResult.Lose;
+            Winner = unitType == UnitType.PLAYER ? SessionResult.Win : SessionResult.Lose;
         }
         public void AddKill() => Kills++;
         

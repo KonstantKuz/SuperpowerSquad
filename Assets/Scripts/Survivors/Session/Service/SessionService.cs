@@ -1,4 +1,5 @@
 ﻿using SuperMaxim.Messaging;
+using Survivors.Enemy.Service;
 using Survivors.EnemySpawn;
 using Survivors.EnemySpawn.Config;
 using Survivors.Location;
@@ -6,13 +7,15 @@ using Survivors.Session.Messages;
 using Survivors.Squad;
 using Survivors.Units;
 using Survivors.Units.Service;
-using Zenject;
 using UniRx;
+using Zenject;
 
-namespace Survivors.Session
+namespace Survivors.Session.Service
 {
     public class SessionService : IWorldScope
     {
+        private readonly IntReactiveProperty _kills = new IntReactiveProperty(0);
+        
         [Inject] private EnemyWavesSpawner _enemyWavesSpawner;
         [Inject] private EnemyHpsSpawner _enemyHpsSpawner;
         [Inject] private EnemyWavesConfig _enemyWavesConfig;
@@ -21,39 +24,54 @@ namespace Survivors.Session
         [Inject] private World _world;
         [Inject] private IMessenger _messenger;       
         [Inject] private UnitService _unitService;
-        [Inject] private CompositeDisposable _disposable;
-
-        private IntReactiveProperty _kills = new IntReactiveProperty(0);
+        [Inject] private SessionRepository _repository;     
+        [Inject] private EnemyService _enemyService;
+        
         public IReadOnlyReactiveProperty<int> Kills => _kills;
         
-        private Model.Session Session { get; set; }
-
+        private Model.Session Session => _repository.Require();
+        
         public void OnWorldSetup()
         {
             Dispose();
-            _disposable = new CompositeDisposable();
             _unitService.OnEnemyUnitDeath += OnEnemyUnitDeath;
+            ResetKills();
         }
         
+        public void Start()
+        {
+            CreateSession();
+            CreateSquad();
+            SpawnUnits();
+        }
+        private void CreateSession()
+        {
+            var newSession = Model.Session.Build(_enemyService.GetLevelConfig());
+            _repository.Set(newSession);
+        }
+        private void CreateSquad()
+        {
+            var squad = _squadFactory.CreateSquad();
+            _world.Squad = squad;
+            squad.OnDeath += OnSquadDeath;
+        }
+        private void SpawnUnits()
+        {
+            _unitFactory.CreatePlayerUnit(UnitFactory.SIMPLE_PLAYER_ID);
+            _enemyWavesSpawner.StartSpawn(_enemyWavesConfig);
+            _enemyHpsSpawner.StartSpawn();
+        }
+
+        private void ResetKills() => _kills.Value = 0;
         private void OnEnemyUnitDeath(IUnit unit)
         {
             Session.AddKill();
+            _kills.Value = Session.Kills;
             if (Session.IsMaxKills) {
                 EndSession(UnitType.PLAYER);
             }
         }
 
-        public void Start()
-        {
-            Session = Model.Session.Build();
-            
-            var squad = _squadFactory.CreateSquad();
-            _world.Squad = squad;
-            squad.OnDeath += OnSquadDeath;
-            _unitFactory.CreatePlayerUnit(UnitFactory.SIMPLE_PLAYER_ID);
-            _enemyWavesSpawner.StartSpawn(_enemyWavesConfig);
-            _enemyHpsSpawner.StartSpawn();
-        }
         private void OnSquadDeath()
         {
             EndSession(UnitType.ENEMY);
@@ -63,14 +81,13 @@ namespace Survivors.Session
             Dispose();
             Session.SetWinnerByUnitType(winner);
             _messenger.Publish(new SessionEndMessage {
-                    Winner = winner,
+                    Result = Session.Winner.Value,
             });
+        
         }
         private void Dispose()
         {
             _unitService.OnEnemyUnitDeath -= OnEnemyUnitDeath;
-            _disposable?.Dispose();
-            _disposable = null;
             if (_world.Squad != null) {
                 _world.Squad.OnDeath -= OnSquadDeath;
             }

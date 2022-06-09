@@ -8,6 +8,7 @@ using Feofun.Modifiers;
 using JetBrains.Annotations;
 using SuperMaxim.Core.Extensions;
 using Survivors.Extension;
+using Survivors.Location;
 using Survivors.Modifiers;
 using Survivors.Session;
 using Survivors.Squad.Component;

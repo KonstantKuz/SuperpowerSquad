@@ -2,7 +2,7 @@
 using System.Collections;
 using Feofun.Config;
 using Survivors.EnemySpawn.Config;
-using Survivors.Session;
+using Survivors.Location;
 using Survivors.Units.Enemy.Config;
 using UnityEngine;
 using Zenject;
