@@ -4,9 +4,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Feofun.Config;
 using Feofun.Extension;
-using Survivors.EnemySpawn.Config;
+using Survivors.Enemy.EnemySpawn.Config;
 using Survivors.Location;
-using Survivors.Session;
 using Survivors.Units.Enemy;
 using Survivors.Units.Enemy.Config;
 using Survivors.Units.Service;
@@ -14,7 +13,7 @@ using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
 
-namespace Survivors.EnemySpawn
+namespace Survivors.Enemy.EnemySpawn
 {
     public class EnemyWavesSpawner : MonoBehaviour, IWorldScope
     {

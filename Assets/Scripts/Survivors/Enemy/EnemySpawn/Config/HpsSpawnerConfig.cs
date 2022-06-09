@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Survivors.EnemySpawn.Config
+namespace Survivors.Enemy.EnemySpawn.Config
 {
     public class HpsSpawnerConfig
     {

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using SuperMaxim.Core.Extensions;
 
 namespace Survivors.Units.Service
 {
@@ -12,6 +13,7 @@ namespace Survivors.Units.Service
         public event Action<IUnit> OnPlayerUnitDeath;
         public event Action<IUnit> OnEnemyUnitDeath;
 
+        public IEnumerable<IUnit> AllUnits => _units.SelectMany(it => it.Value);
         public void Add(IUnit unit)
         {
             if (!_units.ContainsKey(unit.UnitType)) {
@@ -25,7 +27,10 @@ namespace Survivors.Units.Service
             _units[unit.UnitType].Remove(unit);
             unit.OnDeath -= OnDeathUnit;
         }
+        public void DeactivateAll() => AllUnits.ForEach(u => { u.IsAlive = false; });
         public bool HasUnitOfType(UnitType unitType) => _units.ContainsKey(unitType) && _units[unitType].Any();
+        
+
 
         private void OnDeathUnit(IUnit unit)
         {

@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections;
 using Feofun.Config;
-using Survivors.EnemySpawn.Config;
+using Survivors.Enemy.EnemySpawn.Config;
 using Survivors.Location;
 using Survivors.Units.Enemy.Config;
 using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
 
-namespace Survivors.EnemySpawn
+namespace Survivors.Enemy.EnemySpawn
 {
     public class EnemyHpsSpawner : MonoBehaviour, IWorldScope
     {

@@ -1,13 +1,14 @@
 ﻿using SuperMaxim.Messaging;
+using Survivors.Enemy.EnemySpawn;
+using Survivors.Enemy.EnemySpawn.Config;
 using Survivors.Enemy.Service;
-using Survivors.EnemySpawn;
-using Survivors.EnemySpawn.Config;
 using Survivors.Location;
 using Survivors.Session.Messages;
 using Survivors.Squad;
 using Survivors.Units;
 using Survivors.Units.Service;
 using UniRx;
+using UnityEngine;
 using Zenject;
 
 namespace Survivors.Session.Service
@@ -48,6 +49,7 @@ namespace Survivors.Session.Service
         {
             var newSession = Model.Session.Build(_enemyService.GetLevelConfig());
             _repository.Set(newSession);
+            Debug.Log($"Kill enemies:= {_enemyService.GetLevelConfig().KillCount}");
         }
         private void CreateSquad()
         {
@@ -67,6 +69,7 @@ namespace Survivors.Session.Service
         {
             Session.AddKill();
             _kills.Value = Session.Kills;
+            Debug.Log($"Killed enemies:= {Session.Kills}");
             if (Session.IsMaxKills) {
                 EndSession(UnitType.PLAYER);
             }
@@ -80,6 +83,10 @@ namespace Survivors.Session.Service
         {
             Dispose();
             Session.SetWinnerByUnitType(winner);
+            
+            _unitService.DeactivateAll();
+            _world.Squad.IsAlive = false;
+            
             _messenger.Publish(new SessionEndMessage {
                     Result = Session.Winner.Value,
             });

@@ -39,7 +39,7 @@ namespace Survivors.Squad
         [Inject] private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
         [Inject] private UnitFactory _unitFactory;
         
-        private bool IsAlive { get; set; }
+        public bool IsAlive { get; set; }
         
         public SquadModel Model { get; private set; }
         public SquadDestination Destination { get; private set; }

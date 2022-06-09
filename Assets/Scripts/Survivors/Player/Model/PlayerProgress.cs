@@ -1,5 +1,5 @@
 ﻿
-namespace Survivors.Player.Progress
+namespace Survivors.Player.Model
 {
     public class PlayerProgress
     {

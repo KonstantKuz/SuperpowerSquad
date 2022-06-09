@@ -1,7 +1,7 @@
 ﻿using System.Linq;
 using Feofun.Config;
 using Survivors.Enemy.Config;
-using Survivors.Player.Progress;
+using Survivors.Player.Model;
 using Survivors.Player.Service;
 using UnityEngine;
 using Zenject;

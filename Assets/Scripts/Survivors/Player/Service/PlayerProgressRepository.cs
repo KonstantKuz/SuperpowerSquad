@@ -1,6 +1,7 @@
 ﻿using Feofun.Repository;
+using Survivors.Player.Model;
 
-namespace Survivors.Player.Progress
+namespace Survivors.Player.Service
 {
     public class PlayerProgressRepository : LocalPrefsSingleRepository<PlayerProgress>
     {

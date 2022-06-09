@@ -2,11 +2,10 @@
 using Feofun.UI.Screen;
 using JetBrains.Annotations;
 using SuperMaxim.Messaging;
-using Survivors.Session;
 using Survivors.Session.Messages;
+using Survivors.Session.Model;
 using Survivors.Session.Service;
 using Survivors.UI.Screen.Debriefing;
-using Survivors.Units;
 using UnityEngine;
 using Zenject;
 
@@ -36,14 +35,14 @@ namespace Survivors.UI.Screen.World
 
         private void OnSessionFinished(SessionEndMessage evn)
         {
-            StartCoroutine(EndSession(evn.Winner));
+            StartCoroutine(EndSession(evn.Result));
         }
 
-        private IEnumerator EndSession(UnitType winner)
+        private IEnumerator EndSession(SessionResult result)
         {
             yield return new WaitForSeconds(_afterSessionDelay);
             _world.CleanUp();
-            _screenSwitcher.SwitchTo(DebriefingScreen.ID.ToString(), winner);
+            _screenSwitcher.SwitchTo(DebriefingScreen.ID.ToString(), result);
         }
 
  

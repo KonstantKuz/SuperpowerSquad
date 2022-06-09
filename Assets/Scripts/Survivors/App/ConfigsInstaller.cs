@@ -3,7 +3,7 @@ using Feofun.Config.Serializers;
 using Feofun.Localization.Config;
 using Survivors.Config;
 using Survivors.Enemy.Config;
-using Survivors.EnemySpawn.Config;
+using Survivors.Enemy.EnemySpawn.Config;
 using Survivors.Loot.Config;
 using Survivors.Modifiers;
 using Survivors.Modifiers.Config;

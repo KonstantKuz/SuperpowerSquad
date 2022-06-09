@@ -1,5 +1,5 @@
 ﻿using SuperMaxim.Messaging;
-using Survivors.Player.Progress;
+using Survivors.Player.Model;
 using Survivors.Session.Messages;
 using Survivors.Session.Model;
 
