@@ -75,11 +75,13 @@ namespace Survivors.Units.Enemy
 
         public void OnTick()
         {
+            if (_world.Squad == null) return;
+            
             UpdateAgentRadius();
             
             if (DistanceToSquad > _targetSelectionDistance) 
             {
-                _agent.destination = SquadPosition;
+                SetDestination(SquadPosition);
                 return;
             }
             
@@ -91,8 +93,20 @@ namespace Survivors.Units.Enemy
                 return;
             }
 
-            _agent.destination = CurrentTarget.Root.position;
+            SetDestination(CurrentTarget.Root.position);
             _agent.isStopped = false;
+        }
+
+        private void SetDestination(Vector3 destination)
+        {
+            if (Vector3.Distance(transform.position, destination) > 1)
+            {
+                _agent.destination = transform.position + (destination - transform.position).normalized;
+            }
+            else
+            {
+                _agent.destination = destination;
+            }
         }
 
         private void UpdateAgentRadius()

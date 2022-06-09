@@ -67,8 +67,8 @@ namespace Survivors.EnemySpawn
             if (averageLevel < EnemyUnitConfig.MIN_LEVEL)
             {
                 var level = EnemyUnitConfig.MIN_LEVEL;
-                var place = GetWavePlace(desiredUnitCount, level);
                 var possibleUnitCount = Mathf.RoundToInt(health / enemyUnitConfig.Health);
+                var place = GetWavePlace(possibleUnitCount, level);
                 SpawnWave(possibleUnitCount, level, place);
             }
             else

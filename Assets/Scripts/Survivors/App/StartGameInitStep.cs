@@ -2,6 +2,7 @@ using Feofun.App.Init;
 using Feofun.UI.Screen;
 using JetBrains.Annotations;
 using Survivors.UI.Screen.World;
+using UnityEngine.AI;
 using Zenject;
 
 namespace Survivors.App
@@ -21,6 +22,12 @@ namespace Survivors.App
         {
             _screenSwitcher.SwitchTo(WorldScreen.ID.ToString());
             Next();
+        }
+
+        private void InitNavMesh()
+        {
+            NavMesh.avoidancePredictionTime = 0.5f;
+            NavMesh.pathfindingIterationsPerFrame = 500;
         }
     }
 }

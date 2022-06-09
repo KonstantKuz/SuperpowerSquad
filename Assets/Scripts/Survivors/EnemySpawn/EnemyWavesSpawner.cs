@@ -93,10 +93,18 @@ namespace Survivors.EnemySpawn
             var spawnPlace = GetSpawnPlace(spawnSide, spawnOffset);
 
             var attemptCount = 1;
-            while (IsPlaceBusy(spawnPlace, waveRadius) && attemptCount < _maxFindPlaceAttemptCount)
+            var spawnOffsetMultiplier = 1;
+            while (IsPlaceBusy(spawnPlace, waveRadius) && spawnOffsetMultiplier <= _maxFindPlaceAttemptCount)
             {
+                if (attemptCount > _maxFindPlaceAttemptCount)
+                {
+                    attemptCount = 1;
+                    spawnOffsetMultiplier++;
+                }
+                
                 attemptCount++;
-                spawnOffset *= attemptCount;
+                spawnOffset *= spawnOffsetMultiplier;
+                spawnSide = EnumExt.GetRandom<SpawnSide>();
                 spawnPlace = GetSpawnPlace(spawnSide, spawnOffset);
             }
 
@@ -149,17 +157,18 @@ namespace Survivors.EnemySpawn
 
         private bool IsPlaceBusy(Vector3 place, float waveRadius)
         {
-            if(!_spheres.ContainsKey(place)) _spheres.Add(place, waveRadius);
-            if(!_lifetimes.ContainsKey(place)) _lifetimes.Add(place, 2);
-            
-            return Physics.CheckSphere(place, waveRadius, 1 << ENEMY_LAYER);
+            var status = Physics.CheckSphere(place, waveRadius, 1 << ENEMY_LAYER);
+            _spheres[place] = waveRadius;
+            _lifetimes[place] = 2;
+            _statuses[place] = status;
+            return status;
         }
 
         private Dictionary<Vector3, float> _spheres = new Dictionary<Vector3, float>();
         private Dictionary<Vector3, float> _lifetimes = new Dictionary<Vector3, float>();
+        private Dictionary<Vector3, bool> _statuses = new Dictionary<Vector3, bool>();
         private void OnDrawGizmos()
         {
-            Gizmos.color = Color.red;
             foreach (var sphere in _spheres)
             {
                 _lifetimes[sphere.Key] -= Time.deltaTime;
@@ -167,7 +176,10 @@ namespace Survivors.EnemySpawn
                 {
                     continue;
                 }
-                Gizmos.DrawWireSphere(sphere.Key, sphere.Value);
+                var color = _statuses[sphere.Key] ? Color.red : Color.green;
+                color.a = 0.3f;
+                Gizmos.color = color;
+                Gizmos.DrawSphere(sphere.Key, sphere.Value);
             }
         }
 
