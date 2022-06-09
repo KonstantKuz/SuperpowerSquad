@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace Survivors.Units.Component.Health
 {
-    [RequireComponent(typeof(Health))]
+    [RequireComponent(typeof(IDamageable))]
     public class DamageReaction : MonoBehaviour
     {
         private const string BASE_COLOR = "_BaseColor";
