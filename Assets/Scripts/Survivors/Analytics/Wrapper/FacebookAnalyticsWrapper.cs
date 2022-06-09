@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Facebook.Unity;
 using LegionMaster.Analytics;
 using UnityEngine;
 
