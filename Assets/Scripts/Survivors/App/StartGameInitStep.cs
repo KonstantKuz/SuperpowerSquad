@@ -20,6 +20,7 @@ namespace Survivors.App
 
         protected override void Run()
         {
+            InitNavMesh();
             _screenSwitcher.SwitchTo(WorldScreen.ID.ToString());
             Next();
         }
