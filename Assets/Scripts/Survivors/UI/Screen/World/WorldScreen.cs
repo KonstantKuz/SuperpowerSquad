@@ -33,11 +33,11 @@ namespace Survivors.UI.Screen.World
         {
             _world.Setup();
             _sessionService.Start();
-            StartCoroutine(WaitEndFrameBeforePause());
+            StartCoroutine(WaitForAnimationUpdateBeforePause());
             _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
         }
 
-        private IEnumerator WaitEndFrameBeforePause()
+        private IEnumerator WaitForAnimationUpdateBeforePause()
         {
             yield return new WaitForEndOfFrame();
             _dialogManager.Show<PauseDialog>();
