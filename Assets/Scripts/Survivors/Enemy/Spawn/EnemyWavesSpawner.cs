@@ -16,30 +16,32 @@ namespace Survivors.Enemy.Spawn
 {
     public class EnemyWavesSpawner : MonoBehaviour
     {
-        public const int INITIAL_SPAWN_OFFSET_MULTIPLIER = 1;
-        public static readonly Vector3 INVALID_SPAWN_PLACE = Vector3.one * 12345;
+        public static readonly Vector3 INVALID_SPAWN_PLACE = Vector3.one * int.MaxValue;
 
+        private const string ENEMY_LAYER_NAME = "Enemy";
         private static int ENEMY_LAYER;
-
+        
         [Range(0f,1f)]
-        [SerializeField] private float _destinationDrivenPlaceChance = 0.3f;
+        [SerializeField] private float _moveDirectionDrivenPlaceChance = 0.3f;
         [SerializeField] private int _findPlaceAttemptCount = 3;
+        [SerializeField] private int _maxOutOfViewMultiplier = 3;
         [SerializeField] private float _minOutOfViewOffset = 2f;
-        [SerializeField] private float _outOfViewOffsetMultiplier = 0.2f;
 
         private List<EnemyWaveConfig> _waves;
         private Coroutine _spawnCoroutine;
-        private IEnemySpawnPlaceProvider _randomDrivenPlaceProvider;
-        private IEnemySpawnPlaceProvider _destinationDrivenPlaceProvider;
+        private ISpawnPlaceProvider _randomDrivenPlaceProvider;
+        private ISpawnPlaceProvider _moveDirectionDrivenPlaceProvider;
+        private SpawnerDebugger _spawnerDebugger;
         
         [Inject] private World _world;
         [Inject] private UnitFactory _unitFactory;
         [Inject] private IMessenger _messenger;
         [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
-
+        private SpawnerDebugger Debugger => _spawnerDebugger ??= gameObject.AddComponent<SpawnerDebugger>();
+        
         private void Awake()
         {
-            ENEMY_LAYER = LayerMask.NameToLayer("Enemy");
+            ENEMY_LAYER = LayerMask.NameToLayer(ENEMY_LAYER_NAME);
             _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
         }
 
@@ -55,7 +57,7 @@ namespace Survivors.Enemy.Spawn
         private void InitPlaceProviders()
         {
             _randomDrivenPlaceProvider = new RandomDrivenPlaceProvider(this, _world);
-            _destinationDrivenPlaceProvider = new DestinationDrivenPlaceProvider(this, _world.Squad);
+            _moveDirectionDrivenPlaceProvider = new MoveDirectionDrivenPlaceProvider(this, _world.Squad);
         }
 
         private void OnSessionFinished(SessionEndMessage evn)
@@ -84,7 +86,7 @@ namespace Survivors.Enemy.Spawn
         {
             if (place == INVALID_SPAWN_PLACE)
             {
-                Debug.Log("Empty place was not found. Spawn wave has been canceled.");
+                Debug.LogWarning("Invalid spawn place provided. Spawn wave has been canceled.");
                 return;
             }
             
@@ -96,37 +98,32 @@ namespace Survivors.Enemy.Spawn
 
         public Vector3 GetPlaceForWave(EnemyWaveConfig waveConfig)
         {
-            var placeProvider = Random.value < _destinationDrivenPlaceChance ?
-                _destinationDrivenPlaceProvider : _randomDrivenPlaceProvider;
+            var placeProvider = Random.value < _moveDirectionDrivenPlaceChance ?
+                _moveDirectionDrivenPlaceProvider : _randomDrivenPlaceProvider;
             
-            return GetEmptySpawnPlaceRecursive(placeProvider,waveConfig, 1, INITIAL_SPAWN_OFFSET_MULTIPLIER);
+            return FindEmptyPlace(placeProvider, waveConfig);
         }
-        
-        private Vector3 GetEmptySpawnPlaceRecursive(IEnemySpawnPlaceProvider placeProvider, EnemyWaveConfig waveConfig, int attemptCount, int spawnOffsetMultiplier)
+
+        private Vector3 FindEmptyPlace(ISpawnPlaceProvider placeProvider, EnemyWaveConfig waveConfig)
         {
-            var spawnPlace = placeProvider.GetSpawnPlace(waveConfig, spawnOffsetMultiplier);
-            if (!IsPlaceBusy(spawnPlace, waveConfig))
+            for (int outOfViewMultiplier = 1; outOfViewMultiplier <= _maxOutOfViewMultiplier; outOfViewMultiplier++)
             {
-                return spawnPlace;
-            }
-            
-            attemptCount++;
-            if (attemptCount > _findPlaceAttemptCount)
-            {
-                attemptCount = 1;
-                spawnOffsetMultiplier++;
-                if (spawnOffsetMultiplier > _findPlaceAttemptCount)
+                for (int attemptCount = 1; attemptCount < _findPlaceAttemptCount; attemptCount++)
                 {
-                    return INVALID_SPAWN_PLACE;
+                    var spawnPlace = placeProvider.GetSpawnPlace(waveConfig, outOfViewMultiplier);
+                    if (!IsPlaceBusy(spawnPlace, waveConfig))
+                    {
+                        return spawnPlace;
+                    }
                 }
             }
 
-            return GetEmptySpawnPlaceRecursive(placeProvider, waveConfig, attemptCount, spawnOffsetMultiplier);
+            return INVALID_SPAWN_PLACE;
         }
 
-        public float GetSpawnOffset(EnemyWaveConfig waveConfig)
+        public float GetOutOfViewOffset(EnemyWaveConfig waveConfig, int outOfViewMultiplier)
         {
-            return _minOutOfViewOffset + GetWaveRadius(waveConfig) * _outOfViewOffsetMultiplier;
+            return outOfViewMultiplier * (_minOutOfViewOffset + GetWaveRadius(waveConfig));
         }
 
         private float GetWaveRadius(EnemyWaveConfig waveConfig)
@@ -137,31 +134,9 @@ namespace Survivors.Enemy.Spawn
 
         private bool IsPlaceBusy(Vector3 place, EnemyWaveConfig waveConfig)
         {
-            var waveRadius = GetWaveRadius(waveConfig);
-            var status = Physics.CheckSphere(place, waveRadius, 1 << ENEMY_LAYER);
-            _spheres[place] = waveRadius;
-            _lifetimes[place] = 2;
-            _statuses[place] = status;
-            return status;
-        }
-
-        private Dictionary<Vector3, float> _spheres = new Dictionary<Vector3, float>();
-        private Dictionary<Vector3, float> _lifetimes = new Dictionary<Vector3, float>();
-        private Dictionary<Vector3, bool> _statuses = new Dictionary<Vector3, bool>();
-        private void OnDrawGizmos()
-        {
-            foreach (var sphere in _spheres)
-            {
-                _lifetimes[sphere.Key] -= Time.deltaTime;
-                if (_lifetimes[sphere.Key] <= 0)
-                {
-                    continue;
-                }
-                var color = _statuses[sphere.Key] ? Color.red : Color.green;
-                color.a = 0.3f;
-                Gizmos.color = color;
-                Gizmos.DrawSphere(sphere.Key, sphere.Value);
-            }
+            var isBusy = Physics.CheckSphere(place, GetWaveRadius(waveConfig), 1 << ENEMY_LAYER);
+            Debugger.Debug(place, GetWaveRadius(waveConfig), isBusy);
+            return isBusy;
         }
 
         private void SpawnEnemy(Vector3 place, EnemyWaveConfig wave)
@@ -182,6 +157,45 @@ namespace Survivors.Enemy.Spawn
         private void OnDestroy()
         {
             _messenger.Unsubscribe<SessionEndMessage>(OnSessionFinished);
+        }
+
+        private class SpawnerDebugger : MonoBehaviour
+        {
+            private const float COLOR_ALPHA = 0.3f;
+            private List<DebugInfo> _infos = new List<DebugInfo>();
+
+            public void Debug(Vector3 place, float waveRadius, bool status)
+            {
+                _infos.Add(new DebugInfo() {
+                    Place = place, 
+                    Lifetime = 2,
+                    WaveRadius = waveRadius,
+                    Status = status,
+                });
+            }
+
+            private void OnDrawGizmos()
+            {
+                foreach (var info in _infos)
+                {
+                    info.Lifetime -= Time.deltaTime;
+                    if (info.Lifetime <= 0) {
+                        continue; // TODO delete
+                    }
+                    var color = info.Status ? Color.red : Color.green;
+                    color.a = COLOR_ALPHA;
+                    Gizmos.color = color;
+                    Gizmos.DrawSphere(info.Place, info.WaveRadius);
+                }
+            }
+            
+            private class DebugInfo
+            {
+                public Vector3 Place; 
+                public float Lifetime;           
+                public float WaveRadius;  
+                public bool Status;
+            }
         }
     }
 }

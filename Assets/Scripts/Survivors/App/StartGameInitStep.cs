@@ -11,6 +11,9 @@ namespace Survivors.App
     [PublicAPI]
     public class StartGameInitStep : AppInitStep
     {
+        private const float AVOIDANCE_PREDICTION_TIME = 0.5f;
+        private const int PATHFINDING_ITERATIONS_PER_FRAME = 500;
+
         [Inject]
         private ScreenSwitcher _screenSwitcher;
         
@@ -23,8 +26,8 @@ namespace Survivors.App
 
         private void InitNavMesh()
         {
-            NavMesh.avoidancePredictionTime = 0.5f;
-            NavMesh.pathfindingIterationsPerFrame = 500;
+            NavMesh.avoidancePredictionTime = AVOIDANCE_PREDICTION_TIME;
+            NavMesh.pathfindingIterationsPerFrame = PATHFINDING_ITERATIONS_PER_FRAME;
         }
     }
 }
