@@ -14,6 +14,8 @@ namespace Survivors.Units.Enemy
     [RequireComponent(typeof(NavMeshAgent))]
     public class EnemyAi : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent, IUnitDeactivateEventReceiver
     {
+        private const float ACCURATE_FOLLOW_DISTANCE = 1f;
+        
         [SerializeField] private float _targetSelectionDistance = 10f;
         [SerializeField] private float _agentRadiusAfar;
         [SerializeField] private float _agentRadiusNear;
@@ -28,7 +30,6 @@ namespace Survivors.Units.Enemy
         private float _initialAgentRadius;
 
         [Inject] private World _world;
-
 
         private Vector3 SquadPosition => _world.Squad.Destination.transform.position;
         private float AgentRadiusAfar => _agentRadiusAfar / Scale;   
@@ -99,7 +100,7 @@ namespace Survivors.Units.Enemy
 
         private void SetDestination(Vector3 destination)
         {
-            if (Vector3.Distance(transform.position, destination) > 1)
+            if (Vector3.Distance(transform.position, destination) > ACCURATE_FOLLOW_DISTANCE)
             {
                 _agent.destination = transform.position + (destination - transform.position).normalized;
             }

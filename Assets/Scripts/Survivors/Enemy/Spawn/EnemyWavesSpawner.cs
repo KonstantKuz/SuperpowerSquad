@@ -19,24 +19,27 @@ namespace Survivors.Enemy.Spawn
 {
     public class EnemyWavesSpawner : MonoBehaviour
     {
+        private const string ENEMY_LAYER_NAME = "Enemy";
         private static int ENEMY_LAYER;
-        private static readonly Vector3 INVALID_SPAWN_PLACE = Vector3.one * 12345;
+        private static readonly Vector3 INVALID_SPAWN_PLACE = Vector3.one * int.MaxValue;
         
-        [SerializeField] private int _maxFindPlaceAttemptCount = 5;
+        [SerializeField] private int _findPlaceAttemptCount = 3;
+        [SerializeField] private int _maxOutOfViewMultiplier = 3;
         [SerializeField] private float _minOutOfViewOffset = 2f;
-        [SerializeField] private float _outOfViewOffsetMultiplier = 0.2f;
 
         private List<EnemyWaveConfig> _waves;
         private Coroutine _spawnCoroutine;
+        private SpawnerDebugger _spawnerDebugger;
         
         [Inject] private UnitFactory _unitFactory;
         [Inject] private World _world;
         [Inject] private IMessenger _messenger;
         [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
-
+        private SpawnerDebugger Debugger => _spawnerDebugger ??= gameObject.AddComponent<SpawnerDebugger>();
+        
         private void Awake()
         {
-            ENEMY_LAYER = LayerMask.NameToLayer("Enemy");
+            ENEMY_LAYER = LayerMask.NameToLayer(ENEMY_LAYER_NAME);
             _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
         }
 
@@ -73,6 +76,7 @@ namespace Survivors.Enemy.Spawn
         {
             if (place == INVALID_SPAWN_PLACE)
             {
+                Debug.LogWarning("Invalid spawn place provided. Spawn wave has been canceled.");
                 return;
             }
             
@@ -86,31 +90,31 @@ namespace Survivors.Enemy.Spawn
         {
             var enemyConfig = _enemyUnitConfigs.Get(wave.EnemyId);
             var waveRadius = Mathf.Sqrt(wave.Count) * enemyConfig.GetScaleForLevel(wave.EnemyLevel);
-            var spawnSide = EnumExt.GetRandom<SpawnSide>();
-            var spawnOffset = _minOutOfViewOffset + waveRadius * _outOfViewOffsetMultiplier;
-
-            var spawnPlace = GetSpawnPlace(spawnSide, spawnOffset);
-
-            var attemptCount = 1;
-            var spawnOffsetMultiplier = 1;
-            while (IsPlaceBusy(spawnPlace, waveRadius) && spawnOffsetMultiplier <= _maxFindPlaceAttemptCount)
-            {
-                if (attemptCount > _maxFindPlaceAttemptCount)
-                {
-                    attemptCount = 1;
-                    spawnOffsetMultiplier++;
-                }
-                
-                attemptCount++;
-                spawnOffset *= spawnOffsetMultiplier;
-                spawnSide = EnumExt.GetRandom<SpawnSide>();
-                spawnPlace = GetSpawnPlace(spawnSide, spawnOffset);
-            }
-
-            return IsPlaceBusy(spawnPlace, waveRadius) ? INVALID_SPAWN_PLACE : spawnPlace;
+            var outOfViewOffset = _minOutOfViewOffset + waveRadius;
+            
+            return FindRandomEmptyPlace(outOfViewOffset, waveRadius);
         }
 
-        private Vector3 GetSpawnPlace(SpawnSide spawnSide, float spawnOffset)
+        private Vector3 FindRandomEmptyPlace(float outOfViewOffset, float waveRadius)
+        {
+            for (int outOfViewMultiplier = 1; outOfViewMultiplier <= _maxOutOfViewMultiplier; outOfViewMultiplier++)
+            {
+                for (int attemptCount = 1; attemptCount < _findPlaceAttemptCount; attemptCount++)
+                {
+                    outOfViewOffset *= outOfViewMultiplier;
+                    var spawnSide = EnumExt.GetRandom<SpawnSide>();
+                    var spawnPlace = GetRandomSpawnPlace(spawnSide, outOfViewOffset);
+                    if (!IsPlaceBusy(spawnPlace, waveRadius))
+                    {
+                        return spawnPlace;
+                    }
+                }
+            }
+
+            return INVALID_SPAWN_PLACE;
+        }
+
+        private Vector3 GetRandomSpawnPlace(SpawnSide spawnSide, float outOfViewOffset)
         {
             var camera = UnityEngine.Camera.main.transform;
             var directionToTopSide = Vector3.ProjectOnPlane(camera.forward, _world.Ground.up).normalized;
@@ -119,10 +123,10 @@ namespace Survivors.Enemy.Spawn
             var randomPlace = GetRandomPlaceOnGround(spawnSide);
             randomPlace += spawnSide switch
             {
-                SpawnSide.Top => directionToTopSide * spawnOffset,
-                SpawnSide.Bottom => -directionToTopSide * spawnOffset,
-                SpawnSide.Right => directionToRightSide * spawnOffset,
-                SpawnSide.Left => -directionToRightSide * spawnOffset,
+                SpawnSide.Top => directionToTopSide * outOfViewOffset,
+                SpawnSide.Bottom => -directionToTopSide * outOfViewOffset,
+                SpawnSide.Right => directionToRightSide * outOfViewOffset,
+                SpawnSide.Left => -directionToRightSide * outOfViewOffset,
                 _ => Vector3.zero
             };
             return randomPlace;
@@ -156,30 +160,9 @@ namespace Survivors.Enemy.Spawn
 
         private bool IsPlaceBusy(Vector3 place, float waveRadius)
         {
-            var status = Physics.CheckSphere(place, waveRadius, 1 << ENEMY_LAYER);
-            _spheres[place] = waveRadius;
-            _lifetimes[place] = 2;
-            _statuses[place] = status;
-            return status;
-        }
-
-        private Dictionary<Vector3, float> _spheres = new Dictionary<Vector3, float>();
-        private Dictionary<Vector3, float> _lifetimes = new Dictionary<Vector3, float>();
-        private Dictionary<Vector3, bool> _statuses = new Dictionary<Vector3, bool>();
-        private void OnDrawGizmos()
-        {
-            foreach (var sphere in _spheres)
-            {
-                _lifetimes[sphere.Key] -= Time.deltaTime;
-                if (_lifetimes[sphere.Key] <= 0)
-                {
-                    continue;
-                }
-                var color = _statuses[sphere.Key] ? Color.red : Color.green;
-                color.a = 0.3f;
-                Gizmos.color = color;
-                Gizmos.DrawSphere(sphere.Key, sphere.Value);
-            }
+            var isBusy = Physics.CheckSphere(place, waveRadius, 1 << ENEMY_LAYER);
+            Debugger.Debug(place, waveRadius, isBusy);
+            return isBusy;
         }
 
         private void SpawnEnemy(Vector3 place, EnemyWaveConfig wave)
@@ -207,6 +190,45 @@ namespace Survivors.Enemy.Spawn
             Bottom,
             Right,
             Left,
+        }
+        
+        private class SpawnerDebugger : MonoBehaviour
+        {
+            private const float COLOR_ALPHA = 0.3f;
+            private List<DebugInfo> _infos = new List<DebugInfo>();
+
+            public void Debug(Vector3 place, float waveRadius, bool status)
+            {
+                _infos.Add(new DebugInfo() {
+                    Place = place, 
+                    Lifetime = 2,
+                    WaveRadius = waveRadius,
+                    Status = status,
+                });
+            }
+
+            private void OnDrawGizmos()
+            {
+                foreach (var info in _infos)
+                {
+                    info.Lifetime -= Time.deltaTime;
+                    if (info.Lifetime <= 0) {
+                        continue; // TODO delete
+                    }
+                    var color = info.Status ? Color.red : Color.green;
+                    color.a = COLOR_ALPHA;
+                    Gizmos.color = color;
+                    Gizmos.DrawSphere(info.Place, info.WaveRadius);
+                }
+            }
+            
+            private class DebugInfo
+            {
+                public Vector3 Place; 
+                public float Lifetime;           
+                public float WaveRadius;  
+                public bool Status;
+            }
         }
     }
 }
