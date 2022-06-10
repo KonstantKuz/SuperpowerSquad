@@ -14,11 +14,6 @@ namespace Survivors.App
         [Inject]
         private ScreenSwitcher _screenSwitcher;
         
-        
-        public StartGameInitStep()
-        {
-        }
-
         protected override void Run()
         {
             InitNavMesh();
