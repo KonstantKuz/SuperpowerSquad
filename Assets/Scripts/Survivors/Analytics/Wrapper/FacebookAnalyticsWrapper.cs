@@ -12,7 +12,8 @@ namespace Survivors.Analytics.Wrapper
         public void Init()
         {
             Debug.Log("Starting initializing Facebook SDK");
-            if (!FB.IsInitialized) {
+            if (!FB.IsInitialized)
+            {
                 FB.Init(InitCallback, OnHideUnity);
             } else {
                 FB.ActivateApp();
