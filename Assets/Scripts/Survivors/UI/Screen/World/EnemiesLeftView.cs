@@ -1,6 +1,5 @@
 ﻿using System;
 using Feofun.UI.Components;
-using Survivors.Enemy.Service;
 using Survivors.Session.Service;
 using UniRx;
 using UnityEngine;
@@ -15,9 +14,7 @@ namespace Survivors.UI.Screen.World
 
         [Inject]
         private SessionService _sessionService;
-        [Inject]
-        private EnemyService _enemyService;
-        
+
         private CompositeDisposable _disposable;
         private void OnEnable()
         {
@@ -28,7 +25,7 @@ namespace Survivors.UI.Screen.World
 
         private void OnKill(int killedCount)
         {
-            var enemiesLeft = Math.Max(_enemyService.GetLevelConfig().KillCount - killedCount, 0);
+            var enemiesLeft = Math.Max(_sessionService.GetLevelConfig().KillCount - killedCount, 0);
             _text.SetTextFormatted(_text.LocalizationId, enemiesLeft);
         }
 
