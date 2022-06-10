@@ -12,7 +12,6 @@ using Survivors.Units.Target;
 using Zenject;
 using Survivors.Units.Model;
 using Survivors.Units.Player.Movement;
-using UnityEngine;
 
 namespace Survivors.Units
 {
@@ -25,10 +24,22 @@ namespace Survivors.Units
         private IDamageable _damageable;
         private IUnitDeath _death;
         private ITarget _selfTarget;
-        private IUnitDeathEventReceiver[] _deathEventReceivers;
+        private IUnitDeathEventReceiver[] _deathEventReceivers;   
+        private IUnitDeactivateEventReceiver[] _deactivateEventReceivers;
         private MovementController _movementController;
+        private bool _isActive;
 
-        public bool IsAlive { get; set; }
+        public bool IsActive
+        {
+            get => _isActive;
+            set
+            {
+                _isActive = value;
+                if (!_isActive) {
+                    _deactivateEventReceivers.ForEach(it => it.OnDeactivate());
+                }
+            }
+        }
 
         public UnitType UnitType => _selfTarget.UnitType;
         public UnitType TargetUnitType => _selfTarget.UnitType.GetTargetUnitType();
@@ -44,11 +55,12 @@ namespace Survivors.Units
             _damageable = gameObject.RequireComponent<IDamageable>();
             _death = gameObject.RequireComponent<IUnitDeath>();
             _selfTarget = gameObject.RequireComponent<ITarget>();
-            _deathEventReceivers = GetComponentsInChildren<IUnitDeathEventReceiver>();
+            _deathEventReceivers = GetComponentsInChildren<IUnitDeathEventReceiver>();  
+            _deactivateEventReceivers = GetComponentsInChildren<IUnitDeactivateEventReceiver>();
             
             _damageable.OnDeath += Kill;
             _unitService.Add(this);
-            IsAlive = true;
+            IsActive = true;
             
             foreach (var component in GetComponentsInChildren<IInitializable<IUnit>>()) {
                 component.Init(this);
@@ -59,7 +71,7 @@ namespace Survivors.Units
         public void Kill()
         {
             _damageable.OnDeath -= Kill;
-            IsAlive = false;
+            IsActive = false;
             _deathEventReceivers.ForEach(it => it.OnDeath());
             _death.PlayDeath();
             OnDeath?.Invoke(this);
@@ -68,7 +80,7 @@ namespace Survivors.Units
 
         private void Update()
         {
-            if (!IsAlive) {
+            if (!IsActive) {
                 return;
             }
             UpdateComponents();
