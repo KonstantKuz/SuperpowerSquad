@@ -5,7 +5,7 @@ using Zenject;
 namespace Survivors.Camera
 {
     [RequireComponent(typeof(UnityEngine.Camera))]
-    public class CameraFrustumsGizmoDrawer : MonoBehaviour
+    public class CameraFrustumDrawer : MonoBehaviour
     {
         private UnityEngine.Camera _camera;
         [Inject] private World _world;
