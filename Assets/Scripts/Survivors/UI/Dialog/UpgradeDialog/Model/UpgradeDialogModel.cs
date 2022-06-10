@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using Feofun.Config;
-using Survivors.Modifiers.Config;
 using Survivors.Squad.Upgrade;
 using Survivors.Squad.Upgrade.Config;
 
-namespace Survivors.UI.Dialog.Model
+namespace Survivors.UI.Dialog.UpgradeDialog.Model
 {
     public class UpgradeDialogModel
     {

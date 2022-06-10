@@ -1,10 +1,10 @@
 ﻿using System.Runtime.Serialization;
 using Feofun.Config;
 
-namespace Survivors.Enemy.Config
+namespace Survivors.Session.Config
 {
     [DataContract]
-    public class EnemyLevelConfig : ICollectionItem<string>
+    public class LevelMissionConfig : ICollectionItem<string>
     {
         [DataMember]
         public int Level;

@@ -1,25 +1,25 @@
-﻿using Survivors.Enemy.Config;
+﻿using Survivors.Session.Config;
 using Survivors.Units;
 
 namespace Survivors.Session.Model
 {
     public class Session
     {
-        private readonly EnemyLevelConfig EnemyLevelConfig;
+        private readonly LevelMissionConfig _levelMissionConfig;
         public int Kills { get; private set; }
-        public SessionResult? Winner { get; private set; }
+        public SessionResult? Result { get; private set; }
         
-        public bool IsMaxKills => Kills >= EnemyLevelConfig.KillCount;
+        public bool IsMaxKills => Kills >= _levelMissionConfig.KillCount;
         
-        private Session(EnemyLevelConfig enemyLevelConfig)
+        private Session(LevelMissionConfig levelMissionConfig)
         {
-            EnemyLevelConfig = enemyLevelConfig;
+            _levelMissionConfig = levelMissionConfig;
         }
-        public static Session Build(EnemyLevelConfig enemyLevelConfig) => new Session(enemyLevelConfig);
+        public static Session Build(LevelMissionConfig levelMissionConfig) => new Session(levelMissionConfig);
         
-        public void SetWinnerByUnitType(UnitType unitType)
+        public void SetResultByUnitType(UnitType unitType)
         {
-            Winner = unitType == UnitType.PLAYER ? SessionResult.Win : SessionResult.Lose;
+            Result = unitType == UnitType.PLAYER ? SessionResult.Win : SessionResult.Lose;
         }
         public void AddKill() => Kills++;
         

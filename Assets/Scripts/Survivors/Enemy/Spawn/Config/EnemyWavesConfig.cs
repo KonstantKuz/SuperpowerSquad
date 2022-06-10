@@ -4,7 +4,7 @@ using System.Linq;
 using Feofun.Config;
 using Feofun.Config.Csv;
 
-namespace Survivors.Enemy.EnemySpawn.Config
+namespace Survivors.Enemy.Spawn.Config
 {
     public class EnemyWavesConfig : ILoadableConfig
     {

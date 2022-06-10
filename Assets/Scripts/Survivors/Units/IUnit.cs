@@ -9,7 +9,7 @@ namespace Survivors.Units
         UnitType UnitType { get; }
         IUnitModel Model { get; }
         GameObject GameObject { get; }
-        public bool IsAlive { get; set; }
+        public bool IsActive { get; set; }
         event Action<IUnit> OnDeath;
         public void Init(IUnitModel model);
         public void Kill();
