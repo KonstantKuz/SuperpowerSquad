@@ -1,10 +1,14 @@
-﻿using Survivors.Units;
+﻿using Survivors.Session.Model;
 
 namespace Survivors.Session.Messages
 {
-    public struct SessionEndMessage
+    public readonly struct SessionEndMessage
     {
-        public UnitType Winner;
-        
+        public readonly SessionResult Result;
+
+        public SessionEndMessage(SessionResult result)
+        {
+            Result = result;
+        }
     }
 }

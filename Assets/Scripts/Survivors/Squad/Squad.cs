@@ -8,8 +8,8 @@ using Feofun.Modifiers;
 using JetBrains.Annotations;
 using SuperMaxim.Core.Extensions;
 using Survivors.Extension;
+using Survivors.Location;
 using Survivors.Modifiers;
-using Survivors.Session;
 using Survivors.Squad.Component;
 using Survivors.Squad.Formation;
 using Survivors.Squad.Model;
@@ -38,7 +38,7 @@ namespace Survivors.Squad
         [Inject] private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
         [Inject] private UnitFactory _unitFactory;
         
-        private bool IsAlive { get; set; }
+        public bool IsActive { get; set; }
         
         public SquadModel Model { get; private set; }
         public SquadDestination Destination { get; private set; }
@@ -54,7 +54,7 @@ namespace Survivors.Squad
             Model = model;
             _damageable.OnDeath += Kill;
             InitializeSquadComponents(gameObject);
-            IsAlive = true;
+            IsActive = true;
         }        
 
         public void Awake()
@@ -67,7 +67,7 @@ namespace Survivors.Squad
 
         private void Update()
         {
-            if (!IsAlive) return;
+            if (!IsActive) return;
             if (IsMoving) Move(MoveDirection);
             SetUnitPositions();
             UpdateUnitsAnimations();
@@ -85,7 +85,7 @@ namespace Survivors.Squad
         
         private void Kill()
         {
-            IsAlive = false;
+            IsActive = false;
             _damageable.OnDeath -= Kill;
             _units.ForEach(it => it.Kill());
             OnDeath?.Invoke();

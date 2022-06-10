@@ -1,41 +1,41 @@
 ﻿using System;
 using System.Collections;
 using Feofun.Config;
-using Survivors.EnemySpawn.Config;
-using Survivors.Session;
+using SuperMaxim.Messaging;
+using Survivors.Enemy.Spawn.Config;
+using Survivors.Session.Messages;
 using Survivors.Units.Enemy.Config;
 using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
 
-namespace Survivors.EnemySpawn
+namespace Survivors.Enemy.Spawn
 {
-    public class EnemyHpsSpawner : MonoBehaviour, IWorldScope
+    public class EnemyHpsSpawner : MonoBehaviour
     {
         private Coroutine _spawnCoroutine;
         
         [Inject] private EnemyWavesSpawner _enemyWavesSpawner;
-        [Inject] private HpsSpawnerConfigLoader _config;
+        [Inject] private HpsSpawnerConfigLoader _config;   
+        [Inject] private IMessenger _messenger;
         [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
         private HpsSpawnerConfig Config => _config.Config;
 
-        public void OnWorldSetup()
+        private void Awake()
         {
-            
-        }
-
-        public void OnWorldCleanUp()
-        {
-            Dispose();
-        }
-
-        public void StartSpawn()
-        {
-            Dispose();
-            _spawnCoroutine = StartCoroutine(SpawnCoroutine());
+            _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
         }
         
-        private void Dispose()
+        public void StartSpawn()
+        {
+            Stop();
+            _spawnCoroutine = StartCoroutine(SpawnCoroutine());
+        }
+        private void OnSessionFinished(SessionEndMessage evn)
+        {
+            Stop();
+        }
+        private void Stop()
         {
             if (_spawnCoroutine == null) return;
             
@@ -110,7 +110,10 @@ namespace Survivors.EnemySpawn
                 EnemyLevel = level
             };
         }
-
+        private void OnDestroy()
+        {
+            _messenger.Unsubscribe<SessionEndMessage>(OnSessionFinished);
+        }
         private static void Log(string message)
         {
 #if UNITY_EDITOR

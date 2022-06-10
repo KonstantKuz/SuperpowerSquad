@@ -3,7 +3,7 @@ using Feofun.Config;
 using Feofun.Config.Csv;
 using JetBrains.Annotations;
 
-namespace Survivors.EnemySpawn.Config
+namespace Survivors.Enemy.Spawn.Config
 {
     [PublicAPI]
     public class HpsSpawnerConfigLoader : ILoadableConfig
