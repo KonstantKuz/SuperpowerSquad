@@ -1,6 +1,6 @@
 ﻿namespace Survivors.Units
 {
-    public interface IUnitActiveEventReceiver
+    public interface IUnitInactiveEventReceiver
     {
         void OnInactive();
     }

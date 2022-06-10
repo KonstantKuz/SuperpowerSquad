@@ -7,7 +7,7 @@ using UnityEngine.AI;
 namespace Survivors.Units.Player.Movement
 {
     [RequireComponent(typeof(NavMeshAgent))]
-    public class MovementController : MonoBehaviour, IUnitDeathEventReceiver, IUnitActiveEventReceiver
+    public class MovementController : MonoBehaviour, IUnitDeathEventReceiver, IUnitInactiveEventReceiver
     {
         private readonly int _runHash = Animator.StringToHash("Run");
         private readonly int _idleHash = Animator.StringToHash("Idle");
