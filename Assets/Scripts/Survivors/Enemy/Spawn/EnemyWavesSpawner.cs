@@ -121,9 +121,9 @@ namespace Survivors.Enemy.Spawn
             return INVALID_SPAWN_PLACE;
         }
 
-        public float GetOutOfViewOffset(EnemyWaveConfig waveConfig, int outOfViewMultiplier)
+        public float GetOutOfViewOffset(EnemyWaveConfig waveConfig, int multiplier)
         {
-            return outOfViewMultiplier * (_minOutOfViewOffset + GetWaveRadius(waveConfig));
+            return multiplier * (_minOutOfViewOffset + GetWaveRadius(waveConfig));
         }
 
         private float GetWaveRadius(EnemyWaveConfig waveConfig)

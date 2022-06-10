@@ -8,9 +8,9 @@ namespace Survivors.Enemy.Spawn
 {
     public class MoveDirectionDrivenPlaceProvider : ISpawnPlaceProvider
     {
-        private const int CAMERA_MAX_FRUSTUM_PLANES_COUNT = 6;
-        private const int CAMERA_SIDE_FRUSTUM_PLANES_COUNT = 4;
-        private readonly Plane[] _frustumPlanes = new Plane[CAMERA_MAX_FRUSTUM_PLANES_COUNT];
+        private const int MAX_FRUSTUM_PLANES_COUNT = 6;
+        private const int VIEW_FRUSTUM_PLANES_COUNT = 4;
+        private readonly Plane[] _frustumPlanes = new Plane[MAX_FRUSTUM_PLANES_COUNT];
         
         private readonly EnemyWavesSpawner _wavesSpawner;
         private readonly Squad.Squad _squad;
@@ -41,7 +41,7 @@ namespace Survivors.Enemy.Spawn
 
             var camera = UnityEngine.Camera.main;
             GeometryUtility.CalculateFrustumPlanes(camera, _frustumPlanes);
-            foreach (var plane in _frustumPlanes.Take(CAMERA_SIDE_FRUSTUM_PLANES_COUNT))
+            foreach (var plane in _frustumPlanes.Take(VIEW_FRUSTUM_PLANES_COUNT))
             {
                 if (plane.Raycast(ray, out var distance)) 
                     frustumIntersectionPlace = ray.GetPoint(distance);
