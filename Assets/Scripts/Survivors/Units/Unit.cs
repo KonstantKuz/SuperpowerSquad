@@ -25,18 +25,18 @@ namespace Survivors.Units
         private IUnitDeath _death;
         private ITarget _selfTarget;
         private IUnitDeathEventReceiver[] _deathEventReceivers;   
-        private IUnitAliveEventReceiver[] _aliveEventReceivers;
+        private IUnitDeactivateEventReceiver[] _deactivateEventReceivers;
         private MovementController _movementController;
-        private bool _isAlive;
+        private bool _isActive;
 
-        public bool IsAlive
+        public bool IsActive
         {
-            get => _isAlive;
+            get => _isActive;
             set
             {
-                _isAlive = value;
-                if (!_isAlive) {
-                    _aliveEventReceivers.ForEach(it => it.OnUnAlive());
+                _isActive = value;
+                if (!_isActive) {
+                    _deactivateEventReceivers.ForEach(it => it.OnDeactivate());
                 }
             }
         }
@@ -56,11 +56,11 @@ namespace Survivors.Units
             _death = gameObject.RequireComponent<IUnitDeath>();
             _selfTarget = gameObject.RequireComponent<ITarget>();
             _deathEventReceivers = GetComponentsInChildren<IUnitDeathEventReceiver>();  
-            _aliveEventReceivers = GetComponentsInChildren<IUnitAliveEventReceiver>();
+            _deactivateEventReceivers = GetComponentsInChildren<IUnitDeactivateEventReceiver>();
             
             _damageable.OnDeath += Kill;
             _unitService.Add(this);
-            IsAlive = true;
+            IsActive = true;
             
             foreach (var component in GetComponentsInChildren<IInitializable<IUnit>>()) {
                 component.Init(this);
@@ -71,7 +71,7 @@ namespace Survivors.Units
         public void Kill()
         {
             _damageable.OnDeath -= Kill;
-            IsAlive = false;
+            IsActive = false;
             _deathEventReceivers.ForEach(it => it.OnDeath());
             _death.PlayDeath();
             OnDeath?.Invoke(this);
@@ -80,7 +80,7 @@ namespace Survivors.Units
 
         private void Update()
         {
-            if (!IsAlive) {
+            if (!IsActive) {
                 return;
             }
             UpdateComponents();

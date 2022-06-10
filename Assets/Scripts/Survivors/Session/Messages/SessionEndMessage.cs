@@ -2,9 +2,13 @@
 
 namespace Survivors.Session.Messages
 {
-    public struct SessionEndMessage
+    public readonly struct SessionEndMessage
     {
-        public SessionResult Result { get; set; }
+        public readonly SessionResult Result;
 
+        public SessionEndMessage(SessionResult result)
+        {
+            Result = result;
+        }
     }
 }

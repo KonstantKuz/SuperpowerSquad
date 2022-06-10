@@ -5,7 +5,7 @@ using System.Linq;
 using Feofun.Config;
 using Feofun.Extension;
 using SuperMaxim.Messaging;
-using Survivors.Enemy.EnemySpawn.Config;
+using Survivors.Enemy.Spawn.Config;
 using Survivors.Location;
 using Survivors.Session.Messages;
 using Survivors.Units.Enemy;
@@ -15,9 +15,9 @@ using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
 
-namespace Survivors.Enemy.EnemySpawn
+namespace Survivors.Enemy.Spawn
 {
-    public class EnemyWavesSpawner : MonoBehaviour, IWorldScope
+    public class EnemyWavesSpawner : MonoBehaviour
     {
         [SerializeField] private float _minOutOfViewOffset = 2f;
         [SerializeField] private float _outOfViewOffsetMultiplier = 0.2f;
@@ -37,22 +37,14 @@ namespace Survivors.Enemy.EnemySpawn
 
         public void StartSpawn(EnemyWavesConfig enemyWavesConfig)
         {
-            Dispose();
+            Stop();
             var orderedConfigs = enemyWavesConfig.EnemySpawns.OrderBy(it => it.SpawnTime);
             _waves = new List<EnemyWaveConfig>(orderedConfigs);
             _spawnCoroutine = StartCoroutine(SpawnWaves());
         }
-        public void OnWorldSetup()
-        {
-            
-        }
         private void OnSessionFinished(SessionEndMessage evn)
         {
-            Dispose();
-        }
-        public void OnWorldCleanUp()
-        {
-            Dispose();
+            Stop();
         }
         private IEnumerator SpawnWaves()
         {
@@ -63,7 +55,7 @@ namespace Survivors.Enemy.EnemySpawn
                 currentTime = wave.SpawnTime; 
                 SpawnNextWave(wave);
             } 
-            Dispose();
+            Stop();
         }
         
         private void SpawnNextWave(EnemyWaveConfig wave)
@@ -135,7 +127,7 @@ namespace Survivors.Enemy.EnemySpawn
             enemyAi.NavMeshAgent.Warp(place);
         }
 
-        private void Dispose()
+        private void Stop()
         {
             if (_spawnCoroutine != null)
             {

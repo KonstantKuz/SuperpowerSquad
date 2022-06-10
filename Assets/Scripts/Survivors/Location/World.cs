@@ -3,7 +3,6 @@ using System.Linq;
 using Feofun.App;
 using JetBrains.Annotations;
 using SuperMaxim.Core.Extensions;
-using Survivors.Session;
 using UnityEngine;
 
 namespace Survivors.Location

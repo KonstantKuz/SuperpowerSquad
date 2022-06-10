@@ -2,17 +2,16 @@
 using System.Collections;
 using Feofun.Config;
 using SuperMaxim.Messaging;
-using Survivors.Enemy.EnemySpawn.Config;
-using Survivors.Location;
+using Survivors.Enemy.Spawn.Config;
 using Survivors.Session.Messages;
 using Survivors.Units.Enemy.Config;
 using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
 
-namespace Survivors.Enemy.EnemySpawn
+namespace Survivors.Enemy.Spawn
 {
-    public class EnemyHpsSpawner : MonoBehaviour, IWorldScope
+    public class EnemyHpsSpawner : MonoBehaviour
     {
         private Coroutine _spawnCoroutine;
         
@@ -29,22 +28,14 @@ namespace Survivors.Enemy.EnemySpawn
         
         public void StartSpawn()
         {
-            Dispose();
+            Stop();
             _spawnCoroutine = StartCoroutine(SpawnCoroutine());
-        }
-        public void OnWorldSetup()
-        {
-            
         }
         private void OnSessionFinished(SessionEndMessage evn)
         {
-            Dispose();
+            Stop();
         }
-        public void OnWorldCleanUp()
-        {
-            Dispose();
-        }
-        private void Dispose()
+        private void Stop()
         {
             if (_spawnCoroutine == null) return;
             
