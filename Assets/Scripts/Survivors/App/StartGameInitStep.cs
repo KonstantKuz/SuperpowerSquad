@@ -2,6 +2,7 @@ using Feofun.App.Init;
 using Feofun.UI.Screen;
 using JetBrains.Annotations;
 using Survivors.UI.Screen.World;
+using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
 
