@@ -28,14 +28,14 @@ namespace Survivors.Enemy.Spawn
         
         public void StartSpawn()
         {
-            Dispose();
+            Stop();
             _spawnCoroutine = StartCoroutine(SpawnCoroutine());
         }
         private void OnSessionFinished(SessionEndMessage evn)
         {
-            Dispose();
+            Stop();
         }
-        private void Dispose()
+        private void Stop()
         {
             if (_spawnCoroutine == null) return;
             

@@ -94,11 +94,9 @@ namespace Survivors.Session.Service
             
             _unitService.DeactivateAll();
             _world.Squad.IsActive = false;
-            
-            _messenger.Publish(new SessionEndMessage {
-                    Result = Session.Result.Value,
-            });
-        
+
+            _messenger.Publish(new SessionEndMessage(Session.Result.Value));
+
         }
         private void Dispose()
         {

@@ -21,7 +21,7 @@ namespace Survivors.Player.Service
         private void OnSessionFinished(SessionEndMessage evn)
         {
             var progress = Progress;
-            progress.SessionCount++;
+            progress.GameCount++;
             if (evn.Result == SessionResult.Win) {
                 progress.WinCount++;
             }

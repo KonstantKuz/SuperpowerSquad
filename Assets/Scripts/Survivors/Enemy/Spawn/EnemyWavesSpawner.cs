@@ -37,14 +37,14 @@ namespace Survivors.Enemy.Spawn
 
         public void StartSpawn(EnemyWavesConfig enemyWavesConfig)
         {
-            Dispose();
+            Stop();
             var orderedConfigs = enemyWavesConfig.EnemySpawns.OrderBy(it => it.SpawnTime);
             _waves = new List<EnemyWaveConfig>(orderedConfigs);
             _spawnCoroutine = StartCoroutine(SpawnWaves());
         }
         private void OnSessionFinished(SessionEndMessage evn)
         {
-            Dispose();
+            Stop();
         }
         private IEnumerator SpawnWaves()
         {
@@ -55,7 +55,7 @@ namespace Survivors.Enemy.Spawn
                 currentTime = wave.SpawnTime; 
                 SpawnNextWave(wave);
             } 
-            Dispose();
+            Stop();
         }
         
         private void SpawnNextWave(EnemyWaveConfig wave)
@@ -127,7 +127,7 @@ namespace Survivors.Enemy.Spawn
             enemyAi.NavMeshAgent.Warp(place);
         }
 
-        private void Dispose()
+        private void Stop()
         {
             if (_spawnCoroutine != null)
             {
