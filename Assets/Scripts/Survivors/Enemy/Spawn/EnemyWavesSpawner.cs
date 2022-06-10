@@ -1,9 +1,7 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Feofun.Config;
-using Feofun.Extension;
 using SuperMaxim.Messaging;
 using Survivors.Enemy.Spawn.Config;
 using Survivors.Location;
@@ -13,24 +11,29 @@ using Survivors.Units.Enemy.Config;
 using Survivors.Units.Service;
 using UnityEngine;
 using Zenject;
-using Random = UnityEngine.Random;
 
 namespace Survivors.Enemy.Spawn
 {
     public class EnemyWavesSpawner : MonoBehaviour
     {
+        public const int INITIAL_SPAWN_OFFSET_MULTIPLIER = 1;
+        public static readonly Vector3 INVALID_SPAWN_PLACE = Vector3.one * 12345;
+
         private static int ENEMY_LAYER;
-        private static readonly Vector3 INVALID_SPAWN_PLACE = Vector3.one * 12345;
-        
-        [SerializeField] private int _maxFindPlaceAttemptCount = 5;
+
+        [Range(0f,1f)]
+        [SerializeField] private float _destinationDrivenPlaceChance = 0.3f;
+        [SerializeField] private int _findPlaceAttemptCount = 3;
         [SerializeField] private float _minOutOfViewOffset = 2f;
         [SerializeField] private float _outOfViewOffsetMultiplier = 0.2f;
 
         private List<EnemyWaveConfig> _waves;
         private Coroutine _spawnCoroutine;
+        private IEnemySpawnPlaceProvider _randomDrivenPlaceProvider;
+        private IEnemySpawnPlaceProvider _destinationDrivenPlaceProvider;
         
-        [Inject] private UnitFactory _unitFactory;
         [Inject] private World _world;
+        [Inject] private UnitFactory _unitFactory;
         [Inject] private IMessenger _messenger;
         [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
 
@@ -43,10 +46,18 @@ namespace Survivors.Enemy.Spawn
         public void StartSpawn(EnemyWavesConfig enemyWavesConfig)
         {
             Stop();
+            InitPlaceProviders();
             var orderedConfigs = enemyWavesConfig.EnemySpawns.OrderBy(it => it.SpawnTime);
             _waves = new List<EnemyWaveConfig>(orderedConfigs);
             _spawnCoroutine = StartCoroutine(SpawnWaves());
         }
+
+        private void InitPlaceProviders()
+        {
+            _randomDrivenPlaceProvider = new RandomDrivenPlaceProvider(this, _world);
+            _destinationDrivenPlaceProvider = new DestinationDrivenPlaceProvider(this, _world.Squad);
+        }
+
         private void OnSessionFinished(SessionEndMessage evn)
         {
             Stop();
@@ -73,6 +84,7 @@ namespace Survivors.Enemy.Spawn
         {
             if (place == INVALID_SPAWN_PLACE)
             {
+                Debug.Log("Empty place was not found. Spawn wave has been canceled.");
                 return;
             }
             
@@ -82,80 +94,50 @@ namespace Survivors.Enemy.Spawn
             }
         }
 
-        public Vector3 GetPlaceForWave(EnemyWaveConfig wave)
+        public Vector3 GetPlaceForWave(EnemyWaveConfig waveConfig)
         {
-            var enemyConfig = _enemyUnitConfigs.Get(wave.EnemyId);
-            var waveRadius = Mathf.Sqrt(wave.Count) * enemyConfig.GetScaleForLevel(wave.EnemyLevel);
-            var spawnSide = EnumExt.GetRandom<SpawnSide>();
-            var spawnOffset = _minOutOfViewOffset + waveRadius * _outOfViewOffsetMultiplier;
-
-            var spawnPlace = GetSpawnPlace(spawnSide, spawnOffset);
-
-            var attemptCount = 1;
-            var spawnOffsetMultiplier = 1;
-            while (IsPlaceBusy(spawnPlace, waveRadius) && spawnOffsetMultiplier <= _maxFindPlaceAttemptCount)
+            var placeProvider = Random.value < _destinationDrivenPlaceChance ?
+                _destinationDrivenPlaceProvider : _randomDrivenPlaceProvider;
+            
+            return GetEmptySpawnPlaceRecursive(placeProvider,waveConfig, 1, INITIAL_SPAWN_OFFSET_MULTIPLIER);
+        }
+        
+        private Vector3 GetEmptySpawnPlaceRecursive(IEnemySpawnPlaceProvider placeProvider, EnemyWaveConfig waveConfig, int attemptCount, int spawnOffsetMultiplier)
+        {
+            var spawnPlace = placeProvider.GetSpawnPlace(waveConfig, spawnOffsetMultiplier);
+            if (!IsPlaceBusy(spawnPlace, waveConfig))
             {
-                if (attemptCount > _maxFindPlaceAttemptCount)
+                return spawnPlace;
+            }
+            
+            attemptCount++;
+            if (attemptCount > _findPlaceAttemptCount)
+            {
+                attemptCount = 1;
+                spawnOffsetMultiplier++;
+                if (spawnOffsetMultiplier > _findPlaceAttemptCount)
                 {
-                    attemptCount = 1;
-                    spawnOffsetMultiplier++;
+                    return INVALID_SPAWN_PLACE;
                 }
-                
-                attemptCount++;
-                spawnOffset *= spawnOffsetMultiplier;
-                spawnSide = EnumExt.GetRandom<SpawnSide>();
-                spawnPlace = GetSpawnPlace(spawnSide, spawnOffset);
             }
 
-            return IsPlaceBusy(spawnPlace, waveRadius) ? INVALID_SPAWN_PLACE : spawnPlace;
+            return GetEmptySpawnPlaceRecursive(placeProvider, waveConfig, attemptCount, spawnOffsetMultiplier);
         }
 
-        private Vector3 GetSpawnPlace(SpawnSide spawnSide, float spawnOffset)
+        public float GetSpawnOffset(EnemyWaveConfig waveConfig)
         {
-            var camera = UnityEngine.Camera.main.transform;
-            var directionToTopSide = Vector3.ProjectOnPlane(camera.forward, _world.Ground.up).normalized;
-            var directionToRightSide = Vector3.ProjectOnPlane(camera.right, _world.Ground.up).normalized;
-
-            var randomPlace = GetRandomPlaceOnGround(spawnSide);
-            randomPlace += spawnSide switch
-            {
-                SpawnSide.Top => directionToTopSide * spawnOffset,
-                SpawnSide.Bottom => -directionToTopSide * spawnOffset,
-                SpawnSide.Right => directionToRightSide * spawnOffset,
-                SpawnSide.Left => -directionToRightSide * spawnOffset,
-                _ => Vector3.zero
-            };
-            return randomPlace;
+            return _minOutOfViewOffset + GetWaveRadius(waveConfig) * _outOfViewOffsetMultiplier;
         }
 
-        private Vector3 GetRandomPlaceOnGround(SpawnSide spawnSide)
+        private float GetWaveRadius(EnemyWaveConfig waveConfig)
         {
-            var camera = UnityEngine.Camera.main;
-            var randomViewportPoint = GetRandomPointOnViewportEdge(spawnSide);
-            var pointRay =  camera.ViewportPointToRay(randomViewportPoint);
-            var place = _world.GetGroundIntersection(pointRay);
-            return place;
+            var enemyConfig = _enemyUnitConfigs.Get(waveConfig.EnemyId);
+            return Mathf.Sqrt(waveConfig.Count) * enemyConfig.GetScaleForLevel(waveConfig.EnemyLevel);
         }
 
-        private Vector2 GetRandomPointOnViewportEdge(SpawnSide spawnSide)
+        private bool IsPlaceBusy(Vector3 place, EnemyWaveConfig waveConfig)
         {
-            switch (spawnSide)
-            {
-                case SpawnSide.Top:
-                    return new Vector2(Random.Range(0f, 1f), 1f);
-                case SpawnSide.Bottom:
-                    return new Vector2(Random.Range(0f, 1f), 0f);
-                case SpawnSide.Right:
-                    return new Vector2(1f, Random.Range(0f, 1f));
-                case SpawnSide.Left:
-                    return new Vector2(0f, Random.Range(0f, 1f));
-                default:
-                    throw new ArgumentException("Unexpected spawn side");
-            }
-        }
-
-        private bool IsPlaceBusy(Vector3 place, float waveRadius)
-        {
+            var waveRadius = GetWaveRadius(waveConfig);
             var status = Physics.CheckSphere(place, waveRadius, 1 << ENEMY_LAYER);
             _spheres[place] = waveRadius;
             _lifetimes[place] = 2;
@@ -200,13 +182,6 @@ namespace Survivors.Enemy.Spawn
         private void OnDestroy()
         {
             _messenger.Unsubscribe<SessionEndMessage>(OnSessionFinished);
-        }
-        private enum SpawnSide
-        {
-            Top,
-            Bottom,
-            Right,
-            Left,
         }
     }
 }
