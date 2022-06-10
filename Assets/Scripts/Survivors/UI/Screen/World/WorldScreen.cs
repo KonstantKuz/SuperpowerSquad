@@ -1,10 +1,12 @@
 ﻿using System.Collections;
+using Feofun.UI.Dialog;
 using Feofun.UI.Screen;
 using JetBrains.Annotations;
 using SuperMaxim.Messaging;
 using Survivors.Session.Messages;
 using Survivors.Session.Model;
 using Survivors.Session.Service;
+using Survivors.UI.Dialog.PauseDialog;
 using Survivors.UI.Screen.Debriefing;
 using UnityEngine;
 using Zenject;
@@ -24,13 +26,21 @@ namespace Survivors.UI.Screen.World
         [Inject] private IMessenger _messenger;
         [Inject] private ScreenSwitcher _screenSwitcher;     
         [Inject] private Location.World _world;
+        [Inject] private DialogManager _dialogManager;
 
         [PublicAPI]
         public void Init()
         {
             _world.Setup();
             _sessionService.Start();
+            StartCoroutine(WaitForAnimationUpdateBeforePause());
             _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
+        }
+
+        private IEnumerator WaitForAnimationUpdateBeforePause()
+        {
+            yield return new WaitForEndOfFrame();
+            _dialogManager.Show<PauseDialog>();
         }
 
         private void OnSessionFinished(SessionEndMessage evn)

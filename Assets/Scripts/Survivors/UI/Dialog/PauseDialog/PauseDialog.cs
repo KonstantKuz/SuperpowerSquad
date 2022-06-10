@@ -19,6 +19,7 @@ namespace Survivors.UI.Dialog.PauseDialog
         private void OnEnable()
         {
             Dispose();
+            _world.Pause();
             var uiBehaviour = _joystick.GetComponent<UIBehaviour>();
             _disposable = uiBehaviour.OnDragAsObservable().Merge(uiBehaviour.OnPointerClickAsObservable()).First().Subscribe(it => OnClick());
         }
