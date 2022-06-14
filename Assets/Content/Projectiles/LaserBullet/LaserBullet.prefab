@@ -77,7 +77,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9812bebdb97a4aaf89dd66ab08dcd4ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxLifeTime: 6
+  _maxLifeTime: 3
   _hitVfx: {fileID: 1814342322200015211, guid: 8d42205bab19a784ea343039566f929f, type: 3}
   _lineRenderer: {fileID: 6116303466062220547}
   _collider: {fileID: 5851485773453743659}

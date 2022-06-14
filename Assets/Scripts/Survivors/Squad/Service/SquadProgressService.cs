@@ -1,5 +1,6 @@
 ﻿using System;
 using Feofun.Config;
+using Survivors.Location;
 using Survivors.Session;
 using Survivors.Squad.Config;
 using Survivors.Squad.Progress;

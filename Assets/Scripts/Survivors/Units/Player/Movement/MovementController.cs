@@ -1,14 +1,13 @@
 ﻿using System;
 using JetBrains.Annotations;
 using Survivors.Extension;
-using UniRx;
 using UnityEngine;
 using UnityEngine.AI;
 
 namespace Survivors.Units.Player.Movement
 {
     [RequireComponent(typeof(NavMeshAgent))]
-    public class MovementController : MonoBehaviour, IUnitDeathEventReceiver
+    public class MovementController : MonoBehaviour, IUnitDeathEventReceiver, IUnitDeactivateEventReceiver
     {
         private readonly int _runHash = Animator.StringToHash("Run");
         private readonly int _idleHash = Animator.StringToHash("Idle");
@@ -56,7 +55,10 @@ namespace Survivors.Units.Player.Movement
                 HasTarget = false;
             }
         }
-        
+        public void OnDeactivate()
+        {
+            StopAnimation();
+        }
         public void OnDeath()
         {
             StopAnimation();
@@ -82,5 +84,6 @@ namespace Survivors.Units.Player.Movement
         }
         private double GetRadian(float signedAngle) => Mathf.Deg2Rad * signedAngle;
         private float GetRotateSignedAngle(Vector3 moveDirection) => Vector2.SignedAngle(transform.forward.ToVector2XZ(), moveDirection.ToVector2XZ());
+       
     }
 }

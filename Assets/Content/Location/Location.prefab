@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 8746036832828890122}
   - component: {fileID: 8746036832828890125}
   - component: {fileID: 8746036832828890124}
-  - component: {fileID: 8746036832828890123}
+  - component: {fileID: 8533064047903396560}
   m_Layer: 0
   m_Name: Ground
   m_TagString: Untagged
@@ -205,20 +205,35 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &8746036832828890123
-MeshCollider:
+--- !u!114 &8533064047903396560
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8746036832828890121}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a5ac11cc976e418e8d13136b07e1f52, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_AgentTypeID: 0
+  m_CollectObjects: 0
+  m_Size: {x: 10, y: 10, z: 10}
+  m_Center: {x: 0, y: 2, z: 0}
+  m_LayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_UseGeometry: 0
+  m_DefaultArea: 0
+  m_IgnoreNavMeshAgent: 1
+  m_IgnoreNavMeshObstacle: 1
+  m_OverrideTileSize: 1
+  m_TileSize: 1024
+  m_OverrideVoxelSize: 1
+  m_VoxelSize: 0.1
+  m_BuildHeightMesh: 0
+  m_NavMeshData: {fileID: 23800000, guid: 0ad8d422a8aa8d6499316a97862a395c, type: 2}
 --- !u!1 &8746036833295827785
 GameObject:
   m_ObjectHideFlags: 0
@@ -230,6 +245,7 @@ GameObject:
   - component: {fileID: 8746036833295827788}
   - component: {fileID: 8746036833295827787}
   - component: {fileID: 8746036833295827786}
+  - component: {fileID: 2906711552702323490}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -302,6 +318,18 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8746036833295827785}
   m_Enabled: 1
+--- !u!114 &2906711552702323490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8746036833295827785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1adf43292c582e24f8294476e43b9323, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8746036833993048137
 GameObject:
   m_ObjectHideFlags: 0
@@ -379,8 +407,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 482cd254e84aa264d99532c3d24818e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _minOutOfViewOffset: 2
-  _outOfViewOffsetMultiplier: 0.2
+  _moveDirectionDrivenPlaceChance: 0.3
+  _angleAttemptCount: 3
+  _rangeAttemptCount: 3
+  _minOutOfViewOffset: 3
 --- !u!114 &186752239828696303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -408,4 +438,4 @@ MonoBehaviour:
   _world: {fileID: 3088611838475355998}
   _worldObjectFactory: {fileID: 8743563882573435223}
   _enemyWavesSpawner: {fileID: 1873516484607207762}
-  enemyHpsSpawner: {fileID: 186752239828696303}
+  _enemyHpsSpawner: {fileID: 0}
