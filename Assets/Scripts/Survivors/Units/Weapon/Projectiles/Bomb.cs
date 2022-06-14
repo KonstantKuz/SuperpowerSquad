@@ -18,18 +18,19 @@ namespace Survivors.Units.Weapon.Projectiles
         [SerializeField] private Explosion _explosion;
         [SerializeField] private TrailRenderer _trail;
 
+        private Tween _throwMove;
+        
         [Inject]
         private WorldObjectFactory _objectFactory;
         
         public void Launch(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback, Vector3 targetPos)
-
         {
             base.Launch(target, projectileParams, hitCallback);
             var moveTime = GetFlightTime(targetPos);
             var maxHeight = GetMaxHeight(targetPos, projectileParams.AttackDistance);
-            var jumpMove = transform.DOJump(targetPos, maxHeight, 1, moveTime);
-            jumpMove.SetEase(Ease.Linear);
-            jumpMove.onComplete = () => Explode(targetPos);
+            _throwMove = transform.DOJump(targetPos, maxHeight, 1, moveTime);
+            _throwMove.SetEase(Ease.Linear);
+            _throwMove.onComplete = () => Explode(targetPos);
         }
 
         private float GetFlightTime(Vector3 targetPos)
@@ -51,6 +52,9 @@ namespace Survivors.Units.Weapon.Projectiles
 
         private void Explode(Vector3 pos)
         {
+            _throwMove.onComplete = null;
+            _throwMove.Kill();
+            
             var explosion = Explosion.Create(_objectFactory, _explosion, pos, Params.DamageRadius, TargetType, HitCallback);
             explosion.transform.localScale *= Params.DamageRadius * _explosionScaleMultiplier;
             Destroy();
@@ -59,10 +63,9 @@ namespace Survivors.Units.Weapon.Projectiles
         private void Destroy()
         {
             HitCallback = null;
-            Destroy(gameObject);
-            
             _trail.transform.SetParent(null);
             Destroy(_trail.gameObject, _trail.time);
+            Destroy(gameObject);
         }
     }
 }
