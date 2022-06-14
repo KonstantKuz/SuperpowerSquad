@@ -10,7 +10,7 @@ namespace Survivors.UI.Dialog.UpgradeDialog.View
 {
     public class UpgradeView : MonoBehaviour
     {
-        private const string LEVEL_PREFIX = "Level";
+        private const string LEVEL_LOCALIZATION_ID = "Level";
         [SerializeField]
         private UpgradeItemView _upgradeItemPrefab;
         [SerializeField]
@@ -22,7 +22,7 @@ namespace Survivors.UI.Dialog.UpgradeDialog.View
         public void Init(UpgradeDialogModel dialogModel)
         {
             RemoveAllCreatedObjects();
-            _level.SetTextFormatted(LEVEL_PREFIX, dialogModel.Level);
+            _level.SetTextFormatted(LEVEL_LOCALIZATION_ID, dialogModel.Level);
             CreateUpgradeItems(dialogModel.Upgrades);
         }
         private void CreateUpgradeItems(IReadOnlyCollection<UpgradeItemModel> upgrades)
