@@ -82,7 +82,7 @@ namespace Survivors.Units.Enemy
             
             if (DistanceToSquad > _targetSelectionDistance) 
             {
-                SetDestination(SquadPosition);
+                MoveTo(SquadPosition);
                 return;
             }
             
@@ -94,11 +94,11 @@ namespace Survivors.Units.Enemy
                 return;
             }
 
-            SetDestination(CurrentTarget.Root.position);
+            MoveTo(CurrentTarget.Root.position);
             _agent.isStopped = false;
         }
 
-        private void SetDestination(Vector3 destination)
+        private void MoveTo(Vector3 destination)
         {
             if (Vector3.Distance(transform.position, destination) > ACCURATE_FOLLOW_DISTANCE)
             {

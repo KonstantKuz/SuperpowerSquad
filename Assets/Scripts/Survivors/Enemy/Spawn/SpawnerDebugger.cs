@@ -7,13 +7,14 @@ namespace Survivors.Enemy.Spawn
     public class SpawnerDebugger : MonoBehaviour
     {
         private const float COLOR_ALPHA = 0.3f;
+        private const float LIFE_TIME = 2f;
         private List<DebugInfo> _infos = new List<DebugInfo>();
 
         public void Debug(Vector3 place, float waveRadius, bool status)
         {
             _infos.Add(new DebugInfo() {
                 Place = place, 
-                Lifetime = 2,
+                CreationTime = Time.time,
                 WaveRadius = waveRadius,
                 Status = status,
             });
@@ -24,23 +25,28 @@ namespace Survivors.Enemy.Spawn
             var infos = _infos.ToList();
             foreach (var info in infos)
             {
-                info.Lifetime -= Time.deltaTime;
-                if (info.Lifetime <= 0)
+                if (Time.time >= info.CreationTime + LIFE_TIME)
                 {
                     _infos.Remove(info);
                     continue;
                 }
-                var color = info.Status ? Color.red : Color.green;
-                color.a = COLOR_ALPHA;
-                Gizmos.color = color;
-                Gizmos.DrawSphere(info.Place, info.WaveRadius);
+                
+                DrawDebugSphere(info);
             }
         }
-            
+
+        private static void DrawDebugSphere(DebugInfo info)
+        {
+            var color = info.Status ? Color.red : Color.green;
+            color.a = COLOR_ALPHA;
+            Gizmos.color = color;
+            Gizmos.DrawSphere(info.Place, info.WaveRadius);
+        }
+
         private class DebugInfo
         {
             public Vector3 Place; 
-            public float Lifetime;           
+            public float CreationTime;           
             public float WaveRadius;  
             public bool Status;
         }

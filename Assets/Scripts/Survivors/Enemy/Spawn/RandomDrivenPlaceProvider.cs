@@ -18,27 +18,35 @@ namespace Survivors.Enemy.Spawn
             _world = world;
         }
 
-        public Vector3 GetSpawnPlace(EnemyWaveConfig waveConfig, int outOfViewMultiplier)
+        public SpawnPlace GetSpawnPlace(EnemyWaveConfig waveConfig, int rangeTry)
         {
-            var spawnPlace = GetRandomSpawnPlace(waveConfig, outOfViewMultiplier);
-            return spawnPlace == EnemyWavesSpawner.INVALID_SPAWN_PLACE ? EnemyWavesSpawner.INVALID_SPAWN_PLACE : spawnPlace;
+            var position = GetRandomSpawnPosition(waveConfig, rangeTry);
+            var isValid = !_wavesSpawner.IsPlaceBusy(position, waveConfig);
+            return new SpawnPlace {IsValid = isValid, Position = position};
         }
 
-        private Vector3 GetRandomSpawnPlace(EnemyWaveConfig waveConfig, int outOfViewMultiplier)
+        private Vector3 GetRandomSpawnPosition(EnemyWaveConfig waveConfig, int rangeTry)
         {
-            var outOfViewOffset = _wavesSpawner.GetOutOfViewOffset(waveConfig, outOfViewMultiplier);
+            var outOfViewOffset = _wavesSpawner.GetOutOfViewOffset(waveConfig, rangeTry);
             var spawnSide = EnumExt.GetRandom<SpawnSide>();
-            return GetRandomPlaceOnGround(spawnSide, outOfViewOffset);
+            var randomPosition = GetRandomPositionOnGround(spawnSide);
+            return GetPositionWithOffset(randomPosition, spawnSide, outOfViewOffset);
         }
-        
-        private Vector3 GetRandomPlaceOnGround(SpawnSide spawnSide, float outOfViewOffset)
+
+        private Vector3 GetRandomPositionOnGround(SpawnSide spawnSide)
+        {
+            var camera = UnityEngine.Camera.main;
+            var randomViewportPoint = GetRandomPointOnViewportEdge(spawnSide);
+            var pointRay =  camera.ViewportPointToRay(randomViewportPoint);
+            return _world.GetGroundIntersection(pointRay);
+        }
+
+        private Vector3 GetPositionWithOffset(Vector3 position, SpawnSide spawnSide, float outOfViewOffset)
         {
             var camera = UnityEngine.Camera.main.transform;
             var directionToTopSide = Vector3.ProjectOnPlane(camera.forward, _world.Ground.up).normalized;
             var directionToRightSide = Vector3.ProjectOnPlane(camera.right, _world.Ground.up).normalized;
-
-            var randomPlace = GetRandomPlaceOnGround(spawnSide);
-            randomPlace += spawnSide switch
+            position += spawnSide switch
             {
                 SpawnSide.Top => directionToTopSide * outOfViewOffset,
                 SpawnSide.Bottom => -directionToTopSide * outOfViewOffset,
@@ -46,15 +54,7 @@ namespace Survivors.Enemy.Spawn
                 SpawnSide.Left => -directionToRightSide * outOfViewOffset,
                 _ => Vector3.zero
             };
-            return randomPlace;
-        }
-
-        private Vector3 GetRandomPlaceOnGround(SpawnSide spawnSide)
-        {
-            var camera = UnityEngine.Camera.main;
-            var randomViewportPoint = GetRandomPointOnViewportEdge(spawnSide);
-            var pointRay =  camera.ViewportPointToRay(randomViewportPoint);
-            return _world.GetGroundIntersection(pointRay);
+            return position;
         }
 
         private Vector2 GetRandomPointOnViewportEdge(SpawnSide spawnSide)

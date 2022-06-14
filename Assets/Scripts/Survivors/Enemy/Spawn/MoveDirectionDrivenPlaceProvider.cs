@@ -21,34 +21,38 @@ namespace Survivors.Enemy.Spawn
             _squad = squad;
         }
 
-        public Vector3 GetSpawnPlace(EnemyWaveConfig waveConfig, int outOfViewMultiplier)
+        public SpawnPlace GetSpawnPlace(EnemyWaveConfig waveConfig, int rangeTry)
         {
-            var spawnPlace = GetSpawnPlaceByDestination(waveConfig, outOfViewMultiplier);
-            return spawnPlace == EnemyWavesSpawner.INVALID_SPAWN_PLACE ? EnemyWavesSpawner.INVALID_SPAWN_PLACE : spawnPlace;
+            if (!_squad.IsMoving)
+            {
+                return SpawnPlace.INVALID;
+            }
+
+            var position = GetSpawnPlaceByDestination(waveConfig, rangeTry);
+            var isValid = !_wavesSpawner.IsPlaceBusy(position, waveConfig);
+            return new SpawnPlace {IsValid = isValid, Position = position};
         }
         
-        private Vector3 GetSpawnPlaceByDestination(EnemyWaveConfig waveConfig, int outOfViewMultiplier)
+        private Vector3 GetSpawnPlaceByDestination(EnemyWaveConfig waveConfig, int rangeTry)
         {
             var destination = _squad.MoveDirection.normalized;
-  
-            if (Math.Abs(destination.magnitude) < Mathf.Epsilon)
-            {
-                return EnemyWavesSpawner.INVALID_SPAWN_PLACE;
-            }
-            
             var ray = new Ray(_squad.Destination.transform.position, destination);
-            var frustumIntersectionPlace = EnemyWavesSpawner.INVALID_SPAWN_PLACE;
+            var frustumIntersectionPoint = GetFrustumIntersectionPoint(ray);
+            var outOfViewOffset = _wavesSpawner.GetOutOfViewOffset(waveConfig, rangeTry);
+            return frustumIntersectionPoint + destination * outOfViewOffset;
+        }
 
+        private Vector3 GetFrustumIntersectionPoint(Ray ray)
+        {
             var camera = UnityEngine.Camera.main;
             GeometryUtility.CalculateFrustumPlanes(camera, _frustumPlanes);
             foreach (var plane in _frustumPlanes.Take(VIEW_FRUSTUM_PLANES_COUNT))
             {
                 if (plane.Raycast(ray, out var distance)) 
-                    frustumIntersectionPlace = ray.GetPoint(distance);
+                    return ray.GetPoint(distance);
             }
 
-            var outOfViewOffset = _wavesSpawner.GetOutOfViewOffset(waveConfig, outOfViewMultiplier);
-            return frustumIntersectionPlace + destination * outOfViewOffset;
+            throw new Exception("Ray must intersect one of the camera frustum planes.");
         }
     }
 }

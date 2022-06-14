@@ -16,21 +16,19 @@ namespace Survivors.Enemy.Spawn
 {
     public class EnemyWavesSpawner : MonoBehaviour
     {
-        public static readonly Vector3 INVALID_SPAWN_PLACE = Vector3.one * int.MaxValue;
-
         private const string ENEMY_LAYER_NAME = "Enemy";
         private static int ENEMY_LAYER;
         
         [Range(0f,1f)]
         [SerializeField] private float _moveDirectionDrivenPlaceChance = 0.3f;
-        [SerializeField] private int _findPlaceAttemptCount = 3;
-        [SerializeField] private int _maxOutOfViewMultiplier = 3;
+        [SerializeField] private int _angleAttemptCount = 3;
+        [SerializeField] private int _rangeAttemptCount = 3;
         [SerializeField] private float _minOutOfViewOffset = 2f;
 
         private List<EnemyWaveConfig> _waves;
         private Coroutine _spawnCoroutine;
-        private ISpawnPlaceProvider _randomDrivenPlaceProvider;
-        private ISpawnPlaceProvider _moveDirectionDrivenPlaceProvider;
+        private ISpawnPlaceProvider _randomDrivenProvider;
+        private ISpawnPlaceProvider _moveDirectionDrivenProvider;
         private SpawnerDebugger _spawnerDebugger;
         
         [Inject] private World _world;
@@ -56,8 +54,8 @@ namespace Survivors.Enemy.Spawn
 
         private void InitPlaceProviders()
         {
-            _randomDrivenPlaceProvider = new RandomDrivenPlaceProvider(this, _world);
-            _moveDirectionDrivenPlaceProvider = new MoveDirectionDrivenPlaceProvider(this, _world.Squad);
+            _randomDrivenProvider = new RandomDrivenPlaceProvider(this, _world);
+            _moveDirectionDrivenProvider = new MoveDirectionDrivenPlaceProvider(this, _world.Squad);
         }
 
         private void OnSessionFinished(SessionEndMessage evn)
@@ -82,9 +80,9 @@ namespace Survivors.Enemy.Spawn
             SpawnWave(wave, place);
         }
 
-        public void SpawnWave(EnemyWaveConfig wave, Vector3 place)
+        public void SpawnWave(EnemyWaveConfig wave, SpawnPlace spawnPlace)
         {
-            if (place == INVALID_SPAWN_PLACE)
+            if (!spawnPlace.IsValid)
             {
                 Debug.LogWarning("Invalid spawn place provided. Spawn wave has been canceled.");
                 return;
@@ -92,38 +90,38 @@ namespace Survivors.Enemy.Spawn
             
             for (int i = 0; i < wave.Count; i++)
             {
-                SpawnEnemy(place, wave);
+                SpawnEnemy(spawnPlace.Position, wave);
             }
         }
 
-        public Vector3 GetPlaceForWave(EnemyWaveConfig waveConfig)
+        public SpawnPlace GetPlaceForWave(EnemyWaveConfig waveConfig)
         {
             var placeProvider = Random.value < _moveDirectionDrivenPlaceChance ?
-                _moveDirectionDrivenPlaceProvider : _randomDrivenPlaceProvider;
+                _moveDirectionDrivenProvider : _randomDrivenProvider;
             
             return FindEmptyPlace(placeProvider, waveConfig);
         }
 
-        private Vector3 FindEmptyPlace(ISpawnPlaceProvider placeProvider, EnemyWaveConfig waveConfig)
+        private SpawnPlace FindEmptyPlace(ISpawnPlaceProvider placeProvider, EnemyWaveConfig waveConfig)
         {
-            for (int outOfViewMultiplier = 1; outOfViewMultiplier <= _maxOutOfViewMultiplier; outOfViewMultiplier++)
+            for (int rangeTry = 1; rangeTry <= _rangeAttemptCount; rangeTry++)
             {
-                for (int attemptCount = 1; attemptCount < _findPlaceAttemptCount; attemptCount++)
+                for (int angleTry = 0; angleTry < _angleAttemptCount; angleTry++)
                 {
-                    var spawnPlace = placeProvider.GetSpawnPlace(waveConfig, outOfViewMultiplier);
-                    if (!IsPlaceBusy(spawnPlace, waveConfig))
+                    var spawnPlace = placeProvider.GetSpawnPlace(waveConfig, rangeTry);
+                    if (spawnPlace.IsValid)
                     {
                         return spawnPlace;
                     }
                 }
             }
 
-            return INVALID_SPAWN_PLACE;
+            return SpawnPlace.INVALID;
         }
 
-        public float GetOutOfViewOffset(EnemyWaveConfig waveConfig, int multiplier)
+        public float GetOutOfViewOffset(EnemyWaveConfig waveConfig, int rangeTry)
         {
-            return multiplier * (_minOutOfViewOffset + GetWaveRadius(waveConfig));
+            return _minOutOfViewOffset + rangeTry * GetWaveRadius(waveConfig);
         }
 
         private float GetWaveRadius(EnemyWaveConfig waveConfig)
@@ -132,7 +130,7 @@ namespace Survivors.Enemy.Spawn
             return Mathf.Sqrt(waveConfig.Count) * enemyConfig.GetScaleForLevel(waveConfig.EnemyLevel);
         }
 
-        private bool IsPlaceBusy(Vector3 place, EnemyWaveConfig waveConfig)
+        public bool IsPlaceBusy(Vector3 place, EnemyWaveConfig waveConfig)
         {
             var isBusy = Physics.CheckSphere(place, GetWaveRadius(waveConfig), 1 << ENEMY_LAYER);
             Debugger.Debug(place, GetWaveRadius(waveConfig), isBusy);

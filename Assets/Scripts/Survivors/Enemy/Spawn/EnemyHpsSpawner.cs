@@ -77,7 +77,7 @@ namespace Survivors.Enemy.Spawn
             }
         }
 
-        private Vector3 GetWavePlace(float unitCount, int level)
+        private SpawnPlace GetWavePlace(float unitCount, int level)
         {
             return _enemyWavesSpawner.GetPlaceForWave(GetWaveConfig(Mathf.RoundToInt(unitCount), level));
         }
@@ -95,7 +95,7 @@ namespace Survivors.Enemy.Spawn
             SpawnWave(lowerLevelCount, lowerLevel, place);
         }
 
-        private void SpawnWave(int count, int level, Vector3 place)
+        private void SpawnWave(int count, int level, SpawnPlace place)
         {
             Log($"Spawning wave of {count} units of level {level}");
             _enemyWavesSpawner.SpawnWave(GetWaveConfig(count, level), place);

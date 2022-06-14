@@ -5,6 +5,6 @@ namespace Survivors.Enemy.Spawn
 {
     public interface ISpawnPlaceProvider
     {
-        Vector3 GetSpawnPlace(EnemyWaveConfig waveConfig, int outOfViewMultiplier);
+        SpawnPlace GetSpawnPlace(EnemyWaveConfig waveConfig, int rangeTry);
     }
 }
