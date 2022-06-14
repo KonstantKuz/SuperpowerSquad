@@ -4,6 +4,7 @@ using SuperMaxim.Core.Extensions;
 using Survivors.UI.Dialog.UpgradeDialog.Model;
 using TMPro;
 using UnityEngine;
+using Zenject;
 
 namespace Survivors.UI.Dialog.UpgradeDialog.View
 {
@@ -16,7 +17,8 @@ namespace Survivors.UI.Dialog.UpgradeDialog.View
         private Transform _root;
         [SerializeField]
         private TextMeshProUGUI _level;
-
+        
+        [Inject] private DiContainer _container;
         public void Init(UpgradeDialogModel dialogModel)
         {
             RemoveAllCreatedObjects();
@@ -26,7 +28,7 @@ namespace Survivors.UI.Dialog.UpgradeDialog.View
         private void CreateUpgradeItems(IReadOnlyCollection<UpgradeItemModel> upgrades)
         {
             upgrades.ForEach(it => {
-                var itemView = Instantiate(_upgradeItemPrefab, _root, false);
+                var itemView = _container.InstantiatePrefabForComponent<UpgradeItemView>(_upgradeItemPrefab, _root);
                 itemView.Init(it);
             });
         }

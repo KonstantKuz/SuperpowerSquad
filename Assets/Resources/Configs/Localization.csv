@@ -1,6 +1,29 @@
 Id,English,Russian
 Tap to place unit,Tap to place unit,"Нажмите на юнита, чтобы поместить его на поле"
-WIN!,WIN!,ПОБЕДА!
-Defeat!,Defeat!,Поражение!
-Reload,Reload,Переиграть
+Victory,Victory,Победа
+Defeat,Defeat,Поражение
+Next,Next,Далее
 Enemies left,Enemies left: {0},Осталось врагов: {0}
+Reload,Reload,Переиграть
+RocketUnit,Rocket launcher,Rocket launcher
+PyroUnit,Flamethrower,Flamethrower
+SniperUnit,Sniper rifle,Sniper rifle
+BomberUnit,Bomb,Bomb
+CircularSawUnit,A circular saw,A circular saw
+ShotCountUpgrade,Shot count,Shot count
+AttackTimeUpgrade,Attack speed,Attack speed
+ProjectileSpeedUpgrade,Projectile speed,Projectile speed
+CollectRadiusUpgrade,Collect radius,Collect radius
+SpeedSquadUpgrade,Move speed,Move speed
+AttackDamageUpgrade,Attack damage,Attack damage
+DamageRadiusUpgrade,Damage radius,Damage radius
+ShotCount,ShotCount {0},ShotCount {0}
+DamageAngle,DamageAngle {0},DamageAngle {0}
+DamageRadius,DamageRadius {0},DamageRadius {0}
+ProjectileSpeed,ProjectileSpeed {0},ProjectileSpeed {0}
+AttackTime,AttackTime {0},AttackTime {0}
+AttackDamage,AttackDamage {0},AttackDamage {0}
+CollectRadius,CollectRadius {0},CollectRadius {0}
+Speed,Speed {0},Speed {0}
+unit +1,unit +1,unit +1
+lvl,lvl {0},lvl {0}
