@@ -52,9 +52,6 @@ namespace Survivors.Units.Weapon.Projectiles
 
         private void Explode(Vector3 pos)
         {
-            _throwMove.onComplete = null;
-            _throwMove.Kill();
-            
             var explosion = Explosion.Create(_objectFactory, _explosion, pos, Params.DamageRadius, TargetType, HitCallback);
             explosion.transform.localScale *= Params.DamageRadius * _explosionScaleMultiplier;
             Destroy();
@@ -62,6 +59,9 @@ namespace Survivors.Units.Weapon.Projectiles
 
         private void Destroy()
         {
+            _throwMove.onComplete = null;
+            _throwMove.Kill();
+
             HitCallback = null;
             _trail.transform.SetParent(null);
             Destroy(_trail.gameObject, _trail.time);
