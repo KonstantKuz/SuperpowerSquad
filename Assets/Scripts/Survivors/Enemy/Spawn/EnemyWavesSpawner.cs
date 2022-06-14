@@ -100,7 +100,7 @@ namespace Survivors.Enemy.Spawn
             for (int rangeTry = 1; rangeTry <= _rangeAttemptCount; rangeTry++)
             {
                 outOfViewOffset *= rangeTry;
-                for (int angleTry = 1; angleTry <= _angleAttemptCount; angleTry++)
+                for (int angleTry = 0; angleTry < _angleAttemptCount; angleTry++)
                 {
                     var spawnSide = EnumExt.GetRandom<SpawnSide>();
                     var spawnPlace = GetRandomSpawnPlace(spawnSide, outOfViewOffset);
