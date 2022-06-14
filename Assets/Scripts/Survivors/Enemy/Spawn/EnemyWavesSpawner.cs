@@ -26,10 +26,9 @@ namespace Survivors.Enemy.Spawn
         [SerializeField] private int _rangeAttemptCount = 3;
         [SerializeField] private float _minOutOfViewOffset = 2f;
 
+        private ISpawnPlaceProvider _placeProvider;
         private List<EnemyWaveConfig> _waves;
         private Coroutine _spawnCoroutine;
-        private ISpawnPlaceProvider _randomDrivenProvider;
-        private ISpawnPlaceProvider _moveDirectionDrivenProvider;
         private SpawnerDebugger _spawnerDebugger;
         
         [Inject] private World _world;
@@ -37,7 +36,8 @@ namespace Survivors.Enemy.Spawn
         [Inject] private IMessenger _messenger;
         [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
         private SpawnerDebugger Debugger => _spawnerDebugger ??= gameObject.AddComponent<SpawnerDebugger>();
-        
+        public float MoveDirectionDrivenPlaceChance => _moveDirectionDrivenPlaceChance;
+
         private void Awake()
         {
             ENEMY_LAYER = LayerMask.NameToLayer(ENEMY_LAYER_NAME);
@@ -47,16 +47,15 @@ namespace Survivors.Enemy.Spawn
         public void StartSpawn(EnemyWavesConfig enemyWavesConfig)
         {
             Stop();
-            InitPlaceProviders();
+            InitPlaceProvider();
             var orderedConfigs = enemyWavesConfig.EnemySpawns.OrderBy(it => it.SpawnTime);
             _waves = new List<EnemyWaveConfig>(orderedConfigs);
             _spawnCoroutine = StartCoroutine(SpawnWaves());
         }
 
-        private void InitPlaceProviders()
+        private void InitPlaceProvider()
         {
-            _randomDrivenProvider = new RandomDrivenPlaceProvider(this, _world);
-            _moveDirectionDrivenProvider = new MoveDirectionDrivenPlaceProvider(this, _world.Squad);
+            _placeProvider = new CompositeSpawnPlaceProvider(this, _world);
         }
 
         private void OnSessionFinished(SessionEndMessage evn)
@@ -97,19 +96,16 @@ namespace Survivors.Enemy.Spawn
 
         public SpawnPlace GetPlaceForWave(EnemyWaveConfig waveConfig)
         {
-            var placeProvider = Random.value < _moveDirectionDrivenPlaceChance ?
-                _moveDirectionDrivenProvider : _randomDrivenProvider;
-            
-            return FindEmptyPlace(placeProvider, waveConfig);
+            return FindEmptyPlace(waveConfig);
         }
 
-        private SpawnPlace FindEmptyPlace(ISpawnPlaceProvider placeProvider, EnemyWaveConfig waveConfig)
+        private SpawnPlace FindEmptyPlace(EnemyWaveConfig waveConfig)
         {
             for (int rangeTry = 1; rangeTry <= _rangeAttemptCount; rangeTry++)
             {
                 for (int angleTry = 0; angleTry < _angleAttemptCount; angleTry++)
                 {
-                    var spawnPlace = placeProvider.GetSpawnPlace(waveConfig, rangeTry);
+                    var spawnPlace = _placeProvider.GetSpawnPlace(waveConfig, rangeTry);
                     if (spawnPlace.IsValid)
                     {
                         return spawnPlace;
