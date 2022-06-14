@@ -45,7 +45,7 @@ namespace Survivors.UI.Dialog.UpgradeDialog.Model
             var nextUpgradeLevelConfig = _upgradesConfig.GetUpgradeConfig(upgradeBranchId, nextLevel);
             var description = nextUpgradeLevelConfig.Type == UpgradeType.Unit
                                       ? LocalizableText.Create(ADD_UNIT_LOCALIZATION_ID)
-                                      : GetValueDescription(nextUpgradeLevelConfig);
+                                      : CreateModifierDescription(nextUpgradeLevelConfig);
             return new UpgradeItemModel() {
                     Id = upgradeBranchId,
                     Name = upgradeBranchId,
@@ -55,14 +55,14 @@ namespace Survivors.UI.Dialog.UpgradeDialog.Model
             };
         }
 
-        private LocalizableText GetValueDescription(UpgradeLevelConfig nextUpgradeLevelConfig)
+        private LocalizableText CreateModifierDescription(UpgradeLevelConfig nextUpgradeLevelConfig)
         {
             var modifier = _modifierConfigs.Get(nextUpgradeLevelConfig.ModifierId).ModifierConfig;
             var modifierType = EnumExt.ValueOf<ModifierType>(modifier.Modifier);
-            return LocalizableText.Create(modifier.ParameterName, GetModifierValue(modifierType, modifier.Value.ToString(CultureInfo.InvariantCulture)));
+            return LocalizableText.Create(modifier.ParameterName, GetDescriptionValue(modifierType, modifier.Value.ToString(CultureInfo.InvariantCulture)));
         }
 
-        private string GetModifierValue(ModifierType modifierType, string value)
+        private string GetDescriptionValue(ModifierType modifierType, string value)
         {
             return modifierType switch {
                     ModifierType.AddPercent => $"{AddSignPrefix(value)}%",
