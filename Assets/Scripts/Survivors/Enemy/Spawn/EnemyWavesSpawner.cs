@@ -20,8 +20,6 @@ namespace Survivors.Enemy.Spawn
         private const string ENEMY_LAYER_NAME = "Enemy";
         private static int ENEMY_LAYER;
         
-        [Range(0f,1f)]
-        [SerializeField] private float _moveDirectionDrivenPlaceChance = 0.3f;
         [SerializeField] private int _angleAttemptCount = 3;
         [SerializeField] private int _rangeAttemptCount = 3;
         [SerializeField] private float _minOutOfViewOffset = 2f;
@@ -36,7 +34,6 @@ namespace Survivors.Enemy.Spawn
         [Inject] private IMessenger _messenger;
         [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
         private SpawnerDebugger Debugger => _spawnerDebugger ??= gameObject.AddComponent<SpawnerDebugger>();
-        public float MoveDirectionDrivenPlaceChance => _moveDirectionDrivenPlaceChance;
 
         private void Awake()
         {
