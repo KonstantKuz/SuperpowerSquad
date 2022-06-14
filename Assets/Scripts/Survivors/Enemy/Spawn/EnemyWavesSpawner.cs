@@ -23,8 +23,8 @@ namespace Survivors.Enemy.Spawn
         private static int ENEMY_LAYER;
         private static readonly Vector3 INVALID_SPAWN_PLACE = Vector3.one * int.MaxValue;
         
-        [SerializeField] private int _findPlaceAttemptCount = 3;
-        [SerializeField] private int _maxOutOfViewMultiplier = 3;
+        [SerializeField] private int _angleAttemptCount = 3;
+        [SerializeField] private int _rangeAttemptCount = 3;
         [SerializeField] private float _minOutOfViewOffset = 2f;
 
         private List<EnemyWaveConfig> _waves;
@@ -97,11 +97,11 @@ namespace Survivors.Enemy.Spawn
 
         private Vector3 FindRandomEmptyPlace(float outOfViewOffset, float waveRadius)
         {
-            for (int outOfViewMultiplier = 1; outOfViewMultiplier <= _maxOutOfViewMultiplier; outOfViewMultiplier++)
+            for (int rangeTry = 1; rangeTry <= _rangeAttemptCount; rangeTry++)
             {
-                for (int attemptCount = 1; attemptCount < _findPlaceAttemptCount; attemptCount++)
+                outOfViewOffset *= rangeTry;
+                for (int angleTry = 1; angleTry <= _angleAttemptCount; angleTry++)
                 {
-                    outOfViewOffset *= outOfViewMultiplier;
                     var spawnSide = EnumExt.GetRandom<SpawnSide>();
                     var spawnPlace = GetRandomSpawnPlace(spawnSide, outOfViewOffset);
                     if (!IsPlaceBusy(spawnPlace, waveRadius))
