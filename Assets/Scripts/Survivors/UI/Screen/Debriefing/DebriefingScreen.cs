@@ -16,7 +16,9 @@ namespace Survivors.UI.Screen.Debriefing
         public override string Url => ScreenName;
         
         [SerializeField]
-        private ActionButton _nextButton;
+        private ActionButton _nextButton;    
+        [SerializeField]
+        private ActionButton _reloadButton;
         [SerializeField]
         private GameObject _winPanel;
         [SerializeField]
@@ -34,6 +36,7 @@ namespace Survivors.UI.Screen.Debriefing
         public void OnEnable()
         {
             _nextButton.Init(OnReload);
+            _reloadButton.Init(OnReload);
         }
 
         private void OnReload()
