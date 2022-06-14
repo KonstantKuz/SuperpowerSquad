@@ -245,6 +245,7 @@ GameObject:
   - component: {fileID: 8746036833295827788}
   - component: {fileID: 8746036833295827787}
   - component: {fileID: 8746036833295827786}
+  - component: {fileID: 2906711552702323490}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -317,6 +318,18 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8746036833295827785}
   m_Enabled: 1
+--- !u!114 &2906711552702323490
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8746036833295827785}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1adf43292c582e24f8294476e43b9323, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &8746036833993048137
 GameObject:
   m_ObjectHideFlags: 0
@@ -394,9 +407,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 482cd254e84aa264d99532c3d24818e5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxFindPlaceAttemptCount: 3
+  _moveDirectionDrivenPlaceChance: 0.3
+  _angleAttemptCount: 3
+  _rangeAttemptCount: 3
   _minOutOfViewOffset: 3
-  _outOfViewOffsetMultiplier: 0.5
 --- !u!114 &186752239828696303
 MonoBehaviour:
   m_ObjectHideFlags: 0

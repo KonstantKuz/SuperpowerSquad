@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Survivors.Location;
 using UnityEngine;
 using Zenject;
@@ -7,6 +8,7 @@ namespace Survivors.Camera
     [RequireComponent(typeof(UnityEngine.Camera))]
     public class CameraFrustumDrawer : MonoBehaviour
     {
+        private const int RAYS_COUNT = 4;
         private UnityEngine.Camera _camera;
         [Inject] private World _world;
 
@@ -24,19 +26,24 @@ namespace Survivors.Camera
 
             Gizmos.color = Color.red;
 
-            var bottomLeft = _camera.ViewportPointToRay(new Vector2(0, 0));
-            var bottomRight = _camera.ViewportPointToRay(new Vector2(1, 0));
-            var topLeft = _camera.ViewportPointToRay(new Vector2(0, 1));
-            var topRight = _camera.ViewportPointToRay(new Vector2(1, 1));
-        
-            Gizmos.DrawLine(transform.position, _world.GetGroundIntersection(bottomLeft));
-            Gizmos.DrawLine(transform.position, _world.GetGroundIntersection(bottomRight));
-            Gizmos.DrawLine(transform.position, _world.GetGroundIntersection(topLeft));
-            Gizmos.DrawLine(transform.position, _world.GetGroundIntersection(topRight));
-            Gizmos.DrawLine(_world.GetGroundIntersection(bottomLeft), _world.GetGroundIntersection(bottomRight));
-            Gizmos.DrawLine(_world.GetGroundIntersection(topLeft), _world.GetGroundIntersection(topRight));
-            Gizmos.DrawLine(_world.GetGroundIntersection(bottomLeft), _world.GetGroundIntersection(topLeft));
-            Gizmos.DrawLine(_world.GetGroundIntersection(bottomRight), _world.GetGroundIntersection(topRight));
+            var rays = new List<Ray>
+            {
+                _camera.ViewportPointToRay(new Vector2(0, 0)),
+                _camera.ViewportPointToRay(new Vector2(1, 0)),
+                _camera.ViewportPointToRay(new Vector2(1, 1)),
+                _camera.ViewportPointToRay(new Vector2(0, 1)),
+            };
+            
+            for (int i = 0; i < RAYS_COUNT; i++)
+            {
+                var groundIntersection = _world.GetGroundIntersection(rays[i]);
+                Gizmos.DrawLine(transform.position, groundIntersection);
+                
+                var nextRayIndex = i + 1;
+                if (nextRayIndex >= RAYS_COUNT) nextRayIndex = 0;
+                var nextRayGroundIntersection = _world.GetGroundIntersection(rays[nextRayIndex]);
+                Gizmos.DrawLine(nextRayGroundIntersection, groundIntersection);
+            }
         }
     }
 }

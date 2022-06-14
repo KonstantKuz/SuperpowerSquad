@@ -1,7 +1,6 @@
 ﻿using Survivors.Enemy.Spawn.Config;
-using UnityEngine;
 
-namespace Survivors.Enemy.Spawn
+namespace Survivors.Enemy.Spawn.PlaceProviders
 {
     public interface ISpawnPlaceProvider
     {

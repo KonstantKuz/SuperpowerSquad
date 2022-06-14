@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Linq;
 using Survivors.Enemy.Spawn.Config;
-using Survivors.Location;
 using UnityEngine;
 
-namespace Survivors.Enemy.Spawn
+namespace Survivors.Enemy.Spawn.PlaceProviders
 {
     public class MoveDirectionDrivenPlaceProvider : ISpawnPlaceProvider
     {

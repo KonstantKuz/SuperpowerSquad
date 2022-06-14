@@ -4,6 +4,7 @@ using System.Linq;
 using Feofun.Config;
 using SuperMaxim.Messaging;
 using Survivors.Enemy.Spawn.Config;
+using Survivors.Enemy.Spawn.PlaceProviders;
 using Survivors.Location;
 using Survivors.Session.Messages;
 using Survivors.Units.Enemy;

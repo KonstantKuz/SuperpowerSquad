@@ -5,7 +5,7 @@ using Survivors.Location;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Survivors.Enemy.Spawn
+namespace Survivors.Enemy.Spawn.PlaceProviders
 {
     public class RandomDrivenPlaceProvider : ISpawnPlaceProvider
     {
