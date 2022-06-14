@@ -45,7 +45,7 @@ namespace Survivors.UI.Dialog.UpgradeDialog.Model
             var nextUpgradeLevelConfig = _upgradesConfig.GetUpgradeConfig(upgradeBranchId, nextLevel);
             var description = nextUpgradeLevelConfig.Type == UpgradeType.Unit
                                       ? LocalizableText.Create(ADD_UNIT_LOCALIZATION_ID)
-                                      : CreateModifierDescription(nextUpgradeLevelConfig);
+                                      : GetValueDescription(nextUpgradeLevelConfig);
             return new UpgradeItemModel() {
                     Id = upgradeBranchId,
                     Name = upgradeBranchId,
@@ -55,7 +55,7 @@ namespace Survivors.UI.Dialog.UpgradeDialog.Model
             };
         }
 
-        private LocalizableText CreateModifierDescription(UpgradeLevelConfig nextUpgradeLevelConfig)
+        private LocalizableText GetValueDescription(UpgradeLevelConfig nextUpgradeLevelConfig)
         {
             var modifier = _modifierConfigs.Get(nextUpgradeLevelConfig.ModifierId).ModifierConfig;
             var modifierType = EnumExt.ValueOf<ModifierType>(modifier.Modifier);
@@ -65,10 +65,11 @@ namespace Survivors.UI.Dialog.UpgradeDialog.Model
         private string GetModifierValue(ModifierType modifierType, string value)
         {
             return modifierType switch {
-                    ModifierType.AddPercent => $"+{value}%",
-                    ModifierType.AddValue => value[0] == '-' ? value : $"+{value}",
+                    ModifierType.AddPercent => $"{AddSignPrefix(value)}%",
+                    ModifierType.AddValue => AddSignPrefix(value),
                     _ => throw new ArgumentOutOfRangeException(nameof(modifierType), modifierType, null)
             };
         }
+        private string AddSignPrefix(string value) => value[0] == '-' ? value : $"+{value}";
     }
 }
