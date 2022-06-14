@@ -21,7 +21,6 @@ namespace Survivors.Enemy.Spawn
     {
         private const string ENEMY_LAYER_NAME = "Enemy";
         private static int ENEMY_LAYER;
-        private static readonly Vector3 INVALID_SPAWN_PLACE = Vector3.one * int.MaxValue;
         
         [SerializeField] private int _angleAttemptCount = 3;
         [SerializeField] private int _rangeAttemptCount = 3;
@@ -72,9 +71,9 @@ namespace Survivors.Enemy.Spawn
             SpawnWave(wave, place);
         }
 
-        public void SpawnWave(EnemyWaveConfig wave, Vector3 place)
+        public void SpawnWave(EnemyWaveConfig wave, SpawnPlace spawnPlace)
         {
-            if (place == INVALID_SPAWN_PLACE)
+            if (!spawnPlace.IsValid)
             {
                 Debug.LogWarning("Invalid spawn place provided. Spawn wave has been canceled.");
                 return;
@@ -82,11 +81,11 @@ namespace Survivors.Enemy.Spawn
             
             for (int i = 0; i < wave.Count; i++)
             {
-                SpawnEnemy(place, wave);
+                SpawnEnemy(spawnPlace.Position, wave);
             }
         }
 
-        public Vector3 GetPlaceForWave(EnemyWaveConfig wave)
+        public SpawnPlace GetPlaceForWave(EnemyWaveConfig wave)
         {
             var enemyConfig = _enemyUnitConfigs.Get(wave.EnemyId);
             var waveRadius = Mathf.Sqrt(wave.Count) * enemyConfig.GetScaleForLevel(wave.EnemyLevel);
@@ -95,31 +94,31 @@ namespace Survivors.Enemy.Spawn
             return FindRandomEmptyPlace(outOfViewOffset, waveRadius);
         }
 
-        private Vector3 FindRandomEmptyPlace(float outOfViewOffset, float waveRadius)
+        private SpawnPlace FindRandomEmptyPlace(float outOfViewOffset, float waveRadius)
         {
             for (int rangeTry = 1; rangeTry <= _rangeAttemptCount; rangeTry++)
             {
                 for (int angleTry = 0; angleTry < _angleAttemptCount; angleTry++)
                 {
                     var spawnSide = EnumExt.GetRandom<SpawnSide>();
-                    var spawnPlace = GetRandomSpawnPlace(spawnSide, outOfViewOffset * rangeTry);
+                    var spawnPlace = GetRandomSpawnPosition(spawnSide, outOfViewOffset * rangeTry);
                     if (!IsPlaceBusy(spawnPlace, waveRadius))
                     {
-                        return spawnPlace;
+                        return new SpawnPlace {IsValid = true, Position =  spawnPlace};
                     }
                 }
             }
 
-            return INVALID_SPAWN_PLACE;
+            return new SpawnPlace {IsValid = false};
         }
 
-        private Vector3 GetRandomSpawnPlace(SpawnSide spawnSide, float outOfViewOffset)
+        private Vector3 GetRandomSpawnPosition(SpawnSide spawnSide, float outOfViewOffset)
         {
             var camera = UnityEngine.Camera.main.transform;
             var directionToTopSide = Vector3.ProjectOnPlane(camera.forward, _world.Ground.up).normalized;
             var directionToRightSide = Vector3.ProjectOnPlane(camera.right, _world.Ground.up).normalized;
 
-            var randomPlace = GetRandomPlaceOnGround(spawnSide);
+            var randomPlace = GetRandomPositionOnGround(spawnSide);
             randomPlace += spawnSide switch
             {
                 SpawnSide.Top => directionToTopSide * outOfViewOffset,
@@ -131,7 +130,7 @@ namespace Survivors.Enemy.Spawn
             return randomPlace;
         }
 
-        private Vector3 GetRandomPlaceOnGround(SpawnSide spawnSide)
+        private Vector3 GetRandomPositionOnGround(SpawnSide spawnSide)
         {
             var camera = UnityEngine.Camera.main;
             var randomViewportPoint = GetRandomPointOnViewportEdge(spawnSide);

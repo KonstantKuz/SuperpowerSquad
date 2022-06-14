@@ -25,7 +25,7 @@ namespace Survivors.Enemy.Spawn
             var infos = _infos.ToList();
             foreach (var info in infos)
             {
-                if (info.CreationTime + LIFE_TIME >= Time.time)
+                if (Time.time >= info.CreationTime + LIFE_TIME)
                 {
                     _infos.Remove(info);
                     continue;
