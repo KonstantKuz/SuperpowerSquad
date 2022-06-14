@@ -10,7 +10,7 @@ namespace Survivors.UI.Dialog.UpgradeDialog.View
 {
     public class UpgradeView : MonoBehaviour
     {
-        private const string LEVEL_PREFIX = "Level:";
+        private const string LEVEL_PREFIX = "Level ";
         [SerializeField]
         private UpgradeItemView _upgradeItemPrefab;
         [SerializeField]
