@@ -2,8 +2,8 @@
 using JetBrains.Annotations;
 using Survivors.Extension;
 using Survivors.Location;
+using Survivors.Units.Component.TargetSearcher;
 using Survivors.Units.Enemy.Model;
-using Survivors.Units.Player.Attack;
 using Survivors.Units.Target;
 using UnityEngine;
 using UnityEngine.AI;

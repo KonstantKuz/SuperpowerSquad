@@ -60,7 +60,7 @@ GameObject:
   - component: {fileID: 5225966623019145733}
   - component: {fileID: 6901569034813441397}
   - component: {fileID: 3254496561695502943}
-  - component: {fileID: 8226988932255853753}
+  - component: {fileID: 7420937570722295018}
   - component: {fileID: 8166840625109294545}
   - component: {fileID: 507659729570458952}
   - component: {fileID: 595948899592933727}
@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _rotationSpeed: 10
---- !u!114 &8226988932255853753
+--- !u!114 &7420937570722295018
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -160,7 +160,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 3254496561695502929}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f71904749c6648c89b87b28b5c4731dd, type: 3}
+  m_Script: {fileID: 11500000, guid: f34217e7ed1d4b39bcf4559834916d79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &8166840625109294545

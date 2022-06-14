@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Feofun.Extension;
-using Survivors.Units.Player.Attack;
+using Survivors.Units.Component.TargetSearcher;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;

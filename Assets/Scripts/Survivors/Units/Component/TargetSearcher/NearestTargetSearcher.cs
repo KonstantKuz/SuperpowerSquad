@@ -8,7 +8,7 @@ using Survivors.Units.Target;
 using UnityEngine;
 using Zenject;
 
-namespace Survivors.Units.Player.Attack
+namespace Survivors.Units.Component.TargetSearcher
 {
     [RequireComponent(typeof(ITarget))]
     public class NearestTargetSearcher : MonoBehaviour, IInitializable<IUnit>, ITargetSearcher
@@ -32,18 +32,24 @@ namespace Survivors.Units.Player.Attack
         [CanBeNull]
         public ITarget Find()
         {
-            ITarget rez = null;
+            var targets = _targetService.AllTargetsOfType(_targetType);
+            return Find(targets, _selfTarget.Root.position, SearchDistance);
+        }
+
+        [CanBeNull]
+        public static ITarget Find(IEnumerable<ITarget> targets, Vector3 from, float searchDistance)
+        {
+            ITarget result = null;
             var minDistance = Mathf.Infinity;
-            var pos = _selfTarget.Root.position;
-            foreach (var target in _targetService.AllTargetsOfType(_targetType))
+            foreach (var target in targets)
             {
-                var dist = Vector3.Distance(pos, target.Root.position);
-                if (dist >= minDistance || dist > SearchDistance) continue;
+                var dist = Vector3.Distance(from, target.Root.position);
+                if (dist >= minDistance || dist > searchDistance) continue;
                 minDistance = dist;
-                rez = target;
+                result = target;
             }
             
-            return rez;
+            return result;
         }
 
         public IEnumerable<ITarget> GetAllOrderedByDistance()
