@@ -19,19 +19,26 @@ namespace Survivors.Enemy.Spawn
 {
     public class EnemyWavesSpawner : MonoBehaviour
     {
+        private const string ENEMY_LAYER_NAME = "Enemy";
+        private static int ENEMY_LAYER;
+        
+        [SerializeField] private int _angleAttemptCount = 3;
+        [SerializeField] private int _rangeAttemptCount = 3;
         [SerializeField] private float _minOutOfViewOffset = 2f;
-        [SerializeField] private float _outOfViewOffsetMultiplier = 0.2f;
 
         private List<EnemyWaveConfig> _waves;
         private Coroutine _spawnCoroutine;
+        private SpawnerDebugger _spawnerDebugger;
         
         [Inject] private UnitFactory _unitFactory;
         [Inject] private World _world;
         [Inject] private IMessenger _messenger;
         [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
-
+        private SpawnerDebugger Debugger => _spawnerDebugger ??= gameObject.AddComponent<SpawnerDebugger>();
+        
         private void Awake()
         {
+            ENEMY_LAYER = LayerMask.NameToLayer(ENEMY_LAYER_NAME);
             _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
         }
 
@@ -60,28 +67,76 @@ namespace Survivors.Enemy.Spawn
         
         private void SpawnNextWave(EnemyWaveConfig wave)
         {
-            var place = GetRandomPlaceForWave(wave);
+            var place = GetPlaceForWave(wave);
             SpawnWave(wave, place);
         }
 
-        public void SpawnWave(EnemyWaveConfig wave, Vector3 place)
+        public void SpawnWave(EnemyWaveConfig wave, SpawnPlace spawnPlace)
         {
+            if (!spawnPlace.IsValid)
+            {
+                Debug.LogWarning("Invalid spawn place provided. Spawn wave has been canceled.");
+                return;
+            }
+            
             for (int i = 0; i < wave.Count; i++)
             {
-                SpawnEnemy(place, wave);
+                SpawnEnemy(spawnPlace.Position, wave);
             }
         }
 
-        public Vector3 GetRandomPlaceForWave(EnemyWaveConfig wave)
+        public SpawnPlace GetPlaceForWave(EnemyWaveConfig wave)
         {
             var enemyConfig = _enemyUnitConfigs.Get(wave.EnemyId);
-            var waveRadius = wave.Count * enemyConfig.GetScaleForLevel(wave.EnemyLevel);
+            var waveRadius = Mathf.Sqrt(wave.Count) * enemyConfig.GetScaleForLevel(wave.EnemyLevel);
+            var outOfViewOffset = _minOutOfViewOffset + waveRadius;
+            
+            return FindRandomEmptyPlace(outOfViewOffset, waveRadius);
+        }
+
+        private SpawnPlace FindRandomEmptyPlace(float outOfViewOffset, float waveRadius)
+        {
+            for (int rangeTry = 1; rangeTry <= _rangeAttemptCount; rangeTry++)
+            {
+                for (int angleTry = 0; angleTry < _angleAttemptCount; angleTry++)
+                {
+                    var spawnSide = EnumExt.GetRandom<SpawnSide>();
+                    var spawnPlace = GetRandomSpawnPosition(spawnSide, outOfViewOffset * rangeTry);
+                    if (!IsPlaceBusy(spawnPlace, waveRadius))
+                    {
+                        return new SpawnPlace {IsValid = true, Position =  spawnPlace};
+                    }
+                }
+            }
+
+            return new SpawnPlace {IsValid = false};
+        }
+
+        private Vector3 GetRandomSpawnPosition(SpawnSide spawnSide, float outOfViewOffset)
+        {
+            var camera = UnityEngine.Camera.main.transform;
+            var directionToTopSide = Vector3.ProjectOnPlane(camera.forward, _world.Ground.up).normalized;
+            var directionToRightSide = Vector3.ProjectOnPlane(camera.right, _world.Ground.up).normalized;
+
+            var randomPlace = GetRandomPositionOnGround(spawnSide);
+            randomPlace += spawnSide switch
+            {
+                SpawnSide.Top => directionToTopSide * outOfViewOffset,
+                SpawnSide.Bottom => -directionToTopSide * outOfViewOffset,
+                SpawnSide.Right => directionToRightSide * outOfViewOffset,
+                SpawnSide.Left => -directionToRightSide * outOfViewOffset,
+                _ => Vector3.zero
+            };
+            return randomPlace;
+        }
+
+        private Vector3 GetRandomPositionOnGround(SpawnSide spawnSide)
+        {
             var camera = UnityEngine.Camera.main;
-            var spawnSide = EnumExt.GetRandom<SpawnSide>();
             var randomViewportPoint = GetRandomPointOnViewportEdge(spawnSide);
             var pointRay =  camera.ViewportPointToRay(randomViewportPoint);
             var place = _world.GetGroundIntersection(pointRay);
-            return GetSpawnPlaceWithOffset(place, spawnSide, waveRadius * _outOfViewOffsetMultiplier);
+            return place;
         }
 
         private Vector2 GetRandomPointOnViewportEdge(SpawnSide spawnSide)
@@ -101,23 +156,11 @@ namespace Survivors.Enemy.Spawn
             }
         }
 
-        private Vector3 GetSpawnPlaceWithOffset(Vector3 place, SpawnSide spawnSide, float waveRadius)
+        private bool IsPlaceBusy(Vector3 place, float waveRadius)
         {
-            var camera = UnityEngine.Camera.main;
-            var spawnOffset = _minOutOfViewOffset + waveRadius;
-            var directionToTopSide = Vector3.ProjectOnPlane(camera.transform.forward, _world.Ground.up).normalized;
-            var directionToRightSide = Vector3.ProjectOnPlane(camera.transform.right, _world.Ground.up).normalized;
-
-            place += spawnSide switch
-            {
-                SpawnSide.Top => directionToTopSide * spawnOffset,
-                SpawnSide.Bottom => -directionToTopSide * spawnOffset,
-                SpawnSide.Right => directionToRightSide * spawnOffset,
-                SpawnSide.Left => -directionToRightSide * spawnOffset,
-                _ => Vector3.zero
-            };
-
-            return place;
+            var isBusy = Physics.CheckSphere(place, waveRadius, 1 << ENEMY_LAYER);
+            Debugger.Debug(place, waveRadius, isBusy);
+            return isBusy;
         }
 
         private void SpawnEnemy(Vector3 place, EnemyWaveConfig wave)
@@ -146,7 +189,5 @@ namespace Survivors.Enemy.Spawn
             Right,
             Left,
         }
-
- 
     }
 }

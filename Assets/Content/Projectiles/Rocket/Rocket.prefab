@@ -77,7 +77,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _followTarget: 0
   _rotationSpeed: 20
-  _maxLifeTime: 10
+  _maxLifeTime: 5
   _explosion: {fileID: 1836528195526790802, guid: f19e1685fb6476f4d83ad6b7d05bfd2e, type: 3}
   _detonationDistance: 0.5
   _initialCourseTime: 0.5
