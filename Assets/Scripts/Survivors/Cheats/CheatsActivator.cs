@@ -8,12 +8,13 @@ namespace Survivors.Cheats
     public class CheatsActivator : MonoBehaviour
     {
         private const string ENABLED_CHEAT_KEY = "Vkl_chit";
+        private const int INPUT_CLEAR_TIMEOUT = 6;
         private static string _pin = "191373";
         private static string _inputCode = "112233";
         
-        [SerializeField] private GameObject _codeInputScreen;
-        [SerializeField] private GameObject _cheatsButtonScreen;
-        [SerializeField] private GameObject _cheatsPanelScreen;
+        [SerializeField] private GameObject _codeInputPanel;
+        [SerializeField] private GameObject _cheatsButton;
+        [SerializeField] private GameObject _cheatsScreen;
         
         private string _enteredPin = string.Empty;
         private Vector2Int _virtualPinPadSize = new Vector2Int(3, 3);
@@ -26,7 +27,7 @@ namespace Survivors.Cheats
             _cellSize = new Vector2(Screen.width / (float) _virtualPinPadSize.x, Screen.height / (float) _virtualPinPadSize.y);
             _activated = (PlayerPrefs.GetInt(ENABLED_CHEAT_KEY) != 0);
             if (_activated) {
-                ShowCheatsButtonScreen(true);
+                ShowCheatsButton(true);
             }
         }
         private void Update()
@@ -37,13 +38,13 @@ namespace Survivors.Cheats
         }
         public bool IsValidInputCode(string inputCode) => inputCode == _inputCode;
 
-        public void ShowCodeInputScreen(bool show) => _codeInputScreen.SetActive(show);
+        public void ShowCodeInputPanel(bool show) => _codeInputPanel.SetActive(show);
 
-        public void ShowCheatsButtonScreen(bool show) => _cheatsButtonScreen.SetActive(show);
+        public void ShowCheatsButton(bool show) => _cheatsButton.SetActive(show);
         
-        public void ShowCheatsPanelScreen(bool show)
+        public void ShowCheatsScreen(bool show)
         {
-            _cheatsPanelScreen.SetActive(show);
+            _cheatsScreen.SetActive(show);
             Time.timeScale = show ? 0 : 1;
         }
 
@@ -62,10 +63,10 @@ namespace Survivors.Cheats
             
             _enteredPin += buttonId.ToString(CultureInfo.InvariantCulture);
             
-            if (_enteredPin.Length == 1) Observable.Timer(TimeSpan.FromSeconds(6)).Subscribe(it => _enteredPin = "");
+            if (_enteredPin.Length == 1) Observable.Timer(TimeSpan.FromSeconds(INPUT_CLEAR_TIMEOUT)).Subscribe(it => _enteredPin = "");
 
             if (_enteredPin != _pin) return;
-            ShowCodeInputScreen(true);
+            ShowCodeInputPanel(true);
             _enteredPin = string.Empty;
         }
     }

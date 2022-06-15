@@ -1,4 +1,5 @@
 ﻿using Feofun.Repository;
+using Survivors.Cheats.Data;
 
 namespace Survivors.Cheats.Repository
 {

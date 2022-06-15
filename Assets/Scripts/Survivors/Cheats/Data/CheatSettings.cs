@@ -1,6 +1,6 @@
 ﻿using System.Runtime.Serialization;
 
-namespace Survivors.Cheats.Repository
+namespace Survivors.Cheats.Data
 {
     [DataContract]
     public class CheatSettings

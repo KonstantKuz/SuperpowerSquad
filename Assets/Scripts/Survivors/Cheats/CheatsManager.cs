@@ -1,5 +1,6 @@
 using System;
 using Feofun.Localization.Service;
+using Survivors.Cheats.Data;
 using Survivors.Cheats.Repository;
 using Survivors.Squad.Service;
 using Survivors.Squad.Upgrade;
