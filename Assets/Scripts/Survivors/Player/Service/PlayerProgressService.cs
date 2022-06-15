@@ -32,5 +32,12 @@ namespace Survivors.Player.Service
         {
             _repository.Set(progress);
         }
+
+        public void OnSessionStarted(int levelId)
+        {
+            var progress = Progress;
+            progress.IncreasePassCount(levelId);
+            SetProgress(progress);
+        }
     }
 }

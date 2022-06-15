@@ -33,13 +33,14 @@ namespace Survivors.Analytics
             _impls.ForEach(it => it.ReportTest());
         }
 
-        public void ReportLevelStart(PlayerProgress playerProgress, LevelMissionConfig levelMissionConfig)
+        public void ReportLevelStart(PlayerProgress playerProgress, LevelMissionConfig levelConfig)
         {
             var eventParams = new Dictionary<string, object>
             {
-                {EventParams.LEVEL_ID, levelMissionConfig.Id},
+                {EventParams.LEVEL_ID, levelConfig.Id},
                 {EventParams.LEVEL_NUMBER, playerProgress.LevelNumber + 1},
-                {EventParams.LEVEL_LOOP, Mathf.Max(0, playerProgress.LevelNumber - _levelsConfig.Keys.Count)}
+                {EventParams.LEVEL_LOOP, Mathf.Max(0, playerProgress.LevelNumber - _levelsConfig.Keys.Count)},
+                {EventParams.PASS_NUMBER, playerProgress.GetPassCount(levelConfig.Level)}
             }; 
             foreach (var impl in _impls)
             {

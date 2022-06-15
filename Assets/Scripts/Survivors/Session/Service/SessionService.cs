@@ -57,9 +57,11 @@ namespace Survivors.Session.Service
         public LevelMissionConfig GetLevelConfig() => _levelsConfig.Values[Mathf.Min(PlayerProgress.LevelNumber, _levelsConfig.Count() - 1)];
         private void CreateSession()
         {
-            var newSession = Model.Session.Build(GetLevelConfig());
+            var levelConfig = GetLevelConfig();
+            var newSession = Model.Session.Build(levelConfig);
             _repository.Set(newSession);
-            Debug.Log($"Kill enemies:= {GetLevelConfig().KillCount}");
+            _playerProgressService.OnSessionStarted(levelConfig.Level);
+            Debug.Log($"Kill enemies:= {levelConfig.KillCount}");
         }
     
         private void CreateSquad()
