@@ -59,8 +59,7 @@ namespace Survivors.Units.Weapon.Projectiles
 
         private void Destroy()
         {
-            _throwMove.onComplete = null;
-            _throwMove.Kill();
+            _throwMove.Kill(true);
 
             HitCallback = null;
             _trail.transform.SetParent(null);
