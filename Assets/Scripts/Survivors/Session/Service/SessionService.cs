@@ -8,6 +8,7 @@ using Survivors.Player.Model;
 using Survivors.Player.Service;
 using Survivors.Session.Config;
 using Survivors.Session.Messages;
+using Survivors.Session.Model;
 using Survivors.Squad;
 using Survivors.Units;
 using Survivors.Units.Service;
@@ -108,6 +109,7 @@ namespace Survivors.Session.Service
             _unitService.DeactivateAll();
             _world.Squad.IsActive = false;
 
+            _analytics.ReportLevelFinished(Session.Result == SessionResult.Win);
             _messenger.Publish(new SessionEndMessage(Session.Result.Value));
 
         }

@@ -87,5 +87,20 @@ namespace Survivors.Analytics
             
             ReportEventToAllImpls(Events.LEVEL_UP, eventParams);
         }
+
+        public void ReportLevelFinished(bool isPlayerWinner)
+        {
+            var playerProgress = _playerProgressService.Progress;
+            var levelConfig = _levelsConfig.Values[_sessionService.LevelId];
+
+            var eventParams = GetLevelParams();
+            eventParams[EventParams.PASS_NUMBER] = playerProgress.GetPassCount(levelConfig.Level);
+            eventParams[EventParams.SQUAD_LEVEL] = _squadProgressService.Level;
+            eventParams[EventParams.TIME_SINCE_LEVEL_START] = _sessionService.SessionTime;
+            eventParams[EventParams.ENEMY_KILLER] = _sessionService.Kills.Value;
+            eventParams[EventParams.LEVEL_RESULT] = isPlayerWinner ? "win" : "lose";
+            
+            ReportEventToAllImpls(Events.LEVEL_FINISHED, eventParams);
+        }
     }
 }

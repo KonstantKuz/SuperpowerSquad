@@ -10,5 +10,6 @@
         public const string ENEMY_KILLER = "enemy_killed";
         public const string UPGRADE = "upgrade";
         public const string TIME_SINCE_LEVEL_START = "time";
+        public const string LEVEL_RESULT = "result";
     }
 }
