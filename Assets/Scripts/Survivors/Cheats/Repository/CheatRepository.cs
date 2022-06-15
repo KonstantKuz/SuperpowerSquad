@@ -1,7 +1,6 @@
 ﻿using Feofun.Repository;
-using Survivors.Cheats.Repository;
 
-namespace Survivors.Cheats
+namespace Survivors.Cheats.Repository
 {
     public class CheatRepository : LocalPrefsSingleRepository<CheatSettings>
     {

@@ -6,9 +6,9 @@ namespace Survivors.Cheats.Repository
     public class CheatSettings
     {
         [DataMember]
-        public bool ConsoleEnabled;
-
+        public bool ConsoleEnabled; 
         [DataMember]
-        public bool UnitInfoEnabled;
+        public bool FPSMonitorEnabled;
+        
     }
 }

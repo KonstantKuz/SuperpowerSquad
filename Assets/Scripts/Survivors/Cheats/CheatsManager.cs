@@ -1,4 +1,5 @@
 using System;
+using Feofun.Localization.Service;
 using Survivors.Cheats.Repository;
 using UnityEngine;
 using Zenject;
@@ -7,9 +8,11 @@ namespace Survivors.Cheats
 {
     public class CheatsManager : MonoBehaviour
     {
-        
         private readonly CheatRepository _repository = new CheatRepository();
-        
+
+
+
+        [Inject] private LocalizationService _localizationService;
         [Inject] private DiContainer _container;
 
         [SerializeField] private GameObject _fpsMonitor;
@@ -33,18 +36,26 @@ namespace Survivors.Cheats
         public void AddExp(int amount)
         {
             _progressService.AddExp(amount);
+            
         }
-        
-        public void ToggleFPSMonitor() => _fpsMonitor.SetActive(!_fpsMonitor.activeInHierarchy);
-
-        public void ToggleDebugConsole() => _debugConsole.SetActive(!_debugConsole.activeInHierarchy);
-        
         public void SetLanguage(string language)
         {
             _localizationService.SetLanguageOverride(language);
         }
         
+        public void ToggleDebugConsole() => _debugConsole.SetActive(!_debugConsole.activeInHierarchy);
+        public void ToggleFPSMonitor() => _fpsMonitor.SetActive(!_fpsMonitor.activeInHierarchy);
+        
+        
         public bool IsConsoleEnabled
+        {
+            get => Settings.ConsoleEnabled;
+            set
+            {
+                UpdateSettings(settings => { settings.ConsoleEnabled = value; });
+            }
+        }    
+        public bool IsFPSMonitorEnabled
         {
             get => Settings.ConsoleEnabled;
             set
