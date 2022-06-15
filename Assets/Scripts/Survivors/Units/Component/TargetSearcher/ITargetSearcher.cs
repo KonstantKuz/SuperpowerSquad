@@ -1,4 +1,5 @@
-﻿using JetBrains.Annotations;
+﻿using System.Collections.Generic;
+using JetBrains.Annotations;
 using Survivors.Units.Target;
 
 namespace Survivors.Units.Component.TargetSearcher
@@ -7,5 +8,6 @@ namespace Survivors.Units.Component.TargetSearcher
     {
         [CanBeNull]
         ITarget Find();
+        IEnumerable<ITarget> GetAllOrderedByDistance();
     }
 }

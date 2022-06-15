@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Feofun.Extension;
+using Survivors.Extension;
 using Survivors.Units.Component.TargetSearcher;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles.Params;
@@ -12,8 +13,13 @@ namespace Survivors.Units.Weapon
 {
     public class MultiTargetRangedWeapon: RangedWeapon
     {
-        [SerializeField] private NearestTargetSearcher _targetSearcher;
-        
+        private ITargetSearcher _targetSearcher;
+
+        private void Awake()
+        {
+            _targetSearcher = gameObject.RequireComponentInParent<ITargetSearcher>();
+        }
+
         public override void Fire(ITarget firstTarget, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             Assert.IsNotNull(projectileParams);

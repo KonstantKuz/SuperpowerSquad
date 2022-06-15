@@ -19,7 +19,9 @@ namespace Survivors.Squad.Component
         private List<ITarget> _targets;
 
         [Inject] private TargetService _targetService;
-        
+
+        public List<ITarget> Targets => _targets;
+
         public void Init(Squad owner)
         {
             _squad = owner;

@@ -1,4 +1,5 @@
-﻿using Feofun.Components;
+﻿using System.Collections.Generic;
+using Feofun.Components;
 using JetBrains.Annotations;
 using Survivors.Squad.Component;
 using Survivors.Units.Target;
@@ -24,6 +25,11 @@ namespace Survivors.Units.Component.TargetSearcher
         public ITarget Find()
         { 
             return _targetProvider.GetTargetForUnit(_owner);
+        }
+        
+        public IEnumerable<ITarget> GetAllOrderedByDistance()
+        {
+            return _targetProvider.Targets;
         }
     }
 }
