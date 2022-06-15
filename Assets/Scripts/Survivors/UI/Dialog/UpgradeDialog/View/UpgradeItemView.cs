@@ -1,30 +1,31 @@
 ﻿using Feofun.UI.Components;
 using Survivors.UI.Dialog.UpgradeDialog.Model;
-using TMPro;
+using Survivors.Util;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Survivors.UI.Dialog.UpgradeDialog.View
 {
     public class UpgradeItemView : MonoBehaviour
     {
+    
         [SerializeField]
-        private TextMeshProUGUI _type;     
+        private TextMeshProLocalization _name; 
         [SerializeField]
-        private TextMeshProUGUI _name; 
+        private TextMeshProLocalization _description;     
         [SerializeField]
-        private TextMeshProUGUI _nextLevel;     
-        [SerializeField]
-        private TextMeshProUGUI _modifier;      
+        private TextMeshProLocalization _level;  
+        [SerializeField] private Image _icon;
         [SerializeField]
         private ActionButton _button;
         
         
         public void Init(UpgradeItemModel model)
         {
-            _type.text += model.UpgradeTypeName;
-            _name.text += model.UpgradeName;
-            _nextLevel.text += model.NextLevel;
-            _modifier.text += model.Modifier;
+            _name.LocalizationId = model.Name;
+            _description.SetTextFormatted(model.Description);
+            _level.SetTextFormatted(model.Level);
+            _icon.sprite = Resources.Load<Sprite>(IconPath.GetUpgrade(model.Id));
             _button.Init(model.OnClick);
         }
     }
