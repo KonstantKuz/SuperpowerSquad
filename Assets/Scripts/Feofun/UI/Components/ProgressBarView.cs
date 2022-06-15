@@ -9,6 +9,7 @@ namespace Feofun.UI.Components
     public class ProgressBarView : AnimatedValueView<float, Image> 
     {
         private Sequence _loopSequence;
+        public bool IsIndependentUpdate { get; set; }
         public override float Value
         {
             get => Component.fillAmount;
@@ -17,10 +18,10 @@ namespace Feofun.UI.Components
                 Component.fillAmount = Mathf.Clamp01(value);
             }
         }
-
         protected override Tweener Animate(float fromValue, float toValue, float time)
         {
-            return DOTween.To(() => fromValue, value => { Value = value; }, toValue, time);
+            return DOTween.To(() => fromValue, value => { Value = value; }, toValue, time)
+                          .SetUpdate(IsIndependentUpdate);
         }
         public void SetValueWithLoop(float toValue, bool forceLoop = false)
         {
@@ -47,7 +48,8 @@ namespace Feofun.UI.Components
             CancelLoopSequence();
             _loopSequence = DOTween.Sequence()
                                    .Append(Animate(fromValue, 1, time))
-                                   .Append(Animate(0, toValue, time));
+                                   .Append(Animate(0, toValue, time))
+                                   .SetUpdate(IsIndependentUpdate);
         }
 
         private void CancelLoopSequence()
