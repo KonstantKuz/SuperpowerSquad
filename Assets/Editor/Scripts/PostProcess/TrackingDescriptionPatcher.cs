@@ -1,13 +1,11 @@
-﻿using System.IO;
+﻿#if UNITY_IOS
+using System.IO;
 using JetBrains.Annotations;
 using UnityEditor;
 using UnityEditor.Callbacks;
 using UnityEditor.iOS.Xcode;
-#if UNITY_IOS
-using UnityEditor.iOS.Xcode;
-#endif
 
-namespace Editor.Scripts
+namespace Editor.Scripts.PostProcess
 {
     [PublicAPI]
     public class TrackingDescriptionPatcher {
@@ -31,3 +29,5 @@ namespace Editor.Scripts
         }
     }
 }
+
+#endif

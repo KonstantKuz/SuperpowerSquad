@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using LegionMaster.Analytics;
 using SuperMaxim.Core.Extensions;
 using UnityEngine;
 

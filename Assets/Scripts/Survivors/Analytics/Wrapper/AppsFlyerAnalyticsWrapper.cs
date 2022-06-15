@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using LegionMaster.Analytics;
 using AppsFlyerSDK;
 using UnityEngine;
 
@@ -7,10 +6,13 @@ namespace Survivors.Analytics.Wrapper
 {
     public class AppsFlyerAnalyticsWrapper: IAnalyticsImpl
     {
+        private const string DEV_KEY = "9gdCn4p9McTuPMAjnzTk4Y";
+        private const string APP_ID = "1626072143";
+
         public void Init()
         {
             Debug.Log("Initializing AppsFlyer SDK");
-            AppsFlyer.initSDK("9gdCn4p9McTuPMAjnzTk4Y", "1626072143");
+            AppsFlyer.initSDK(DEV_KEY, APP_ID);
             AppsFlyer.startSDK();
         }
 

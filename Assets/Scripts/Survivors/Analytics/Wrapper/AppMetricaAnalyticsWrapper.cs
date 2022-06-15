@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using LegionMaster.Analytics;
 using UnityEngine;
 
 namespace Survivors.Analytics.Wrapper

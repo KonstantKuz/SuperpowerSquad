@@ -1,4 +1,4 @@
-﻿namespace LegionMaster.Analytics
+﻿namespace Survivors.Analytics
 {
     public interface IAnalyticsImpl
     {

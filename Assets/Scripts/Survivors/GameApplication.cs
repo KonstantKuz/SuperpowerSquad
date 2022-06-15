@@ -36,9 +36,8 @@ namespace Survivors
         private void RunLoadableChains()
         {
             var initSequence = gameObject.AddComponent<AppInitSequence>();
-#if UNITY_IOS            
+           
             initSequence.AddStep<IosATTInitStep>();
-#endif
             initSequence.AddStep<AnalyticsInitStep>();
             initSequence.AddStep<StartGameInitStep>();
             initSequence.Next();

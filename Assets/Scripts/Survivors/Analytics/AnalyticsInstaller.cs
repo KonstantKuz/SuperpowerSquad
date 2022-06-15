@@ -1,5 +1,4 @@
-﻿using LegionMaster.Analytics;
-using Survivors.Analytics.Wrapper;
+﻿using Survivors.Analytics.Wrapper;
 using Zenject;
 
 namespace Survivors.Analytics
