@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using AppsFlyerSDK;
+using Survivors.Player.Model;
 using UnityEngine;
 
 namespace Survivors.Analytics.Wrapper
@@ -24,6 +26,11 @@ namespace Survivors.Analytics.Wrapper
         private void ReportEvent(string message, Dictionary<string, string> parameters)
         {
             AppsFlyer.sendEvent(message, parameters);
+        }
+
+        public void ReportEventWithParams(string eventName, Dictionary<string, object> eventParams)
+        {
+            ReportEvent(eventName, eventParams.ToDictionary(it => it.Key, it => it.Value.ToString()));
         }
     }
 }

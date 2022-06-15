@@ -51,5 +51,10 @@ namespace Survivors.Analytics.Wrapper
 
             AppMetrica.Instance.ReportEvent(message);
         }
+
+        public void ReportEventWithParams(string eventName, Dictionary<string, object> eventParams)
+        {
+            ReportEvent(eventName, eventParams);
+        }
     }
 }

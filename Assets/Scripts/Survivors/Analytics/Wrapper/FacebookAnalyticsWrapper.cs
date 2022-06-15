@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using Facebook.Unity;
+using Survivors.Player.Model;
+using Survivors.Session.Config;
 using UnityEngine;
 
 namespace Survivors.Analytics.Wrapper
@@ -50,6 +52,11 @@ namespace Survivors.Analytics.Wrapper
                 return;
             }
             FB.LogAppEvent(logEvent, valueToSum, parameters);
+        }
+
+        public void ReportEventWithParams(string eventName, Dictionary<string, object> eventParams)
+        {
+            LogEvent(eventName, null, eventParams);
         }
     }
 }

@@ -32,6 +32,8 @@ namespace Survivors.Session.Service
         [Inject] private SessionRepository _repository;
         [Inject] private readonly StringKeyedConfigCollection<LevelMissionConfig> _levelsConfig;
         [Inject] private PlayerProgressService _playerProgressService;
+        [Inject] private Analytics.Analytics _analytics;
+        
         private PlayerProgress PlayerProgress => _playerProgressService.Progress;
         
         private Model.Session Session => _repository.Require();
@@ -50,8 +52,9 @@ namespace Survivors.Session.Service
             CreateSession();
             CreateSquad();
             SpawnUnits();
+            _analytics.ReportLevelStart(PlayerProgress, GetLevelConfig());
         }
-        public LevelMissionConfig GetLevelConfig() => _levelsConfig.Values[Mathf.Min(PlayerProgress.WinCount, _levelsConfig.Count() - 1)];
+        public LevelMissionConfig GetLevelConfig() => _levelsConfig.Values[Mathf.Min(PlayerProgress.LevelNumber, _levelsConfig.Count() - 1)];
         private void CreateSession()
         {
             var newSession = Model.Session.Build(GetLevelConfig());
