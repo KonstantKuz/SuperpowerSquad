@@ -7,13 +7,14 @@ namespace Survivors.Cheats
 {
     public class CheatsActivator : MonoBehaviour
     {
-        private const string ENABLED_CHEAT_KEY = "Vkl_chit";
         private const int INPUT_CLEAR_TIMEOUT = 6;
+        private const string ENABLED_CHEAT_KEY = "Vkl_chit";
+ 
         private static string _pin = "191373";
         private static string _inputCode = "112233";
         
         [SerializeField] private GameObject _codeInputPanel;
-        [SerializeField] private GameObject _cheatsButton;
+        [SerializeField] private GameObject _openCheatButton;
         [SerializeField] private GameObject _cheatsScreen;
         
         private string _enteredPin = string.Empty;
@@ -25,9 +26,9 @@ namespace Survivors.Cheats
         private void Awake()
         {
             _cellSize = new Vector2(Screen.width / (float) _virtualPinPadSize.x, Screen.height / (float) _virtualPinPadSize.y);
-            _activated = (PlayerPrefs.GetInt(ENABLED_CHEAT_KEY) != 0);
+            _activated = PlayerPrefs.GetInt(ENABLED_CHEAT_KEY) != 0;
             if (_activated) {
-                ShowCheatsButton(true);
+                ShowOpenCheatButton(true);
             }
         }
         private void Update()
@@ -40,7 +41,7 @@ namespace Survivors.Cheats
 
         public void ShowCodeInputPanel(bool show) => _codeInputPanel.SetActive(show);
 
-        public void ShowCheatsButton(bool show) => _cheatsButton.SetActive(show);
+        public void ShowOpenCheatButton(bool show) => _openCheatButton.SetActive(show);
         
         public void ShowCheatsScreen(bool show)
         {

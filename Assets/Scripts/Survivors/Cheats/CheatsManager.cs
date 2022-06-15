@@ -29,7 +29,6 @@ namespace Survivors.Cheats
 #endif
             _debugConsole.SetActive(IsConsoleEnabled); 
             _fpsMonitor.SetActive(IsFPSMonitorEnabled);
-
         }
         public void ResetProgress()
         {
@@ -38,21 +37,11 @@ namespace Survivors.Cheats
         }
         
         public void IncreaseSquadLevel() => _squadProgressService.IncreaseLevel();
-        private void AddRandomSquadUpgrade() => _upgradeService.AddRandomUpgrade();
+        public void AddRandomSquadUpgrade() => _upgradeService.AddRandomUpgrade();
      
         public void SetLanguage(string language)
         {
             _localizationService.SetLanguageOverride(language);
-        }
-        public void ToggleDebugConsole()
-        {
-            IsConsoleEnabled = !isActiveAndEnabled;
-            _debugConsole.SetActive(IsConsoleEnabled);
-        }
-        public void ToggleFPSMonitor()
-        {
-            IsFPSMonitorEnabled = !IsFPSMonitorEnabled;
-            _fpsMonitor.SetActive(IsFPSMonitorEnabled);
         }
         private void UpdateSettings(Action<CheatSettings> updateFunc)
         {
@@ -60,20 +49,22 @@ namespace Survivors.Cheats
             updateFunc?.Invoke(settings);
             _repository.Set(settings);
         }
-        private bool IsConsoleEnabled
+        public bool IsConsoleEnabled
         {
             get => Settings.ConsoleEnabled;
             set
             {
                 UpdateSettings(settings => { settings.ConsoleEnabled = value; });
+                _debugConsole.SetActive(value);
             }
         }    
-        private bool IsFPSMonitorEnabled
+        public bool IsFPSMonitorEnabled
         {
             get => Settings.FPSMonitorEnabled;
             set
             {
                 UpdateSettings(settings => { settings.FPSMonitorEnabled = value; });
+                _fpsMonitor.SetActive(value);
             }
         }
     }
