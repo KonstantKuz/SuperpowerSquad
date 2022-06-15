@@ -59,6 +59,13 @@
       "dependencies": {},
       "hash": "008ca2e1b64201e26ee41800d54bcec61991fc75"
     },
+    "com.unity.ads.ios-support": {
+      "version": "1.2.0",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {},
+      "url": "https://packages.unity.com"
+    },
     "com.unity.collab-proxy": {
       "version": "1.7.1",
       "depth": 0,
