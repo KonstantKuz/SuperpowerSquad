@@ -13,7 +13,7 @@ namespace Survivors.Analytics.Wrapper
             Debug.Log("Starting initializing Facebook SDK");
             if (!FB.IsInitialized)
             {
-                FB.Init(InitCallback, OnHideUnity);
+                FB.Init(InitCallback, OnAppVisibilityChange);
             } else {
                 FB.ActivateApp();
             }
@@ -31,9 +31,9 @@ namespace Survivors.Analytics.Wrapper
             }
         }
 
-        private void OnHideUnity(bool isGameShown)
+        private void OnAppVisibilityChange(bool isVisible)
         {
-            Time.timeScale = !isGameShown ? 0 : 1;
+            Time.timeScale = !isVisible ? 0 : 1;
         }
 
         public void ReportTest()
