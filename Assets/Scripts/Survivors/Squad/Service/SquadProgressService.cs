@@ -1,7 +1,7 @@
 ﻿using System;
 using Feofun.Config;
+using JetBrains.Annotations;
 using Survivors.Location;
-using Survivors.Session;
 using Survivors.Squad.Config;
 using Survivors.Squad.Progress;
 using UniRx;
@@ -13,18 +13,23 @@ namespace Survivors.Squad.Service
     public class SquadProgressService : IWorldScope
     {
         private readonly IntReactiveProperty _level = new IntReactiveProperty(SquadProgress.DEFAULT_LEVEL);
+        private readonly IntReactiveProperty _exp = new IntReactiveProperty(0);
         
         [Inject]
         private SquadProgressRepository _repository;
         [Inject]
         private StringKeyedConfigCollection<SquadLevelConfig> _levelConfig;
-        public IObservable<int> Level => _level;
+        public IObservable<int> Level => _level;    
+        public IObservable<int> Exp => _exp;
         private SquadProgress Progress => _repository.Require();
+        
+        [CanBeNull]
+        public SquadLevelConfig CurrentLevelConfig => _repository.Exists() ? Progress.CurrentLevelConfig(_levelConfig) : null; 
+        
         private int ExpToNextLevel => Progress.MaxExpForCurrentLevel(_levelConfig) - Progress.Exp;
         public void OnWorldSetup()
         {
-            _repository.Set(SquadProgress.Create());
-            _level.Value = Progress.Level;
+            SetProgress(SquadProgress.Create());
         }
         public void AddExp(int amount)
         {
@@ -43,11 +48,13 @@ namespace Survivors.Squad.Service
         {
             _repository.Set(progress);
             _level.Value = progress.Level;
+            _exp.Value = progress.Exp;
         }
         private void ResetProgress()
         {
             _repository.Delete();
             _level.Value = SquadProgress.DEFAULT_LEVEL;
+            _exp.Value = 0;
         }
         public void OnWorldCleanUp()
         {
