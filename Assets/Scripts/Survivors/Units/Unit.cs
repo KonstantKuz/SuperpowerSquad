@@ -4,6 +4,7 @@ using EasyButtons;
 using Feofun.Components;
 using Feofun.Modifiers;
 using SuperMaxim.Core.Extensions;
+using Survivors.App;
 using Survivors.Location.Model;
 using Survivors.Units.Component.Death;
 using Survivors.Units.Component.Health;
@@ -17,9 +18,6 @@ namespace Survivors.Units
 {
     public class Unit : WorldObject, IUnit
     {
-        [Inject]
-        private UnitService _unitService;
-
         private IUpdatableComponent[] _updatables;
         private IDamageable _damageable;
         private IUnitDeath _death;
@@ -28,6 +26,9 @@ namespace Survivors.Units
         private IUnitDeactivateEventReceiver[] _deactivateEventReceivers;
         private MovementController _movementController;
         private bool _isActive;
+
+        [Inject] private UnitService _unitService;
+        [Inject] private UpdateManager _updateManager;
 
         public bool IsActive
         {
@@ -59,12 +60,14 @@ namespace Survivors.Units
             _deactivateEventReceivers = GetComponentsInChildren<IUnitDeactivateEventReceiver>();
             
             _damageable.OnDeath += Kill;
-            _unitService.Add(this);
             IsActive = true;
             
             foreach (var component in GetComponentsInChildren<IInitializable<IUnit>>()) {
                 component.Init(this);
             }
+            
+            _unitService.Add(this);
+            _updateManager.StartUpdate(TryUpdateComponents);
         }
         
         [Button]
@@ -78,7 +81,7 @@ namespace Survivors.Units
             OnDeath = null;
         }
 
-        private void Update()
+        private void TryUpdateComponents()
         {
             if (!IsActive) {
                 return;
@@ -96,6 +99,7 @@ namespace Survivors.Units
         private void OnDestroy()
         {
             _unitService.Remove(this);
+            _updateManager.StopUpdate(TryUpdateComponents);
         }
 
         public void AddModifier(IModifier modifier)
