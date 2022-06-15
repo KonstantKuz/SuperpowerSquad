@@ -1,6 +1,7 @@
 using Feofun.Localization.Service;
 using SuperMaxim.Messaging;
 using Survivors.Cheats.Installer;
+using Survivors.Analytics;
 using Survivors.Location;
 using Survivors.Modifiers;
 using Survivors.Player.Installer;
@@ -25,6 +26,7 @@ namespace Survivors.App
      
         public override void InstallBindings()
         {
+            AnalyticsInstaller.Install(Container);
             Container.BindInterfacesTo<MainSceneMonoInstaller>().FromInstance(this).AsSingle();
             Container.Bind<GameApplication>().FromInstance(_gameApplication).AsSingle();
             Container.Bind<IMessenger>().FromInstance(Messenger.Default).AsSingle();     

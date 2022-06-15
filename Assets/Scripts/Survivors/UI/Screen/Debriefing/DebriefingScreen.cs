@@ -32,7 +32,9 @@ namespace Survivors.UI.Screen.Debriefing
         public void Init(SessionResult result)
         {
             _winPanel.SetActive(result == SessionResult.Win);     
-            _losePanel.SetActive(result == SessionResult.Lose);
+            _losePanel.SetActive(result == SessionResult.Lose); 
+            _nextButton.gameObject.SetActive(result == SessionResult.Win);     
+            _reloadButton.gameObject.SetActive(result == SessionResult.Lose);
         }
         public void OnEnable()
         {
