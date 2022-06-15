@@ -4,7 +4,7 @@ using UnityEditor.Callbacks;
 using UnityEditor.iOS.Xcode;
 using UnityEngine;
 
-namespace Editor
+namespace Editor.Scripts.PostProcess
 {
     public class PatchUnityFrameworkXcode
     {
