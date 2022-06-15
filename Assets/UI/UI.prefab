@@ -304,7 +304,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: aa7dd2c47d9285542870a3cfef6a7d41, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _enableTopSafeArea: 0
+  _enableTopSafeArea: 1
   _enableBottomSafeArea: 0
 --- !u!1 &6493258785877219414
 GameObject:
@@ -638,6 +638,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4510510540947579704, guid: 7db92583dd5ea8445b086e37d7ecd05b, type: 3}
       propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6084281223715890471, guid: 7db92583dd5ea8445b086e37d7ecd05b, type: 3}
+      propertyPath: m_AnchoredPosition.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7172425760286209250, guid: 7db92583dd5ea8445b086e37d7ecd05b, type: 3}
