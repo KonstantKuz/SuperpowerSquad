@@ -15,7 +15,7 @@ namespace Survivors.UI.Screen.World.SquadProgress
                                                     if (squadProgressService.CurrentLevelConfig == null) {
                                                         return 0;
                                                     }
-                                                    return 1.0f * it / squadProgressService.CurrentLevelConfig.ExpToNextLevel;
+                                                    return (float) it / squadProgressService.CurrentLevelConfig.ExpToNextLevel;
                                                 })
                                                 .AsObservable();
             Level = squadProgressService.Level;
