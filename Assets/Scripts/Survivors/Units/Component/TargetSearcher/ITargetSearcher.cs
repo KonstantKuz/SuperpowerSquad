@@ -8,6 +8,7 @@ namespace Survivors.Units.Component.TargetSearcher
     {
         [CanBeNull]
         ITarget Find();
+        // TODO: remove later. used only for multi target ranged weapon for sniper unit.
         IEnumerable<ITarget> GetAllOrderedByDistance();
     }
 }
