@@ -67,7 +67,7 @@ namespace Survivors.Units
             }
             
             _unitService.Add(this);
-            _updateManager.StartUpdate(TryUpdateComponents);
+            _updateManager.StartUpdate(UpdateComponents);
         }
         
         [Button]
@@ -81,16 +81,11 @@ namespace Survivors.Units
             OnDeath = null;
         }
 
-        private void TryUpdateComponents()
+        private void UpdateComponents()
         {
             if (!IsActive) {
                 return;
             }
-            UpdateComponents();
-        }
-
-        private void UpdateComponents()
-        {
             for (int i = 0; i < _updatables.Length; i++) {
                 _updatables[i].OnTick();
             }
@@ -99,7 +94,7 @@ namespace Survivors.Units
         private void OnDestroy()
         {
             _unitService.Remove(this);
-            _updateManager.StopUpdate(TryUpdateComponents);
+            _updateManager.StopUpdate(UpdateComponents);
         }
 
         public void AddModifier(IModifier modifier)
