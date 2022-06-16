@@ -44,6 +44,7 @@ namespace Survivors.Units
 
         public UnitType UnitType => _selfTarget.UnitType;
         public UnitType TargetUnitType => _selfTarget.UnitType.GetTargetUnitType();
+        public ITarget SelfTarget => _selfTarget;
         public IUnitModel Model { get; private set; }
         public event Action<IUnit> OnDeath;
         public MovementController MovementController => _movementController ??= GetComponent<MovementController>();
