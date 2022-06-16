@@ -1,14 +1,13 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.UI;
 
-namespace Feofun.UI.Components
+namespace Feofun.UI.Components.Button
 {
-    [RequireComponent(typeof(Button))]
+    [RequireComponent(typeof(UnityEngine.UI.Button))]
     public class ActionButton : MonoBehaviour
     {
         private Action _action;
-        private Button _button;
+        private UnityEngine.UI.Button _button;
 
         public void Init(Action action)
         {
@@ -30,6 +29,6 @@ namespace Feofun.UI.Components
             _action?.Invoke();
         }
 
-        public Button Button => _button ??= GetComponent<Button>();
+        public UnityEngine.UI.Button Button => _button ??= GetComponent<UnityEngine.UI.Button>();
     }
 }
