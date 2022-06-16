@@ -192,7 +192,7 @@ PrefabInstance:
     - target: {fileID: 3502657725538741023, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
       propertyPath: m_Controller
       value: 
-      objectReference: {fileID: 22100000, guid: b0fced0c71ef1d146bc739f3a54357d8, type: 2}
+      objectReference: {fileID: 9100000, guid: 37725333a5c4d424a8a3587d20417d7c, type: 2}
     - target: {fileID: 3502657725674428758, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
       propertyPath: m_ConnectedAnchor.x
       value: 0.02778725
