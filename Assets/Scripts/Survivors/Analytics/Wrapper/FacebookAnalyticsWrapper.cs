@@ -38,11 +38,6 @@ namespace Survivors.Analytics.Wrapper
             Time.timeScale = !isVisible ? 0 : 1;
         }
 
-        public void ReportTest()
-        {
-            LogEvent("Test", null, new Dictionary<string, object>());
-        }
-
         private void LogEvent(string logEvent, float? valueToSum = null, Dictionary<string, object> parameters = null)
         {
             if (!_isInitialized)

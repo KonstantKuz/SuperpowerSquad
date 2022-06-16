@@ -7,7 +7,6 @@ namespace Survivors.Analytics
     public interface IAnalyticsImpl
     {
         void Init();
-        void ReportTest();
         void ReportEventWithParams(string eventName, Dictionary<string, object> eventParams);
     }
 }

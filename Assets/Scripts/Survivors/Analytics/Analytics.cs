@@ -51,7 +51,7 @@ namespace Survivors.Analytics
         }
         public void ReportTest()
         {
-            _impls.ForEach(it => it.ReportTest());
+            ReportEventToAllImpls(Events.TEST_EVENT, null);
         }
 
         public void ReportLevelStart(int levelId)
