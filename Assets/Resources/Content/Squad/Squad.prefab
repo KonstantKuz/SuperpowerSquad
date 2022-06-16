@@ -244,6 +244,7 @@ GameObject:
   - component: {fileID: 543859091421779963}
   - component: {fileID: 5461194849551246647}
   - component: {fileID: 4477187146966790282}
+  - component: {fileID: 7958715525812945929}
   m_Layer: 0
   m_Name: Squad
   m_TagString: Untagged
@@ -321,3 +322,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objectId: Squad
   _objectType: 0
+--- !u!114 &7958715525812945929
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7626070557693701769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e1146f5b79ae4075b5321f379ae248d5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _standingThreshold: 0.2

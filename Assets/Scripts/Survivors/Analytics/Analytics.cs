@@ -4,9 +4,11 @@ using Feofun.Config;
 using JetBrains.Annotations;
 using SuperMaxim.Core.Extensions;
 using Survivors.Analytics.Wrapper;
+using Survivors.Location;
 using Survivors.Player.Service;
 using Survivors.Session.Config;
 using Survivors.Session.Service;
+using Survivors.Squad.Component;
 using Survivors.Squad.Service;
 using Survivors.Squad.Upgrade;
 using Survivors.Units;
@@ -32,6 +34,8 @@ namespace Survivors.Analytics
         private SessionService _sessionService;
         [Inject] 
         private UnitService _unitService;
+        [Inject] 
+        private World _world;
         
         
         private readonly ICollection<IAnalyticsImpl> _impls;
@@ -108,13 +112,25 @@ namespace Survivors.Analytics
             eventParams[EventParams.TIME_SINCE_LEVEL_START] = _sessionService.SessionTime;
             eventParams[EventParams.ENEMY_KILLER] = _sessionService.Kills.Value;
             eventParams[EventParams.LEVEL_RESULT] = isPlayerWinner ? "win" : "lose";
-            eventParams[EventParams.TOTAL_ENEMY_HEALTH] = enemies
+            eventParams[EventParams.TOTAL_ENEMY_HEALTH] = SumHealth(enemies);
+            eventParams[EventParams.AVERAGE_ENEMY_LIFETIME] = enemies.Average(it => it.LifeTime);
+            eventParams[EventParams.STAND_RATIO] = GetStandRatio();
+            
+            ReportEventToAllImpls(Events.LEVEL_FINISHED, eventParams);
+        }
+
+        private float GetStandRatio()
+        {
+            return _world.Squad.GetComponent<MovementAnalytics>().StandingTime /
+                   _sessionService.SessionTime;
+        }
+
+        private static float SumHealth(List<Unit> enemies)
+        {
+            return enemies
                 .Select(it => it.GetComponent<Health>())
                 .Where(it => it != null).
                 Sum(it => it.CurrentValue.Value);
-            eventParams[EventParams.AVERAGE_ENEMY_LIFETIME] = enemies.Average(it => it.LifeTime);
-            
-            ReportEventToAllImpls(Events.LEVEL_FINISHED, eventParams);
         }
 
         private IEnumerable<Unit> GetEnemyUnits()
