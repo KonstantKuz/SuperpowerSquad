@@ -58,22 +58,22 @@ namespace Survivors.App
     
         private void Update()
         {
-            Update(_customUpdates);
+            InvokeAll(_customUpdates);
         }
 
         private void FixedUpdate()
         {
-            Update(_customFixedUpdates);
+            InvokeAll(_customFixedUpdates);
         }
 
         private void LateUpdate()
         {
-            Update(_customLateUpdates);
+            InvokeAll(_customLateUpdates);
         }
 
-        private void Update(List<Action> updates)
+        private void InvokeAll(List<Action> actions)
         {
-            foreach (var action in updates)
+            foreach (var action in actions)
             {
                 action.Invoke();
             }
