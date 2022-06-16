@@ -13,6 +13,7 @@ using Survivors.Modifiers;
 using Survivors.Squad.Component;
 using Survivors.Squad.Formation;
 using Survivors.Squad.Model;
+using Survivors.Units;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Player.Config;
 using Survivors.Units.Service;
@@ -85,11 +86,11 @@ namespace Survivors.Squad
             Model = null;
         }        
         
-        private void Kill()
+        private void Kill(DeathCause deathCause)
         {
             IsActive = false;
             _damageable.OnDeath -= Kill;
-            _units.ForEach(it => it.Kill());
+            _units.ForEach(it => it.Kill(deathCause));
             OnDeath?.Invoke();
             _units.Clear();
         }

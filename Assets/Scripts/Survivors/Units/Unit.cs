@@ -3,6 +3,7 @@ using Survivors.Extension;
 using EasyButtons;
 using Feofun.Components;
 using Feofun.Modifiers;
+using JetBrains.Annotations;
 using SuperMaxim.Core.Extensions;
 using Survivors.App;
 using Survivors.Location.Model;
@@ -28,6 +29,7 @@ namespace Survivors.Units
         private MovementController _movementController;
         private bool _isActive;
         private float _spawnTime;
+        private Collider _collider;
 
         [Inject] private UnitService _unitService;
         [Inject] private UpdateManager _updateManager;
@@ -48,11 +50,13 @@ namespace Survivors.Units
         public UnitType TargetUnitType => _selfTarget.UnitType.GetTargetUnitType();
         public ITarget SelfTarget => _selfTarget;
         public IUnitModel Model { get; private set; }
-        public event Action<IUnit> OnDeath;
+        public event Action<IUnit, DeathCause> OnDeath;
         public MovementController MovementController => _movementController ??= GetComponent<MovementController>();
 
         public float LifeTime => Time.time - _spawnTime;
-        
+        [CanBeNull] public Health Health { get; private set; }
+        public Bounds Bounds => _collider.bounds;
+
         public void Init(IUnitModel model)
         {
             Model = model;
@@ -67,6 +71,8 @@ namespace Survivors.Units
             _damageable.OnDeath += Kill;
             IsActive = true;
             _spawnTime = Time.time;
+            Health = GetComponent<Health>();
+            _collider = GetComponent<CapsuleCollider>();
             
             foreach (var component in GetComponentsInChildren<IInitializable<IUnit>>()) {
                 component.Init(this);
@@ -77,13 +83,13 @@ namespace Survivors.Units
         }
         
         [Button]
-        public void Kill()
+        public void Kill(DeathCause deathCause)
         {
             _damageable.OnDeath -= Kill;
             IsActive = false;
-            _deathEventReceivers.ForEach(it => it.OnDeath());
+            _deathEventReceivers.ForEach(it => it.OnDeath(deathCause));
             _death.PlayDeath();
-            OnDeath?.Invoke(this);
+            OnDeath?.Invoke(this, deathCause);
             OnDeath = null;
         }
 

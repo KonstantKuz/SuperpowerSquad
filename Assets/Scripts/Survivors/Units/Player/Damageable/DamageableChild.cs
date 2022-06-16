@@ -8,7 +8,7 @@ namespace Survivors.Units.Player.Damageable
     public class DamageableChild : MonoBehaviour, IDamageable
     {
         private IDamageable _parentDamageable;
-        public event Action OnDeath;
+        public event Action<DeathCause> OnDeath;
         public event Action OnDamageTaken;
         public bool DamageEnabled { get; set; } = true;
         private IDamageable ParentDamageable
@@ -22,10 +22,10 @@ namespace Survivors.Units.Player.Damageable
                 return _parentDamageable;
             }
         }
-        private void OnParentDeath()
+        private void OnParentDeath(DeathCause deathCause)
         {
             _parentDamageable.OnDeath -= OnParentDeath;
-            OnDeath?.Invoke();
+            OnDeath?.Invoke(deathCause);
         }
 
         public void TakeDamage(float damage)

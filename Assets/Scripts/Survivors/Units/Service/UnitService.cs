@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
@@ -32,7 +33,7 @@ namespace Survivors.Units.Service
         
 
 
-        private void OnDeathUnit(IUnit unit)
+        private void OnDeathUnit(IUnit unit, DeathCause deathCause)
         {
             unit.OnDeath -= OnDeathUnit;
             Remove(unit);
@@ -42,5 +43,8 @@ namespace Survivors.Units.Service
                 OnEnemyUnitDeath?.Invoke(unit);
             }
         }
+
+        public IEnumerable<IUnit> GetAllUnitsOfType(UnitType unitType) =>
+            _units.ContainsKey(unitType) ? _units[unitType] : Enumerable.Empty<IUnit>();
     }
 }

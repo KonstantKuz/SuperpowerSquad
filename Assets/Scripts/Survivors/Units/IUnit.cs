@@ -12,8 +12,8 @@ namespace Survivors.Units
         ITarget SelfTarget { get; }
         GameObject GameObject { get; }
         public bool IsActive { get; set; }
-        event Action<IUnit> OnDeath;
+        event Action<IUnit, DeathCause> OnDeath;
         public void Init(IUnitModel model);
-        public void Kill();
+        public void Kill(DeathCause deathCause);
     }
 }
