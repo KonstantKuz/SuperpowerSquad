@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if UNITY_IOS
+using System;
 using Unity.Advertisement.IosSupport;
 using UnityEngine;
 
@@ -30,3 +31,5 @@ namespace Survivors.IOSTransparency
         }
     }
 } 
+
+#endif
