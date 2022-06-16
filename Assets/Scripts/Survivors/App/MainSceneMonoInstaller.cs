@@ -17,6 +17,8 @@ namespace Survivors.App
         [SerializeField]
         private GameApplication _gameApplication;
         [SerializeField]
+        private UpdateManager _updateManager;
+        [SerializeField]
         private WorldServicesInstaller _worldServicesInstaller;  
         [SerializeField]
         private UIInstaller _uiInstaller;
@@ -26,6 +28,7 @@ namespace Survivors.App
             AnalyticsInstaller.Install(Container);
             Container.BindInterfacesTo<MainSceneMonoInstaller>().FromInstance(this).AsSingle();
             Container.Bind<GameApplication>().FromInstance(_gameApplication).AsSingle();
+            Container.Bind<UpdateManager>().FromInstance(_updateManager).AsSingle();
             Container.Bind<IMessenger>().FromInstance(Messenger.Default).AsSingle();     
             Container.Bind<LocalizationService>().AsSingle();
 
