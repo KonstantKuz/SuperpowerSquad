@@ -6,7 +6,7 @@ namespace Survivors.Enemy.Spawn.PlaceProviders
 {
     public class CompositeSpawnPlaceProvider : ISpawnPlaceProvider
     {
-        private const float MOVE_DIRECTION_DRIVEN_CHANCE = 0.3f;
+        private const float MOVE_DIRECTION_DRIVEN_CHANCE = 0.15f;
         
         private readonly ISpawnPlaceProvider _randomDrivenProvider;
         private readonly ISpawnPlaceProvider _moveDirectionDrivenProvider;
