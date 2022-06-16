@@ -11,5 +11,7 @@
         public const string UPGRADE = "upgrade";
         public const string TIME_SINCE_LEVEL_START = "time";
         public const string LEVEL_RESULT = "result";
+        public const string TOTAL_ENEMY_HEALTH = "enemy_health";
+        public const string AVERAGE_ENEMY_LIFETIME = "enemy_lifetime";
     }
 }

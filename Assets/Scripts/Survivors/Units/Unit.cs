@@ -12,6 +12,7 @@ using Survivors.Units.Target;
 using Zenject;
 using Survivors.Units.Model;
 using Survivors.Units.Player.Movement;
+using UnityEngine;
 
 namespace Survivors.Units
 {
@@ -28,6 +29,7 @@ namespace Survivors.Units
         private IUnitDeactivateEventReceiver[] _deactivateEventReceivers;
         private MovementController _movementController;
         private bool _isActive;
+        private float _spawnTime;
 
         public bool IsActive
         {
@@ -46,6 +48,8 @@ namespace Survivors.Units
         public IUnitModel Model { get; private set; }
         public event Action<IUnit> OnDeath;
         public MovementController MovementController => _movementController ??= GetComponent<MovementController>();
+
+        public float LifeTime => Time.time - _spawnTime;
         
         public void Init(IUnitModel model)
         {
@@ -61,6 +65,7 @@ namespace Survivors.Units
             _damageable.OnDeath += Kill;
             _unitService.Add(this);
             IsActive = true;
+            _spawnTime = Time.time;
             
             foreach (var component in GetComponentsInChildren<IInitializable<IUnit>>()) {
                 component.Init(this);

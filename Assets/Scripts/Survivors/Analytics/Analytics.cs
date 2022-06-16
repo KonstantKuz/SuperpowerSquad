@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using Feofun.Config;
+using JetBrains.Annotations;
 using SuperMaxim.Core.Extensions;
 using Survivors.Analytics.Wrapper;
 using Survivors.Player.Service;
@@ -7,11 +9,15 @@ using Survivors.Session.Config;
 using Survivors.Session.Service;
 using Survivors.Squad.Service;
 using Survivors.Squad.Upgrade;
+using Survivors.Units;
+using Survivors.Units.Component.Health;
+using Survivors.Units.Service;
 using UnityEngine;
 using Zenject;
 
 namespace Survivors.Analytics
 {
+    [PublicAPI]
     public class Analytics
     {
         [Inject] 
@@ -24,6 +30,8 @@ namespace Survivors.Analytics
         private SquadUpgradeRepository _squadUpgradeRepository;
         [Inject] 
         private SessionService _sessionService;
+        [Inject] 
+        private UnitService _unitService;
         
         
         private readonly ICollection<IAnalyticsImpl> _impls;
@@ -92,6 +100,7 @@ namespace Survivors.Analytics
         {
             var playerProgress = _playerProgressService.Progress;
             var levelConfig = _levelsConfig.Values[_sessionService.LevelId];
+            var enemies = GetEnemyUnits().ToList();
 
             var eventParams = GetLevelParams();
             eventParams[EventParams.PASS_NUMBER] = playerProgress.GetPassCount(levelConfig.Level);
@@ -99,8 +108,21 @@ namespace Survivors.Analytics
             eventParams[EventParams.TIME_SINCE_LEVEL_START] = _sessionService.SessionTime;
             eventParams[EventParams.ENEMY_KILLER] = _sessionService.Kills.Value;
             eventParams[EventParams.LEVEL_RESULT] = isPlayerWinner ? "win" : "lose";
+            eventParams[EventParams.TOTAL_ENEMY_HEALTH] = enemies
+                .Select(it => it.GetComponent<Health>())
+                .Where(it => it != null).
+                Sum(it => it.CurrentValue.Value);
+            eventParams[EventParams.AVERAGE_ENEMY_LIFETIME] = enemies.Average(it => it.LifeTime);
             
             ReportEventToAllImpls(Events.LEVEL_FINISHED, eventParams);
+        }
+
+        private IEnumerable<Unit> GetEnemyUnits()
+        {
+            return _unitService.AllUnits
+                .Where(it => it.UnitType == UnitType.ENEMY)
+                .Select(it => it as Unit)
+                .Where(it => it != null);
         }
     }
 }
