@@ -3,7 +3,7 @@ using System.Globalization;
 using UniRx;
 using UnityEngine;
 
-namespace Survivors.Cheats
+namespace Feofun.Cheats
 {
     public class CheatsActivator : MonoBehaviour
     {

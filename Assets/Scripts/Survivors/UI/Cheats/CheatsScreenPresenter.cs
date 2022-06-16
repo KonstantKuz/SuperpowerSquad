@@ -1,4 +1,5 @@
-﻿using Feofun.UI.Components.Button;
+﻿using Feofun.Cheats;
+using Feofun.UI.Components.Button;
 using Survivors.Cheats;
 using UnityEngine;
 using UnityEngine.UI;

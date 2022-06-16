@@ -1,4 +1,5 @@
-﻿using Survivors.Cheats;
+﻿using Feofun.Cheats;
+using Survivors.Cheats;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;

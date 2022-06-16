@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Feofun.Cheats;
+using UnityEngine;
 using Zenject;
 
 namespace Survivors.Cheats.Installer
