@@ -3,8 +3,6 @@ using Feofun.UI.Screen;
 using JetBrains.Annotations;
 using Survivors.UI.Screen.World;
 using Survivors.Units.Enemy;
-using UnityEngine;
-using UnityEngine.AI;
 using Zenject;
 
 namespace Survivors.App
