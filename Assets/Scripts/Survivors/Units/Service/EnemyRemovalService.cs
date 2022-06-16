@@ -73,7 +73,7 @@ namespace Survivors.Units.Service
         private List<Unit> GetCandidates(Plane[] frustumPlanes)
         {
             var candidates = new List<Unit>(_units.Count);
-            foreach (var unit in _units)
+            foreach (var unit in _units.Reverse())
             {
                 if (unit.LifeTime < _minRemovalAge) continue;
                 if (IsVisible(unit, frustumPlanes)) continue;
