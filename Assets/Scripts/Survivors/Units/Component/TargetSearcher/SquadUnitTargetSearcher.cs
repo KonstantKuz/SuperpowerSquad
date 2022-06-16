@@ -23,8 +23,10 @@ namespace Survivors.Units.Component.TargetSearcher
 
         [CanBeNull]
         public ITarget Find()
-        { 
-            return _targetProvider.GetTargetForUnit(_owner);
+        {
+            var position = _owner.SelfTarget.Root.position;
+            var searchDistance = _owner.Model.AttackModel.TargetSearchRadius;
+            return _targetProvider.GetTargetBy(position, searchDistance);
         }
         
         public IEnumerable<ITarget> GetAllOrderedByDistance()

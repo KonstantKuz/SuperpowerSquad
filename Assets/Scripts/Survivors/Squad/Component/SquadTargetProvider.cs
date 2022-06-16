@@ -27,11 +27,10 @@ namespace Survivors.Squad.Component
             _squad = owner;
         }
 
-        public ITarget GetTargetForUnit(IUnit unit)
+        public ITarget GetTargetBy(Vector3 position, float searchDistance)
         {
             var targets = _targets.Take(SEARCH_COUNT_PER_UNIT);
-            var searchDistance = unit.Model.AttackModel.TargetSearchRadius;
-            return NearestTargetSearcher.Find(targets, unit.SelfTarget.Root.position, searchDistance);
+            return NearestTargetSearcher.Find(targets, position, searchDistance);
         }
 
         private void Update()
