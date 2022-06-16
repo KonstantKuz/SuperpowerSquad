@@ -16,7 +16,7 @@ namespace Survivors.Squad.Component
         private static UnitType TargetType => UnitType.ENEMY; 
 
         private Squad _squad;
-        private List<ITarget> _targets;
+        private List<ITarget> _targets = new List<ITarget>();
 
         [Inject] private TargetService _targetService;
 

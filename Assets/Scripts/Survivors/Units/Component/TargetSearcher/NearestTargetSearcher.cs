@@ -43,6 +43,7 @@ namespace Survivors.Units.Component.TargetSearcher
             var minDistance = Mathf.Infinity;
             foreach (var target in targets)
             {
+                if (!target.IsAlive) continue;
                 var dist = Vector3.Distance(from, target.Root.position);
                 if (dist >= minDistance || dist > searchDistance) continue;
                 minDistance = dist;
