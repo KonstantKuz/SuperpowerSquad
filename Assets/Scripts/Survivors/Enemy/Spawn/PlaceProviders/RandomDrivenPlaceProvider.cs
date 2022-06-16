@@ -21,7 +21,7 @@ namespace Survivors.Enemy.Spawn.PlaceProviders
         public SpawnPlace GetSpawnPlace(EnemyWaveConfig waveConfig, int rangeTry)
         {
             var position = GetRandomSpawnPosition(waveConfig, rangeTry);
-            var isValid = !_wavesSpawner.IsPlaceBusy(position, waveConfig);
+            var isValid = _wavesSpawner.IsPlaceValid(position, waveConfig);
             return new SpawnPlace {IsValid = isValid, Position = position};
         }
 
