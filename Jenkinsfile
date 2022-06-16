@@ -190,9 +190,7 @@ pipeline {
                             sh 'security -v unlock-keychain -p $KEYCHAIN_PASSWORD $KEYCHAIN_PATH'
                         }
                         sh 'cat ./podfile_patch.txt >> ./build/xcode/Podfile'
-                        sh 'sed -i \'\' "s+Firebase/Analytics+FirebaseAnalytics+g" ./build/xcode/Podfile'
-                        sh 'sed -i \'\' "s+Firebase/Core+FirebaseCore+g" ./build/xcode/Podfile'
-                        //sh '/usr/local/bin/pod install --repo-update --project-directory=./build/xcode'                        
+                        sh '/usr/local/bin/pod install --repo-update --project-directory=./build/xcode'                        
                         withCredentials([string(credentialsId: 'jenkins_mac_keychain_pass', variable: 'KEYCHAIN_PASSWORD')]) {                      
                             xcodeBuild buildIpa: true, 
                                 cleanBeforeBuild: false, 
