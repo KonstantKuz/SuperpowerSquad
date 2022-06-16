@@ -4,6 +4,7 @@ using EasyButtons;
 using Feofun.Components;
 using Feofun.Modifiers;
 using SuperMaxim.Core.Extensions;
+using Survivors.App;
 using Survivors.Location.Model;
 using Survivors.Units.Component.Death;
 using Survivors.Units.Component.Health;
@@ -18,9 +19,6 @@ namespace Survivors.Units
 {
     public class Unit : WorldObject, IUnit
     {
-        [Inject]
-        private UnitService _unitService;
-
         private IUpdatableComponent[] _updatables;
         private IDamageable _damageable;
         private IUnitDeath _death;
@@ -30,6 +28,9 @@ namespace Survivors.Units
         private MovementController _movementController;
         private bool _isActive;
         private float _spawnTime;
+
+        [Inject] private UnitService _unitService;
+        [Inject] private UpdateManager _updateManager;
 
         public bool IsActive
         {
@@ -45,6 +46,7 @@ namespace Survivors.Units
 
         public UnitType UnitType => _selfTarget.UnitType;
         public UnitType TargetUnitType => _selfTarget.UnitType.GetTargetUnitType();
+        public ITarget SelfTarget => _selfTarget;
         public IUnitModel Model { get; private set; }
         public event Action<IUnit> OnDeath;
         public MovementController MovementController => _movementController ??= GetComponent<MovementController>();
@@ -63,13 +65,15 @@ namespace Survivors.Units
             _deactivateEventReceivers = GetComponentsInChildren<IUnitDeactivateEventReceiver>();
             
             _damageable.OnDeath += Kill;
-            _unitService.Add(this);
             IsActive = true;
             _spawnTime = Time.time;
             
             foreach (var component in GetComponentsInChildren<IInitializable<IUnit>>()) {
                 component.Init(this);
             }
+            
+            _unitService.Add(this);
+            _updateManager.StartUpdate(UpdateComponents);
         }
         
         [Button]
@@ -83,16 +87,11 @@ namespace Survivors.Units
             OnDeath = null;
         }
 
-        private void Update()
+        private void UpdateComponents()
         {
             if (!IsActive) {
                 return;
             }
-            UpdateComponents();
-        }
-
-        private void UpdateComponents()
-        {
             for (int i = 0; i < _updatables.Length; i++) {
                 _updatables[i].OnTick();
             }
@@ -101,6 +100,7 @@ namespace Survivors.Units
         private void OnDestroy()
         {
             _unitService.Remove(this);
+            _updateManager.StopUpdate(UpdateComponents);
         }
 
         public void AddModifier(IModifier modifier)

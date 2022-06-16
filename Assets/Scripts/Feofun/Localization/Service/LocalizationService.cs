@@ -38,17 +38,21 @@ namespace Feofun.Localization.Service
             }
                 
             return localizations[DEFAULT_LANGUAGE];
-
         }
-
-        private string LanguageOverride => _languageOverride ??= PlayerPrefs.GetString("Language", null);
-
-        private string Language => LanguageOverride.IsNullOrEmpty() ? Application.systemLanguage.ToString() : LanguageOverride;
-
+        public void SetLanguageOverride(string language)
+        {
+            _languageOverride = language;
+            PlayerPrefs.SetString("Language", language);
+        }
         private void ReportUnsupportedLanguage(string language)
         {
             Debug.LogWarning($"Unsupported language: {language}");
             _reportedUnsupportedLanguages.Add(language);
         }
+        private string LanguageOverride => _languageOverride ??= PlayerPrefs.GetString("Language", null);
+
+        private string Language => LanguageOverride.IsNullOrEmpty() ? Application.systemLanguage.ToString() : LanguageOverride;
+
+       
     }
 }

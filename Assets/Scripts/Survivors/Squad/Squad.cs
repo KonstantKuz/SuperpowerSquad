@@ -42,6 +42,7 @@ namespace Survivors.Squad
         
         public SquadModel Model { get; private set; }
         public SquadDestination Destination { get; private set; }
+        public SquadTargetProvider TargetProvider { get; private set; }
         public IReadOnlyReactiveProperty<int> UnitsCount => _unitCount ??= _units.ObserveCountChanged().ToReactiveProperty();
         public float SquadRadius { get; private set; }
         public bool IsMoving => _joystick.Direction.sqrMagnitude > 0;
@@ -61,6 +62,7 @@ namespace Survivors.Squad
         {
             _formation = new FilledCircleFormation();
             Destination = gameObject.RequireComponentInChildren<SquadDestination>();
+            TargetProvider = gameObject.RequireComponent<SquadTargetProvider>();
             _damageable = gameObject.RequireComponent<IDamageable>();
             UpdateFormationAndRadius();
         }
