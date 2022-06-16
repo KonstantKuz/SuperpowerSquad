@@ -1,6 +1,8 @@
 ﻿using Feofun.UI.Components;
+using Survivors.App.Config;
 using UniRx;
 using UnityEngine;
+using Zenject;
 
 namespace Survivors.UI.Hud.Unit
 {
@@ -10,8 +12,9 @@ namespace Survivors.UI.Hud.Unit
         private ProgressBarView _progressBar;  
         [SerializeField]
         private RectTransform _barContainer;
-        [SerializeField]
-        private float _scaleIncrementFactor;
+    
+        [Inject]
+        private ConstantsConfig _constantsConfig;
         
         private CompositeDisposable _disposable;
         private HealthBarModel _model;
@@ -31,7 +34,7 @@ namespace Survivors.UI.Hud.Unit
         }
         private void UpdateMaxValue(float maxValue)
         {
-            var scaleIncrementDelta = ((maxValue - _model.StartingMaxValue) * _scaleIncrementFactor) / _model.StartingMaxValue;
+            var scaleIncrementDelta = ((maxValue - _model.StartingMaxValue) * _constantsConfig.HealthScaleIncrementFactor) / _model.StartingMaxValue;
             var barLenght = 1 + scaleIncrementDelta;
             var scale = _barContainer.localScale;
             _barContainer.localScale = new Vector3(barLenght, scale.y, scale.z);
