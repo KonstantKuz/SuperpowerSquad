@@ -45,43 +45,43 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2100854925667889115, guid: ea9ab0ab4d1545d43a038f62298fe278, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.070767
+      value: -0.11582224
       objectReference: {fileID: 0}
     - target: {fileID: 2100854925667889115, guid: ea9ab0ab4d1545d43a038f62298fe278, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.0052438
+      value: -0.1457126
       objectReference: {fileID: 0}
     - target: {fileID: 2100854925667889115, guid: ea9ab0ab4d1545d43a038f62298fe278, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -0.022603
+      value: -0.07111469
       objectReference: {fileID: 0}
     - target: {fileID: 2100854925667889115, guid: ea9ab0ab4d1545d43a038f62298fe278, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.5635068
+      value: 0.6180238
       objectReference: {fileID: 0}
     - target: {fileID: 2100854925667889115, guid: ea9ab0ab4d1545d43a038f62298fe278, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.0491628
+      value: -0.1614986
       objectReference: {fileID: 0}
     - target: {fileID: 2100854925667889115, guid: ea9ab0ab4d1545d43a038f62298fe278, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.820972
+      value: -0.7621916
       objectReference: {fileID: 0}
     - target: {fileID: 2100854925667889115, guid: ea9ab0ab4d1545d43a038f62298fe278, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.07776931
+      value: 0.10501845
       objectReference: {fileID: 0}
     - target: {fileID: 2100854925667889115, guid: ea9ab0ab4d1545d43a038f62298fe278, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 10.55
+      value: -2.266
       objectReference: {fileID: 0}
     - target: {fileID: 2100854925667889115, guid: ea9ab0ab4d1545d43a038f62298fe278, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -111.032
+      value: -102.369
       objectReference: {fileID: 0}
     - target: {fileID: 2100854925667889115, guid: ea9ab0ab4d1545d43a038f62298fe278, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0.404
+      value: 22.104
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ea9ab0ab4d1545d43a038f62298fe278, type: 3}
@@ -259,7 +259,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6901569034813441397, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
       propertyPath: _attackAnimationName
-      value: HeavyGunplay
+      value: TwoHandsShooting
       objectReference: {fileID: 0}
     - target: {fileID: 8793492476147260267, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
       propertyPath: m_IsActive

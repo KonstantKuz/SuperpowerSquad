@@ -8,6 +8,4 @@ AnimatorOverrideController:
   m_PrefabAsset: {fileID: 0}
   m_Name: Rocket
   m_Controller: {fileID: 9100000, guid: 37725333a5c4d424a8a3587d20417d7c, type: 2}
-  m_Clips:
-  - m_OriginalClip: {fileID: 7400000, guid: 202f65adcb89b164a8c4cc6ec78150af, type: 2}
-    m_OverrideClip: {fileID: 7400000, guid: 0835def4b1da9a74eb4d4185504baf4a, type: 2}
+  m_Clips: []
