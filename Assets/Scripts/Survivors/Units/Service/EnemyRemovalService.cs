@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using SuperMaxim.Messaging;
 using Survivors.Units.Enemy.Model;
@@ -18,6 +19,7 @@ namespace Survivors.Units.Service
         [Inject] private IMessenger _messenger;
 
         private int _lastSpawnedLevel = 1;
+        private SortedSet<Unit> _units = new SortedSet<Unit>(Comparer<Unit>.Create((a, b) => a.LifeTime.CompareTo(b.LifeTime)));
 
         private void Awake()
         {
@@ -31,63 +33,61 @@ namespace Survivors.Units.Service
 
         private void Update()
         {
-            var enemies = GetEnemies();
-            if (enemies.Count <= _softLimit) return;
+            if (_units.Count <= _softLimit) return;
             
             var frustumPlanes = GeometryUtility.CalculateFrustumPlanes(UnityEngine.Camera.main);
-            var candidatesOrderedByAge = GetCandidates(enemies, frustumPlanes);
+            var candidatesFromNewestToOldest = GetCandidates(frustumPlanes);
             
-            RemoveSoftWay(enemies.Count - _softLimit, candidatesOrderedByAge);
+            RemoveSoftWay(_units.Count - _softLimit, candidatesFromNewestToOldest);
 
-            enemies = GetEnemies();
-            if (enemies.Count <= _hardLimit) return;
-            candidatesOrderedByAge = GetCandidates(enemies, frustumPlanes);
+            if (_units.Count <= _hardLimit) return;
+            candidatesFromNewestToOldest = GetCandidates(frustumPlanes);
 
-            RemoveHardWay(enemies.Count - _hardLimit, candidatesOrderedByAge);
+            RemoveHardWay(_units.Count - _hardLimit, candidatesFromNewestToOldest);
         }
 
-        private void RemoveSoftWay(int removeCount, Queue<Unit> candidatesOrderedByAge)
+        private void RemoveSoftWay(int removeCount, List<Unit> candidatesFromNewestToOldest)
         {
             for (int i = 0; i < removeCount; i++)
             {
-                var first = candidatesOrderedByAge.Dequeue();
+                var first = candidatesFromNewestToOldest.Last();
                 if (first == null) break;
-                var second = FindRemovalCandidate(candidatesOrderedByAge, first.Health.CurrentValue.Value);
+                candidatesFromNewestToOldest.RemoveAt(candidatesFromNewestToOldest.Count - 1);
+                var second = FindRemovalCandidate(candidatesFromNewestToOldest, first.Health.CurrentValue.Value);
                 if (second == null) break;
                 Merge(first, second);
             }
         }
 
-        private void RemoveHardWay(int removeCount, Queue<Unit> candidatesOrderedByAge)
+        private void RemoveHardWay(int removeCount, List<Unit> candidatesFromNewestToOldest)
         {
             for (int i = 0; i < removeCount; i++)
             {
-                var unit = candidatesOrderedByAge.Dequeue();
+                var unit = candidatesFromNewestToOldest.Last();
                 if (unit == null) break;
+                candidatesFromNewestToOldest.RemoveAt(candidatesFromNewestToOldest.Count - 1);
                 unit.Kill(DeathCause.Removed);
             }
         }
 
-        private Queue<Unit> GetCandidates(IEnumerable<Unit> enemies, Plane[] frustumPlanes)
+        private List<Unit> GetCandidates(Plane[] frustumPlanes)
         {
-            return new Queue<Unit>(enemies
-                .Where(it => it.LifeTime > _minRemovalAge)
-                .Where(it => !IsVisible(it, frustumPlanes))
-                .OrderByDescending(it => it.LifeTime));
-        }
-
-        private List<Unit> GetEnemies()
-        {
-            return _unitService
-                .GetAllUnitsOfType(UnitType.ENEMY)
-                .Select(it => it as Unit)
-                .ToList();
-        }
-
-        private Unit FindRemovalCandidate(Queue<Unit> units, float health)
-        {
-            foreach (var unit in units)
+            var candidates = new List<Unit>(_units.Count);
+            foreach (var unit in _units)
             {
+                if (unit.LifeTime < _minRemovalAge) continue;
+                if (IsVisible(unit, frustumPlanes)) continue;
+                candidates.Add(unit);
+            }
+
+            return candidates;
+        }
+
+        private Unit FindRemovalCandidate(List<Unit> candidatesFromNewestToOldest, float health)
+        {
+            for (int idx = candidatesFromNewestToOldest.Count - 1; idx >=0; idx--)
+            {
+                var unit = candidatesFromNewestToOldest[idx];
                 var enemyModel = unit.Model as EnemyUnitModel;
                 var sumLevel = enemyModel.CalculateLevelOfHealth(unit.Health.CurrentValue.Value + health);
                 if (sumLevel <= _lastSpawnedLevel)
@@ -112,9 +112,17 @@ namespace Survivors.Units.Service
 
         private void OnUnitSpawned(UnitSpawnedMessage msg)
         {
-            var unit = msg.Unit;
+            var unit = msg.Unit as Unit;
             if (unit.UnitType != UnitType.ENEMY) return;
             _lastSpawnedLevel = (unit.Model as EnemyUnitModel).Level;
+            _units.Add(unit);
+            unit.OnDeath += OnUnitDeath;
+        }
+
+        private void OnUnitDeath(IUnit unit, DeathCause deathCause)
+        {
+            unit.OnDeath -= OnUnitDeath;
+            _units.Remove(unit as Unit);
         }
     }
 }
