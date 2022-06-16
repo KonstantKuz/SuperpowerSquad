@@ -35,9 +35,9 @@ namespace Survivors.UI.Hud.Unit
         private void UpdateMaxValue(float maxValue)
         {
             var scaleIncrementDelta = ((maxValue - _model.StartingMaxValue) * _constantsConfig.HealthScaleIncrementFactor) / _model.StartingMaxValue;
-            var barLenght = 1 + scaleIncrementDelta;
+            var barLength = 1 + scaleIncrementDelta;
             var scale = _barContainer.localScale;
-            _barContainer.localScale = new Vector3(barLenght, scale.y, scale.z);
+            _barContainer.localScale = new Vector3(barLength, scale.y, scale.z);
         }   
 
         protected void OnDisable()
