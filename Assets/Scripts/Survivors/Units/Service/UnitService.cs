@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using SuperMaxim.Core.Extensions;
+using SuperMaxim.Messaging;
+using Survivors.Units.Messages;
+using Zenject;
 
 namespace Survivors.Units.Service
 {
@@ -15,6 +18,9 @@ namespace Survivors.Units.Service
         public event Action<IUnit, DeathCause> OnEnemyUnitDeath;
 
         public IEnumerable<IUnit> AllUnits => _units.SelectMany(it => it.Value);
+
+        [Inject] private IMessenger _messenger;
+        
         public void Add(IUnit unit)
         {
             if (!_units.ContainsKey(unit.UnitType)) {
@@ -22,6 +28,8 @@ namespace Survivors.Units.Service
             }
             _units[unit.UnitType].Add(unit);
             unit.OnDeath += OnDeathUnit;
+
+            _messenger.Publish(new UnitSpawnedMessage(unit));
         }
         public void Remove(IUnit unit)
         {
