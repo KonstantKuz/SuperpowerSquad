@@ -87,8 +87,10 @@ namespace Survivors.Session.Service
         }
 
         private void ResetKills() => _kills.Value = 0;
-        private void OnEnemyUnitDeath(IUnit unit)
+        private void OnEnemyUnitDeath(IUnit unit, DeathCause deathCause)
         {
+            if (deathCause != DeathCause.Killed) return;
+            
             Session.AddKill();
             _kills.Value = Session.Kills;
             Debug.Log($"Killed enemies:= {Session.Kills}");
