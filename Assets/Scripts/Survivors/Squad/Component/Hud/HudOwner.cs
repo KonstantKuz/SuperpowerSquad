@@ -1,6 +1,5 @@
 using Feofun.Components;
 using Survivors.UI.Hud.Unit;
-using Survivors.Units;
 using Survivors.Units.Component;
 using UniRx;
 using UnityEngine;
@@ -27,7 +26,7 @@ namespace Survivors.Squad.Component.Hud
         {
             CleanUp();
             _disposable = new CompositeDisposable();
-            squad.UnitsCount.Subscribe(it=>UpdateHudPlaceOffset(squad.SquadRadius)).AddTo(_disposable);
+            squad.UnitsCount.Subscribe(it => UpdateHudPlaceOffset(squad.SquadRadius)).AddTo(_disposable);
             _hudPresenter = _container.InstantiatePrefabForComponent<HudPresenter>(_hudPrefab);
             _hudPresenter.Init(this, _hudPlace);
         }
