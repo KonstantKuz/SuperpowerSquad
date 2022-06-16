@@ -10,7 +10,8 @@ namespace Survivors.Units.Service
 {
     public class EnemyRemovalService: MonoBehaviour
     {
-        [SerializeField] private int _maxEnemies;
+        [SerializeField] private int _softLimit;
+        [SerializeField] private int _hardLimit;
         [SerializeField] private float _minRemovalAge;
 
         [Inject] private UnitService _unitService;
@@ -31,13 +32,22 @@ namespace Survivors.Units.Service
         private void Update()
         {
             var enemies = GetEnemies();
-            if (enemies.Count <= _maxEnemies) return;
-            var removeCount = enemies.Count - _maxEnemies;
+            if (enemies.Count <= _softLimit) return;
             
-            var frustumPlanes = GeometryUtility.CalculateFrustumPlanes(UnityEngine.Camera.main);            
-
+            var frustumPlanes = GeometryUtility.CalculateFrustumPlanes(UnityEngine.Camera.main);
             var candidatesOrderedByAge = GetCandidates(enemies, frustumPlanes);
+            
+            RemoveSoftWay(enemies.Count - _softLimit, candidatesOrderedByAge);
 
+            enemies = GetEnemies();
+            if (enemies.Count <= _hardLimit) return;
+            candidatesOrderedByAge = GetCandidates(enemies, frustumPlanes);
+
+            RemoveHardWay(enemies.Count - _hardLimit, candidatesOrderedByAge);
+        }
+
+        private void RemoveSoftWay(int removeCount, Queue<Unit> candidatesOrderedByAge)
+        {
             for (int i = 0; i < removeCount; i++)
             {
                 var first = candidatesOrderedByAge.Dequeue();
@@ -45,6 +55,16 @@ namespace Survivors.Units.Service
                 var second = FindRemovalCandidate(candidatesOrderedByAge, first.Health.CurrentValue.Value);
                 if (second == null) break;
                 Merge(first, second);
+            }
+        }
+
+        private void RemoveHardWay(int removeCount, Queue<Unit> candidatesOrderedByAge)
+        {
+            for (int i = 0; i < removeCount; i++)
+            {
+                var unit = candidatesOrderedByAge.Dequeue();
+                if (unit == null) break;
+                unit.Kill(DeathCause.Removed);
             }
         }
 

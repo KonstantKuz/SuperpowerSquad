@@ -451,5 +451,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 29734440d63a4b4ba19e0d8d78bd7e7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maxEnemies: 300
+  _softLimit: 300
+  _hardLimit: 600
   _minRemovalAge: 1
