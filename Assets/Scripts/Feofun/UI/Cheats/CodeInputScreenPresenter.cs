@@ -1,11 +1,10 @@
 ﻿using Feofun.Cheats;
 using Feofun.UI.Components.Button;
-using Survivors.Cheats;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-namespace Survivors.UI.Cheats
+namespace Feofun.UI.Cheats
 {
     public class CodeInputScreenPresenter : MonoBehaviour
     {

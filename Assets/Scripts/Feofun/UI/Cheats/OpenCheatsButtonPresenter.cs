@@ -1,10 +1,9 @@
 ﻿using Feofun.Cheats;
-using Survivors.Cheats;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
 
-namespace Survivors.UI.Cheats
+namespace Feofun.UI.Cheats
 {
     public class OpenCheatsButtonPresenter : MonoBehaviour
     {
