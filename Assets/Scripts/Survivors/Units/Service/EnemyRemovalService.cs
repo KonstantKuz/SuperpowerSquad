@@ -1,25 +1,48 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using SuperMaxim.Messaging;
 using Survivors.Units.Enemy.Model;
 using Survivors.Units.Messages;
 using UnityEngine;
+using UnityEngine.Assertions;
 using Zenject;
 
 namespace Survivors.Units.Service
 {
     public class EnemyRemovalService: MonoBehaviour
     {
+        private class UnitComparer : IComparer<Unit>
+        {
+            public int Compare(Unit x, Unit y)
+            {
+                if (x == null && y == null)
+                {
+                    return 0;
+                }
+
+                if (x == null)
+                {
+                    return -1;
+                }
+
+                if (y == null)
+                {
+                    return 1;
+                }
+
+                var result = x.LifeTime.CompareTo(y.LifeTime);
+                return result == 0 ? x.GetInstanceID().CompareTo(y.GetInstanceID()) : result;
+            }
+        }
+
         [SerializeField] private int _softLimit;
         [SerializeField] private int _hardLimit;
         [SerializeField] private float _minRemovalAge;
 
-        [Inject] private UnitService _unitService;
         [Inject] private IMessenger _messenger;
 
         private int _lastSpawnedLevel = 1;
-        private SortedSet<Unit> _units = new SortedSet<Unit>(Comparer<Unit>.Create((a, b) => a.LifeTime.CompareTo(b.LifeTime)));
+        private readonly SortedSet<Unit> _units = new SortedSet<Unit>(new UnitComparer());
 
         private void Awake()
         {
@@ -115,7 +138,8 @@ namespace Survivors.Units.Service
             var unit = msg.Unit as Unit;
             if (unit.UnitType != UnitType.ENEMY) return;
             _lastSpawnedLevel = (unit.Model as EnemyUnitModel).Level;
-            _units.Add(unit);
+            var rez = _units.Add(unit);
+            Assert.IsTrue(rez, "Failed to add unit to EnemyRemovalService");
             unit.OnDeath += OnUnitDeath;
         }
 
