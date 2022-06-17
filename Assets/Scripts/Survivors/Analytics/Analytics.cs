@@ -92,7 +92,7 @@ namespace Survivors.Analytics
         public void ReportLevelUp(string upgradeBranch)
         {
             var eventParams = GetLevelParams();
-            eventParams[EventParams.SQUAD_LEVEL] = _squadProgressService.Level;
+            eventParams[EventParams.SQUAD_LEVEL] = _squadProgressService.Level.Value;
             eventParams[EventParams.UPGRADE] =
                 $"{upgradeBranch}_{_squadUpgradeRepository.Get().GetLevel(upgradeBranch)}";
             eventParams[EventParams.ENEMY_KILLER] = _sessionService.Kills.Value;
