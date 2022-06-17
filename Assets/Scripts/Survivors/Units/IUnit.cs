@@ -13,6 +13,7 @@ namespace Survivors.Units
         GameObject GameObject { get; }
         public bool IsActive { get; set; }
         event Action<IUnit, DeathCause> OnDeath;
+        event Action<IUnit> OnUnitDestroyed;
         public void Init(IUnitModel model);
         public void Kill(DeathCause deathCause);
     }

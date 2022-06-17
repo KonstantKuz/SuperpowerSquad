@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using SuperMaxim.Messaging;
+using Survivors.Location;
 using Survivors.Units.Enemy.Model;
 using Survivors.Units.Messages;
 using UnityEngine;
@@ -9,7 +10,7 @@ using Zenject;
 
 namespace Survivors.Units.Service
 {
-    public class EnemyRemovalService: MonoBehaviour
+    public class EnemyRemovalService: MonoBehaviour, IWorldScope
     {
         private class UnitComparer : IComparer<Unit>
         {
@@ -43,6 +44,17 @@ namespace Survivors.Units.Service
 
         private int _lastSpawnedLevel = 1;
         private readonly SortedSet<Unit> _units = new SortedSet<Unit>(new UnitComparer());
+        private bool _isWorldActive;
+
+        public void OnWorldSetup()
+        {
+            _isWorldActive = true;
+        }
+
+        public void OnWorldCleanUp()
+        {
+            _isWorldActive = false;
+        }
 
         private void Awake()
         {
@@ -56,6 +68,7 @@ namespace Survivors.Units.Service
 
         private void Update()
         {
+            if (_isWorldActive) return;
             if (_units.Count <= _softLimit) return;
             
             var frustumPlanes = GeometryUtility.CalculateFrustumPlanes(UnityEngine.Camera.main);
@@ -144,10 +157,17 @@ namespace Survivors.Units.Service
             var rez = _units.Add(unit);
             Assert.IsTrue(rez, "Failed to add unit to EnemyRemovalService");
             unit.OnDeath += OnUnitDeath;
+            unit.OnUnitDestroyed += OnUnitDestroyed;
         }
 
         private void OnUnitDeath(IUnit unit, DeathCause deathCause)
         {
+            OnUnitDestroyed(unit);
+        }
+
+        private void OnUnitDestroyed(IUnit unit)
+        {
+            unit.OnUnitDestroyed -= OnUnitDestroyed;
             unit.OnDeath -= OnUnitDeath;
             _units.Remove(unit as Unit);
         }

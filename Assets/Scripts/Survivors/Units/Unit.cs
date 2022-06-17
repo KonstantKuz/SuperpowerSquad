@@ -51,6 +51,7 @@ namespace Survivors.Units
         public ITarget SelfTarget => _selfTarget;
         public IUnitModel Model { get; private set; }
         public event Action<IUnit, DeathCause> OnDeath;
+        public event Action<IUnit> OnUnitDestroyed;
         public MovementController MovementController => _movementController ??= GetComponent<MovementController>();
 
         public float LifeTime => Time.time - _spawnTime;
@@ -105,7 +106,8 @@ namespace Survivors.Units
 
         private void OnDestroy()
         {
-            if (IsActive) Kill(DeathCause.Removed);
+            OnUnitDestroyed?.Invoke(this);
+            OnUnitDestroyed = null;
             _unitService.Remove(this);
             _updateManager.StopUpdate(UpdateComponents);
         }
