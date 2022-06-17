@@ -6,7 +6,7 @@ namespace Survivors.Player.Model
 {
     public class PlayerProgress
     {
-        //[JsonProperty]
+        [JsonProperty]
         private readonly Dictionary<int, int> _passCount = new Dictionary<int, int>();
 
         public int GameCount { get; set; }
