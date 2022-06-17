@@ -15,7 +15,8 @@ namespace Survivors.UI.Cheats
         [SerializeField] private ActionToggle _toggleConsoleButton;
         [SerializeField] private ActionToggle _toggleFPSButton;
 
-        [SerializeField] private ActionButton _increaseSquadLevelButton;
+        [SerializeField] private ActionButton _increaseSquadLevelButton; 
+        [SerializeField] private ActionButton _applyAllUpgradesButton;
         [SerializeField] private ActionButton _addRandomSquadUpgrade; 
         [SerializeField] private ActionButton _resetProgressButton;
 
@@ -38,6 +39,7 @@ namespace Survivors.UI.Cheats
           
             _increaseSquadLevelButton.Init(_cheatsManager.IncreaseSquadLevel);     
             _addRandomSquadUpgrade.Init(_cheatsManager.AddRandomSquadUpgrade);
+            _applyAllUpgradesButton.Init(_cheatsManager.ApplyAllSquadUpgrades);
             _resetProgressButton.Init(_cheatsManager.ResetProgress);
             
             _setLanguage.Init(() => _cheatsManager.SetLanguage(_inputField.text));

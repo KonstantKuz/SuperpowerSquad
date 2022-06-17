@@ -1,6 +1,7 @@
 ﻿using Feofun.Config;
 using Feofun.Config.Serializers;
 using Feofun.Localization.Config;
+using Survivors.App.Config;
 using Survivors.Config;
 using Survivors.Enemy.Spawn.Config;
 using Survivors.Loot.Config;
@@ -29,7 +30,8 @@ namespace Survivors.App
                 .RegisterSingle<SquadConfig>(Configs.SQUAD)
                 .RegisterStringKeyedCollection<ParameterUpgradeConfig>(Configs.MODIFIERS)
                 .RegisterSingle<UpgradesConfig>(Configs.UPGRADES)     
-                .RegisterSingle<UpgradeBranchSelectionConfig>(Configs.CONSTANTS)
+                .RegisterSingle<UpgradeBranchSelectionConfig>(Configs.CONSTANTS)  
+                .RegisterSingle<ConstantsConfig>(Configs.CONSTANTS)
                 .RegisterSingle<HpsSpawnerConfigLoader>(Configs.ENEMY_SPAWNER)
                 .RegisterStringKeyedCollection<LevelMissionConfig>(Configs.LEVEL_MISSION);
         }
