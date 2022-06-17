@@ -112,6 +112,7 @@ namespace Survivors.Units.Service
             {
                 var unit = candidatesFromNewestToOldest[idx];
                 var enemyModel = unit.Model as EnemyUnitModel;
+                Assert.IsNotNull(unit.Health);
                 var sumLevel = enemyModel.CalculateLevelOfHealth(unit.Health.CurrentValue.Value + health);
                 if (sumLevel <= _lastSpawnedLevel)
                 {
@@ -129,6 +130,8 @@ namespace Survivors.Units.Service
 
         private void Merge(Unit first, Unit second)
         {
+            Assert.IsNotNull(first.Health);
+            Assert.IsNotNull(second.Health);
             second.Health.Add(first.Health.CurrentValue.Value, true);
             first.Kill(DeathCause.Removed);
         }

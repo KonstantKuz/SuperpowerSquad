@@ -1,8 +1,8 @@
 ﻿namespace Survivors.Units.Messages
 {
-    public struct UnitSpawnedMessage
+    public readonly struct UnitSpawnedMessage
     {
-        public IUnit Unit;
+        public readonly IUnit Unit;
 
         public UnitSpawnedMessage(IUnit unit)
         {
