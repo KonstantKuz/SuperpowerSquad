@@ -1,10 +1,12 @@
 ﻿
 using System.Collections.Generic;
+using Newtonsoft.Json;
 
 namespace Survivors.Player.Model
 {
     public class PlayerProgress
     {
+        //[JsonProperty]
         private readonly Dictionary<int, int> _passCount = new Dictionary<int, int>();
 
         public int GameCount { get; set; }
