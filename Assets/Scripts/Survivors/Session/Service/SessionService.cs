@@ -22,8 +22,6 @@ namespace Survivors.Session.Service
     {
         private readonly IntReactiveProperty _kills = new IntReactiveProperty(0);
         
-        private float _startTime;        
-        
         [Inject] private EnemyWavesSpawner _enemyWavesSpawner;
         [Inject] private EnemyHpsSpawner _enemyHpsSpawner;
         [Inject] private EnemyWavesConfig _enemyWavesConfig;
@@ -38,12 +36,13 @@ namespace Survivors.Session.Service
         [Inject] private Analytics.Analytics _analytics;
         
         private PlayerProgress PlayerProgress => _playerProgressService.Progress;
-        
         private Model.Session Session => _repository.Require();
         
         public IReadOnlyReactiveProperty<int> Kills => _kills;
-
-        public float SessionTime => Time.time - _startTime;
+        public LevelMissionConfig LevelConfig => _levelsConfig.Values[LevelId];
+        public int LevelId => Mathf.Min(PlayerProgress.LevelNumber, _levelsConfig.Count() - 1);
+        public float SessionTime => Session.SessionTime;
+        
         
         public void OnWorldSetup()
         {
@@ -59,13 +58,9 @@ namespace Survivors.Session.Service
             SpawnUnits();
             _analytics.ReportLevelStart(LevelId);
         }
-        public LevelMissionConfig LevelConfig => _levelsConfig.Values[LevelId];
-
-        public int LevelId => Mathf.Min(PlayerProgress.LevelNumber, _levelsConfig.Count() - 1);
 
         private void CreateSession()
         {
-            _startTime = Time.time;
             var levelConfig = LevelConfig;
             var newSession = Model.Session.Build(levelConfig);
             _repository.Set(newSession);

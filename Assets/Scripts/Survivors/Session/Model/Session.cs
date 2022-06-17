@@ -1,11 +1,13 @@
 ﻿using Survivors.Session.Config;
 using Survivors.Units;
+using UnityEngine;
 
 namespace Survivors.Session.Model
 {
     public class Session
     {
         private readonly LevelMissionConfig _levelMissionConfig;
+        private float _startTime;        
         public int Kills { get; private set; }
         public SessionResult? Result { get; private set; }
         
@@ -14,6 +16,7 @@ namespace Survivors.Session.Model
         private Session(LevelMissionConfig levelMissionConfig)
         {
             _levelMissionConfig = levelMissionConfig;
+            _startTime = Time.time;
         }
         public static Session Build(LevelMissionConfig levelMissionConfig) => new Session(levelMissionConfig);
         
@@ -23,5 +26,6 @@ namespace Survivors.Session.Model
         }
         public void AddKill() => Kills++;
         
+        public float SessionTime => Time.time - _startTime;        
     }
 }

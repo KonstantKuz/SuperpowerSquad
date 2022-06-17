@@ -1,10 +1,10 @@
 Id,English,Russian
-Tap to place unit,Tap to place unit,"Нажмите на юнита, чтобы поместить его на поле"
-Victory,Victory,Победа
-Defeat,Defeat,Поражение
-Next,Next,Далее
-Enemies left,Enemies left: {0},Осталось врагов: {0}
-Reload,Reload,Переиграть
+Tap to place unit,Tap to place unit,Tap to place unit
+Victory,Victory,Victory
+Defeat,Defeat,Defeat
+Next,Next,Next
+Enemies left,Enemies left: {0},Enemies left: {0}
+Reload,Reload,Reload
 RocketUnit,Rocket launcher,Rocket launcher
 PyroUnit,Flamethrower,Flamethrower
 SniperUnit,Sniper rifle,Sniper rifle

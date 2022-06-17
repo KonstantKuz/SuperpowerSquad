@@ -1,4 +1,4 @@
-﻿namespace Survivors.Analytics.Wrapper
+﻿namespace Survivors.Analytics
 {
     public static class Events
     {

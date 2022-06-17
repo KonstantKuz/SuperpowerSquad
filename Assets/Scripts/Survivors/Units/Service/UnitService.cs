@@ -38,8 +38,6 @@ namespace Survivors.Units.Service
         }
         public void DeactivateAll() => AllUnits.ForEach(u => { u.IsActive = false; });
         public bool HasUnitOfType(UnitType unitType) => _units.ContainsKey(unitType) && _units[unitType].Any();
-        
-
 
         private void OnDeathUnit(IUnit unit, DeathCause deathCause)
         {
@@ -54,5 +52,13 @@ namespace Survivors.Units.Service
 
         public IEnumerable<IUnit> GetAllUnitsOfType(UnitType unitType) =>
             _units.ContainsKey(unitType) ? _units[unitType] : Enumerable.Empty<IUnit>();
+        
+        //TODO: seems that there are problems with IUnit interface. Should we get rid of it? 
+        public IEnumerable<Unit> GetEnemyUnits()
+        {
+            return GetAllUnitsOfType(UnitType.ENEMY)
+                .Select(it => it as Unit)
+                .Where(it => it != null);
+        }
     }
 }

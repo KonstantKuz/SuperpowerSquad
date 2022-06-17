@@ -37,7 +37,8 @@ namespace Survivors.Cheats
         }
         
         public void IncreaseSquadLevel() => _squadProgressService.IncreaseLevel();
-        public void AddRandomSquadUpgrade() => _upgradeService.AddRandomUpgrade();
+        public void AddRandomSquadUpgrade() => _upgradeService.AddRandomUpgrade();   
+        public void ApplyAllSquadUpgrades() => _upgradeService.ApplyAllUpgrades();
      
         public void SetLanguage(string language)
         {

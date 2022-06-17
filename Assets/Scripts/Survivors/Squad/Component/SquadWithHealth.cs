@@ -1,5 +1,4 @@
 ﻿using Feofun.Components;
-using Survivors.Units;
 using Survivors.Units.Component.Health;
 
 namespace Survivors.Squad.Component

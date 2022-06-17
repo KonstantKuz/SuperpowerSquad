@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
 using Facebook.Unity;
-using Survivors.Player.Model;
-using Survivors.Session.Config;
 using UnityEngine;
 
 namespace Survivors.Analytics.Wrapper

@@ -8,7 +8,6 @@ using JetBrains.Annotations;
 using Survivors.Location;
 using Survivors.Modifiers;
 using Survivors.Modifiers.Config;
-using Survivors.Session;
 using Survivors.Squad.Upgrade.Config;
 using Survivors.Squad.UpgradeSelection;
 using Survivors.Units;
@@ -39,6 +38,15 @@ namespace Survivors.Squad.Upgrade
         public void AddRandomUpgrade()
         {
             Upgrade(_config.GetUpgradeBranchIds().ToList().Random());
+        } 
+        public void ApplyAllUpgrades()
+        {
+            foreach (string upgradeBranchId in _config.GetUpgradeBranchIds()) {
+                var upgradeBranchConfig = _config.GetUpgradeBranch(upgradeBranchId);
+                for (int i = 0; i < upgradeBranchConfig.MaxLevel; i++) {
+                    Upgrade(upgradeBranchId);
+                }
+            }
         }
         
         public void Upgrade(string upgradeBranchId)
