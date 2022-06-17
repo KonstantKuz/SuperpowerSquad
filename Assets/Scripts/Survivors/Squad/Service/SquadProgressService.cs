@@ -19,7 +19,7 @@ namespace Survivors.Squad.Service
         private SquadProgressRepository _repository;
         [Inject]
         private StringKeyedConfigCollection<SquadLevelConfig> _levelConfig;
-        public IObservable<int> Level => _level;    
+        public IReadOnlyReactiveProperty<int> Level => _level;    
         public IObservable<int> Exp => _exp;
         private SquadProgress Progress => _repository.Require();
         

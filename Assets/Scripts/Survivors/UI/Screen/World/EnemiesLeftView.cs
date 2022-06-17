@@ -25,7 +25,7 @@ namespace Survivors.UI.Screen.World
 
         private void OnKill(int killedCount)
         {
-            var enemiesLeft = Math.Max(_sessionService.GetLevelConfig().KillCount - killedCount, 0);
+            var enemiesLeft = Math.Max(_sessionService.LevelConfig.KillCount - killedCount, 0);
             _text.SetTextFormatted(_text.LocalizationId, enemiesLeft);
         }
 
