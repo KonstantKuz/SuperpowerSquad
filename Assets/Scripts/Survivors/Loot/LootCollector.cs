@@ -2,6 +2,7 @@
 using System.Linq;
 using Feofun.Components;
 using Survivors.Loot.Service;
+using Survivors.Session.Service;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -19,6 +20,8 @@ namespace Survivors.Loot
 
         [Inject]
         private DroppingLootService _lootService;
+        [Inject]
+        private SessionService _sessionService;
 
         private Squad.Squad _squad;
         private CompositeDisposable _disposable;
@@ -34,10 +37,12 @@ namespace Survivors.Loot
 
         private void OnTriggerEnter(Collider other)
         {
+            if (_sessionService.SessionCompleted) {
+                return;
+            }
             if (!other.TryGetComponent(out DroppingLoot loot)) {
                 return;
             }
-
             _movingLoots.Add(loot);
         }
 

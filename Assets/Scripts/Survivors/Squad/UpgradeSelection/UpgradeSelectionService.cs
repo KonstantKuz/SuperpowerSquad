@@ -5,6 +5,7 @@ using Feofun.UI.Dialog;
 using ModestTree;
 using Survivors.Location;
 using Survivors.Session;
+using Survivors.Session.Service;
 using Survivors.Squad.Service;
 using Survivors.Squad.Upgrade;
 using Survivors.Squad.Upgrade.Config;
@@ -34,9 +35,11 @@ namespace Survivors.Squad.UpgradeSelection
         [Inject]
         private SquadUpgradeRepository _repository;
         [Inject]
-        private UpgradeService _upgradeService;    
+        private UpgradeService _upgradeService;
         [Inject]
         private World _world;
+        [Inject] 
+        private Analytics.Analytics _analytics;
 
         private CompositeDisposable _disposable;
         private SquadUpgradeState SquadUpgradeState => _repository.Require();
@@ -70,6 +73,7 @@ namespace Survivors.Squad.UpgradeSelection
         private void OnUpgrade(string upgradeBranchId)
         {
             _upgradeService.Upgrade(upgradeBranchId);
+            _analytics.ReportLevelUp(upgradeBranchId);
             _dialogManager.Show<PauseDialog>();
         }
 

@@ -8,6 +8,7 @@ using Survivors.Player.Model;
 using Survivors.Player.Service;
 using Survivors.Session.Config;
 using Survivors.Session.Messages;
+using Survivors.Session.Model;
 using Survivors.Squad;
 using Survivors.Units;
 using Survivors.Units.Service;
@@ -32,11 +33,16 @@ namespace Survivors.Session.Service
         [Inject] private SessionRepository _repository;
         [Inject] private readonly StringKeyedConfigCollection<LevelMissionConfig> _levelsConfig;
         [Inject] private PlayerProgressService _playerProgressService;
-        private PlayerProgress PlayerProgress => _playerProgressService.Progress;
+        [Inject] private Analytics.Analytics _analytics;
         
+        private PlayerProgress PlayerProgress => _playerProgressService.Progress;
         private Model.Session Session => _repository.Require();
         
         public IReadOnlyReactiveProperty<int> Kills => _kills;
+        public LevelMissionConfig LevelConfig => _levelsConfig.Values[LevelId];
+        public int LevelId => Mathf.Min(PlayerProgress.LevelNumber, _levelsConfig.Count() - 1);
+        public float SessionTime => Session.SessionTime;
+        public bool SessionCompleted => _repository.Exists() && Session.Completed;
         
         public void OnWorldSetup()
         {
@@ -50,13 +56,16 @@ namespace Survivors.Session.Service
             CreateSession();
             CreateSquad();
             SpawnUnits();
+            _analytics.ReportLevelStart(LevelId);
         }
-        public LevelMissionConfig GetLevelConfig() => _levelsConfig.Values[Mathf.Min(PlayerProgress.WinCount, _levelsConfig.Count() - 1)];
+
         private void CreateSession()
         {
-            var newSession = Model.Session.Build(GetLevelConfig());
+            var levelConfig = LevelConfig;
+            var newSession = Model.Session.Build(levelConfig);
             _repository.Set(newSession);
-            Debug.Log($"Kill enemies:= {GetLevelConfig().KillCount}");
+            _playerProgressService.OnSessionStarted(levelConfig.Level);
+            Debug.Log($"Kill enemies:= {levelConfig.KillCount}");
         }
     
         private void CreateSquad()
@@ -95,6 +104,7 @@ namespace Survivors.Session.Service
             _unitService.DeactivateAll();
             _world.Squad.IsActive = false;
 
+            _analytics.ReportLevelFinished(Session.Result == SessionResult.Win);
             _messenger.Publish(new SessionEndMessage(Session.Result.Value));
 
         }
