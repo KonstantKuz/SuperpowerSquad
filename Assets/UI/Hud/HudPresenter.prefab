@@ -143,11 +143,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: de941a4042e53a54a9cd7e3002f3bdb9, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 0.982
+  m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
@@ -230,4 +230,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _progressBar: {fileID: 7991195432191985122}
   _barContainer: {fileID: 7288966945514880519}
-  _scaleIncrementFactor: 1
