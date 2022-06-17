@@ -42,7 +42,7 @@ namespace Survivors.Session.Service
         public LevelMissionConfig LevelConfig => _levelsConfig.Values[LevelId];
         public int LevelId => Mathf.Min(PlayerProgress.LevelNumber, _levelsConfig.Count() - 1);
         public float SessionTime => Session.SessionTime;
-        
+        public bool SessionCompleted => _repository.Exists() && Session.Completed;
         
         public void OnWorldSetup()
         {
