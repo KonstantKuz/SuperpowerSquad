@@ -7,11 +7,13 @@ namespace Survivors.Session.Model
     public class Session
     {
         private readonly LevelMissionConfig _levelMissionConfig;
-        private float _startTime;        
+        private readonly float _startTime;        
         public int Kills { get; private set; }
         public SessionResult? Result { get; private set; }
         
         public bool IsMaxKills => Kills >= _levelMissionConfig.KillCount;
+
+        public bool Completed => Result.HasValue;
         
         private Session(LevelMissionConfig levelMissionConfig)
         {
