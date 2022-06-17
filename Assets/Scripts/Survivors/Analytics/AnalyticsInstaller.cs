@@ -12,6 +12,7 @@ namespace Survivors.Analytics
                 .AsSingle()
                 .WithArguments(new IAnalyticsImpl[]
                 {
+                    new LoggingAnalyticsWrapper(),
                     new AppMetricaAnalyticsWrapper(),
                     new AppsFlyerAnalyticsWrapper(),
                     //TODO: not a good decision - will cause bugs in FacebookAnalyticsWrapper that are only reproduced on android/ios

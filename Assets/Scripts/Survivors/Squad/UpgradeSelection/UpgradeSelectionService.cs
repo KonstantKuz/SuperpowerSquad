@@ -37,6 +37,8 @@ namespace Survivors.Squad.UpgradeSelection
         private UpgradeService _upgradeService;    
         [Inject]
         private World _world;
+        [Inject] 
+        private Analytics.Analytics _analytics;
 
         private CompositeDisposable _disposable;
         private SquadUpgradeState SquadUpgradeState => _repository.Require();
@@ -70,6 +72,7 @@ namespace Survivors.Squad.UpgradeSelection
         private void OnUpgrade(string upgradeBranchId)
         {
             _upgradeService.Upgrade(upgradeBranchId);
+            _analytics.ReportLevelUp(upgradeBranchId);
             _dialogManager.Show<PauseDialog>();
         }
 

@@ -36,11 +36,6 @@ namespace Survivors.Analytics.Wrapper
             Time.timeScale = !isVisible ? 0 : 1;
         }
 
-        public void ReportTest()
-        {
-            LogEvent("Test", null, new Dictionary<string, object>());
-        }
-
         private void LogEvent(string logEvent, float? valueToSum = null, Dictionary<string, object> parameters = null)
         {
             if (!_isInitialized)
@@ -50,6 +45,11 @@ namespace Survivors.Analytics.Wrapper
                 return;
             }
             FB.LogAppEvent(logEvent, valueToSum, parameters);
+        }
+
+        public void ReportEventWithParams(string eventName, Dictionary<string, object> eventParams)
+        {
+            LogEvent(eventName, null, eventParams);
         }
     }
 }
