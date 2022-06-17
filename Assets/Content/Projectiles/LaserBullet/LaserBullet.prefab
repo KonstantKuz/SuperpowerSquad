@@ -81,6 +81,7 @@ MonoBehaviour:
   _hitVfx: {fileID: 1814342322200015211, guid: 8d42205bab19a784ea343039566f929f, type: 3}
   _lineRenderer: {fileID: 6116303466062220547}
   _collider: {fileID: 5851485773453743659}
+  _widthFactor: 0.55
 --- !u!1 &3097353024524131729
 GameObject:
   m_ObjectHideFlags: 0
