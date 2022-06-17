@@ -5,6 +5,7 @@ using Feofun.UI.Dialog;
 using ModestTree;
 using Survivors.Location;
 using Survivors.Session;
+using Survivors.Session.Service;
 using Survivors.Squad.Service;
 using Survivors.Squad.Upgrade;
 using Survivors.Squad.Upgrade.Config;
@@ -34,7 +35,9 @@ namespace Survivors.Squad.UpgradeSelection
         [Inject]
         private SquadUpgradeRepository _repository;
         [Inject]
-        private UpgradeService _upgradeService;    
+        private UpgradeService _upgradeService;     
+        [Inject]
+        private SessionService _sessionService;    
         [Inject]
         private World _world;
         [Inject] 
@@ -52,7 +55,7 @@ namespace Survivors.Squad.UpgradeSelection
         
         private void OnSquadLevelUpgrade(int level)
         {
-            if (level <= 1) {
+            if (level <= 1 || _sessionService.SessionCompleted) {
                 return;
             }
             TryShowUpgradeDialog(level);
