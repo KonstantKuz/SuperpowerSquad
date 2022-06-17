@@ -35,9 +35,7 @@ namespace Survivors.Squad.UpgradeSelection
         [Inject]
         private SquadUpgradeRepository _repository;
         [Inject]
-        private UpgradeService _upgradeService;     
-        [Inject]
-        private SessionService _sessionService;    
+        private UpgradeService _upgradeService;
         [Inject]
         private World _world;
         [Inject] 
@@ -55,7 +53,7 @@ namespace Survivors.Squad.UpgradeSelection
         
         private void OnSquadLevelUpgrade(int level)
         {
-            if (level <= 1 || _sessionService.SessionCompleted) {
+            if (level <= 1) {
                 return;
             }
             TryShowUpgradeDialog(level);
