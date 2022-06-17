@@ -106,7 +106,7 @@ namespace Survivors.Units.Service
 
         private void Merge(Unit first, Unit second)
         {
-            second.Health.Add(first.Health.CurrentValue.Value);
+            second.Health.Add(first.Health.CurrentValue.Value, true);
             first.Kill(DeathCause.Removed);
         }
 

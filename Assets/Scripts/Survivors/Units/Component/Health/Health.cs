@@ -51,9 +51,10 @@ namespace Survivors.Units.Component.Health
             OnDamageTaken = null;
         }
         
-        private void ChangeHealth(float delta)
+        private void ChangeHealth(float delta, bool allowOverMax = false)
         {
-            _currentHealth.Value = Mathf.Min(Mathf.Max(0, _currentHealth.Value + delta), MaxValue.Value);
+            var newValue = Mathf.Max(0, _currentHealth.Value + delta);
+            _currentHealth.Value = allowOverMax ?  newValue : Mathf.Min(newValue, MaxValue.Value);
         }
         
         private void OnDestroy()
@@ -77,11 +78,10 @@ namespace Survivors.Units.Component.Health
             ChangeHealth(delta);
         }
 
-
-        public void Add(float value)
+        public void Add(float value, bool allowOverMax = false)
         {
             Assert.IsTrue(value >= 0);
-            ChangeHealth(value);
+            ChangeHealth(value, allowOverMax);
         }
     }
 }
