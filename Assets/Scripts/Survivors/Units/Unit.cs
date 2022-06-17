@@ -105,6 +105,7 @@ namespace Survivors.Units
 
         private void OnDestroy()
         {
+            if (IsActive) Kill(DeathCause.Removed);
             _unitService.Remove(this);
             _updateManager.StopUpdate(UpdateComponents);
         }
