@@ -109,7 +109,7 @@ namespace Survivors.Analytics
 
             var eventParams = GetLevelParams();
             eventParams[EventParams.PASS_NUMBER] = playerProgress.GetPassCount(levelConfig.Level);
-            eventParams[EventParams.SQUAD_LEVEL] = _squadProgressService.Level;
+            eventParams[EventParams.SQUAD_LEVEL] = _squadProgressService.Level.Value;
             eventParams[EventParams.TIME_SINCE_LEVEL_START] = _sessionService.SessionTime;
             eventParams[EventParams.ENEMY_KILLER] = _sessionService.Kills.Value;
             eventParams[EventParams.LEVEL_RESULT] = isPlayerWinner ? "win" : "lose";
