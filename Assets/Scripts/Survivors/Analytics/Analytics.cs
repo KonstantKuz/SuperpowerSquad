@@ -15,6 +15,7 @@ using Survivors.Units;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Service;
 using UnityEngine;
+using UnityEngine.Assertions;
 using Zenject;
 
 namespace Survivors.Analytics
@@ -104,7 +105,7 @@ namespace Survivors.Analytics
         {
             var playerProgress = _playerProgressService.Progress;
             var levelConfig = _levelsConfig.Values[_sessionService.LevelId];
-            var enemies = GetEnemyUnits().ToList();
+            var enemies = _unitService.GetEnemyUnits().ToList();
 
             var eventParams = GetLevelParams();
             eventParams[EventParams.PASS_NUMBER] = playerProgress.GetPassCount(levelConfig.Level);
@@ -121,6 +122,7 @@ namespace Survivors.Analytics
 
         private float GetStandRatio()
         {
+            Assert.IsNotNull(_world.Squad, "Should call this method only inside game session");
             return _world.Squad.GetComponent<MovementAnalytics>().StandingTime /
                    _sessionService.SessionTime;
         }
@@ -131,14 +133,6 @@ namespace Survivors.Analytics
                 .Select(it => it.GetComponent<Health>())
                 .Where(it => it != null).
                 Sum(it => it.CurrentValue.Value);
-        }
-
-        private IEnumerable<Unit> GetEnemyUnits()
-        {
-            return _unitService.AllUnits
-                .Where(it => it.UnitType == UnitType.ENEMY)
-                .Select(it => it as Unit)
-                .Where(it => it != null);
         }
     }
 }
