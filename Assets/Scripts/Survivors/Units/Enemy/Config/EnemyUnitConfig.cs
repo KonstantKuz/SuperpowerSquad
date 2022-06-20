@@ -1,7 +1,6 @@
 using System.Runtime.Serialization;
 using Feofun.Config;
 using Survivors.Loot.Config;
-using UnityEngine;
 
 namespace Survivors.Units.Enemy.Config
 {
@@ -11,8 +10,6 @@ namespace Survivors.Units.Enemy.Config
         
         [DataMember(Name = "Id")] 
         private string _id;
-
-        public string Id => _id; 
         [DataMember] 
         public int Health;
         [DataMember] 
@@ -20,14 +17,17 @@ namespace Survivors.Units.Enemy.Config
         [DataMember] 
         public EnemyAttackConfig EnemyAttackConfig;
         [DataMember] 
-        public DroppingLootConfig DroppingLootConfig;
+        public DroppingLootConfig DroppingLootConfig;      
+        [DataMember] 
+        public EnemyScaleConfig EnemyScaleConfig;
         [DataMember] 
         public int HealthStep;
-        [DataMember]
-        public float ScaleStep;
-
-        public float GetScaleForLevel(int level) => Mathf.Pow(ScaleStep, level - MIN_LEVEL);
-
+        
+        public string Id => _id; 
+        
         public int GetHealthForLevel(int level) => Health + (level - MIN_LEVEL) * HealthStep;
+        public float CalculateScale(int level) => EnemyScaleConfig.CalculateScale(level);
+
+
     }
 }

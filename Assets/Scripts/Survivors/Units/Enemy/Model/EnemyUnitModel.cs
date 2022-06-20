@@ -14,8 +14,7 @@ namespace Survivors.Units.Enemy.Model
         public int Level { get; }
         public IHealthModel HealthModel { get; }
         public IAttackModel AttackModel { get; }
-        public EnemyScaleModel ScaleModel { get; }
-        
+
         public EnemyUnitModel(EnemyUnitConfig config, int level = 1)
         {
             Assert.IsTrue(level >= EnemyUnitConfig.MIN_LEVEL);
@@ -23,16 +22,14 @@ namespace Survivors.Units.Enemy.Model
             Id = config.Id;
             MoveSpeed = config.MoveSpeed;
             Level = level;
-            ScaleModel = new EnemyScaleModel(config, level);
             HealthModel = new EnemyHealthModel(config.GetHealthForLevel(level));
             AttackModel = new EnemyAttackModel(config.EnemyAttackConfig);
         }
-
         public int CalculateLevelOfHealth(float currentHealth)
         {
             return currentHealth <= _config.Health ? EnemyUnitConfig.MIN_LEVEL : EnemyUnitConfig.MIN_LEVEL + (int) Mathf.Ceil((currentHealth - _config.Health) / _config.HealthStep);
         }
-
+        public float CalculateScale(int level) => _config.CalculateScale(level);
         public void AddModifier(IModifier modifier)
         {
             //do nothing
