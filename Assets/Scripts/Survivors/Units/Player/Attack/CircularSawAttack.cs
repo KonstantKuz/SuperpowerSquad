@@ -61,7 +61,7 @@ namespace Survivors.Units.Player.Attack
             return projectileParams;
         }
 
-        public void OnDeath()
+        public void OnDeath(DeathCause deathCause)
         {
             Dispose();
         }

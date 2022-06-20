@@ -2,6 +2,6 @@
 {
     public interface IUnitDeathEventReceiver
     {
-        void OnDeath();
+        void OnDeath(DeathCause deathCause);
     }
 }

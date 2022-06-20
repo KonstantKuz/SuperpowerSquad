@@ -11,6 +11,7 @@ using Survivors.Units.Enemy;
 using Survivors.Units.Enemy.Config;
 using Survivors.Units.Service;
 using UnityEngine;
+using UnityEngine.AI;
 using Zenject;
 
 namespace Survivors.Enemy.Spawn
@@ -124,7 +125,17 @@ namespace Survivors.Enemy.Spawn
             return Mathf.Sqrt(waveConfig.Count) * enemyConfig.CalculateScale(waveConfig.EnemyLevel);
         }
 
-        public bool IsPlaceBusy(Vector3 place, EnemyWaveConfig waveConfig)
+        public bool IsPlaceValid(Vector3 place, EnemyWaveConfig waveConfig)
+        {
+            return IsPlaceOnNavMesh(place) && !IsPlaceBusy(place, waveConfig);
+        }
+
+        private bool IsPlaceOnNavMesh(Vector3 place)
+        {
+            return NavMesh.SamplePosition(place, out var hit, 1f, NavMesh.AllAreas);
+        }
+
+        private bool IsPlaceBusy(Vector3 place, EnemyWaveConfig waveConfig)
         {
             var isBusy = Physics.CheckSphere(place, GetWaveRadius(waveConfig), 1 << ENEMY_LAYER);
             Debugger.Debug(place, GetWaveRadius(waveConfig), isBusy);

@@ -59,7 +59,7 @@ namespace Survivors.Units.Player.Movement
         {
             StopAnimation();
         }
-        public void OnDeath()
+        public void OnDeath(DeathCause deathCause)
         {
             StopAnimation();
         }

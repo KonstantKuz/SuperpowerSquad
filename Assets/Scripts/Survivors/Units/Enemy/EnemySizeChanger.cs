@@ -3,6 +3,7 @@ using Feofun.Components;
 using Survivors.Extension;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Enemy.Model;
+using UniRx;
 using UnityEngine;
 
 namespace Survivors.Units.Enemy
@@ -11,6 +12,8 @@ namespace Survivors.Units.Enemy
     {
         private Health _health;
         private EnemyUnitModel _enemyModel;
+        
+        private CompositeDisposable _disposable = new CompositeDisposable();
         
         public void Init(IUnit unit)
         { 
@@ -21,10 +24,10 @@ namespace Survivors.Units.Enemy
             _enemyModel = enemyModel;
             UpdateScale(_enemyModel.Level);
             _health = gameObject.RequireComponent<Health>();
-            _health.OnDamageTaken += OnDamageTaken;
+            _health.CurrentValue.Subscribe(it => OnHealthChanged()).AddTo(_disposable);
         }
         
-        private void OnDamageTaken()
+        private void OnHealthChanged()
         {
             var currentHealth = _health.CurrentValue.Value;
             var level = _enemyModel.CalculateLevelOfHealth(currentHealth);
@@ -37,7 +40,8 @@ namespace Survivors.Units.Enemy
         }
         private void OnDestroy()
         {
-            _health.OnDamageTaken -= OnDamageTaken;
+            _disposable?.Dispose();
+            _health.OnDamageTaken -= OnHealthChanged;
         }
     }
 }

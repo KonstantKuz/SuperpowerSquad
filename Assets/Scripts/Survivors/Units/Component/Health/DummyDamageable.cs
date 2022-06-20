@@ -9,7 +9,7 @@ namespace Survivors.Units.Component.Health
         {
         }
 
-        public event Action OnDeath = delegate { };
+        public event Action<DeathCause> OnDeath = delegate { };
         public event Action OnDamageTaken = delegate { };
         public bool DamageEnabled { get; set; }
     }

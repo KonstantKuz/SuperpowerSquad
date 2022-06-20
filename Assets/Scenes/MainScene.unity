@@ -197,15 +197,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d085b8452a1414a9b3d9185f8721891, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &498003042 stripped
+--- !u!114 &651895939 stripped
 MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 186752239828696303, guid: d6eb7c9c829425d47a84bcef4eeb0c9e, type: 3}
-  m_PrefabInstance: {fileID: 8746036833688596024}
+  m_CorrespondingSourceObject: {fileID: 4730046974365000937, guid: 35125c194a51b14489fcf91a7da5dd53, type: 3}
+  m_PrefabInstance: {fileID: 3514698042878797253}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79ff066e7a284f8ab029117d16b0ac49, type: 3}
+  m_Script: {fileID: 11500000, guid: 7a47f546fc70ec8428172694e78e4288, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!108 &705507994 stripped
@@ -304,20 +304,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _uiRoot: {fileID: 3514698042878797254}
-  _joystick: {fileID: 1042008005}
+  _joystick: {fileID: 651895939}
   _screenSwitcher: {fileID: 146805515}
   _dialogManager: {fileID: 3514698042878797255}
---- !u!114 &1042008005 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 4730046974365000937, guid: 35125c194a51b14489fcf91a7da5dd53, type: 3}
-  m_PrefabInstance: {fileID: 3514698042878797253}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a47f546fc70ec8428172694e78e4288, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1001 &1257474701
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -520,6 +509,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 890832872036294936, guid: 35125c194a51b14489fcf91a7da5dd53, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 1.4530029
+      objectReference: {fileID: 0}
     - target: {fileID: 3514698043046846563, guid: 35125c194a51b14489fcf91a7da5dd53, type: 3}
       propertyPath: m_Name
       value: UI
@@ -647,10 +640,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1866441843583567248, guid: d6eb7c9c829425d47a84bcef4eeb0c9e, type: 3}
-      propertyPath: _enemyHpsSpawner
-      value: 
-      objectReference: {fileID: 498003042}
     - target: {fileID: 8746036833993048137, guid: d6eb7c9c829425d47a84bcef4eeb0c9e, type: 3}
       propertyPath: m_Name
       value: Location

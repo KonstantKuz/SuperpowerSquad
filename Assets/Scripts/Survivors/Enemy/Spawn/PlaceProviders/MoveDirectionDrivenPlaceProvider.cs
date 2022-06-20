@@ -28,7 +28,7 @@ namespace Survivors.Enemy.Spawn.PlaceProviders
             }
 
             var position = GetSpawnPlaceByDestination(waveConfig, rangeTry);
-            var isValid = !_wavesSpawner.IsPlaceBusy(position, waveConfig);
+            var isValid = _wavesSpawner.IsPlaceValid(position, waveConfig);
             return new SpawnPlace {IsValid = isValid, Position = position};
         }
         
