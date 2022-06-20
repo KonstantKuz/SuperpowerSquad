@@ -12,30 +12,6 @@ namespace Survivors.Units.Service
 {
     public class EnemyRemovalService: MonoBehaviour, IWorldScope
     {
-        private class UnitComparer : IComparer<Unit>
-        {
-            public int Compare(Unit x, Unit y)
-            {
-                if (x == null && y == null)
-                {
-                    return 0;
-                }
-
-                if (x == null)
-                {
-                    return -1;
-                }
-
-                if (y == null)
-                {
-                    return 1;
-                }
-
-                var result = x.LifeTime.CompareTo(y.LifeTime);
-                return result == 0 ? x.GetInstanceID().CompareTo(y.GetInstanceID()) : result;
-            }
-        }
-
         [SerializeField] private int _softLimit;
         [SerializeField] private int _hardLimit;
         [SerializeField] private float _minRemovalAge;
@@ -171,5 +147,31 @@ namespace Survivors.Units.Service
             unit.OnDeath -= OnUnitDeath;
             _units.Remove(unit as Unit);
         }
+        
+        #region UnitComparer
+        private class UnitComparer : IComparer<Unit>
+        {
+            public int Compare(Unit x, Unit y)
+            {
+                if (x == null && y == null)
+                {
+                    return 0;
+                }
+
+                if (x == null)
+                {
+                    return -1;
+                }
+
+                if (y == null)
+                {
+                    return 1;
+                }
+
+                var result = x.LifeTime.CompareTo(y.LifeTime);
+                return result == 0 ? x.GetInstanceID().CompareTo(y.GetInstanceID()) : result;
+            }
+        }
+        #endregion        
     }
 }
