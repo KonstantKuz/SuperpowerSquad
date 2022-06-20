@@ -19,7 +19,7 @@ namespace Survivors.Units.Enemy.Config
         
         private float GetMultiplicationScaleFactor(int level)
         {
-            level = level > MultiplicationScaleLimitLevel ? MultiplicationScaleLimitLevel : level;
+            level = Mathf.Clamp(level, EnemyUnitConfig.MIN_LEVEL, MultiplicationScaleLimitLevel);
             return Mathf.Pow(MultiplicationScaleStepFactor, level - EnemyUnitConfig.MIN_LEVEL);
         }       
         private float GetIncrementValue(int level)
