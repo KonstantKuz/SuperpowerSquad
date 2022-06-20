@@ -24,6 +24,7 @@ namespace Survivors.Units.Player.Attack
             _currentClipSize = _clipSize;
             AttackTime = attackTime;
             _reloadTime = reloadTime;
+            _lastAttackTime = Time.time % AttackTime.Value;
         }
 
         public void OnAttack()
