@@ -130,7 +130,7 @@ namespace Survivors.Analytics
         private static float SumHealth(List<Unit> enemies)
         {
             return enemies
-                .Select(it => it.GetComponent<Health>())
+                .Select(it => it.Health)
                 .Where(it => it != null).
                 Sum(it => it.CurrentValue.Value);
         }

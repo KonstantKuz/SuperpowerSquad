@@ -26,9 +26,11 @@ namespace Survivors.Loot.Service
         {
             _unitService.OnEnemyUnitDeath += TrySpawnLoot;
         }
-        
-        public void TrySpawnLoot(IUnit unit)
+
+        private void TrySpawnLoot(IUnit unit, DeathCause deathCause)
         {
+            if (deathCause != DeathCause.Killed) return;
+            
             var lootConfig = _droppingLoots.Values.FirstOrDefault(it => it.EnemyId == unit.Model.Id);
             if (lootConfig == null)
             {

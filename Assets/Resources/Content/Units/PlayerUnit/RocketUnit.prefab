@@ -244,7 +244,7 @@ PrefabInstance:
     - target: {fileID: 4331444546958184133, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
       propertyPath: _ammo
       value: 
-      objectReference: {fileID: 6667546112043371410, guid: b287a6cc7ee20284eb8d0ca0baf0a87b, type: 3}
+      objectReference: {fileID: 3909080536034138568, guid: b287a6cc7ee20284eb8d0ca0baf0a87b, type: 3}
     - target: {fileID: 4331444546958184133, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
       propertyPath: _aimInXZPlane
       value: 1

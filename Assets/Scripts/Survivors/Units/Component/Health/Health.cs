@@ -3,6 +3,7 @@ using Feofun.Extension;
 using Survivors.Units.Model;
 using UniRx;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 namespace Survivors.Units.Component.Health
 {
@@ -17,7 +18,7 @@ namespace Survivors.Units.Component.Health
         public IReadOnlyReactiveProperty<float> CurrentValue => _currentHealth;
         public bool DamageEnabled { get; set; }
         
-        public event Action OnDeath;
+        public event Action<DeathCause> OnDeath;
         public event Action OnDamageTaken;
         
         public void Init(IHealthModel health)
@@ -45,14 +46,15 @@ namespace Survivors.Units.Component.Health
         private void Die()
         {
             DamageEnabled = false;
-            OnDeath?.Invoke();
+            OnDeath?.Invoke(DeathCause.Killed);
             OnDeath = null;
             OnDamageTaken = null;
         }
         
-        private void ChangeHealth(float delta)
+        private void ChangeHealth(float delta, bool allowOverMax = false)
         {
-            _currentHealth.Value = Mathf.Min(Mathf.Max(0, _currentHealth.Value + delta), MaxValue.Value);
+            var newValue = Mathf.Max(0, _currentHealth.Value + delta);
+            _currentHealth.Value = allowOverMax ?  newValue : Mathf.Min(newValue, MaxValue.Value);
         }
         
         private void OnDestroy()
@@ -76,6 +78,10 @@ namespace Survivors.Units.Component.Health
             ChangeHealth(delta);
         }
 
-
+        public void Add(float value, bool allowOverMax = false)
+        {
+            Assert.IsTrue(value >= 0);
+            ChangeHealth(value, allowOverMax);
+        }
     }
 }

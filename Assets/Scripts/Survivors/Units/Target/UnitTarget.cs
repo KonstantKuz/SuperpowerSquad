@@ -40,7 +40,7 @@ namespace Survivors.Units.Target
             _targetService.Add(this);
         }
 
-        public void OnDeath()
+        public void OnDeath(DeathCause deathCause)
         {
             if (!IsAlive) return;
             IsAlive = false;

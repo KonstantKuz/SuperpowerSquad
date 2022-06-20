@@ -23,7 +23,7 @@ namespace Survivors.Units.Component.Health
         {
             _damageable = gameObject.GetComponent<IDamageable>();
             _damageable.OnDamageTaken += React;
-            _damageable.OnDeath += Dispose;
+            _damageable.OnDeath += OnKilled;
             _startColor = _renderer.material.GetColor(BASE_COLOR);
         }
 
@@ -64,6 +64,8 @@ namespace Survivors.Units.Component.Health
             return _renderer.material.DOColor(color, BASE_COLOR, _colorBlinkDuration).SetEase(ease);
         }
 
+        private void OnKilled(DeathCause _) => Dispose();
+
         private void Dispose()
         {
             StopCurrentTweens();
@@ -71,7 +73,7 @@ namespace Survivors.Units.Component.Health
             if (_damageable == null) return;
             
             _damageable.OnDamageTaken -= React;
-            _damageable.OnDeath -= Dispose;
+            _damageable.OnDeath -= OnKilled;
         }
 
         private void OnDestroy()

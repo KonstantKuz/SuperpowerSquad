@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 6482411132083869503}
   - component: {fileID: 6482411132083869501}
   - component: {fileID: 6482411132083869500}
-  - component: {fileID: 6667546112043371410}
+  - component: {fileID: 3909080536034138568}
   m_Layer: 3
   m_Name: Rocket
   m_TagString: Untagged
@@ -63,7 +63,7 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &6667546112043371410
+--- !u!114 &3909080536034138568
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -72,15 +72,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6482411132083869475}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 18b120911a6040e49aaf4126c58410d1, type: 3}
+  m_Script: {fileID: 11500000, guid: bebfa86d417645c4b36c2b2ac6ccc624, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _followTarget: 0
-  _rotationSpeed: 20
   _maxLifeTime: 5
-  _explosion: {fileID: 1836528195526790802, guid: f19e1685fb6476f4d83ad6b7d05bfd2e, type: 3}
-  _detonationDistance: 0.5
-  _initialCourseTime: 0.5
+  _hitVfx: {fileID: 6825504978462425047, guid: f19e1685fb6476f4d83ad6b7d05bfd2e, type: 3}
 --- !u!1001 &4110946127014348332
 PrefabInstance:
   m_ObjectHideFlags: 0
