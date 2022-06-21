@@ -12,7 +12,7 @@ namespace Survivors.Units.Service
 {
     public class UnitFactory
     {
-        public const string SIMPLE_PLAYER_ID = "StandardUnit";
+        public const string SIMPLE_PLAYER_ID = "RocketUnit";
         
         [Inject] private World _world;
         [Inject] private WorldObjectFactory _worldObjectFactory;

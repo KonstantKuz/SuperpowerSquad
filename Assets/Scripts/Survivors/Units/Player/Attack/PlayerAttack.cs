@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Feofun.Components;
 using JetBrains.Annotations;
 using ModestTree;
@@ -10,6 +11,7 @@ using Survivors.Units.Player.Movement;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon;
 using UnityEngine;
+using Zenject;
 
 namespace Survivors.Units.Player.Attack
 {
@@ -23,6 +25,9 @@ namespace Survivors.Units.Player.Attack
         [SerializeField]
         private bool _rotateToTarget = true;
         [SerializeField] private string _attackAnimationName;
+
+        [Inject]
+        private WeaponTimerManager _timerManager;
         
         private BaseWeapon _weapon;
         private PlayerAttackModel _playerAttackModel;
@@ -30,6 +35,7 @@ namespace Survivors.Units.Player.Attack
         private ITargetSearcher _targetSearcher;
         private ReloadableWeaponTimer _weaponTimer;
         private MovementController _movementController;
+        private Unit _owner;
 
         [CanBeNull]
         private WeaponAnimationHandler _weaponAnimationHandler;
@@ -42,11 +48,22 @@ namespace Survivors.Units.Player.Attack
         public void Init(IUnit unit)
         {
             Assert.IsNull(_weaponTimer);
+            _owner = unit as Unit;
             _playerAttackModel = (PlayerAttackModel) unit.Model.AttackModel;
-            _weaponTimer = new ReloadableWeaponTimer(_playerAttackModel.ClipSize, _playerAttackModel.AttackTime, _playerAttackModel.ClipReloadTime);
+            var weaponTimer = new ReloadableWeaponTimer(_playerAttackModel.ClipSize, _playerAttackModel.AttackTime, _playerAttackModel.ClipReloadTime);
+            _weaponTimer = _timerManager.AddTimer(_owner.ObjectId, weaponTimer);
+            _weaponTimer.OnReload += OnReload;
+            
             UpdateAnimationSpeed(_weaponTimer.AttackInterval);
             if (HasWeaponAnimationHandler) {
                 _weaponAnimationHandler.OnFireEvent += Fire;
+            }
+        }
+
+        private void OnReload()
+        {
+            if (CanAttack(_target)) {
+                Attack(_target);
             }
         }
 
@@ -75,22 +92,16 @@ namespace Survivors.Units.Player.Attack
 
         public void OnTick()
         {
-            var target = FindTarget();
+            _target = FindTarget();
             if (_rotateToTarget) {
-                _movementController.RotateToTarget(target?.Center);
-            }
-            if (CanAttack(target)) {
-                Attack(target);
+                _movementController.RotateToTarget(_target?.Center);
             }
         }
-
-        private bool CanAttack([CanBeNull] ITarget target) => target != null && _weaponTimer.IsAttackReady;
+        private bool CanAttack([CanBeNull] ITarget target) => target != null;
 
         private void Attack(ITarget target)
         {
-            _target = target;
             _animator.SetTrigger(AttackHash);
-            _weaponTimer.OnAttack();            
             if (!HasWeaponAnimationHandler) {
                 Fire();
             }
@@ -98,9 +109,7 @@ namespace Survivors.Units.Player.Attack
 
         private void Fire()
         {
-            if (IsTargetInvalid)
-            {
-                _weaponTimer.CancelLastTimer();
+            if (IsTargetInvalid) {
                 return;
             }
             _weapon.Fire(_target, _playerAttackModel.CreateProjectileParams(), DoDamage);
