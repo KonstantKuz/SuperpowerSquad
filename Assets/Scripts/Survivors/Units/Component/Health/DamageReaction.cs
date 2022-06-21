@@ -1,8 +1,10 @@
 using DG.Tweening;
+using Survivors.Extension;
 using UnityEngine;
 
 namespace Survivors.Units.Component.Health
 {
+    [RequireComponent(typeof(Unit))]
     [RequireComponent(typeof(IDamageable))]
     public class DamageReaction : MonoBehaviour
     {
@@ -14,6 +16,7 @@ namespace Survivors.Units.Component.Health
         [SerializeField] private Color _blinkColor;
         [SerializeField] private Renderer _renderer;
 
+        private Unit _owner;
         private Color _startColor;
         private IDamageable _damageable;
         
@@ -23,25 +26,32 @@ namespace Survivors.Units.Component.Health
         
         private void Awake()
         {
-            _startColor = _renderer.material.GetColor(BASE_COLOR);
+            _owner = gameObject.RequireComponent<Unit>();
             _damageable = gameObject.GetComponent<IDamageable>();
+            _startColor = _renderer.material.GetColor(BASE_COLOR);
             _damageable.OnDamageTaken += OnDamageTakenReact;
             _damageable.OnDeath += OnDeath;
         }
 
-        public void ExplosionReact(Vector3 explosionPosition, float jumpHeight, float duration)
+        public void ExplosionReact(Vector3 explosionPosition, float jumpForce, float jumpHeight, float jumpDuration)
         {
-            _jump?.Kill(true);
+            if(!_owner.IsActive) { return; }
+            
             _jump = DOTween.Sequence();
-            var initPosition = transform.position;
-            var moveUp = transform.DOMove(initPosition + Vector3.up * jumpHeight, duration).SetEase(Ease.OutExpo);
-            var moveDown = transform.DOMove(initPosition, duration).SetEase(Ease.Linear);
-            var lookAtRotation = Quaternion.LookRotation(transform.position - explosionPosition);
-            var lookAtExplosion = transform.DORotateQuaternion(lookAtRotation, duration);
-            var rotateBack = transform.DORotateQuaternion(Quaternion.Euler(Vector3.zero), duration);
-            _jump.Append(moveUp).Append(moveDown);
-            _jump.Insert(0, lookAtExplosion).Insert(duration, rotateBack);
+            var jumpDirection = transform.position - explosionPosition;
+            var jumpPosition = transform.position + jumpForce * Vector3.ProjectOnPlane(jumpDirection, Vector3.up) /  jumpDirection.magnitude;
+            var jumpMove = transform.DOJump(jumpPosition, jumpHeight, 1, jumpDuration);
+            var rotateToExplosion = transform.DORotateQuaternion(Quaternion.LookRotation(jumpDirection), jumpDuration / 2);
+            var rotateBack = transform.DORotateQuaternion(Quaternion.Euler(Vector3.zero), jumpDuration / 2);
+            _jump.Append(jumpMove);
+            _jump.Insert(0, rotateToExplosion).Insert(jumpDuration / 2, rotateBack);
             _jump.Play();
+            
+            _owner.IsActive = false;
+            _jump.onComplete += () =>
+            {
+                _owner.IsActive = true;
+            };
         }
 
         private void OnDamageTakenReact()
