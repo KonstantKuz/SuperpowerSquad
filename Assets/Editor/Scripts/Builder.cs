@@ -14,7 +14,7 @@ namespace Editor
         [MenuItem("Build/Build Android")]        
         public static void BuildAndroid()
         {
-            BuildPreprocessor.Prepare(HasCmdLineKey("-debugConsole"));
+            ApplyCommonParams();
             
             var buildAab = HasCmdLineKey("-buildAab");
             var outputFileName = GetCmdLineArgumentValue("-outputFileName") ?? "game";
@@ -48,11 +48,18 @@ namespace Editor
             Report(report.summary);
         }
 
+        private static void ApplyCommonParams()
+        {
+            BuildPreprocessor.Prepare(HasCmdLineKey("-debugConsole"));
+        }
+
         private static string[] GetSceneList() => DefaultSceneList;
 
         [MenuItem("Build/Build Ios")]
         public static void BuildIos()
         {
+            ApplyCommonParams();        
+        
             var options = new BuildPlayerOptions
             {
                 scenes = GetSceneList(),
