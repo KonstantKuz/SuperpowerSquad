@@ -9,7 +9,9 @@ namespace Survivors.Units.Component.Health
     public class DamageReaction : MonoBehaviour
     {
         private const string BASE_COLOR = "_BaseColor";
-        
+        [SerializeField] private float _jumpRotationAngle;
+        [Range(0f,1f)]
+        [SerializeField] private float _jumpRotationTimeRatio;
         [SerializeField] private float _scalePunchForce;
         [SerializeField] private float _scalePunchDuration;
         [SerializeField] private float _colorBlinkDuration;
@@ -33,25 +35,24 @@ namespace Survivors.Units.Component.Health
             _damageable.OnDeath += OnDeath;
         }
 
-        public void ExplosionReact(Vector3 explosionPosition, float jumpForce, float jumpHeight, float jumpDuration)
+        public void ExplosionJump(Vector3 explosionPosition, float jumpDistance, float jumpHeight, float jumpDuration)
         {
             if(!_owner.IsActive) { return; }
+            _owner.IsActive = false;
             
             _jump = DOTween.Sequence();
             var jumpDirection = transform.position - explosionPosition;
-            var jumpPosition = transform.position + jumpForce * Vector3.ProjectOnPlane(jumpDirection, Vector3.up) /  jumpDirection.magnitude;
+            var jumpPosition = transform.position + jumpDistance * Vector3.ProjectOnPlane(jumpDirection, Vector3.up) /  jumpDirection.magnitude;
             var jumpMove = transform.DOJump(jumpPosition, jumpHeight, 1, jumpDuration);
-            var rotateToExplosion = transform.DORotateQuaternion(Quaternion.LookRotation(jumpDirection), jumpDuration / 2);
-            var rotateBack = transform.DORotateQuaternion(Quaternion.Euler(Vector3.zero), jumpDuration / 2);
-            _jump.Append(jumpMove);
-            _jump.Insert(0, rotateToExplosion).Insert(jumpDuration / 2, rotateBack);
-            _jump.Play();
             
-            _owner.IsActive = false;
-            _jump.onComplete += () =>
-            {
-                _owner.IsActive = true;
-            };
+            transform.LookAt(explosionPosition.XZ());
+            var rotate = transform.DORotateQuaternion(transform.rotation * Quaternion.Euler(-_jumpRotationAngle, 0, 0), jumpDuration * _jumpRotationTimeRatio);
+            var rotateBack = transform.DORotateQuaternion(Quaternion.Euler(Vector3.zero), jumpDuration * (1f - _jumpRotationTimeRatio));
+            _jump.Append(jumpMove);
+            _jump.Insert(0, rotate).Insert(jumpDuration / 2, rotateBack);
+            _jump.Play();
+
+            _jump.onComplete += () => { _owner.IsActive = true; };
         }
 
         private void OnDamageTakenReact()

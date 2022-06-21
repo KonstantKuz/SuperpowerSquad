@@ -279,6 +279,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 689701d1975e99b4695c1b90ab60568a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _jumpRotationAngle: 50
+  _jumpRotationTimeRatio: 0.7
   _scalePunchForce: -0.25
   _scalePunchDuration: 0.2
   _colorBlinkDuration: 0.05
