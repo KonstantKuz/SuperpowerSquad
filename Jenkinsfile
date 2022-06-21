@@ -163,6 +163,9 @@ pipeline {
                             } else {
                                 UNITY_PARAMS=UNITY_PARAMS + '-provisionProfileId ' + DEVELOPMENT_PROFILE_ID                
                             }
+                            if(params.DebugConsole) {
+                                UNITY_PARAMS=UNITY_PARAMS + '-debugConsole '
+                            }
                         }                    
                         sh '$UNITY_PATH -nographics -buildTarget iOS -quit -batchmode -projectPath . -executeMethod Editor.Builder.BuildIos ' + UNITY_PARAMS + ' -noUnityLogo -logFile -'
                     }
