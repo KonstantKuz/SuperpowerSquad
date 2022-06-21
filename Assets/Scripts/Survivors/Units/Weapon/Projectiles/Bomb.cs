@@ -12,7 +12,7 @@ namespace Survivors.Units.Weapon.Projectiles
 {
     public class Bomb : Projectile
     {
-        [SerializeField] private float _jumpReactionForce;
+        [SerializeField] private float _jumpReactionHeight;
         [SerializeField] private float _jumpReactionDuration;
         [SerializeField] private float _heightMin;
         [SerializeField] private float _heightMax;
@@ -63,7 +63,8 @@ namespace Survivors.Units.Weapon.Projectiles
         private void OnHit(GameObject target)
         { 
             HitCallback?.Invoke(target);
-            target.GetComponent<DamageReaction>().PlayJump(_jumpReactionForce, _jumpReactionDuration);
+            var damageReaction = target.GetComponent<DamageReaction>();
+            damageReaction.ExplosionReact(transform.position, _jumpReactionHeight, _jumpReactionDuration);
         }
         
         private void Destroy()

@@ -25,21 +25,26 @@ namespace Survivors.Units.Component.Health
         {
             _startColor = _renderer.material.GetColor(BASE_COLOR);
             _damageable = gameObject.GetComponent<IDamageable>();
-            _damageable.OnDamageTaken += OnDamageTaken;
+            _damageable.OnDamageTaken += OnDamageTakenReact;
             _damageable.OnDeath += OnDeath;
         }
 
-        public void PlayJump(float power, float duration)
+        public void ExplosionReact(Vector3 explosionPosition, float jumpHeight, float duration)
         {
             _jump?.Kill(true);
             _jump = DOTween.Sequence();
             var initPosition = transform.position;
-            var moveUp = transform.DOMove(initPosition + Vector3.up * power, duration).SetEase(Ease.OutExpo);
+            var moveUp = transform.DOMove(initPosition + Vector3.up * jumpHeight, duration).SetEase(Ease.OutExpo);
             var moveDown = transform.DOMove(initPosition, duration).SetEase(Ease.Linear);
-            _jump.Append(moveUp).Append(moveDown).Play();
+            var lookAtRotation = Quaternion.LookRotation(transform.position - explosionPosition);
+            var lookAtExplosion = transform.DORotateQuaternion(lookAtRotation, duration);
+            var rotateBack = transform.DORotateQuaternion(Quaternion.Euler(Vector3.zero), duration);
+            _jump.Append(moveUp).Append(moveDown);
+            _jump.Insert(0, lookAtExplosion).Insert(duration, rotateBack);
+            _jump.Play();
         }
 
-        private void OnDamageTaken()
+        private void OnDamageTakenReact()
         {
             PlayScalePunch();
             PlayColorBlink();
@@ -77,7 +82,7 @@ namespace Survivors.Units.Component.Health
 
             if (_damageable == null) return;
             
-            _damageable.OnDamageTaken -= OnDamageTaken;
+            _damageable.OnDamageTaken -= OnDamageTakenReact;
             _damageable.OnDeath -= OnDeath;
         }
 

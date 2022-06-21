@@ -48,8 +48,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 86cfae2fe7f59b743a1b0ab682e40da7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _jumpReactionForce: 5
-  _jumpReactionDuration: 0.2
+  _jumpReactionHeight: 3
+  _jumpReactionDuration: 0.3
   _heightMin: 1
   _heightMax: 7
   _explosionScaleMultiplier: 0.5
