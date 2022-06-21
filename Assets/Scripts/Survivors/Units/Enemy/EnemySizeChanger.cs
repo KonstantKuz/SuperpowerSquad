@@ -12,14 +12,9 @@ namespace Survivors.Units.Enemy
     {
         private Health _health;
         private EnemyUnitModel _enemyModel;
-        private Vector3 _initialScale;
-        private EnemyScaleModel ScaleModel => _enemyModel.ScaleModel;
+        
         private CompositeDisposable _disposable = new CompositeDisposable();
         
-        private void Awake()
-        {
-            _initialScale = transform.localScale;
-        }
         public void Init(IUnit unit)
         { 
             if (!(unit.Model is EnemyUnitModel enemyModel))
@@ -27,7 +22,7 @@ namespace Survivors.Units.Enemy
                 throw new ArgumentException($"Unit must be a enemy unit, gameObj:= {gameObject.name}");
             }
             _enemyModel = enemyModel;
-            UpdateScale(ScaleModel.InitialScaleFactor);
+            UpdateScale(_enemyModel.Level);
             _health = gameObject.RequireComponent<Health>();
             _health.CurrentValue.Subscribe(it => OnHealthChanged()).AddTo(_disposable);
         }
@@ -36,11 +31,12 @@ namespace Survivors.Units.Enemy
         {
             var currentHealth = _health.CurrentValue.Value;
             var level = _enemyModel.CalculateLevelOfHealth(currentHealth);
-            UpdateScale(ScaleModel.GetScaleFactor(level));
+            UpdateScale(level);
         }
-        private void UpdateScale(float scaleFactor)
+        private void UpdateScale(int level)
         {
-            transform.localScale = _initialScale * scaleFactor;
+            var scale = _enemyModel.CalculateScale(level);
+            transform.localScale = Vector3.one * scale;
         }
         private void OnDestroy()
         {
