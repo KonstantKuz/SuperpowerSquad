@@ -122,7 +122,7 @@ namespace Survivors.Enemy.Spawn
         private float GetWaveRadius(EnemyWaveConfig waveConfig)
         {
             var enemyConfig = _enemyUnitConfigs.Get(waveConfig.EnemyId);
-            return Mathf.Sqrt(waveConfig.Count) * enemyConfig.GetScaleForLevel(waveConfig.EnemyLevel);
+            return Mathf.Sqrt(waveConfig.Count) * enemyConfig.CalculateScale(waveConfig.EnemyLevel);
         }
 
         public bool IsPlaceValid(Vector3 place, EnemyWaveConfig waveConfig)
