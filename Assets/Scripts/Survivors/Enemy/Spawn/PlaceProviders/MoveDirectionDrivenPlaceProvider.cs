@@ -51,7 +51,7 @@ namespace Survivors.Enemy.Spawn.PlaceProviders
                     return ray.GetPoint(distance);
             }
 
-            throw new Exception($"Ray must intersect one of the camera frustum planes. {ray.direction} {_squad.Destination} {_squad.transform.position}");
+            throw new Exception("Ray must intersect one of the camera frustum planes.");
         }
     }
 }
