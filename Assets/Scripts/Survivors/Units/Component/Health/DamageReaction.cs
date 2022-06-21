@@ -40,19 +40,30 @@ namespace Survivors.Units.Component.Health
             if(!_owner.IsActive) { return; }
             _owner.IsActive = false;
             
+            var move = CreateJumpMove(explosionPosition, jumpDistance, jumpHeight, jumpDuration);
+            var rotate = CreateJumpRotation(explosionPosition, jumpDuration);
             _jump = DOTween.Sequence();
-            var jumpDirection = transform.position - explosionPosition;
-            var jumpPosition = transform.position + jumpDistance * Vector3.ProjectOnPlane(jumpDirection, Vector3.up) /  jumpDirection.magnitude;
-            var jumpMove = transform.DOJump(jumpPosition, jumpHeight, 1, jumpDuration);
-            
-            transform.LookAt(explosionPosition.XZ());
-            var rotate = transform.DORotateQuaternion(transform.rotation * Quaternion.Euler(-_jumpRotationAngle, 0, 0), jumpDuration * _jumpRotationTimeRatio);
-            var rotateBack = transform.DORotateQuaternion(Quaternion.Euler(Vector3.zero), jumpDuration * (1f - _jumpRotationTimeRatio));
-            _jump.Append(jumpMove);
-            _jump.Insert(0, rotate).Insert(jumpDuration / 2, rotateBack);
+            _jump.Append(move).Insert(0, rotate).Play();
             _jump.Play();
 
             _jump.onComplete += () => { _owner.IsActive = true; };
+        }
+
+        private Tween CreateJumpMove(Vector3 explosionPosition, float jumpDistance, float jumpHeight, float jumpDuration)
+        {
+            var jumpDirection = transform.position - explosionPosition;
+            var jumpPosition = transform.position + jumpDistance * Vector3.ProjectOnPlane(jumpDirection, Vector3.up) /  jumpDirection.magnitude;
+            return transform.DOJump(jumpPosition, jumpHeight, 1, jumpDuration);
+        }
+
+        private Sequence CreateJumpRotation(Vector3 explosionPosition, float jumpDuration)
+        {
+            var rotationSequence = DOTween.Sequence();
+            transform.LookAt(explosionPosition.XZ());
+            var rotate = transform.DORotateQuaternion(transform.rotation * Quaternion.Euler(-_jumpRotationAngle, 0, 0), jumpDuration * _jumpRotationTimeRatio);
+            var rotateBack = transform.DORotateQuaternion(Quaternion.Euler(Vector3.zero), jumpDuration * (1f - _jumpRotationTimeRatio));
+            rotationSequence.Append(rotate).Append(rotateBack);
+            return rotationSequence;
         }
 
         private void OnDamageTakenReact()

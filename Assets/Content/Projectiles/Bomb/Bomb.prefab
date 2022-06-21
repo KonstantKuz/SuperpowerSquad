@@ -50,7 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _jumpDistance: 2
   _jumpHeight: 3
-  _jumpDuration: 0.8
+  _jumpDuration: 0.6
   _heightMin: 1
   _heightMax: 7
   _explosionScaleMultiplier: 0.5

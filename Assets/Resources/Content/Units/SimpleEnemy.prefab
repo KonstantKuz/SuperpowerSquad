@@ -280,7 +280,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _jumpRotationAngle: 50
-  _jumpRotationTimeRatio: 0.7
+  _jumpRotationTimeRatio: 0.9
   _scalePunchForce: -0.25
   _scalePunchDuration: 0.2
   _colorBlinkDuration: 0.05
