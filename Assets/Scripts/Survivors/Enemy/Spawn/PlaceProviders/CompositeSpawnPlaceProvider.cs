@@ -19,10 +19,12 @@ namespace Survivors.Enemy.Spawn.PlaceProviders
         
         public SpawnPlace GetSpawnPlace(EnemyWaveConfig waveConfig, int rangeTry)
         {
-            var placeProvider = Random.value < MOVE_DIRECTION_DRIVEN_CHANCE ?
-                _moveDirectionDrivenProvider : _randomDrivenProvider;
-
-            return placeProvider.GetSpawnPlace(waveConfig, rangeTry);
+            if (Random.value < MOVE_DIRECTION_DRIVEN_CHANCE)
+            {
+                var spawnPlace = _moveDirectionDrivenProvider.GetSpawnPlace(waveConfig, rangeTry);
+                if (spawnPlace.IsValid) return spawnPlace;
+            }
+            return _randomDrivenProvider.GetSpawnPlace(waveConfig, rangeTry);
         }
     }
 }
