@@ -42,14 +42,11 @@ namespace Survivors.Units.Player.Model
         public float DamageAngle => _damageAngle.Value;
 
         public float AttackDamage => _attackDamage.Value;
-
-        public float ClipReloadTime => _config.ClipReloadTime;
-
+        
         public IReadOnlyReactiveProperty<float> AttackTime => _attackTime.ReactiveValue;
 
         public float ProjectileSpeed => _projectileSpeed.Value;
-
-        public int ClipSize => _config.ClipSize;
+        
         public IReadOnlyReactiveProperty<int> ShotCount { get; }
 
         public ProjectileParams CreateProjectileParams()
