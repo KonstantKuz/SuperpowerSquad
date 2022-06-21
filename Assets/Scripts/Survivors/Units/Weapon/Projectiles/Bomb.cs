@@ -2,6 +2,7 @@ using System;
 using DG.Tweening;
 using Survivors.Extension;
 using Survivors.Location.Service;
+using Survivors.Units.Component.Health;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
@@ -11,6 +12,8 @@ namespace Survivors.Units.Weapon.Projectiles
 {
     public class Bomb : Projectile
     {
+        [SerializeField] private float _jumpReactionForce;
+        [SerializeField] private float _jumpReactionDuration;
         [SerializeField] private float _heightMin;
         [SerializeField] private float _heightMax;
 
@@ -52,11 +55,17 @@ namespace Survivors.Units.Weapon.Projectiles
 
         private void Explode(Vector3 pos)
         {
-            var explosion = Explosion.Create(_objectFactory, _explosion, pos, Params.DamageRadius, TargetType, HitCallback);
+            var explosion = Explosion.Create(_objectFactory, _explosion, pos, Params.DamageRadius, TargetType, OnHit);
             explosion.transform.localScale *= Params.DamageRadius * _explosionScaleMultiplier;
             Destroy();
         }
 
+        private void OnHit(GameObject target)
+        { 
+            HitCallback?.Invoke(target);
+            target.GetComponent<DamageReaction>().PlayJump(_jumpReactionForce, _jumpReactionDuration);
+        }
+        
         private void Destroy()
         {
             _throwMove.Kill(true);
