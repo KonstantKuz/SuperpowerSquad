@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Survivors.Enemy.Spawn.Config;
+using Survivors.Extension;
 using UnityEngine;
 
 namespace Survivors.Enemy.Spawn.PlaceProviders
@@ -22,23 +23,22 @@ namespace Survivors.Enemy.Spawn.PlaceProviders
 
         public SpawnPlace GetSpawnPlace(EnemyWaveConfig waveConfig, int rangeTry)
         {
-            if (!_squad.IsMoving)
+            var moveDirection = _squad.MoveDirection.XZ();
+            if (moveDirection.magnitude < Mathf.Epsilon)
             {
                 return SpawnPlace.INVALID;
             }
-
-            var position = GetSpawnPlaceByDestination(waveConfig, rangeTry);
+            var position = GetSpawnPlaceByDestination(waveConfig, rangeTry, moveDirection);
             var isValid = _wavesSpawner.IsPlaceValid(position, waveConfig);
             return new SpawnPlace {IsValid = isValid, Position = position};
         }
         
-        private Vector3 GetSpawnPlaceByDestination(EnemyWaveConfig waveConfig, int rangeTry)
+        private Vector3 GetSpawnPlaceByDestination(EnemyWaveConfig waveConfig, int rangeTry, Vector3 moveDirection)
         {
-            var destination = _squad.MoveDirection.normalized;
-            var ray = new Ray(_squad.Destination.transform.position, destination);
+            var ray = new Ray(_squad.Destination.transform.position, moveDirection);
             var frustumIntersectionPoint = GetFrustumIntersectionPoint(ray);
             var outOfViewOffset = _wavesSpawner.GetOutOfViewOffset(waveConfig, rangeTry);
-            return frustumIntersectionPoint + destination * outOfViewOffset;
+            return frustumIntersectionPoint + moveDirection * outOfViewOffset;
         }
 
         private Vector3 GetFrustumIntersectionPoint(Ray ray)
@@ -51,7 +51,7 @@ namespace Survivors.Enemy.Spawn.PlaceProviders
                     return ray.GetPoint(distance);
             }
 
-            throw new Exception("Ray must intersect one of the camera frustum planes.");
+            throw new Exception($"Ray must intersect one of the camera frustum planes. {ray.direction} {_squad.Destination} {_squad.transform.position}");
         }
     }
 }
