@@ -64,8 +64,8 @@ namespace Survivors.Units.Weapon.Projectiles
         private void OnHit(GameObject target)
         { 
             HitCallback?.Invoke(target);
-            var damageReaction = target.GetComponent<DamageReaction>();
-            damageReaction.ExplosionJump(transform.position, _jumpDistance, _jumpHeight, _jumpDuration);
+            var damageReaction = target.RequireComponent<DamageReaction>();
+            damageReaction.OnExplosionReact(transform.position, _jumpDistance, _jumpHeight, _jumpDuration);
         }
         
         private void Destroy()

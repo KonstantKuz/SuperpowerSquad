@@ -24,7 +24,7 @@ namespace Survivors.Units.Component.Health
         
         private Tween _scalePunch;
         private Tween _colorBlink;
-        private Sequence _jump;
+        private Sequence _explosionJump;
         
         private void Awake()
         {
@@ -35,18 +35,18 @@ namespace Survivors.Units.Component.Health
             _damageable.OnDeath += OnDeath;
         }
 
-        public void ExplosionJump(Vector3 explosionPosition, float jumpDistance, float jumpHeight, float jumpDuration)
+        public void OnExplosionReact(Vector3 explosionPosition, float jumpDistance, float jumpHeight, float jumpDuration)
         {
             if(!_owner.IsActive) { return; }
-            _owner.IsActive = false;
             
             var move = CreateJumpMove(explosionPosition, jumpDistance, jumpHeight, jumpDuration);
             var rotate = CreateJumpRotation(explosionPosition, jumpDuration);
-            _jump = DOTween.Sequence();
-            _jump.Append(move).Insert(0, rotate).Play();
-            _jump.Play();
+            _explosionJump = DOTween.Sequence();
+            _explosionJump.Append(move).Insert(0, rotate).Play();
+            _explosionJump.Play();
 
-            _jump.onComplete += () => { _owner.IsActive = true; };
+            _owner.IsActive = false;
+            _explosionJump.onComplete = () => { _owner.IsActive = true; };
         }
 
         private Tween CreateJumpMove(Vector3 explosionPosition, float jumpDistance, float jumpHeight, float jumpDuration)
@@ -58,12 +58,10 @@ namespace Survivors.Units.Component.Health
 
         private Sequence CreateJumpRotation(Vector3 explosionPosition, float jumpDuration)
         {
-            var rotationSequence = DOTween.Sequence();
             transform.LookAt(explosionPosition.XZ());
             var rotate = transform.DORotateQuaternion(transform.rotation * Quaternion.Euler(-_jumpRotationAngle, 0, 0), jumpDuration * _jumpRotationTimeRatio);
             var rotateBack = transform.DORotateQuaternion(Quaternion.Euler(Vector3.zero), jumpDuration * (1f - _jumpRotationTimeRatio));
-            rotationSequence.Append(rotate).Append(rotateBack);
-            return rotationSequence;
+            return DOTween.Sequence().Append(rotate).Append(rotateBack);
         }
 
         private void OnDamageTakenReact()
@@ -100,7 +98,7 @@ namespace Survivors.Units.Component.Health
         {
             _scalePunch?.Kill(true); 
             _colorBlink?.Kill(true);
-            _jump?.Kill(true); 
+            _explosionJump?.Kill(true); 
 
             if (_damageable == null) return;
             
