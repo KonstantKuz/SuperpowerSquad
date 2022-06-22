@@ -2,7 +2,6 @@
 using Survivors.Location.Service;
 using Survivors.Loot.Service;
 using Survivors.Session.Service;
-using Survivors.Units.Player.Attack;
 using UnityEngine;
 using Zenject;
 
@@ -14,7 +13,7 @@ namespace Survivors.Location
         [SerializeField] private WorldObjectFactory _worldObjectFactory;
         [SerializeField] private EnemyWavesSpawner _enemyWavesSpawner;
         [SerializeField] private EnemyHpsSpawner _enemyHpsSpawner;
-        [SerializeField] private WeaponTimerManager _weaponTimerManager;
+        
         public void Install(DiContainer container)
         {
             _worldObjectFactory.Init();
@@ -26,11 +25,7 @@ namespace Survivors.Location
             
             container.Bind<EnemyWavesSpawner>().FromInstance(_enemyWavesSpawner);
             container.Bind<EnemyHpsSpawner>().FromInstance(_enemyHpsSpawner).AsSingle();
-            container.BindInterfacesAndSelfTo<DroppingLootService>().AsSingle();      
-            
-            container.BindInterfacesAndSelfTo<WeaponTimerManager>().FromInstance(_weaponTimerManager).AsSingle();
-            
-            
+            container.BindInterfacesAndSelfTo<DroppingLootService>().AsSingle();
         }
     }
 }

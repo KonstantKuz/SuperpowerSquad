@@ -7,6 +7,6 @@ namespace Survivors.Units.Model
         float TargetSearchRadius { get; }
         float AttackDistance { get; }
         float AttackDamage { get; }
-        public IReadOnlyReactiveProperty<float> AttackTime { get; }
+        public IReadOnlyReactiveProperty<float> AttackInterval { get; }
     }
 }

@@ -13,7 +13,7 @@ namespace Survivors.Units.Player.Model
     {
         private readonly PlayerAttackConfig _config;
         private readonly FloatModifiableParameter _attackDamage;
-        private readonly FloatModifiableParameter _attackTime;
+        private readonly FloatModifiableParameter _attackInterval;
         private readonly FloatModifiableParameter _projectileSpeed;
         private readonly FloatModifiableParameter _damageRadius;
         private readonly FloatModifiableParameter _damageAngle;
@@ -23,7 +23,7 @@ namespace Survivors.Units.Player.Model
         {
             _config = config;
             _attackDamage = new FloatModifiableParameter(Parameters.ATTACK_DAMAGE, _config.AttackDamage, parameterOwner);
-            _attackTime = new FloatModifiableParameter(Parameters.ATTACK_TIME, _config.AttackTime, parameterOwner);
+            _attackInterval = new FloatModifiableParameter(Parameters.ATTACK_INTERVAL, _config.AttackInterval, parameterOwner);
             _attackDistance = new FloatModifiableParameter(Parameters.ATTACK_DISTANCE, _config.AttackDistance, parameterOwner);
             
             _projectileSpeed = new FloatModifiableParameter(Parameters.PROJECTILE_SPEED, _config.ProjectileSpeed, parameterOwner);
@@ -43,7 +43,7 @@ namespace Survivors.Units.Player.Model
 
         public float AttackDamage => _attackDamage.Value;
         
-        public IReadOnlyReactiveProperty<float> AttackTime => _attackTime.ReactiveValue;
+        public IReadOnlyReactiveProperty<float> AttackInterval => _attackInterval.ReactiveValue;
 
         public float ProjectileSpeed => _projectileSpeed.Value;
         

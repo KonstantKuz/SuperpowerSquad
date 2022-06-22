@@ -1,7 +1,6 @@
 ﻿using System.Linq;
 using Feofun.Components;
 using JetBrains.Annotations;
-using ModestTree;
 using Survivors.Extension;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Component.TargetSearcher;
@@ -10,13 +9,12 @@ using Survivors.Units.Player.Movement;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon;
 using UnityEngine;
-using Zenject;
 
 namespace Survivors.Units.Player.Attack
 {
     [RequireComponent(typeof(ITargetSearcher))]
     [RequireComponent(typeof(MovementController))]
-    public class PlayerAttack : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent
+    public class PlayerAttack : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent, IInitializable<Squad.Squad>
     {
         private static readonly int AttackSpeedMultiplierHash = Animator.StringToHash("AttackSpeedMultiplier");
         private static readonly int AttackHash = Animator.StringToHash("Attack");
@@ -25,18 +23,16 @@ namespace Survivors.Units.Player.Attack
         private bool _rotateToTarget = true;
         [SerializeField]
         private string _attackAnimationName;
-
-        [Inject]
-        private WeaponTimerManager _timerManager;
         
         private BaseWeapon _weapon;
         private PlayerAttackModel _playerAttackModel;
         private Animator _animator;
         private ITargetSearcher _targetSearcher;
-        private WeaponTimer _weaponTimer;
         private MovementController _movementController;
         private Unit _owner;
-
+        private WeaponTimerManager _timerManager;
+        
+        
         [CanBeNull]
         private WeaponAnimationHandler _weaponAnimationHandler;
         [CanBeNull]
@@ -47,17 +43,18 @@ namespace Survivors.Units.Player.Attack
 
         public void Init(IUnit unit)
         {
-            Assert.IsNull(_weaponTimer);
             _owner = (Unit) unit;
             _playerAttackModel = (PlayerAttackModel) unit.Model.AttackModel;
             
-            _weaponTimer = _timerManager.GetOrCreateTimer(_owner.ObjectId, _playerAttackModel);
-            _weaponTimer.OnReload += OnReload;
-            
-            UpdateAnimationSpeed(_weaponTimer.AttackInterval);
+            UpdateAnimationSpeed(_playerAttackModel.AttackInterval.Value);
             if (HasWeaponAnimationHandler) {
                 _weaponAnimationHandler.OnFireEvent += Fire;
             }
+        }
+        public void Init(Squad.Squad owner)
+        {
+            _timerManager = owner.WeaponTimerManager;
+            _timerManager.Subscribe(_owner.ObjectId, _playerAttackModel, OnAttackReady);
         }
         private void Awake()
         {
@@ -68,7 +65,7 @@ namespace Survivors.Units.Player.Attack
 
             _weaponAnimationHandler = GetComponentInChildren<WeaponAnimationHandler>();
         }
-        private void OnReload()
+        private void OnAttackReady()
         {
             if (CanAttack(_target)) {
                 Attack();
@@ -125,8 +122,9 @@ namespace Survivors.Units.Player.Attack
             if (HasWeaponAnimationHandler) {
                 _weaponAnimationHandler.OnFireEvent -= Fire;
             }
-            _weaponTimer.OnReload -= OnReload;
-            _weaponTimer = null;
+            _timerManager.Unsubscribe(_owner.ObjectId, OnAttackReady);
         }
+
+      
     }
 }

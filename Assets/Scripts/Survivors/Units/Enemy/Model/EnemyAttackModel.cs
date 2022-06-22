@@ -12,12 +12,12 @@ namespace Survivors.Units.Enemy.Model
             TargetSearchRadius = Mathf.Infinity;
             AttackDistance = config.AttackRange;
             AttackDamage = config.AttackDamage;
-            AttackTime = new ReactiveProperty<float>(config.AttackInterval);
+            AttackInterval = new ReactiveProperty<float>(config.AttackInterval);
         }
 
         public float TargetSearchRadius { get; }
         public float AttackDistance { get; }
         public float AttackDamage { get; }
-        public IReadOnlyReactiveProperty<float> AttackTime { get; }
+        public IReadOnlyReactiveProperty<float> AttackInterval { get; }
     }
 }

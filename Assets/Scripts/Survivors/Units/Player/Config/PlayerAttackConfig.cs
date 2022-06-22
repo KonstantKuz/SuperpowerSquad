@@ -18,8 +18,8 @@ namespace Survivors.Units.Player.Config
         [DataMember(Name = "AttackDamage")]
         private int _attackDamage;
         
-        [DataMember(Name = "AttackTime")]
-        private float _attackTime;
+        [DataMember(Name = "AttackInterval")]
+        private float _attackInterval;
 
         [DataMember(Name = "ProjectileSpeed")]
         private float _projectileSpeed;
@@ -32,7 +32,7 @@ namespace Survivors.Units.Player.Config
 
         public int AttackDamage => _attackDamage;
         
-        public float AttackTime => _attackTime;
+        public float AttackInterval => _attackInterval;
 
         public float ProjectileSpeed => _projectileSpeed;
         
