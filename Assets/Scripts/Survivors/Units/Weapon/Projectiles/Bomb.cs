@@ -12,15 +12,12 @@ namespace Survivors.Units.Weapon.Projectiles
 {
     public class Bomb : Projectile
     {
-        [SerializeField] private float _jumpDistance;
-        [SerializeField] private float _jumpHeight;
-        [SerializeField] private float _jumpDuration;
         [SerializeField] private float _heightMin;
         [SerializeField] private float _heightMax;
-
         [SerializeField] private float _explosionScaleMultiplier;
-        [SerializeField] private Explosion _explosion;
         [SerializeField] private TrailRenderer _trail;
+        [SerializeField] private Explosion _explosion;
+        [SerializeField] private ExplosionReactionParams _explosionReactionParams;
 
         private Tween _throwMove;
         
@@ -64,8 +61,12 @@ namespace Survivors.Units.Weapon.Projectiles
         private void OnHit(GameObject target)
         { 
             HitCallback?.Invoke(target);
-            var damageReaction = target.RequireComponent<DamageReaction>();
-            damageReaction.OnExplosionReact(transform.position, _jumpDistance, _jumpHeight, _jumpDuration);
+
+            if (target.TryGetComponent(out ExplosionReaction explosionReaction))
+            {
+                _explosionReactionParams.ExplosionPosition = transform.position;
+                explosionReaction.OnExplosionReact(_explosionReactionParams);
+            }
         }
         
         private void Destroy()
