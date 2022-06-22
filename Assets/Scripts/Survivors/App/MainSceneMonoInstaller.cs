@@ -25,7 +25,7 @@ namespace Survivors.App
         private UIInstaller _uiInstaller;     
         [SerializeField]
         private CheatsInstaller _cheatsInstaller;
-     
+
         public override void InstallBindings()
         {
             AnalyticsInstaller.Install(Container);

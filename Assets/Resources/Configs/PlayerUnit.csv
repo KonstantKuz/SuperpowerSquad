@@ -1,8 +1,8 @@
-Id,Health,AttackDistance,DamageRadius,AttackDamage,ClipReloadTime,AttackTime,ProjectileSpeed,ClipSize,DamageAngle
-StandardUnit,500,10,0,1000,0,0.6,30,1,
-MachineGunnerUnit,100,20,0,30,0,0.25,30,1,
-RocketUnit,100,8,1,1000,0,3,7,1,
-PyroUnit,100,8,4,50,0,1,15,1,30
-SniperUnit,100,15,0.7,300,0,4.5,30,1,
-BomberUnit,100,8,2,150,0,2,12,1,
-CircularSawUnit,100,3,1,50,0,0,50,1,
+Id,Health,AttackDistance,DamageRadius,AttackDamage,AttackInterval,ProjectileSpeed,DamageAngle
+StandardUnit,500,10,0,1000,0.6,30,
+MachineGunnerUnit,100,20,0,30,0.25,30,
+RocketUnit,100,8,1,1000,3,7,
+PyroUnit,100,8,4,50,1,15,30
+SniperUnit,100,15,0.7,300,4.5,30,
+BomberUnit,100,8,2,0,2,12,
+CircularSawUnit,100,3,1,50,0,50,
