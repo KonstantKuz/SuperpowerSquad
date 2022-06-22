@@ -63,9 +63,6 @@ namespace Survivors.Units.Component.Health
         {
             _scalePunch?.Kill(true); 
             _colorBlink?.Kill(true);
-
-            if (_damageable == null) return;
-            
             _damageable.OnDamageTaken -= OnDamageTakenReact;
             _damageable.OnDeath -= OnDeath;
         }

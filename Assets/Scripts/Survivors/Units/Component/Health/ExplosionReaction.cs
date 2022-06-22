@@ -5,6 +5,7 @@ using UnityEngine;
 namespace Survivors.Units.Component.Health
 {
     [RequireComponent(typeof(Unit))]
+    [RequireComponent(typeof(IDamageable))]
     public class ExplosionReaction : MonoBehaviour
     {
         [SerializeField] private float _jumpRotationAngle;
@@ -58,7 +59,6 @@ namespace Survivors.Units.Component.Health
         private void Dispose()
         {
             _explosionJump?.Kill(true); 
-            if (_damageable == null) return;
             _damageable.OnDeath -= OnDeath;
         }
     }
