@@ -4,7 +4,6 @@ using Feofun.Config;
 using Survivors.Location;
 using Survivors.Location.Service;
 using Survivors.Loot.Config;
-using Survivors.Session;
 using Survivors.Squad.Service;
 using Survivors.Units;
 using Survivors.Units.Service;

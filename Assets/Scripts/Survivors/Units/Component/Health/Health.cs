@@ -1,5 +1,6 @@
 ﻿using System;
 using Feofun.Extension;
+using Logger.Assets.Scripts.Extension;
 using Survivors.Units.Model;
 using UniRx;
 using UnityEngine;
@@ -67,8 +68,8 @@ namespace Survivors.Units.Component.Health
         
         private void LogDamage(float damage)
         {
-#if UNITY_EDITOR            
-            Debug.Log($"Damage: -" + damage + " CurrentHealth: " + _currentHealth.Value + " GameObj:= " + gameObject.name);
+#if UNITY_EDITOR
+            this.Logger().Trace($"Damage: -" + damage + " CurrentHealth: " + _currentHealth.Value + " GameObj:= " + gameObject.name);
 #endif            
         }
 
