@@ -2,6 +2,7 @@ using System;
 using DG.Tweening;
 using Survivors.Extension;
 using Survivors.Location.Service;
+using Survivors.Units.Component.Health;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
@@ -13,10 +14,10 @@ namespace Survivors.Units.Weapon.Projectiles
     {
         [SerializeField] private float _heightMin;
         [SerializeField] private float _heightMax;
-
         [SerializeField] private float _explosionScaleMultiplier;
-        [SerializeField] private Explosion _explosion;
         [SerializeField] private TrailRenderer _trail;
+        [SerializeField] private Explosion _explosion;
+        [SerializeField] private ExplosionReactionParams _explosionReactionParams;
 
         private Tween _throwMove;
         
@@ -52,11 +53,22 @@ namespace Survivors.Units.Weapon.Projectiles
 
         private void Explode(Vector3 pos)
         {
-            var explosion = Explosion.Create(_objectFactory, _explosion, pos, Params.DamageRadius, TargetType, HitCallback);
+            var explosion = Explosion.Create(_objectFactory, _explosion, pos, Params.DamageRadius, TargetType, OnHit);
             explosion.transform.localScale *= Params.DamageRadius * _explosionScaleMultiplier;
             Destroy();
         }
 
+        private void OnHit(GameObject target)
+        { 
+            HitCallback?.Invoke(target);
+
+            if (target.TryGetComponent(out ExplosionReaction explosionReaction))
+            {
+                _explosionReactionParams.ExplosionPosition = transform.position;
+                explosionReaction.OnExplosionReact(_explosionReactionParams);
+            }
+        }
+        
         private void Destroy()
         {
             _throwMove.Kill(true);

@@ -51,8 +51,13 @@ MonoBehaviour:
   _heightMin: 1
   _heightMax: 7
   _explosionScaleMultiplier: 0.5
-  _explosion: {fileID: 1836528195526790802, guid: 1555fb1dd89f36d4382a203336e143e4, type: 3}
   _trail: {fileID: 393400335751093123}
+  _explosion: {fileID: 1836528195526790802, guid: 1555fb1dd89f36d4382a203336e143e4, type: 3}
+  _explosionReactionParams:
+    ExplosionPosition: {x: 0, y: 0, z: 0}
+    JumpDistance: 2
+    JumpHeight: 3
+    JumpDuration: 0.6
 --- !u!54 &6482411132083869501
 Rigidbody:
   m_ObjectHideFlags: 0

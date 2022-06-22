@@ -1,11 +1,11 @@
 Id,Modifier,ParameterName,Value,Target
 ShotCount2,AddValue,ShotCount,2,Unit
 DamageAngle15,AddValue,DamageAngle,15,Unit
-AttackTime0.75,AddValue,AttackTime,-0.75,Unit
+AttackInterval0.75,AddValue,AttackInterval,-0.75,Unit
 DamageRadius2,AddValue,DamageRadius,2,Unit
 ProjectileSpeed50,AddValue,ProjectileSpeed,50,Unit
 ShotCount1,AddValue,ShotCount,1,Unit
-AttackTime0.5,AddValue,AttackTime,-0.5,Unit
+AttackInterval0.5,AddValue,AttackInterval,-0.5,Unit
 ProjectileSpeed50Percent,AddPercent,ProjectileSpeed,50,Unit
 AttackDamage100Percent,AddPercent,AttackDamage,100,Unit
 DamageRadius1,AddValue,DamageRadius,1,Unit
