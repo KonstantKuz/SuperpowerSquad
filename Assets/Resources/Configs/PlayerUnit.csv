@@ -4,5 +4,5 @@ MachineGunnerUnit,100,20,0,30,0.25,30,
 RocketUnit,100,8,1,1000,3,7,
 PyroUnit,100,8,4,50,1,15,30
 SniperUnit,100,15,0.7,300,4.5,30,
-BomberUnit,100,8,2,0,2,12,
+BomberUnit,100,8,2,150,2,12,
 CircularSawUnit,100,3,1,50,0,50,
