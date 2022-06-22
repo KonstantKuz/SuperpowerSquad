@@ -8,6 +8,7 @@ using Survivors.Units.Player.Model;
 using Survivors.Units.Player.Movement;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon;
+using UniRx;
 using UnityEngine;
 
 namespace Survivors.Units.Player.Attack
@@ -31,6 +32,7 @@ namespace Survivors.Units.Player.Attack
         private MovementController _movementController;
         private Unit _owner;
         private WeaponTimerManager _timerManager;
+        private CompositeDisposable _disposable;
         
         
         [CanBeNull]
@@ -43,10 +45,12 @@ namespace Survivors.Units.Player.Attack
 
         public void Init(IUnit unit)
         {
+            Dispose();
+            _disposable = new CompositeDisposable();
             _owner = (Unit) unit;
             _playerAttackModel = (PlayerAttackModel) unit.Model.AttackModel;
             
-            UpdateAnimationSpeed(_playerAttackModel.AttackInterval.Value);
+            _playerAttackModel.AttackInterval.Subscribe(UpdateAnimationSpeed).AddTo(_disposable);
             if (HasWeaponAnimationHandler) {
                 _weaponAnimationHandler.OnFireEvent += Fire;
             }
@@ -119,12 +123,16 @@ namespace Survivors.Units.Player.Attack
 
         private void OnDestroy()
         {
+            Dispose();
             if (HasWeaponAnimationHandler) {
                 _weaponAnimationHandler.OnFireEvent -= Fire;
             }
             _timerManager.Unsubscribe(_owner.ObjectId, OnAttackReady);
         }
-
-      
+        private void Dispose()
+        {
+            _disposable?.Dispose();
+            _disposable = null;
+        }
     }
 }
