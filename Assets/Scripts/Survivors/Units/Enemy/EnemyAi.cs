@@ -128,7 +128,6 @@ namespace Survivors.Units.Enemy
 
         public void OnDeactivate()
         {
-            if(!_agent.enabled) return;
             _agent.isStopped = true;
         }
     }
