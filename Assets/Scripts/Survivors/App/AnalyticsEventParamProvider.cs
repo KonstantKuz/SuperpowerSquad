@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Feofun.Config;
+using Survivors.Analytics;
 using Survivors.Location;
 using Survivors.Player.Service;
 using Survivors.Session.Config;
@@ -14,9 +15,9 @@ using UnityEngine;
 using UnityEngine.Assertions;
 using Zenject;
 
-namespace Survivors.Analytics
+namespace Survivors.App
 {
-    public class EventParamProvider: IEventParamProvider
+    public class AnalyticsEventParamProvider: IEventParamProvider
     {
         [Inject] private SessionService _sessionService;
         [Inject] private PlayerProgressService _playerProgressService;
@@ -36,7 +37,7 @@ namespace Survivors.Analytics
         {
             if (paramName.StartsWith(EventParams.UPGRADE))
             {
-                return GetUpgrade(paramName.Split(Analytics.Separator)[1]);
+                return GetUpgrade(paramName.Split(Analytics.Analytics.Separator)[1]);
             }
             return paramName switch
             {

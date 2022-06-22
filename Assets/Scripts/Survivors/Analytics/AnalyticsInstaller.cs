@@ -1,4 +1,5 @@
 ﻿using Survivors.Analytics.Wrapper;
+using Survivors.App;
 using Zenject;
 
 namespace Survivors.Analytics
@@ -21,7 +22,7 @@ namespace Survivors.Analytics
                             new FacebookAnalyticsWrapper()
 #endif
                 }).NonLazy();
-            container.BindInterfacesTo<EventParamProvider>().AsSingle();
+            container.BindInterfacesTo<AnalyticsEventParamProvider>().AsSingle();
         }
     }
 }
