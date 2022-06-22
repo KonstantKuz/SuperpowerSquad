@@ -21,7 +21,7 @@ namespace Survivors.Analytics
                             new FacebookAnalyticsWrapper()
 #endif
                 }).NonLazy();
-            
+            container.BindInterfacesTo<EventParamProvider>().AsSingle();
         }
     }
 }
