@@ -20,5 +20,6 @@ namespace Logger.Assets.Scripts
 
         void Error(string message);
         void Error(string message, Exception e);
+        void Exception(Exception e);
     }
 }

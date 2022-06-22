@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using Logger.Assets.Scripts.Log4net;
-using NullLogger = Logger.Assets.Scripts.Null.NullLogger;
+using Logger.Assets.Scripts.Unity;
 
 namespace Logger.Assets.Scripts
 {
@@ -12,7 +12,7 @@ namespace Logger.Assets.Scripts
                 case LoggerType.Log4Net:
                     return new Log4NetLogger(log4net.LogManager.GetLogger(typeof(T)), typeof(T));
                 default:
-                    return new NullLogger();
+                    return new UnityLogger();
             }
         }
 
@@ -22,7 +22,7 @@ namespace Logger.Assets.Scripts
                 case LoggerType.Log4Net:
                     return new Log4NetLogger(log4net.LogManager.GetLogger(name), Assembly.GetCallingAssembly().GetType());
                 default:
-                    return new NullLogger();
+                    return new UnityLogger();
             }
         }
     }

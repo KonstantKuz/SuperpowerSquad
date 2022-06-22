@@ -22,7 +22,7 @@ namespace Logger.Assets.Scripts.Log4net
 
         public void Trace(string message, Exception e)
         {
-            Write(Level.Trace, LogRecord.Create(message).Exception(e));
+            Write(Level.Trace, LogRecord.Create(message).AddException(e));
         }
         
         public void Debug(string message)
@@ -32,7 +32,7 @@ namespace Logger.Assets.Scripts.Log4net
 
         public void Debug(string message, Exception e)
         {
-            Write(Level.Debug, LogRecord.Create(message).Exception(e));
+            Write(Level.Debug, LogRecord.Create(message).AddException(e));
         }
 
         public void Info(string message)
@@ -42,7 +42,7 @@ namespace Logger.Assets.Scripts.Log4net
 
         public void Info(string message, Exception e)
         {
-            Write(Level.Info, LogRecord.Create(message).Exception(e));
+            Write(Level.Info, LogRecord.Create(message).AddException(e));
         }
         
         
@@ -53,7 +53,7 @@ namespace Logger.Assets.Scripts.Log4net
 
         public void Warn(string message, Exception e)
         {
-            Write(Level.Warn, LogRecord.Create(message).Exception(e));
+            Write(Level.Warn, LogRecord.Create(message).AddException(e));
         }
         
         public void Error(string message)
@@ -63,18 +63,17 @@ namespace Logger.Assets.Scripts.Log4net
 
         public void Error(string message, Exception e)
         {
-            Write(Level.Error, LogRecord.Create(message).Exception(e));
+            Write(Level.Error, LogRecord.Create(message).AddException(e));
         }
+
+        public void Exception(Exception e)
+        {
+            Write(Level.Error, LogRecord.Create(null).AddException(e));
+        }
+
         private void Write(Level logLevel, LogRecord logRecord)
         {
-
-            /*Dictionary<string, string> data = new Dictionary<string, string>() {
-                    {"message", logRecord.Message}
-            };
-            if (logLevel == Level.Warn || logLevel == Level.Error) {
-                data.Add("currentStackTrace", new StackTrace(2) + "\n");
-            }*/
-            _internalLogger.Logger.Log(_type, logLevel, logRecord.Message, logRecord.Exception1);
+            _internalLogger.Logger.Log(_type, logLevel, logRecord.Message, logRecord.Exception);
         }
     }
 }
