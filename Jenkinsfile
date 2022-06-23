@@ -16,6 +16,7 @@ pipeline {
     }
     environment {
         OUTPUT_FILE_NAME = 'survivors'
+        GIT_SSL_NO_VERIFY=true
     }      
     stages {                                    
         stage ('Android') {
@@ -64,7 +65,6 @@ pipeline {
                                 }         
                                 withCredentials([gitUsernamePassword(credentialsId: 'a.akhmedov', gitToolName: 'git-tool')]) {
                                   withCredentials([string(credentialsId: 'SurvivorsAndroidKeystorePass', variable: 'KEYSTORE_PASS')]) {
-                                      sh 'git config http.sslVerify "false"'
                                       sh '$UNITY_PATH -nographics -buildTarget Android -quit -batchmode -projectPath . -executeMethod Editor.Builder.BuildAndroid ' + UNITY_PARAMS + '-keyStorePassword $KEYSTORE_PASS -noUnityLogo -outputFileName $OUTPUT_FILE_NAME -logFile -'              
                                   }
                                 }                                                                                  
