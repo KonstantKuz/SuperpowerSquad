@@ -17,12 +17,12 @@ namespace Survivors.Squad
         [Inject] private World _world;
         [Inject] private WorldObjectFactory _worldObjectFactory;
         [Inject] private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
-        [Inject] private SquadConfig _squadConfig;
+        [Inject] private SquadParams _squadConfig;
         
         public Squad CreateSquad()
         {
             var startingMaxHealth = _playerUnitConfigs.Get(UnitFactory.SIMPLE_PLAYER_ID).Health;
-            var model = new SquadModel(_squadConfig.Params, startingMaxHealth);
+            var model = new SquadModel(_squadConfig, startingMaxHealth);
             var squad = _worldObjectFactory.CreateObject(SQUAD_NAME, _world.transform).RequireComponent<Squad>();
             squad.transform.SetPositionAndRotation(_world.Spawn.transform.position, _world.Spawn.transform.rotation);
             squad.Init(model);
