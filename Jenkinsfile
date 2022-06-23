@@ -129,6 +129,7 @@ pipeline {
                 DISTRIBUTION_CODE_SIGN_IDENTITY='Apple Distribution: Feofun Limited (8Y9KH6XT49)'
                 IPA_NAME='survivors'  //Alas, it is not taken from OUTPUT_FILE_NAME. But from module name in project...
                 IPA_FULL_PATH="build/xcode/build/Release-iphoneos/build/${IPA_NAME}.ipa"
+                GIT_SSL_NO_VERIFY=true
             }         
             when {
                 beforeAgent true
