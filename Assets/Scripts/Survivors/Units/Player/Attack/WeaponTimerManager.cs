@@ -29,6 +29,10 @@ namespace Survivors.Units.Player.Attack
             }
             _timers[weaponId].OnAttackReady -= onAttackReady;
         }
+        public void ForceDelayNextAttack(string weaponId)
+        {
+            _timers[weaponId].ForceDelayNextAttack();
+        }
         private void AddTimer(string unitTypeId, IAttackModel attackModel)
         {
             _timers[unitTypeId] = new WeaponTimer(attackModel.AttackInterval);;

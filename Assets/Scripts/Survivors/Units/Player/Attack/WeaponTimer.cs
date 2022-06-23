@@ -18,6 +18,12 @@ namespace Survivors.Units.Player.Attack
             _attackInterval = attackInterval;
             _lastAttackTime = Time.time - (Time.time % AttackInterval);
         }
+
+        public void ForceDelayNextAttack()
+        {
+            _lastAttackTime = Time.time;
+        }
+
         public void OnTick()
         {
             if (!IsAttackReady) {

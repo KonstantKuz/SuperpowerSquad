@@ -95,6 +95,10 @@ namespace Survivors.Units.Player.Attack
             if (_rotateToTarget) {
                 _movementController.RotateToTarget(_target?.Center);
             }
+            
+            if (!_weapon.CanFire) {
+                _timerManager.ForceDelayNextAttack(_owner.ObjectId);
+            }
         }
         private bool CanAttack([CanBeNull] ITarget target) => target != null;
 

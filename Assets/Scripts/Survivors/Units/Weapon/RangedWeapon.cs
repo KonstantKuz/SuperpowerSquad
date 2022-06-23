@@ -24,8 +24,8 @@ namespace Survivors.Units.Weapon
         private float _angleBetweenShots;
         [Inject]
         protected WorldObjectFactory ObjectFactory;
-        
-        
+
+        protected Transform Barrel => _barrel;
         protected Vector3 BarrelPos; //Seems that in some cases unity cannot correctly take position inside animation event
         
         protected bool AimInXZPlane => _aimInXZPlane;
@@ -43,7 +43,7 @@ namespace Survivors.Units.Weapon
                 Fire(rotation, target, projectileParams, hitCallback);
             }
         }
-        private void Fire(Quaternion rotation, ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
+        protected virtual void Fire(Quaternion rotation, ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             var projectile = CreateProjectile();
             projectile.transform.SetPositionAndRotation(BarrelPos, rotation);
