@@ -1,15 +1,19 @@
 ﻿using Feofun.Components;
+using Logger.Assets.Scripts;
 using Survivors.Extension;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Enemy.Model;
 using Survivors.Units.Weapon;
 using UnityEngine;
+using ILogger = Logger.Assets.Scripts.ILogger;
 
 namespace Survivors.Units.Enemy
 {
     [RequireComponent(typeof(EnemyAi))]
     public class EnemyAttack : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent
     {
+        private static readonly ILogger Logger = LoggerFactory.GetLogger<EnemyAttack>();
+        
         private EnemyAi _enemyAi;
         private BaseWeapon _weapon;
         private EnemyAttackModel _attackModel;
@@ -59,7 +63,7 @@ namespace Survivors.Units.Enemy
         {
             var damageable = target.RequireComponent<IDamageable>();
             damageable.TakeDamage(_attackModel.AttackDamage);
-            Debug.Log($"Damage applied, target:= {target.name}");
+            Logger.Trace($"Damage applied, target:= {target.name}");
         }
     }
 }

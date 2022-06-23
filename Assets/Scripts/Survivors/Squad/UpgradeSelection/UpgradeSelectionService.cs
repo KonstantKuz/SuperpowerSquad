@@ -2,26 +2,26 @@
 using System.Linq;
 using Feofun.Extension;
 using Feofun.UI.Dialog;
+using Logger.Assets.Scripts;
 using ModestTree;
 using Survivors.Location;
-using Survivors.Session;
-using Survivors.Session.Service;
 using Survivors.Squad.Service;
 using Survivors.Squad.Upgrade;
 using Survivors.Squad.Upgrade.Config;
 using Survivors.Squad.UpgradeSelection.Config;
-using Survivors.UI.Dialog;
 using Survivors.UI.Dialog.PauseDialog;
 using Survivors.UI.Dialog.UpgradeDialog;
 using Survivors.UI.Dialog.UpgradeDialog.Model;
 using UniRx;
-using UnityEngine;
 using Zenject;
+using ILogger = Logger.Assets.Scripts.ILogger;
 
 namespace Survivors.Squad.UpgradeSelection
 {
     public class UpgradeSelectionService : IWorldScope
     {
+        private static readonly ILogger Logger = LoggerFactory.GetLogger<UpgradeSelectionService>();
+        
         private const int PROPOSED_UPGRADE_COUNT = 3;
 
         [Inject]
@@ -63,7 +63,7 @@ namespace Survivors.Squad.UpgradeSelection
         {
             var randomUpgradeIds = GetRandomUpgradeIds(PROPOSED_UPGRADE_COUNT).ToList();
             if (randomUpgradeIds.IsEmpty()) {
-                Debug.Log("Empty upgrades list");
+                Logger.Info("Empty upgrades list");
                 return;
             }
             _dialogManager.Show<UpgradeDialog, UpgradeDialogInitModel>(new UpgradeDialogInitModel(level, randomUpgradeIds, OnUpgrade));

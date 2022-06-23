@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Feofun.Components;
 using JetBrains.Annotations;
+using Logger.Assets.Scripts;
 using ModestTree;
 using Survivors.Extension;
 using Survivors.Units.Component.Health;
@@ -10,6 +11,7 @@ using Survivors.Units.Player.Movement;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon;
 using UnityEngine;
+using ILogger = Logger.Assets.Scripts.ILogger;
 
 namespace Survivors.Units.Player.Attack
 {
@@ -17,6 +19,8 @@ namespace Survivors.Units.Player.Attack
     [RequireComponent(typeof(MovementController))]
     public class PlayerAttack : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent
     {
+        private static readonly ILogger Logger = LoggerFactory.GetLogger<PlayerAttack>();
+        
         private static readonly int AttackSpeedMultiplierHash = Animator.StringToHash("AttackSpeedMultiplier");
         private static readonly int AttackHash = Animator.StringToHash("Attack");
         
@@ -110,7 +114,7 @@ namespace Survivors.Units.Player.Attack
         {
             var damageable = target.RequireComponent<IDamageable>();
             damageable.TakeDamage(_playerAttackModel.AttackDamage);
-            Debug.Log($"Damage applied, target:= {target.name}");
+            Logger.Trace($"Damage applied, target:= {target.name}");
         }
 
         private void OnDestroy()

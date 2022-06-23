@@ -1,15 +1,19 @@
 ﻿using System.Collections.Generic;
 using Feofun.Localization.Config;
 using JetBrains.Annotations;
+using Logger.Assets.Scripts;
 using SuperMaxim.Core.Extensions;
 using UnityEngine;
 using Zenject;
+using ILogger = Logger.Assets.Scripts.ILogger;
 
 namespace Feofun.Localization.Service
 {
     [PublicAPI]
     public class LocalizationService
     {
+        private static readonly ILogger Logger = LoggerFactory.GetLogger<LocalizationService>();
+        
         private const string DEFAULT_LANGUAGE = "English";
 
         private readonly HashSet<string> _reportedUnsupportedLanguages = new HashSet<string>();
@@ -22,7 +26,7 @@ namespace Feofun.Localization.Service
         {
             if (!_config.Table.ContainsKey(localizationId))
             {
-                Debug.LogWarning($"No localization for key: {localizationId}");
+                Logger.Warn($"No localization for key: {localizationId}");
                 return localizationId;
             }
 
@@ -46,7 +50,7 @@ namespace Feofun.Localization.Service
         }
         private void ReportUnsupportedLanguage(string language)
         {
-            Debug.LogWarning($"Unsupported language: {language}");
+            Logger.Warn($"Unsupported language: {language}");
             _reportedUnsupportedLanguages.Add(language);
         }
         private string LanguageOverride => _languageOverride ??= PlayerPrefs.GetString("Language", null);

@@ -1,13 +1,13 @@
 using System;
 using System.Linq;
 using Feofun.Config;
+using Logger.Assets.Scripts.Extension;
 using Survivors.Location;
 using Survivors.Location.Service;
 using Survivors.Loot.Config;
 using Survivors.Squad.Service;
 using Survivors.Units;
 using Survivors.Units.Service;
-using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
 
@@ -33,7 +33,7 @@ namespace Survivors.Loot.Service
             var lootConfig = _droppingLoots.Values.FirstOrDefault(it => it.EnemyId == unit.Model.Id);
             if (lootConfig == null)
             {
-                Debug.LogWarning($"There is no loot config for enemy with id {unit.Model.Id}.");
+                this.Logger().Warn($"There is no loot config for enemy with id {unit.Model.Id}.");
                 return;
             }
             

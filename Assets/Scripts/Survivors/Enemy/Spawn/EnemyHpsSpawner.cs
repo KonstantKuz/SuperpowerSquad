@@ -1,18 +1,22 @@
 ﻿using System;
 using System.Collections;
 using Feofun.Config;
+using Logger.Assets.Scripts;
 using SuperMaxim.Messaging;
 using Survivors.Enemy.Spawn.Config;
 using Survivors.Session.Messages;
 using Survivors.Units.Enemy.Config;
 using UnityEngine;
 using Zenject;
+using ILogger = Logger.Assets.Scripts.ILogger;
 using Random = UnityEngine.Random;
 
 namespace Survivors.Enemy.Spawn
 {
     public class EnemyHpsSpawner : MonoBehaviour
     {
+        private static readonly ILogger Logger = LoggerFactory.GetLogger<EnemyHpsSpawner>();
+        
         private Coroutine _spawnCoroutine;
         
         [Inject] private EnemyWavesSpawner _enemyWavesSpawner;
@@ -117,7 +121,7 @@ namespace Survivors.Enemy.Spawn
         private static void Log(string message)
         {
 #if UNITY_EDITOR
-            Debug.Log(message);            
+            Logger.Trace(message);            
 #endif            
         }
     }

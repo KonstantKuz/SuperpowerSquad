@@ -2,8 +2,7 @@
 using System.Linq;
 using Feofun.Config;
 using JetBrains.Annotations;
-using SuperMaxim.Core.Extensions;
-using Survivors.Analytics.Wrapper;
+using Logger.Assets.Scripts;
 using Survivors.Location;
 using Survivors.Player.Service;
 using Survivors.Session.Config;
@@ -12,17 +11,19 @@ using Survivors.Squad.Component;
 using Survivors.Squad.Service;
 using Survivors.Squad.Upgrade;
 using Survivors.Units;
-using Survivors.Units.Component.Health;
 using Survivors.Units.Service;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Zenject;
+using ILogger = Logger.Assets.Scripts.ILogger;
 
 namespace Survivors.Analytics
 {
     [PublicAPI]
     public class Analytics
     {
+        private static readonly ILogger Logger = LoggerFactory.GetLogger<Analytics>();
+        
         [Inject] 
         private StringKeyedConfigCollection<LevelMissionConfig> _levelsConfig;
         [Inject] 
@@ -48,7 +49,7 @@ namespace Survivors.Analytics
 
         public void Init()
         {
-            Debug.Log("Initializing Analytics");
+            Logger.Info("Initializing Analytics");
             foreach (var impl in _impls)
             {
                 impl.Init();

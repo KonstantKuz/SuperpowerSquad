@@ -1,25 +1,29 @@
 ﻿using System;
+using Logger.Assets.Scripts;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
+using ILogger = Logger.Assets.Scripts.ILogger;
 
 namespace Survivors.Units.Weapon
 {
     public class MeleeWeapon : BaseWeapon
     {
+        private static readonly ILogger Logger = LoggerFactory.GetLogger<MeleeWeapon>();
+        
         public override void Fire(ITarget target, IProjectileParams chargeParams, Action<GameObject> hitCallback)
         {
             var targetObj = target as MonoBehaviour;
             if (targetObj == null)
             {
-                Debug.LogWarning("Target is not a monobehaviour");
+                Logger.Warn("Target is not a monobehaviour");
                 return;
             }
 
             if (targetObj.GetComponent<IDamageable>() == null)
             {
-                Debug.LogWarning("Target has no damageable component");
+                Logger.Warn("Target has no damageable component");
                 return;
             }
             hitCallback?.Invoke(targetObj.gameObject);

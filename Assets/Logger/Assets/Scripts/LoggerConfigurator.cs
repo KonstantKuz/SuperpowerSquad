@@ -25,9 +25,6 @@ namespace Logger.Assets.Scripts
             switch (activeLogger) {
                 case LoggerType.Log4Net:
                     return ConfigureLog4Net(xml);
-                case LoggerType.Unity:
-                    ActiveLogger = LoggerType.Unity;
-                    return true;
                 default:
                     return false;
             }
@@ -35,11 +32,11 @@ namespace Logger.Assets.Scripts
         private static LoggerType GetActiveLogger(XmlDocument xml)
         {
             string activeLogger = xml.GetElementsByTagName("activeLogger")[0].InnerText;
-            var loggerType = LoggerType.Unity;
+            var loggerType = LoggerType.Log4Net;
             try {
                 loggerType = (LoggerType) Enum.Parse(typeof(LoggerType), activeLogger, true);
             } catch (Exception ex) {
-                Debug.LogError($"Active logger parsing error, xml active logger:= {activeLogger}, Setted logger type:= {LoggerType.Unity.ToString()}, {ex}");
+                Debug.LogError($"Active logger parsing error, xml active logger:= {activeLogger}, Setted logger type:= {LoggerType.Log4Net.ToString()}, {ex}");
             }
             return loggerType;
         }
