@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
+using Logger.Assets.Scripts;
+using ILogger = Logger.Assets.Scripts.ILogger;
 
 namespace Survivors.Analytics.Wrapper
 {
-    public class LoggingAnalyticsWrapper: IAnalyticsImpl
+    public class LoggingAnalyticsWrapper : IAnalyticsImpl
     {
+        private static readonly ILogger _logger = LoggerFactory.GetLogger<LoggingAnalyticsWrapper>();
+        
         private bool _enabled;
         
         public void Init()
@@ -18,7 +21,7 @@ namespace Survivors.Analytics.Wrapper
         public void ReportEventWithParams(string eventName, Dictionary<string, object> eventParams)
         {
             if (!_enabled) return;
-            Debug.Log($"Event: {eventName}, Params: {DictionaryToString(eventParams)}");
+            _logger.Info($"Event: {eventName}, Params: {DictionaryToString(eventParams)}");
         }
 
         private static string DictionaryToString(Dictionary<string, object> dict)

@@ -12,7 +12,7 @@ namespace Feofun.Localization.Service
     [PublicAPI]
     public class LocalizationService
     {
-        private static readonly ILogger Logger = LoggerFactory.GetLogger<LocalizationService>();
+        private static readonly ILogger _logger = LoggerFactory.GetLogger<LocalizationService>();
         
         private const string DEFAULT_LANGUAGE = "English";
 
@@ -26,7 +26,7 @@ namespace Feofun.Localization.Service
         {
             if (!_config.Table.ContainsKey(localizationId))
             {
-                Logger.Warn($"No localization for key: {localizationId}");
+                _logger.Warn($"No localization for key: {localizationId}");
                 return localizationId;
             }
 
@@ -50,7 +50,7 @@ namespace Feofun.Localization.Service
         }
         private void ReportUnsupportedLanguage(string language)
         {
-            Logger.Warn($"Unsupported language: {language}");
+            _logger.Warn($"Unsupported language: {language}");
             _reportedUnsupportedLanguages.Add(language);
         }
         private string LanguageOverride => _languageOverride ??= PlayerPrefs.GetString("Language", null);

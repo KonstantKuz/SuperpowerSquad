@@ -7,7 +7,7 @@ namespace Feofun.App.Init
 {
     public class AppInitSequence : MonoBehaviour
     {
-        private static readonly ILogger Logger = LoggerFactory.GetLogger<AppInitSequence>();
+        private static readonly ILogger _logger = LoggerFactory.GetLogger<AppInitSequence>();
         
         private readonly Queue<AppInitStep> _steps = new Queue<AppInitStep>();
 
@@ -29,7 +29,7 @@ namespace Feofun.App.Init
                 return;
             }
             var step = _steps.Dequeue();
-            Logger.Debug($"AppInitSequence run step= {step.GetType().Name}");
+            _logger.Debug($"AppInitSequence run step= {step.GetType().Name}");
             step.Run(Next);
         }
     }

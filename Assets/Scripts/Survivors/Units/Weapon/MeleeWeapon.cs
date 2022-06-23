@@ -10,20 +10,20 @@ namespace Survivors.Units.Weapon
 {
     public class MeleeWeapon : BaseWeapon
     {
-        private static readonly ILogger Logger = LoggerFactory.GetLogger<MeleeWeapon>();
+        private static readonly ILogger _logger = LoggerFactory.GetLogger<MeleeWeapon>();
         
         public override void Fire(ITarget target, IProjectileParams chargeParams, Action<GameObject> hitCallback)
         {
             var targetObj = target as MonoBehaviour;
             if (targetObj == null)
             {
-                Logger.Warn("Target is not a monobehaviour");
+                _logger.Warn("Target is not a monobehaviour");
                 return;
             }
 
             if (targetObj.GetComponent<IDamageable>() == null)
             {
-                Logger.Warn("Target has no damageable component");
+                _logger.Warn("Target has no damageable component");
                 return;
             }
             hitCallback?.Invoke(targetObj.gameObject);

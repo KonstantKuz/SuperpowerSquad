@@ -15,7 +15,7 @@ namespace Survivors.Enemy.Spawn
 {
     public class EnemyHpsSpawner : MonoBehaviour
     {
-        private static readonly ILogger Logger = LoggerFactory.GetLogger<EnemyHpsSpawner>();
+        private static readonly ILogger _logger = LoggerFactory.GetLogger<EnemyHpsSpawner>();
         
         private Coroutine _spawnCoroutine;
         
@@ -121,7 +121,7 @@ namespace Survivors.Enemy.Spawn
         private static void Log(string message)
         {
 #if UNITY_EDITOR
-            Logger.Trace(message);            
+            _logger.Trace(message);            
 #endif            
         }
     }

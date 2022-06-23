@@ -22,7 +22,7 @@ namespace Survivors.Analytics
     [PublicAPI]
     public class Analytics
     {
-        private static readonly ILogger Logger = LoggerFactory.GetLogger<Analytics>();
+        private static readonly ILogger _logger = LoggerFactory.GetLogger<Analytics>();
         
         [Inject] 
         private StringKeyedConfigCollection<LevelMissionConfig> _levelsConfig;
@@ -49,7 +49,7 @@ namespace Survivors.Analytics
 
         public void Init()
         {
-            Logger.Info("Initializing Analytics");
+            _logger.Info("Initializing Analytics");
             foreach (var impl in _impls)
             {
                 impl.Init();

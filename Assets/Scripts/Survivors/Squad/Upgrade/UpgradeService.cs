@@ -22,7 +22,7 @@ namespace Survivors.Squad.Upgrade
     [PublicAPI]
     public class UpgradeService : IWorldScope
     {
-        private static readonly ILogger Logger = LoggerFactory.GetLogger<UpgradeService>();
+        private static readonly ILogger _logger = LoggerFactory.GetLogger<UpgradeService>();
         
         [Inject] private UpgradesConfig _config;
         [Inject] private World _world;
@@ -59,7 +59,7 @@ namespace Survivors.Squad.Upgrade
             state.IncreaseLevel(upgradeBranchId);
             SaveState(state);
             ApplyUpgrade(upgradeBranchId, SquadUpgradeState.GetLevel(upgradeBranchId));
-            Logger.Debug($"Upgrade:={upgradeBranchId} applied, level:= {state.GetLevel(upgradeBranchId)}");
+            _logger.Debug($"Upgrade:={upgradeBranchId} applied, level:= {state.GetLevel(upgradeBranchId)}");
         }
 
         private void ApplyUpgrade(string upgradeBranchId, int level)

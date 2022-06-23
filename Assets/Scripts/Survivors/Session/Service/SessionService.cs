@@ -22,7 +22,7 @@ namespace Survivors.Session.Service
 {
     public class SessionService : IWorldScope
     {
-        private static readonly ILogger Logger = LoggerFactory.GetLogger<SessionService>();
+        private static readonly ILogger _logger = LoggerFactory.GetLogger<SessionService>();
         
         private readonly IntReactiveProperty _kills = new IntReactiveProperty(0);
         
@@ -69,7 +69,7 @@ namespace Survivors.Session.Service
             var newSession = Model.Session.Build(levelConfig);
             _repository.Set(newSession);
             _playerProgressService.OnSessionStarted(levelConfig.Level);
-            Logger.Debug($"Kill enemies:= {levelConfig.KillCount}");
+            _logger.Debug($"Kill enemies:= {levelConfig.KillCount}");
         }
     
         private void CreateSquad()
@@ -92,7 +92,7 @@ namespace Survivors.Session.Service
             
             Session.AddKill();
             _kills.Value = Session.Kills;
-            Logger.Trace($"Killed enemies:= {Session.Kills}");
+            _logger.Trace($"Killed enemies:= {Session.Kills}");
             if (Session.IsMaxKills) {
                 EndSession(UnitType.PLAYER);
             }

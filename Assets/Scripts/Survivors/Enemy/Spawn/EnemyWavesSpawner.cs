@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Feofun.Config;
+using Logger.Assets.Scripts;
 using SuperMaxim.Messaging;
 using Survivors.Enemy.Spawn.Config;
 using Survivors.Enemy.Spawn.PlaceProviders;
@@ -13,11 +14,14 @@ using Survivors.Units.Service;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
+using ILogger = Logger.Assets.Scripts.ILogger;
 
 namespace Survivors.Enemy.Spawn
 {
     public class EnemyWavesSpawner : MonoBehaviour
     {
+        private static readonly ILogger _logger = LoggerFactory.GetLogger<EnemyWavesSpawner>();
+        
         private const string ENEMY_LAYER_NAME = "Enemy";
         private static int ENEMY_LAYER;
         
@@ -82,7 +86,7 @@ namespace Survivors.Enemy.Spawn
         {
             if (!spawnPlace.IsValid)
             {
-                Debug.LogWarning("Invalid spawn place provided. Spawn wave has been canceled.");
+                _logger.Warn("Invalid spawn place provided. Spawn wave has been canceled.");
                 return;
             }
             

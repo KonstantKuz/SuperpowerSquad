@@ -19,7 +19,7 @@ namespace Survivors.Units.Player.Attack
     [RequireComponent(typeof(MovementController))]
     public class PlayerAttack : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent
     {
-        private static readonly ILogger Logger = LoggerFactory.GetLogger<PlayerAttack>();
+        private static readonly ILogger _logger = LoggerFactory.GetLogger<PlayerAttack>();
         
         private static readonly int AttackSpeedMultiplierHash = Animator.StringToHash("AttackSpeedMultiplier");
         private static readonly int AttackHash = Animator.StringToHash("Attack");
@@ -114,7 +114,7 @@ namespace Survivors.Units.Player.Attack
         {
             var damageable = target.RequireComponent<IDamageable>();
             damageable.TakeDamage(_playerAttackModel.AttackDamage);
-            Logger.Trace($"Damage applied, target:= {target.name}");
+            _logger.Trace($"Damage applied, target:= {target.name}");
         }
 
         private void OnDestroy()

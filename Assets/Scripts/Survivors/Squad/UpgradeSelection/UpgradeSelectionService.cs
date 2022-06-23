@@ -20,7 +20,7 @@ namespace Survivors.Squad.UpgradeSelection
 {
     public class UpgradeSelectionService : IWorldScope
     {
-        private static readonly ILogger Logger = LoggerFactory.GetLogger<UpgradeSelectionService>();
+        private static readonly ILogger _logger = LoggerFactory.GetLogger<UpgradeSelectionService>();
         
         private const int PROPOSED_UPGRADE_COUNT = 3;
 
@@ -63,7 +63,7 @@ namespace Survivors.Squad.UpgradeSelection
         {
             var randomUpgradeIds = GetRandomUpgradeIds(PROPOSED_UPGRADE_COUNT).ToList();
             if (randomUpgradeIds.IsEmpty()) {
-                Logger.Info("Empty upgrades list");
+                _logger.Info("Empty upgrades list");
                 return;
             }
             _dialogManager.Show<UpgradeDialog, UpgradeDialogInitModel>(new UpgradeDialogInitModel(level, randomUpgradeIds, OnUpgrade));

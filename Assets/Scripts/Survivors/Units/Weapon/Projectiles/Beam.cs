@@ -1,15 +1,19 @@
 ﻿using System;
 using System.Collections;
+using Logger.Assets.Scripts;
 using ModestTree;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
+using ILogger = Logger.Assets.Scripts.ILogger;
 
 namespace Survivors.Units.Weapon.Projectiles
 {
     public class Beam : MonoBehaviour
     {
+        private static readonly ILogger _logger = LoggerFactory.GetLogger<Beam>();
+        
         [SerializeField]
         private float _maxLifeTime;
         [Range(0f, 1f)]
@@ -61,7 +65,7 @@ namespace Survivors.Units.Weapon.Projectiles
         {
             var targetObj = target as MonoBehaviour;
             if (targetObj == null) {
-                Debug.LogWarning("Target is not a monobehaviour");
+                _logger.Warn("Target is not a monobehaviour");
                 return;
             }
             if (targetObj.GetComponent<IDamageable>() == null) {

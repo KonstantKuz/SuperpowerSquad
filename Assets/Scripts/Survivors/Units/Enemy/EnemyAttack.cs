@@ -12,7 +12,7 @@ namespace Survivors.Units.Enemy
     [RequireComponent(typeof(EnemyAi))]
     public class EnemyAttack : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent
     {
-        private static readonly ILogger Logger = LoggerFactory.GetLogger<EnemyAttack>();
+        private static readonly ILogger _logger = LoggerFactory.GetLogger<EnemyAttack>();
         
         private EnemyAi _enemyAi;
         private BaseWeapon _weapon;
@@ -63,7 +63,7 @@ namespace Survivors.Units.Enemy
         {
             var damageable = target.RequireComponent<IDamageable>();
             damageable.TakeDamage(_attackModel.AttackDamage);
-            Logger.Trace($"Damage applied, target:= {target.name}");
+            _logger.Trace($"Damage applied, target:= {target.name}");
         }
     }
 }
