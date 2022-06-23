@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using Survivors.Extension;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles.Params;
@@ -20,54 +19,52 @@ namespace Survivors.Units.Weapon.Projectiles
         [SerializeField] private float _returnDelay;
 
         private Action<Boomerang> _destroyCallback;
-        private Vector3 _targetPosition;
+        private Vector3 _initialTargetPosition;
         private Transform _returnPoint;
-        private BoomerangState _state;
+        private float _startTime;
+        
+        private float LifeTime => Time.time - _startTime;
+        private bool IsTargetPositionReached => Vector3.Distance(transform.position, TargetPosition) < STOPPING_DISTANCE;
+        private Vector3 TargetPosition => GetCurrentState() == BoomerangState.ReturnBack ? _returnPoint.position : _initialTargetPosition;
 
-        private bool IsTargetPositionReached => Vector3.Distance(transform.position, _targetPosition) < STOPPING_DISTANCE;
         public void Launch(Transform returnPoint, ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback, Action<Boomerang> destroyCallBack)
         {
             base.Launch(target, projectileParams, hitCallback);
 
-            _targetPosition = transform.position + transform.forward * Params.AttackDistance;
+            _initialTargetPosition = transform.position + transform.forward * Params.AttackDistance;
             transform.localScale *= Params.DamageRadius;
             
             _destroyCallback = destroyCallBack;
             _returnPoint = returnPoint;
-            
-            StartCoroutine(UpdateState());
-        }
-
-        private IEnumerator UpdateState()
-        {
-            _state = BoomerangState.MoveToTarget;
-            yield return new WaitForSeconds(Params.AttackDistance / Speed);
-            _state = BoomerangState.Stop;
-            yield return new WaitForSeconds(_returnDelay);
-            _state = BoomerangState.ReturnBack;
+            _startTime = Time.time;
         }
 
         private void Update()
         {
-            if (_state != BoomerangState.Stop)
+            if (GetCurrentState() != BoomerangState.Stop)
             {
                 UpdatePosition();
             }
-
-            if (_state == BoomerangState.ReturnBack && IsTargetPositionReached)
+            if (GetCurrentState() == BoomerangState.ReturnBack && IsTargetPositionReached)
             {
                 Destroy();
             }
         }
 
+        private BoomerangState GetCurrentState()
+        {
+            var moveToTargetTime = Params.AttackDistance / Speed;
+            var returnBackTime = moveToTargetTime + _returnDelay;
+            if (LifeTime < moveToTargetTime)
+            {
+                return BoomerangState.MoveToTarget;
+            }
+            return LifeTime < returnBackTime ? BoomerangState.Stop : BoomerangState.ReturnBack;
+        }
+
         private void UpdatePosition()
         {
-            if (_state == BoomerangState.ReturnBack)
-            {
-                _targetPosition = _returnPoint.position;
-            }
-            
-            var moveDirection = _targetPosition - transform.position;
+            var moveDirection = TargetPosition - transform.position;
             transform.rotation = Quaternion.LookRotation(moveDirection.XZ());
             transform.position += transform.forward * Speed * Time.deltaTime;
         }
