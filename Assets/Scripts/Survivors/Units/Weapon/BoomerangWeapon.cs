@@ -16,7 +16,7 @@ namespace Survivors.Units.Weapon
         
         public void Subscribe(string weaponId, IAttackModel attackModel, Action onAttackReady)
         {
-            _timer = new WeaponTimer(attackModel.AttackInterval, false);
+            _timer = new WeaponTimer(attackModel.AttackInterval);
             _timer.OnAttackReady += onAttackReady;
         }
         public void Unsubscribe(string weaponId, Action onAttackReady)
