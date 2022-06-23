@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Survivors.Units.Player.Attack
 {
-    public class WeaponTimerManager : MonoBehaviour, IInitializable<Squad.Squad>
+    public class WeaponTimerManager : MonoBehaviour, IWeaponTimerManager, IInitializable<Squad.Squad>
     {
         private Dictionary<string, WeaponTimer> _timers;
         
@@ -28,10 +28,6 @@ namespace Survivors.Units.Player.Attack
                 return;
             }
             _timers[weaponId].OnAttackReady -= onAttackReady;
-        }
-        public void ForceDelayNextAttack(string weaponId)
-        {
-            _timers[weaponId].ForceDelayNextAttack();
         }
         private void AddTimer(string unitTypeId, IAttackModel attackModel)
         {

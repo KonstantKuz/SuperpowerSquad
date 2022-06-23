@@ -8,7 +8,6 @@ namespace Survivors.Units.Weapon
 {
     public abstract class BaseWeapon : MonoBehaviour
     {
-        public virtual bool CanFire => true;
         public abstract void Fire(ITarget target, [CanBeNull] IProjectileParams projectileParams, Action<GameObject> hitCallback);
     }
 }
