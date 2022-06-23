@@ -13,7 +13,7 @@ namespace Survivors.Squad.UpgradeSelection.Config
         [DataMember(Name = "MaxUnitUpgrade")]
         private int _maxUnitUpgrade;
         [DataMember(Name = "MaxAbilityUpgrade")]
-        private int _maxAbilityUpgrade;
+        private int _maxAbilityUpgrade; 
 
         public int MaxUnitUpgrade => _config._maxUnitUpgrade;
 
