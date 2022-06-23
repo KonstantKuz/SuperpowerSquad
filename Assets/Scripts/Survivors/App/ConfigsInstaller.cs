@@ -32,7 +32,7 @@ namespace Survivors.App
                 .RegisterSingle<UpgradesConfig>(Configs.UPGRADES)     
                 .RegisterSingle<UpgradeBranchSelectionConfig>(Configs.CONSTANTS)  
                 .RegisterSingleObjectConfig<ConstantsConfig>(Configs.CONSTANTS)
-                .RegisterSingle<HpsSpawnerConfigLoader>(Configs.ENEMY_SPAWNER)
+                .RegisterSingleObjectConfig<HpsSpawnerConfig>(Configs.ENEMY_SPAWNER)
                 .RegisterStringKeyedCollection<LevelMissionConfig>(Configs.LEVEL_MISSION);
         }
     }
