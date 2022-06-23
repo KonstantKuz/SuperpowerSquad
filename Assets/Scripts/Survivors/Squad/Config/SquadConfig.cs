@@ -2,7 +2,7 @@
 
 namespace Survivors.Squad.Config
 {
-    public class SquadParams
+    public class SquadConfig
     {
         [DataMember] 
         public float Speed;

@@ -27,7 +27,7 @@ namespace Survivors.App
                 .RegisterStringKeyedCollection<EnemyUnitConfig>(Configs.ENEMY_UNIT)
                 .RegisterStringKeyedCollection<DroppingLootConfig>(Configs.DROPPING_LOOT)
                 .RegisterStringKeyedCollection<SquadLevelConfig>(Configs.SQUAD_LEVEL)
-                .RegisterSingleObjectConfig<SquadParams>(Configs.SQUAD)
+                .RegisterSingleObjectConfig<SquadConfig>(Configs.SQUAD)
                 .RegisterStringKeyedCollection<ParameterUpgradeConfig>(Configs.MODIFIERS)
                 .RegisterSingle<UpgradesConfig>(Configs.UPGRADES)     
                 .RegisterSingle<UpgradeBranchSelectionConfig>(Configs.CONSTANTS)  

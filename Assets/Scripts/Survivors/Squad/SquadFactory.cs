@@ -17,7 +17,7 @@ namespace Survivors.Squad
         [Inject] private World _world;
         [Inject] private WorldObjectFactory _worldObjectFactory;
         [Inject] private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
-        [Inject] private SquadParams _squadConfig;
+        [Inject] private SquadConfig _squadConfig;
         
         public Squad CreateSquad()
         {
