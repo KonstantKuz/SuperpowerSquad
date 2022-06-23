@@ -60,7 +60,7 @@ namespace Survivors.Session.Service
             CreateSession();
             CreateSquad();
             SpawnUnits();
-            _analytics.ReportLevelStart(LevelId);
+            _analytics.ReportLevelStart();
         }
 
         private void CreateSession()

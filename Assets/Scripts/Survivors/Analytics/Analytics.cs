@@ -1,43 +1,20 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
-using Feofun.Config;
 using JetBrains.Annotations;
 using Logger.Assets.Scripts;
-using Survivors.Location;
-using Survivors.Player.Service;
-using Survivors.Session.Config;
-using Survivors.Session.Service;
-using Survivors.Squad.Component;
-using Survivors.Squad.Service;
-using Survivors.Squad.Upgrade;
-using Survivors.Units;
-using Survivors.Units.Service;
-using UnityEngine;
-using UnityEngine.Assertions;
-using Zenject;
 using ILogger = Logger.Assets.Scripts.ILogger;
+using Zenject;
 
 namespace Survivors.Analytics
 {
     [PublicAPI]
     public class Analytics
     {
-        private static readonly ILogger _logger = LoggerFactory.GetLogger<Analytics>();
+        public const char SEPARATOR = '_';
         
+        private static readonly ILogger _logger = LoggerFactory.GetLogger<Analytics>();
+
         [Inject] 
-        private StringKeyedConfigCollection<LevelMissionConfig> _levelsConfig;
-        [Inject] 
-        private PlayerProgressService _playerProgressService;
-        [Inject]
-        private SquadProgressService _squadProgressService;
-        [Inject] 
-        private SquadUpgradeRepository _squadUpgradeRepository;
-        [Inject] 
-        private SessionService _sessionService;
-        [Inject] 
-        private UnitService _unitService;
-        [Inject] 
-        private World _world;
+        private IEventParamProvider _eventParamProvider;
         
         
         private readonly ICollection<IAnalyticsImpl> _impls;
@@ -60,26 +37,17 @@ namespace Survivors.Analytics
             ReportEventToAllImpls(Events.TEST_EVENT, null);
         }
 
-        public void ReportLevelStart(int levelId)
+        public void ReportLevelStart()
         {
-            var playerProgress = _playerProgressService.Progress;
-            var levelConfig = _levelsConfig.Values[levelId];
-
-            var eventParams = GetLevelParams();
-            eventParams[EventParams.PASS_NUMBER] = playerProgress.GetPassCount(levelConfig.Level);
+            var eventParams = _eventParamProvider.GetParams(new[]
+            {
+                EventParams.LEVEL_ID,
+                EventParams.LEVEL_NUMBER,
+                EventParams.LEVEL_LOOP,
+                EventParams.PASS_NUMBER
+            });
             
             ReportEventToAllImpls(Events.LEVEL_START, eventParams);
-        }
-
-        private Dictionary<string, object> GetLevelParams()
-        {
-            var playerProgress = _playerProgressService.Progress;
-            return new Dictionary<string, object>
-            {
-                {EventParams.LEVEL_ID, _sessionService.LevelId},
-                {EventParams.LEVEL_NUMBER, playerProgress.LevelNumber + 1},
-                {EventParams.LEVEL_LOOP, Mathf.Max(0, playerProgress.LevelNumber - _levelsConfig.Keys.Count)},
-            };
         }
 
         private void ReportEventToAllImpls(string eventName, Dictionary<string, object> eventParams)
@@ -92,48 +60,39 @@ namespace Survivors.Analytics
 
         public void ReportLevelUp(string upgradeBranch)
         {
-            var eventParams = GetLevelParams();
-            eventParams[EventParams.SQUAD_LEVEL] = _squadProgressService.Level.Value;
-            eventParams[EventParams.UPGRADE] =
-                $"{upgradeBranch}_{_squadUpgradeRepository.Get().GetLevel(upgradeBranch)}";
-            eventParams[EventParams.ENEMY_KILLER] = _sessionService.Kills.Value;
-            eventParams[EventParams.TIME_SINCE_LEVEL_START] = _sessionService.SessionTime;
+            var eventParams = _eventParamProvider.GetParams(new[]
+            {
+                EventParams.LEVEL_ID,
+                EventParams.LEVEL_NUMBER,
+                EventParams.LEVEL_LOOP,
+                EventParams.SQUAD_LEVEL,
+                $"{EventParams.UPGRADE}{SEPARATOR}{upgradeBranch}",
+                EventParams.ENEMY_KILLED,
+                EventParams.TIME_SINCE_LEVEL_START
+            });
             
             ReportEventToAllImpls(Events.LEVEL_UP, eventParams);
         }
 
         public void ReportLevelFinished(bool isPlayerWinner)
         {
-            var playerProgress = _playerProgressService.Progress;
-            var levelConfig = _levelsConfig.Values[_sessionService.LevelId];
-            var enemies = _unitService.GetEnemyUnits().ToList();
-
-            var eventParams = GetLevelParams();
-            eventParams[EventParams.PASS_NUMBER] = playerProgress.GetPassCount(levelConfig.Level);
-            eventParams[EventParams.SQUAD_LEVEL] = _squadProgressService.Level.Value;
-            eventParams[EventParams.TIME_SINCE_LEVEL_START] = _sessionService.SessionTime;
-            eventParams[EventParams.ENEMY_KILLER] = _sessionService.Kills.Value;
+            var eventParams = _eventParamProvider.GetParams(new[]
+            {
+                EventParams.LEVEL_ID,
+                EventParams.LEVEL_NUMBER,
+                EventParams.LEVEL_LOOP,
+                EventParams.PASS_NUMBER,
+                EventParams.SQUAD_LEVEL,
+                EventParams.TIME_SINCE_LEVEL_START,
+                EventParams.ENEMY_KILLED,
+                EventParams.TOTAL_ENEMY_HEALTH,
+                EventParams.AVERAGE_ENEMY_LIFETIME,
+                EventParams.STAND_RATIO
+            });
+            
             eventParams[EventParams.LEVEL_RESULT] = isPlayerWinner ? "win" : "lose";
-            eventParams[EventParams.TOTAL_ENEMY_HEALTH] = SumHealth(enemies);
-            eventParams[EventParams.AVERAGE_ENEMY_LIFETIME] = enemies.Average(it => it.LifeTime);
-            eventParams[EventParams.STAND_RATIO] = GetStandRatio();
             
             ReportEventToAllImpls(Events.LEVEL_FINISHED, eventParams);
-        }
-
-        private float GetStandRatio()
-        {
-            Assert.IsNotNull(_world.Squad, "Should call this method only inside game session");
-            return _world.Squad.GetComponent<MovementAnalytics>().StandingTime /
-                   _sessionService.SessionTime;
-        }
-
-        private static float SumHealth(List<Unit> enemies)
-        {
-            return enemies
-                .Select(it => it.Health)
-                .Where(it => it != null).
-                Sum(it => it.CurrentValue.Value);
         }
     }
 }
