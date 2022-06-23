@@ -15,6 +15,7 @@ using Survivors.Squad.Formation;
 using Survivors.Squad.Model;
 using Survivors.Units;
 using Survivors.Units.Component.Health;
+using Survivors.Units.Player.Attack;
 using Survivors.Units.Player.Config;
 using Survivors.Units.Service;
 using UniRx;
@@ -44,6 +45,7 @@ namespace Survivors.Squad
         public SquadModel Model { get; private set; }
         public SquadDestination Destination { get; private set; }
         public SquadTargetProvider TargetProvider { get; private set; }
+        public WeaponTimerManager WeaponTimerManager { get; private set; }
         public IReadOnlyReactiveProperty<int> UnitsCount => _unitCount ??= _units.ObserveCountChanged().ToReactiveProperty();
         public float SquadRadius { get; private set; }
         public bool IsMoving => _joystick.Direction.sqrMagnitude > 0;
@@ -63,7 +65,8 @@ namespace Survivors.Squad
         {
             _formation = new FilledCircleFormation();
             Destination = gameObject.RequireComponentInChildren<SquadDestination>();
-            TargetProvider = gameObject.RequireComponent<SquadTargetProvider>();
+            TargetProvider = gameObject.RequireComponent<SquadTargetProvider>();   
+            WeaponTimerManager = gameObject.RequireComponent<WeaponTimerManager>();
             _damageable = gameObject.RequireComponent<IDamageable>();
             UpdateFormationAndRadius();
         }

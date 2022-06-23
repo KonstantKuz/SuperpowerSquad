@@ -50,7 +50,7 @@ namespace Survivors.Units.Enemy
         {
             return _enemyAi.CurrentTarget != null 
                    && _enemyAi.DistanceToTarget <= _attackModel.AttackDistance 
-                   && _attackTimer >= _attackModel.AttackInterval;
+                   && _attackTimer >= _attackModel.AttackInterval.Value;
         }
         
         private void Attack()

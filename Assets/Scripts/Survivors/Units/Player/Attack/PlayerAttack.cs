@@ -2,7 +2,6 @@
 using Feofun.Components;
 using JetBrains.Annotations;
 using Logger.Assets.Scripts;
-using ModestTree;
 using Survivors.Extension;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Component.TargetSearcher;
@@ -10,6 +9,7 @@ using Survivors.Units.Player.Model;
 using Survivors.Units.Player.Movement;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon;
+using UniRx;
 using UnityEngine;
 using ILogger = Logger.Assets.Scripts.ILogger;
 
@@ -17,7 +17,7 @@ namespace Survivors.Units.Player.Attack
 {
     [RequireComponent(typeof(ITargetSearcher))]
     [RequireComponent(typeof(MovementController))]
-    public class PlayerAttack : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent
+    public class PlayerAttack : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent, IInitializable<Squad.Squad>
     {
         private static readonly ILogger _logger = LoggerFactory.GetLogger<PlayerAttack>();
         
@@ -26,15 +26,19 @@ namespace Survivors.Units.Player.Attack
         
         [SerializeField]
         private bool _rotateToTarget = true;
-        [SerializeField] private string _attackAnimationName;
+        [SerializeField]
+        private string _attackAnimationName;
         
         private BaseWeapon _weapon;
         private PlayerAttackModel _playerAttackModel;
         private Animator _animator;
         private ITargetSearcher _targetSearcher;
-        private ReloadableWeaponTimer _weaponTimer;
         private MovementController _movementController;
-
+        private Unit _owner;
+        private WeaponTimerManager _timerManager;
+        private CompositeDisposable _disposable;
+        
+        
         [CanBeNull]
         private WeaponAnimationHandler _weaponAnimationHandler;
         [CanBeNull]
@@ -45,12 +49,34 @@ namespace Survivors.Units.Player.Attack
 
         public void Init(IUnit unit)
         {
-            Assert.IsNull(_weaponTimer);
+            Dispose();
+            _disposable = new CompositeDisposable();
+            _owner = (Unit) unit;
             _playerAttackModel = (PlayerAttackModel) unit.Model.AttackModel;
-            _weaponTimer = new ReloadableWeaponTimer(_playerAttackModel.ClipSize, _playerAttackModel.AttackTime, _playerAttackModel.ClipReloadTime);
-            UpdateAnimationSpeed(_weaponTimer.AttackInterval);
+            
+            _playerAttackModel.AttackInterval.Subscribe(UpdateAnimationSpeed).AddTo(_disposable);
             if (HasWeaponAnimationHandler) {
                 _weaponAnimationHandler.OnFireEvent += Fire;
+            }
+        }
+        public void Init(Squad.Squad owner)
+        {
+            _timerManager = owner.WeaponTimerManager;
+            _timerManager.Subscribe(_owner.ObjectId, _playerAttackModel, OnAttackReady);
+        }
+        private void Awake()
+        {
+            _weapon = gameObject.RequireComponentInChildren<BaseWeapon>();
+            _animator = gameObject.RequireComponentInChildren<Animator>();
+            _targetSearcher = GetComponent<ITargetSearcher>();
+            _movementController = GetComponent<MovementController>();
+
+            _weaponAnimationHandler = GetComponentInChildren<WeaponAnimationHandler>();
+        }
+        private void OnAttackReady()
+        {
+            if (CanAttack(_target)) {
+                Attack();
             }
         }
 
@@ -63,38 +89,22 @@ namespace Survivors.Units.Player.Attack
             }
             _animator.SetFloat(AttackSpeedMultiplierHash, attackClipLength / attackInterval);
         }
-
-        private void Awake()
-        {
-            _weapon = gameObject.RequireComponentInChildren<BaseWeapon>();
-            _animator = gameObject.RequireComponentInChildren<Animator>();
-            _targetSearcher = GetComponent<ITargetSearcher>();
-            _movementController = GetComponent<MovementController>();
-
-            _weaponAnimationHandler = GetComponentInChildren<WeaponAnimationHandler>();
-        }
-
+        
         [CanBeNull]
         private ITarget FindTarget() => _targetSearcher.Find();
 
         public void OnTick()
         {
-            var target = FindTarget();
+            _target = FindTarget();
             if (_rotateToTarget) {
-                _movementController.RotateToTarget(target?.Center);
-            }
-            if (CanAttack(target)) {
-                Attack(target);
+                _movementController.RotateToTarget(_target?.Center);
             }
         }
+        private bool CanAttack([CanBeNull] ITarget target) => target != null;
 
-        private bool CanAttack([CanBeNull] ITarget target) => target != null && _weaponTimer.IsAttackReady;
-
-        private void Attack(ITarget target)
+        private void Attack()
         {
-            _target = target;
             _animator.SetTrigger(AttackHash);
-            _weaponTimer.OnAttack();            
             if (!HasWeaponAnimationHandler) {
                 Fire();
             }
@@ -102,9 +112,7 @@ namespace Survivors.Units.Player.Attack
 
         private void Fire()
         {
-            if (IsTargetInvalid)
-            {
-                _weaponTimer.CancelLastTimer();
+            if (IsTargetInvalid) {
                 return;
             }
             _weapon.Fire(_target, _playerAttackModel.CreateProjectileParams(), DoDamage);
@@ -119,10 +127,16 @@ namespace Survivors.Units.Player.Attack
 
         private void OnDestroy()
         {
+            Dispose();
             if (HasWeaponAnimationHandler) {
                 _weaponAnimationHandler.OnFireEvent -= Fire;
             }
-            _weaponTimer = null;
+            _timerManager.Unsubscribe(_owner.ObjectId, OnAttackReady);
+        }
+        private void Dispose()
+        {
+            _disposable?.Dispose();
+            _disposable = null;
         }
     }
 }

@@ -21,7 +21,7 @@ ShotCount,ShotCount {0},ShotCount {0}
 DamageAngle,DamageAngle {0},DamageAngle {0}
 DamageRadius,DamageRadius {0},DamageRadius {0}
 ProjectileSpeed,ProjectileSpeed {0},ProjectileSpeed {0}
-AttackTime,AttackTime {0},AttackTime {0}
+AttackInterval,AttackInterval {0},AttackInterval {0}
 AttackDamage,AttackDamage {0},AttackDamage {0}
 CollectRadius,CollectRadius {0},CollectRadius {0}
 Speed,Speed {0},Speed {0}

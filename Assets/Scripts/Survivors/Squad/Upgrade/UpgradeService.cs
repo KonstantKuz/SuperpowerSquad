@@ -61,7 +61,11 @@ namespace Survivors.Squad.Upgrade
             ApplyUpgrade(upgradeBranchId, SquadUpgradeState.GetLevel(upgradeBranchId));
             _logger.Debug($"Upgrade:={upgradeBranchId} applied, level:= {state.GetLevel(upgradeBranchId)}");
         }
-
+        public void AddUnit(string unitId)
+        {
+            var unit = _unitFactory.CreatePlayerUnit(unitId);
+            AddExistingModifiers(unit);
+        }
         private void ApplyUpgrade(string upgradeBranchId, int level)
         {
             var upgradeBranch = _config.GetUpgradeBranch(upgradeBranchId);
@@ -89,11 +93,7 @@ namespace Survivors.Squad.Upgrade
             _world.Squad.AddModifier(modifier, modifierConfig.Target, upgradeLevelConfig.TargetId);
         }
 
-        private void AddUnit(string unitId)
-        {
-            var unit = _unitFactory.CreatePlayerUnit(unitId);
-            AddExistingModifiers(unit);
-        }
+       
 
         private void AddExistingModifiers(Unit newUnit)
         {

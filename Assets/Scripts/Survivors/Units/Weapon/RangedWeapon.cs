@@ -19,6 +19,8 @@ namespace Survivors.Units.Weapon
         [SerializeField]
         private bool _aimInXZPlane;
         [SerializeField]
+        private bool _supportShotCount = true;
+        [SerializeField]
         private Projectile _ammo;
         [SerializeField]
         private float _angleBetweenShots;
@@ -36,18 +38,30 @@ namespace Survivors.Units.Weapon
         {
             Assert.IsNotNull(projectileParams);
             var rotationToTarget = GetShootRotation(BarrelPos, target.Center.position, _aimInXZPlane);
-            var spreadAngles = GetSpreadInAngle(projectileParams.Count).ToList();
-            
-            for (int i = 0; i < projectileParams.Count; i++) {
-                var rotation = rotationToTarget * Quaternion.Euler(0, spreadAngles[i], 0);
-                Fire(rotation, target, projectileParams, hitCallback);
+            if (!_supportShotCount)
+            {
+                FireSingleShot(rotationToTarget, target, projectileParams, hitCallback);
+            }
+            else
+            {
+                FireMultipleShots(rotationToTarget, target, projectileParams, hitCallback);
             }
         }
-        private void Fire(Quaternion rotation, ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
+        
+        private void FireSingleShot(Quaternion rotation, ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             var projectile = CreateProjectile();
             projectile.transform.SetPositionAndRotation(BarrelPos, rotation);
             projectile.Launch(target, projectileParams, hitCallback);
+        }
+
+        private void FireMultipleShots(Quaternion rotationToTarget, ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
+        {
+            var spreadAngles = GetSpreadInAngle(projectileParams.Count).ToList();
+            for (int i = 0; i < projectileParams.Count; i++) {
+                var rotation = rotationToTarget * Quaternion.Euler(0, spreadAngles[i], 0);
+                FireSingleShot(rotation, target, projectileParams, hitCallback);
+            }
         }
 
         private IEnumerable<float> GetSpreadInAngle(int count)
