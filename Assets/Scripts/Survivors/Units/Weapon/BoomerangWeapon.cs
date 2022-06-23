@@ -32,7 +32,7 @@ namespace Survivors.Units.Weapon
             }
         }
 
-        protected override void Fire(Quaternion rotation, ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
+        protected override void FireSingleShot(Quaternion rotation, ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             var boomerang = CreateBoomerang();
             boomerang.transform.SetPositionAndRotation(BarrelPos, rotation);
