@@ -7,7 +7,7 @@ using UnityEngine;
 
 namespace Survivors.Units.Player.Attack
 {
-    public class WeaponTimerManager : MonoBehaviour, IInitializable<Squad.Squad>
+    public class WeaponTimerManager : MonoBehaviour, IWeaponTimerManager, IInitializable<Squad.Squad>
     {
         private Dictionary<string, WeaponTimer> _timers;
         

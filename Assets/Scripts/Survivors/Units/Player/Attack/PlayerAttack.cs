@@ -31,7 +31,7 @@ namespace Survivors.Units.Player.Attack
         private ITargetSearcher _targetSearcher;
         private MovementController _movementController;
         private Unit _owner;
-        private WeaponTimerManager _timerManager;
+        private IWeaponTimerManager _timerManager;
         private CompositeDisposable _disposable;
         
         
@@ -57,9 +57,18 @@ namespace Survivors.Units.Player.Attack
         }
         public void Init(Squad.Squad owner)
         {
-            _timerManager = owner.WeaponTimerManager;
+            InitWeaponTimer(owner);
+        }
+
+        private void InitWeaponTimer(Squad.Squad squad)
+        {
+            _timerManager = _weapon.TryGetComponent(out IWeaponTimerManager ownTimerManager)
+                ? ownTimerManager
+                : squad.WeaponTimerManager;
+
             _timerManager.Subscribe(_owner.ObjectId, _playerAttackModel, OnAttackReady);
         }
+        
         private void Awake()
         {
             _weapon = gameObject.RequireComponentInChildren<BaseWeapon>();

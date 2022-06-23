@@ -7,24 +7,26 @@ namespace Survivors.Units.Player.Attack
     public class WeaponTimer
     {
         private readonly IReadOnlyReactiveProperty<float> _attackInterval;
-        
-        private float _lastAttackTime;
+
+        private float _timer;
         public event Action OnAttackReady;
   
-        private bool IsAttackReady => Time.time >= _lastAttackTime + AttackInterval;
+        private bool IsAttackReady => _timer >= AttackInterval;
         private float AttackInterval => Math.Max(_attackInterval.Value, 0);
         public WeaponTimer(IReadOnlyReactiveProperty<float> attackInterval)
         {
             _attackInterval = attackInterval;
-            _lastAttackTime = Time.time - (Time.time % AttackInterval);
+            _timer = attackInterval.Value;
         }
+
         public void OnTick()
         {
+            _timer += Time.deltaTime;
             if (!IsAttackReady) {
                 return;
             }
             OnAttackReady?.Invoke();
-            _lastAttackTime = Time.time;
+            _timer = 0f;
         }
     }
 }
