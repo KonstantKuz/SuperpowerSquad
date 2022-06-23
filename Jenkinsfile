@@ -98,9 +98,11 @@ pipeline {
                                 }    
                                 script {
                                     UNITY_PARAMS=''
-                                }                                                                                                                                                              
-                                withCredentials([string(credentialsId: 'SurvivorsAndroidKeystorePass', variable: 'KEYSTORE_PASS')]) {
-                                    sh '$UNITY_PATH -nographics -buildTarget Android -quit -batchmode -projectPath . -executeMethod Editor.Builder.BuildAndroid ' + UNITY_PARAMS + '-buildAab -noUnityLogo -keyStorePassword $KEYSTORE_PASS -outputFileName $OUTPUT_FILE_NAME -logFile -'              
+                                }                          
+                                withCredentials([gitUsernamePassword(credentialsId: 'a.akhmedov', gitToolName: 'git-tool')]) {                                                                                                                                    
+                                    withCredentials([string(credentialsId: 'SurvivorsAndroidKeystorePass', variable: 'KEYSTORE_PASS')]) {
+                                        sh '$UNITY_PATH -nographics -buildTarget Android -quit -batchmode -projectPath . -executeMethod Editor.Builder.BuildAndroid ' + UNITY_PARAMS + '-buildAab -noUnityLogo -keyStorePassword $KEYSTORE_PASS -outputFileName $OUTPUT_FILE_NAME -logFile -'              
+                                    }
                                 }
                             }
                             post {
@@ -129,7 +131,6 @@ pipeline {
                 DISTRIBUTION_CODE_SIGN_IDENTITY='Apple Distribution: Feofun Limited (8Y9KH6XT49)'
                 IPA_NAME='survivors'  //Alas, it is not taken from OUTPUT_FILE_NAME. But from module name in project...
                 IPA_FULL_PATH="build/xcode/build/Release-iphoneos/build/${IPA_NAME}.ipa"
-                GIT_SSL_NO_VERIFY=true
             }         
             when {
                 beforeAgent true
@@ -170,8 +171,10 @@ pipeline {
                             if(params.DebugConsole) {
                                 UNITY_PARAMS=UNITY_PARAMS + '-debugConsole '
                             }
-                        }                    
-                        sh '$UNITY_PATH -nographics -buildTarget iOS -quit -batchmode -projectPath . -executeMethod Editor.Builder.BuildIos ' + UNITY_PARAMS + ' -noUnityLogo -logFile -'
+                        }          
+                        withCredentials([gitUsernamePassword(credentialsId: 'a.akhmedov', gitToolName: 'git-tool')]) {          
+                            sh '$UNITY_PATH -nographics -buildTarget iOS -quit -batchmode -projectPath . -executeMethod Editor.Builder.BuildIos ' + UNITY_PARAMS + ' -noUnityLogo -logFile -'
+                        }
                     }
                     post {
                         always {
