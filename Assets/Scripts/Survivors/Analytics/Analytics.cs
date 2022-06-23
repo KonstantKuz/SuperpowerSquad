@@ -8,7 +8,7 @@ namespace Survivors.Analytics
     [PublicAPI]
     public class Analytics
     {
-        public const char Separator = '_';
+        public const char SEPARATOR = '_';
         
         [Inject] 
         private IEventParamProvider _eventParamProvider;
@@ -34,7 +34,7 @@ namespace Survivors.Analytics
             ReportEventToAllImpls(Events.TEST_EVENT, null);
         }
 
-        public void ReportLevelStart(int levelId)
+        public void ReportLevelStart()
         {
             var eventParams = _eventParamProvider.GetParams(new[]
             {
@@ -63,7 +63,7 @@ namespace Survivors.Analytics
                 EventParams.LEVEL_NUMBER,
                 EventParams.LEVEL_LOOP,
                 EventParams.SQUAD_LEVEL,
-                $"{EventParams.UPGRADE}{Separator}{upgradeBranch}",
+                $"{EventParams.UPGRADE}{SEPARATOR}{upgradeBranch}",
                 EventParams.ENEMY_KILLED,
                 EventParams.TIME_SINCE_LEVEL_START
             });

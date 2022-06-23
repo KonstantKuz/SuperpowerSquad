@@ -37,7 +37,7 @@ namespace Survivors.App
         {
             if (paramName.StartsWith(EventParams.UPGRADE))
             {
-                return GetUpgrade(paramName.Split(Analytics.Analytics.Separator)[1]);
+                return GetUpgrade(paramName.Split(Analytics.Analytics.SEPARATOR)[1]);
             }
             return paramName switch
             {
