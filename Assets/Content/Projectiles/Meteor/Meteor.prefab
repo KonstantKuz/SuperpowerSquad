@@ -79,6 +79,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _maxLifeTime: 1
   _hitVfx: {fileID: 6825504978462425047, guid: 1555fb1dd89f36d4382a203336e143e4, type: 3}
+  _explodeOnDeath: 1
 --- !u!1 &7880546912510897380
 GameObject:
   m_ObjectHideFlags: 0
@@ -311,15 +312,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8ce6ab8fe11fedf4386054950ac8d63d, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.4912
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8ce6ab8fe11fedf4386054950ac8d63d, type: 3}
       propertyPath: m_LocalScale.y
-      value: 1.4912
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8ce6ab8fe11fedf4386054950ac8d63d, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.4912
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 8ce6ab8fe11fedf4386054950ac8d63d, type: 3}
       propertyPath: m_LocalPosition.x

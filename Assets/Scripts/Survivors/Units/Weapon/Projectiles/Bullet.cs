@@ -14,6 +14,8 @@ namespace Survivors.Units.Weapon.Projectiles
         private float _maxLifeTime;
         [SerializeField]
         private GameObject _hitVfx;
+        [SerializeField] 
+        private bool _explodeOnDeath;
 
         [Inject]
         private WorldObjectFactory _objectFactory;
@@ -45,6 +47,12 @@ namespace Survivors.Units.Weapon.Projectiles
             UpdatePosition();
             if (_timeLeft > 0) {
                 return;
+            }
+
+            if (_explodeOnDeath)
+            {
+                TryHitTargetsInRadius(transform.position, Params.DamageRadius, TargetType, null, HitCallback);
+                PlayVfx(transform.position, -GetComponent<Rigidbody>().velocity);
             }
             Destroy();
         }
