@@ -3,6 +3,7 @@ using System.IO;
 using Feofun.Config.Serializers;
 using JetBrains.Annotations;
 using Logger.Assets.Scripts;
+using Logger.Assets.Scripts.Extension;
 using SuperMaxim.Core.Extensions;
 using UnityEngine;
 using Zenject;
@@ -12,8 +13,6 @@ namespace Feofun.Config
 {
     public class ConfigLoader
     {
-        private static readonly ILogger _logger = LoggerFactory.GetLogger<ConfigLoader>();
-        
         private static string MAIN_PATH = "Configs";
         
         private readonly DiContainer _container;
@@ -60,7 +59,7 @@ namespace Feofun.Config
             }
             catch (Exception)
             {
-                _logger.Error($"Failed to parse config {configName}");
+                this.Logger().Error($"Failed to parse config {configName}");
                 throw;
             }
         }

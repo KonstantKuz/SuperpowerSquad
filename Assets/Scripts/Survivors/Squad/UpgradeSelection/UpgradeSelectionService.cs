@@ -3,6 +3,7 @@ using System.Linq;
 using Feofun.Extension;
 using Feofun.UI.Dialog;
 using Logger.Assets.Scripts;
+using Logger.Assets.Scripts.Extension;
 using ModestTree;
 using Survivors.Location;
 using Survivors.Squad.Service;
@@ -20,7 +21,6 @@ namespace Survivors.Squad.UpgradeSelection
 {
     public class UpgradeSelectionService : IWorldScope
     {
-        private static readonly ILogger _logger = LoggerFactory.GetLogger<UpgradeSelectionService>();
         
         private const int PROPOSED_UPGRADE_COUNT = 3;
 
@@ -63,7 +63,7 @@ namespace Survivors.Squad.UpgradeSelection
         {
             var randomUpgradeIds = GetRandomUpgradeIds(PROPOSED_UPGRADE_COUNT).ToList();
             if (randomUpgradeIds.IsEmpty()) {
-                _logger.Info("Empty upgrades list");
+                this.Logger().Info("Empty upgrades list");
                 return;
             }
             _dialogManager.Show<UpgradeDialog, UpgradeDialogInitModel>(new UpgradeDialogInitModel(level, randomUpgradeIds, OnUpgrade));

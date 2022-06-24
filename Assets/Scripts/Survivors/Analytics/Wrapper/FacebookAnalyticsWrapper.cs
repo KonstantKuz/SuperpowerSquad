@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using Facebook.Unity;
 using Logger.Assets.Scripts;
+using Logger.Assets.Scripts.Extension;
 using UnityEngine;
 using ILogger = Logger.Assets.Scripts.ILogger;
 
@@ -8,13 +9,12 @@ namespace Survivors.Analytics.Wrapper
 {
     public class FacebookAnalyticsWrapper : IAnalyticsImpl
     {
-        private static readonly ILogger _logger = LoggerFactory.GetLogger<FacebookAnalyticsWrapper>();
         
         private bool _isInitialized;
 
         public void Init()
         {
-            _logger.Info("Starting initializing Facebook SDK");
+            this.Logger().Info("Starting initializing Facebook SDK");
             if (!FB.IsInitialized)
             {
                 FB.Init(InitCallback, OnAppVisibilityChange);
@@ -29,9 +29,9 @@ namespace Survivors.Analytics.Wrapper
                 FB.Mobile.SetAdvertiserTrackingEnabled(true);
                 FB.ActivateApp();
                 _isInitialized = true;
-                _logger.Info("Facebook SDK is Initialized");
+                this.Logger().Info("Facebook SDK is Initialized");
             } else {
-                _logger.Info("Failed to Initialize the Facebook SDK");
+                this.Logger().Info("Failed to Initialize the Facebook SDK");
             }
         }
 
@@ -45,7 +45,7 @@ namespace Survivors.Analytics.Wrapper
             if (!_isInitialized)
             {
                 //TODO: store events while fb sdk not initialized and send them after initialization
-                _logger.Warn($"Facebook analytics event {logEvent} is lost, cause facebook sdk is not ready yet");
+                this.Logger().Warn($"Facebook analytics event {logEvent} is lost, cause facebook sdk is not ready yet");
                 return;
             }
             FB.LogAppEvent(logEvent, valueToSum, parameters);
