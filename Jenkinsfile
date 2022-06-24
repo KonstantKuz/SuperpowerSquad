@@ -13,6 +13,7 @@ pipeline {
         booleanParam(name: 'IpaForAppStore', defaultValue: false, description: 'Build ipa for publishing in AppStore, only for iOS')
         booleanParam(name: 'Clean', defaultValue: false, description: 'Delete and reimport assets')
         booleanParam(name: 'DebugConsole', defaultValue: true, description: 'Enable debug console, only for apk')
+        choice(choices: ['TRACE', 'DEBUG', 'INFO', 'WARN', 'ERROR'], defaultValue: "DEBUG", name: 'LoggerLevel') 
     }
     environment {
         OUTPUT_FILE_NAME = 'survivors'
@@ -61,6 +62,7 @@ pipeline {
                                     if(params.DebugConsole) {
                                         UNITY_PARAMS=UNITY_PARAMS + '-debugConsole '
                                     }
+                                    UNITY_PARAMS=UNITY_PARAMS + '-loggerLevel ' + params.LoggerLevel
                                 }                                                                                           
                                 withCredentials([string(credentialsId: 'SurvivorsAndroidKeystorePass', variable: 'KEYSTORE_PASS')]) {
                                     sh '$UNITY_PATH -nographics -buildTarget Android -quit -batchmode -projectPath . -executeMethod Editor.Builder.BuildAndroid ' + UNITY_PARAMS + '-keyStorePassword $KEYSTORE_PASS -noUnityLogo -outputFileName $OUTPUT_FILE_NAME -logFile -'              
@@ -95,6 +97,7 @@ pipeline {
                                 }    
                                 script {
                                     UNITY_PARAMS=''
+                                    UNITY_PARAMS=UNITY_PARAMS + '-loggerLevel ' + params.LoggerLevel
                                 }                                                                                                                                                              
                                 withCredentials([string(credentialsId: 'SurvivorsAndroidKeystorePass', variable: 'KEYSTORE_PASS')]) {
                                     sh '$UNITY_PATH -nographics -buildTarget Android -quit -batchmode -projectPath . -executeMethod Editor.Builder.BuildAndroid ' + UNITY_PARAMS + '-buildAab -noUnityLogo -keyStorePassword $KEYSTORE_PASS -outputFileName $OUTPUT_FILE_NAME -logFile -'              
@@ -166,6 +169,7 @@ pipeline {
                             if(params.DebugConsole) {
                                 UNITY_PARAMS=UNITY_PARAMS + '-debugConsole '
                             }
+                            UNITY_PARAMS=UNITY_PARAMS + '-loggerLevel ' + params.LoggerLevel
                         }                    
                         sh '$UNITY_PATH -nographics -buildTarget iOS -quit -batchmode -projectPath . -executeMethod Editor.Builder.BuildIos ' + UNITY_PARAMS + ' -noUnityLogo -logFile -'
                     }

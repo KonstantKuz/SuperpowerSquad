@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Linq;
-using Editor.Scripts;
+using JetBrains.Annotations;
 using UnityEditor;
 using UnityEditor.Build.Reporting;
 using UnityEngine;
 
-namespace Editor
+namespace Editor.Scripts.PreProcess
 {
     public static class Builder
     {
@@ -50,7 +50,7 @@ namespace Editor
 
         private static void ApplyCommonParams()
         {
-            BuildPreprocessor.Prepare(HasCmdLineKey("-debugConsole"));
+            BuildPreprocessor.Prepare(HasCmdLineKey("-debugConsole"), GetCmdLineArgumentValue("-loggerLevel"));
         }
 
         private static string[] GetSceneList() => DefaultSceneList;
@@ -103,6 +103,7 @@ namespace Editor
             }
         }
 
+        [CanBeNull]
         private static string GetCmdLineArgumentValue(string key)
         {
             var args = Environment.GetCommandLineArgs();
