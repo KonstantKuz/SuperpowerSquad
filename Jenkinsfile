@@ -13,7 +13,7 @@ pipeline {
         booleanParam(name: 'IpaForAppStore', defaultValue: false, description: 'Build ipa for publishing in AppStore, only for iOS')
         booleanParam(name: 'Clean', defaultValue: false, description: 'Delete and reimport assets')
         booleanParam(name: 'DebugConsole', defaultValue: true, description: 'Enable debug console, only for apk')
-        choice(choices: ['TRACE', 'DEBUG', 'INFO', 'WARN', 'ERROR'], defaultValue: "DEBUG", name: 'LoggerLevel') 
+        choice(choices: ['DEBUG', 'TRACE', 'INFO', 'WARN', 'ERROR'], name: 'LoggerLevel', description: 'Logger Level') 
     }
     environment {
         OUTPUT_FILE_NAME = 'survivors'
