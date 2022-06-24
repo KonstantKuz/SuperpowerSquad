@@ -11,7 +11,7 @@ namespace Survivors.Logger
         private static void Configure()
         {
             var configured = LoggerConfigurator.Configure(LOGGER_CONFIG_PATH);
-            LoggerFactory.GetLogger("LoggerInitializer").Info($"Logger has configured:= {configured}, Actiive logger:={LoggerConfigurator.ActiveLogger}");
+            LoggerFactory.GetLogger(typeof(LoggerInitializer)).Info($"Logger has configured:= {configured}, Actiive logger:={LoggerConfigurator.ActiveLogger}");
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
 using Logger.Assets.Scripts;
+using Logger.Assets.Scripts.Extension;
 using ILogger = Logger.Assets.Scripts.ILogger;
 using Zenject;
 
@@ -10,8 +11,6 @@ namespace Survivors.Analytics
     public class Analytics
     {
         public const char SEPARATOR = '_';
-        
-        private static readonly ILogger _logger = LoggerFactory.GetLogger<Analytics>();
 
         [Inject] 
         private IEventParamProvider _eventParamProvider;
@@ -26,7 +25,7 @@ namespace Survivors.Analytics
 
         public void Init()
         {
-            _logger.Info("Initializing Analytics");
+            this.Logger().Info("Initializing Analytics");
             foreach (var impl in _impls)
             {
                 impl.Init();
