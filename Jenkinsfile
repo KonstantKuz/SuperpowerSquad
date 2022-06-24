@@ -99,7 +99,7 @@ pipeline {
                                 script {
                                     UNITY_PARAMS=''
                                 }                          
-                                withCredentials([gitUsernamePassword(credentialsId: 'gitlab_inspiritum_smash_master', gitToolName: 'git-tool')]) {                                                                                                                                    
+                                withCredentials([gitUsernamePassword(credentialsId: 'gitlab_inspiritum_smash_master', gitToolName: 'Default')]) {                                                                                                                                    
                                     withCredentials([string(credentialsId: 'SurvivorsAndroidKeystorePass', variable: 'KEYSTORE_PASS')]) {
                                         sh '$UNITY_PATH -nographics -buildTarget Android -quit -batchmode -projectPath . -executeMethod Editor.Builder.BuildAndroid ' + UNITY_PARAMS + '-buildAab -noUnityLogo -keyStorePassword $KEYSTORE_PASS -outputFileName $OUTPUT_FILE_NAME -logFile -'              
                                     }
@@ -158,7 +158,7 @@ pipeline {
                         lock('UnityLicense')
                     }                  
                     steps {
-                        withCredentials([gitUsernamePassword(credentialsId: 'gitlab_inspiritum_smash_master', gitToolName: 'git-tool')]) {                    
+                        withCredentials([gitUsernamePassword(credentialsId: 'gitlab_inspiritum_smash_master', gitToolName: 'Default')]) {                    
                             withCredentials([usernamePassword(credentialsId: 'UnityUser', usernameVariable: 'UNITY_USER_NAME', passwordVariable: 'UNITY_USER_PASSWORD'), string(credentialsId: 'UnityLicenseKey', variable: 'UNITY_LICENSE')]) {                                   
                                 sh '$UNITY_PATH -batchmode -nographics -quit -serial $UNITY_LICENSE -username $UNITY_USER_NAME -password $UNITY_USER_PASSWORD -projectPath . -logFile -'               
                             }    
