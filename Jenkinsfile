@@ -52,7 +52,10 @@ pipeline {
                         stage ("Build") { 
                             options {
                                 lock('UnityLicense')
-                            }                      
+                            }           
+                            environment {
+                                GIT_SSH_COMMAND = "ssh -i gitlab-ssh-key"
+                            }           
                             steps {
                                 withCredentials([usernamePassword(credentialsId: 'UnityUser', usernameVariable: 'UNITY_USER_NAME', passwordVariable: 'UNITY_USER_PASSWORD'), string(credentialsId: 'UnityLicenseKey', variable: 'UNITY_LICENSE')]) {                                   
                                     sh 'xvfb-run --auto-servernum --server-args="-screen 0 640x480x24" $UNITY_PATH -batchmode -nographics -quit -serial $UNITY_LICENSE -username $UNITY_USER_NAME -password $UNITY_USER_PASSWORD -logFile -'               
@@ -65,7 +68,6 @@ pipeline {
                                 }         
                                 withCredentials([sshUserPrivateKey(credentialsId: 'gitlab-ssh-key', gitToolName: 'gitlab-ssh-key')]) {
                                     withCredentials([string(credentialsId: 'SurvivorsAndroidKeystorePass', variable: 'KEYSTORE_PASS')]) {
-                                        sh 'GIT_SSH_COMMAND = "ssh -i gitlab-ssh-key"'
                                         sh '$UNITY_PATH -nographics -buildTarget Android -quit -batchmode -projectPath . -executeMethod Editor.Builder.BuildAndroid ' + UNITY_PARAMS + '-keyStorePassword $KEYSTORE_PASS -noUnityLogo -outputFileName $OUTPUT_FILE_NAME -logFile -'              
                                     }
                                 }                                                                                  
