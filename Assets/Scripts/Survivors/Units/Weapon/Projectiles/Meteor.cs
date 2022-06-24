@@ -38,7 +38,7 @@ namespace Survivors.Units.Weapon.Projectiles
             }
 
             Projectile.TryHitTargetsInRadius(transform.position, _params.DamageRadius, _targetType, null, _hitCallback);
-            PlayVfx(transform.position, Vector3.up);
+            PlayVfx(transform.position, Vector3.forward);
             Destroy();
         }
         private void UpdatePosition()
