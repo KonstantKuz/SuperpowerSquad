@@ -19,10 +19,12 @@ namespace Survivors.Units.Component.TargetSearcher
         private UnitType _targetType;
         private float _clusterRadius;
         private float _searchDistance;
-        private readonly int _enemyLayer = LayerMask.GetMask("Enemy");
+        private int _enemyLayer = -1;
         
         private readonly Collider[] _hitColliders = new Collider[MAX_COLLIDERS];
-
+        
+        private int EnemyLayer => _enemyLayer == -1 ? _enemyLayer = LayerMask.GetMask("Enemy") : _enemyLayer;
+        
         public ITarget Find()
         {
             var targets = _targetService.AllTargetsOfType(_targetType).ToList();
@@ -34,7 +36,7 @@ namespace Survivors.Units.Component.TargetSearcher
             {
                 if (Vector3.Distance(target.Root.position, pos) > _searchDistance) continue;
                 if (!target.IsAlive) continue;
-                var score = Physics.OverlapSphereNonAlloc(target.Root.position, _clusterRadius, _hitColliders, _enemyLayer);
+                var score = Physics.OverlapSphereNonAlloc(target.Root.position, _clusterRadius, _hitColliders, EnemyLayer);
                 if (score <= bestTargetScore) continue;
                 
                 bestTarget = target;
