@@ -26,6 +26,8 @@ namespace Survivors.Units.Weapon.Projectiles
             SetupBullet();
         }
 
+        public void SetMaxLifeTime(float lifeTime) => _maxLifeTime = lifeTime;
+
         private void SetupBullet()
         {
             _timeLeft = _maxLifeTime;

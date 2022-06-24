@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6c567d1ca03d4ead92439af0fecd11ad, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &250801648020315871
+--- !u!114 &7035251086493738885
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -21,13 +21,14 @@ MonoBehaviour:
   m_GameObject: {fileID: 9168141253341438199}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 94ca069e4bbb4a62bcbed1bc989b6a7e, type: 3}
+  m_Script: {fileID: 11500000, guid: 269ff3f31f8f4b7882aad71773c7caac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _barrel: {fileID: 8186796900186291429}
-  _aimInXZPlane: 1
-  _ammo: {fileID: 8359154654400591705, guid: 52ba0fe4115567a4089979a4ee6b5495, type: 3}
-  _angleBetweenShots: 50
+  _barrel: {fileID: 1701068951100613370}
+  _aimInXZPlane: 0
+  _ammo: {fileID: 2208198757727312325, guid: 86a67281177fd0842a0c380b0381c4b4, type: 3}
+  _angleBetweenShots: 0
+  _startHeight: 10
 --- !u!1001 &3920995920394443207
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -314,14 +315,14 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 3254496561695502929, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
   m_PrefabInstance: {fileID: 9098217379886046286}
   m_PrefabAsset: {fileID: 0}
+--- !u!4 &1701068951100613370 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 7626905009210850996, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
+  m_PrefabInstance: {fileID: 9098217379886046286}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &9168141253341438199 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 106005451642109113, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
-  m_PrefabInstance: {fileID: 9098217379886046286}
-  m_PrefabAsset: {fileID: 0}
---- !u!4 &8186796900186291429 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1143356745896943787, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
   m_PrefabInstance: {fileID: 9098217379886046286}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &615576430309882713 stripped
