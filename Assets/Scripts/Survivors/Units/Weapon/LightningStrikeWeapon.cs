@@ -31,7 +31,7 @@ namespace Survivors.Units.Weapon
             var targets = BuildTargets(target, projectileParams.Count);
             foreach (var finalTarget in targets)
             {
-                FireSingleStrike(finalTarget, projectileParams, hitCallback);
+                CreateLightning().Launch(finalTarget, projectileParams, hitCallback);
             }
         }
 
@@ -50,12 +50,6 @@ namespace Survivors.Units.Weapon
                 targets.Add(otherTarget);
             }
             return targets;
-        }
-
-        private void FireSingleStrike(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
-        {
-            var lightning = CreateLightning();
-            lightning.Launch(target, projectileParams, hitCallback);
         }
 
         private Projectile CreateLightning()
