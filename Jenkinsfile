@@ -63,7 +63,7 @@ pipeline {
                                         UNITY_PARAMS=UNITY_PARAMS + '-debugConsole '
                                     }
                                 }        
-                                withCredentials([gitUsernamePassword(credentialsId: 'a.akhmedov-git', gitToolName: 'git-tool')]) { 
+                                withCredentials([gitUsernamePassword(credentialsId: 'a.akhmedov-git', gitToolName: 'Default')]) { 
                                     withCredentials([string(credentialsId: 'SurvivorsAndroidKeystorePass', variable: 'KEYSTORE_PASS')]) {
                                         sh '$UNITY_PATH -nographics -buildTarget Android -quit -batchmode -projectPath . -executeMethod Editor.Builder.BuildAndroid ' + UNITY_PARAMS + '-keyStorePassword $KEYSTORE_PASS -noUnityLogo -outputFileName $OUTPUT_FILE_NAME -logFile -'              
                                     }                                                                                  
