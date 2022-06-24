@@ -66,7 +66,7 @@ pipeline {
                                         UNITY_PARAMS=UNITY_PARAMS + '-debugConsole '
                                     }
                                 }         
-                                withCredentials([sshUserPrivateKey(credentialsId: 'gitlab-ssh-key', keyFileVariable: 'gitlab-ssh-key')]) {
+                                withCredentials([sshUserPrivateKey(credentialsId: 'jenkins-master-ssh-key-for-git', keyFileVariable: 'gitlab-ssh-key')]) {
                                     withCredentials([string(credentialsId: 'SurvivorsAndroidKeystorePass', variable: 'KEYSTORE_PASS')]) {
                                         sh '$UNITY_PATH -nographics -buildTarget Android -quit -batchmode -projectPath . -executeMethod Editor.Builder.BuildAndroid ' + UNITY_PARAMS + '-keyStorePassword $KEYSTORE_PASS -noUnityLogo -outputFileName $OUTPUT_FILE_NAME -logFile -'              
                                     }
