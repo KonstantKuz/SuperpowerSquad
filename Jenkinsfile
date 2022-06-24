@@ -158,25 +158,25 @@ pipeline {
                         lock('UnityLicense')
                     }                  
                     steps {
-                        withCredentials([gitUsernamePassword(credentialsId: 'a.akhmedov', gitToolName: 'git-tool')]) {                    
+                        withCredentials([gitSshPrivateKey(credentialsId: 'gitlab-ssh-key', gitToolName: 'git-tool')]) {                    
                             withCredentials([usernamePassword(credentialsId: 'UnityUser', usernameVariable: 'UNITY_USER_NAME', passwordVariable: 'UNITY_USER_PASSWORD'), string(credentialsId: 'UnityLicenseKey', variable: 'UNITY_LICENSE')]) {                                   
                                 sh '$UNITY_PATH -batchmode -nographics -quit -serial $UNITY_LICENSE -username $UNITY_USER_NAME -password $UNITY_USER_PASSWORD -projectPath . -logFile -'               
                             }    
-                        }       
-                        script {
-                            UNITY_PARAMS=''
-                            if(params.IpaForAppStore) {
-                                UNITY_PARAMS=UNITY_PARAMS + '-distribution -provisionProfileId ' + DISTRIBUTION_PROFILE_ID
-                            } else {
-                                UNITY_PARAMS=UNITY_PARAMS + '-provisionProfileId ' + DEVELOPMENT_PROFILE_ID                
-                            }
-                            if(params.DebugConsole) {
-                                UNITY_PARAMS=UNITY_PARAMS + '-debugConsole '
-                            }
-                        }         
-                        withCredentials([gitUsernamePassword(credentialsId: 'a.akhmedov', gitToolName: 'git-tool')]) {                                
+       
+                            script {
+                                UNITY_PARAMS=''
+                                if(params.IpaForAppStore) {
+                                    UNITY_PARAMS=UNITY_PARAMS + '-distribution -provisionProfileId ' + DISTRIBUTION_PROFILE_ID
+                                } else {
+                                    UNITY_PARAMS=UNITY_PARAMS + '-provisionProfileId ' + DEVELOPMENT_PROFILE_ID                
+                                }
+                                if(params.DebugConsole) {
+                                    UNITY_PARAMS=UNITY_PARAMS + '-debugConsole '
+                                }
+                            }         
+                               
                             sh '$UNITY_PATH -nographics -buildTarget iOS -quit -batchmode -projectPath . -executeMethod Editor.Builder.BuildIos ' + UNITY_PARAMS + ' -noUnityLogo -logFile -'
-                        }
+                        }                        
                     }
                     post {
                         always {
