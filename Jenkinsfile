@@ -158,7 +158,7 @@ pipeline {
                         lock('UnityLicense')
                     }                  
                     steps {
-                        withCredentials([gitSshPrivateKey(credentialsId: 'gitlab-ssh-key', gitToolName: 'git-tool')]) {                    
+                        withCredentials([gitUsernamePassword(credentialsId: 'gitlab_inspiritum_smash_master', gitToolName: 'git-tool')]) {                    
                             withCredentials([usernamePassword(credentialsId: 'UnityUser', usernameVariable: 'UNITY_USER_NAME', passwordVariable: 'UNITY_USER_PASSWORD'), string(credentialsId: 'UnityLicenseKey', variable: 'UNITY_LICENSE')]) {                                   
                                 sh '$UNITY_PATH -batchmode -nographics -quit -serial $UNITY_LICENSE -username $UNITY_USER_NAME -password $UNITY_USER_PASSWORD -projectPath . -logFile -'               
                             }    
