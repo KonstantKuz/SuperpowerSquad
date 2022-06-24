@@ -5,7 +5,7 @@ using Feofun.Config;
 using Feofun.Extension;
 using Feofun.Modifiers;
 using JetBrains.Annotations;
-using Logger.Assets.Scripts;
+using Logger.Assets.Scripts.Extension;
 using Survivors.Location;
 using Survivors.Modifiers;
 using Survivors.Modifiers.Config;
@@ -15,14 +15,12 @@ using Survivors.Units;
 using Survivors.Units.Service;
 using UnityEngine.Assertions;
 using Zenject;
-using ILogger = Logger.Assets.Scripts.ILogger;
 
 namespace Survivors.Squad.Upgrade
 {
     [PublicAPI]
     public class UpgradeService : IWorldScope
     {
-        private static readonly ILogger _logger = LoggerFactory.GetLogger<UpgradeService>();
         
         [Inject] private UpgradesConfig _config;
         [Inject] private World _world;
@@ -59,7 +57,7 @@ namespace Survivors.Squad.Upgrade
             state.IncreaseLevel(upgradeBranchId);
             SaveState(state);
             ApplyUpgrade(upgradeBranchId, SquadUpgradeState.GetLevel(upgradeBranchId));
-            _logger.Debug($"Upgrade:={upgradeBranchId} applied, level:= {state.GetLevel(upgradeBranchId)}");
+            this.Logger().Debug($"Upgrade:={upgradeBranchId} applied, level:= {state.GetLevel(upgradeBranchId)}");
         }
         public void AddUnit(string unitId)
         {

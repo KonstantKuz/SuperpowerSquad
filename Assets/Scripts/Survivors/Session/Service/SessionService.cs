@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using Feofun.Config;
-using Logger.Assets.Scripts;
+using Logger.Assets.Scripts.Extension;
 using SuperMaxim.Messaging;
 using Survivors.Enemy.Spawn;
 using Survivors.Enemy.Spawn.Config;
@@ -16,13 +16,11 @@ using Survivors.Units.Service;
 using UniRx;
 using UnityEngine;
 using Zenject;
-using ILogger = Logger.Assets.Scripts.ILogger;
 
 namespace Survivors.Session.Service
 {
     public class SessionService : IWorldScope
     {
-        private static readonly ILogger _logger = LoggerFactory.GetLogger<SessionService>();
         
         private readonly IntReactiveProperty _kills = new IntReactiveProperty(0);
         
@@ -69,7 +67,7 @@ namespace Survivors.Session.Service
             var newSession = Model.Session.Build(levelConfig);
             _repository.Set(newSession);
             _playerProgressService.OnSessionStarted(levelConfig.Level);
-            _logger.Debug($"Kill enemies:= {levelConfig.KillCount}");
+            this.Logger().Debug($"Kill enemies:= {levelConfig.KillCount}");
         }
     
         private void CreateSquad()
@@ -92,7 +90,7 @@ namespace Survivors.Session.Service
             
             Session.AddKill();
             _kills.Value = Session.Kills;
-            _logger.Trace($"Killed enemies:= {Session.Kills}");
+            this.Logger().Trace($"Killed enemies:= {Session.Kills}");
             if (Session.IsMaxKills) {
                 EndSession(UnitType.PLAYER);
             }
