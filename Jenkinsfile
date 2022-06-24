@@ -63,7 +63,7 @@ pipeline {
                                         UNITY_PARAMS=UNITY_PARAMS + '-debugConsole '
                                     }
                                 }         
-                                withCredentials([gitUsernamePassword(credentialsId: 'a.akhmedov', gitToolName: 'git-tool')]) {
+                                withCredentials([gitUsernamePassword(credentialsId: 'gitlab_inspiritum_smash_master', gitToolName: 'git-tool')]) {
                                   withCredentials([string(credentialsId: 'SurvivorsAndroidKeystorePass', variable: 'KEYSTORE_PASS')]) {
                                       sh '$UNITY_PATH -nographics -buildTarget Android -quit -batchmode -projectPath . -executeMethod Editor.Builder.BuildAndroid ' + UNITY_PARAMS + '-keyStorePassword $KEYSTORE_PASS -noUnityLogo -outputFileName $OUTPUT_FILE_NAME -logFile -'              
                                   }
@@ -99,7 +99,7 @@ pipeline {
                                 script {
                                     UNITY_PARAMS=''
                                 }                          
-                                withCredentials([gitUsernamePassword(credentialsId: 'a.akhmedov', gitToolName: 'git-tool')]) {                                                                                                                                    
+                                withCredentials([gitUsernamePassword(credentialsId: 'gitlab_inspiritum_smash_master', gitToolName: 'git-tool')]) {                                                                                                                                    
                                     withCredentials([string(credentialsId: 'SurvivorsAndroidKeystorePass', variable: 'KEYSTORE_PASS')]) {
                                         sh '$UNITY_PATH -nographics -buildTarget Android -quit -batchmode -projectPath . -executeMethod Editor.Builder.BuildAndroid ' + UNITY_PARAMS + '-buildAab -noUnityLogo -keyStorePassword $KEYSTORE_PASS -outputFileName $OUTPUT_FILE_NAME -logFile -'              
                                     }
