@@ -104,15 +104,15 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _curveTimeFactor: 0.1
-  _curveWidthFactor: 5
-  _destroyDelay: 1
-  _stopDistance: 0.5
+  _curveTimeFactor: 0.15
+  _curveWidthFactor: 4
+  _destroyDelay: 1.5
+  _stopDistance: 0.3
   _meshScaleFactor: 0.3
   _rootContainer: {fileID: 8931773721956351221}
   _meshContainer: {fileID: 7377496489766685687}
   _lightningDuration: 0.3
-  _hitTimeout: 0.8
+  _hitTimeout: 0.7
 --- !u!114 &1024700755053865788
 MonoBehaviour:
   m_ObjectHideFlags: 0

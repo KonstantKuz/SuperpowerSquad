@@ -49,7 +49,7 @@ namespace Survivors.Units.Weapon.Projectiles
         private void Update()
         {
             _lightnings.ForEach(it => {
-                if (it.Lightning == null || it.EndPosition) {
+                if (it.Lightning == null || it.EndPosition == null) {
                     return;
                 }
                 it.Lightning.Destination.transform.position = it.EndPosition.position;
