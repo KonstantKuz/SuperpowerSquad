@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7565168170003881727}
   - component: {fileID: -3918677370914260192}
   - component: {fileID: 8250915554910975666}
+  - component: {fileID: 1024700755053865788}
   m_Layer: 3
   m_Name: BallLightning
   m_TagString: Untagged
@@ -103,12 +104,28 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  _speed: 2
-  _timeFactor: 0.1
-  _xFactor: 5
-  _timeBeforeDestroy: 1
-  _stopDistance: 1
-  _root: {fileID: 8931773721956351221}
+  _curveTimeFactor: 0.1
+  _curveWidthFactor: 5
+  _destroyDelay: 1
+  _stopDistance: 0.5
+  _meshScaleFactor: 0.3
+  _rootContainer: {fileID: 8931773721956351221}
+  _meshContainer: {fileID: 7377496489766685687}
+  _lightningDuration: 0.3
+  _hitTimeout: 0.8
+--- !u!114 &1024700755053865788
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2702102697452454108}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc3dd8e329554beb973ac571cddcee93, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _lightningBoltPrefab: {fileID: 11423590, guid: c0c356ca5fe9b1443b4b8759ed02eb2f, type: 3}
 --- !u!1 &3557906090203256902
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,7 +232,7 @@ Transform:
   m_GameObject: {fileID: 4412156341121799467}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6065206023132142110}
   - {fileID: 1801841475000515691}
@@ -248,7 +265,7 @@ Transform:
   m_GameObject: {fileID: 4545727612451389635}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 7377496489766685687}
   m_Father: {fileID: 7565168170003881727}
@@ -265,7 +282,7 @@ SphereCollider:
   m_IsTrigger: 1
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &6065206023132467784
 PrefabInstance:
@@ -277,6 +294,10 @@ PrefabInstance:
     - target: {fileID: 190666, guid: 992c31aa5088a9649851c996f2a08b7e, type: 3}
       propertyPath: m_Name
       value: LightningOrbSharpBlue
+      objectReference: {fileID: 0}
+    - target: {fileID: 190666, guid: 992c31aa5088a9649851c996f2a08b7e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 460886, guid: 992c31aa5088a9649851c996f2a08b7e, type: 3}
       propertyPath: m_RootOrder
