@@ -26,7 +26,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _startHeight: 10
   _meteor: {fileID: 7683346025323251018, guid: 86a67281177fd0842a0c380b0381c4b4, type: 3}
-  _randomDelay: 0.3
+  _randomDelay: 0.5
 --- !u!1001 &3920995920394443207
 PrefabInstance:
   m_ObjectHideFlags: 0

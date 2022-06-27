@@ -36,12 +36,13 @@ namespace Survivors.Units.Weapon
         private IEnumerator ShootMultipleWithDelay(Vector3 targetPos, UnitType targetUnitType, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             var nextPosition = targetPos;
+            var shootCount = projectileParams.Count;
             
-            for (int i = 0; i < projectileParams.Count; i++)
+            for (int i = 0; i < shootCount; i++)
             {
                 ShootAtPosition(nextPosition, targetUnitType, projectileParams, hitCallback);
 
-                yield return new WaitForSeconds(Random.Range(0, _randomDelay));
+                yield return new WaitForSeconds(Random.Range(0, _randomDelay / shootCount));
 
                 nextPosition = GetRandomTargetPosition(targetPos, projectileParams);
             }
