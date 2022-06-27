@@ -79,14 +79,5 @@ namespace Survivors.Units.Weapon.Projectiles
             }
             TryHit(other.gameObject, transform.position, -transform.forward);
         }
-        
-        private void OnCollisionEnter(Collision other)
-        {
-            if (!CanDamageTarget(other.collider, TargetType, out var target)) {
-                return;
-            }
-            var contact = other.GetContact(0);
-            TryHit(other.gameObject, contact.point, contact.normal);
-        }
     }
 }
