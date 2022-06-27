@@ -16,7 +16,7 @@ MonoBehaviour:
   _aimInXZPlane: 1
   _supportShotCount: 1
   _ammo: {fileID: 8250915554910975666, guid: 844b9ac048ecb084d885cbfd9d53e029, type: 3}
-  _angleBetweenShots: 3
+  _angleBetweenShots: 10
 --- !u!1001 &1859127657374528600
 PrefabInstance:
   m_ObjectHideFlags: 0

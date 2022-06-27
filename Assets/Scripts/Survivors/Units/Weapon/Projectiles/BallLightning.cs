@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using Survivors.Extension;
 using Survivors.Location.Service;
 using Survivors.Units.Target;
@@ -16,7 +17,6 @@ namespace Survivors.Units.Weapon.Projectiles
         [SerializeField] private float _curveTimeFactor;
         [SerializeField] private float _curveWidthFactor;
         [SerializeField] private float _destroyDelay;
-        [SerializeField] private float _stopDistance;
         [SerializeField] private float _meshScaleFactor;
 
         [SerializeField] private Transform _rootContainer;
@@ -27,25 +27,33 @@ namespace Survivors.Units.Weapon.Projectiles
 
         [Inject]
         private WorldObjectFactory _objectFactory;
-
-        private float _destroyTimer;
-        private float _curveTime;
+        
         private Vector3 _targetPosition;
+        private float _curveTime;
+        private bool _isStopped;
+        private Coroutine _timeCoroutine;
         private LightningBoltGenerator _lightningBoltGenerator;
         private CompositeDisposable _disposable = new CompositeDisposable();
-        private bool CanDestroy => _destroyTimer >= _destroyDelay;
-        private bool IsTargetPositionReached => Vector3.Distance(transform.position.XZ(), _targetPosition.XZ()) < _stopDistance;
 
         public override void Launch(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             base.Launch(target, projectileParams, hitCallback);
+            DisposeTimer();
             _targetPosition = target.Root.position;
             _lightningBoltGenerator = gameObject.RequireComponent<LightningBoltGenerator>();
             SetDamageRadius();
             SetMeshScale();
             TryHit();
+            CrateStopTimer();
             Observable.Interval(TimeSpan.FromSeconds(_hitTimeout)).Subscribe(it => { TryHit(); }).AddTo(_disposable);
         }
+
+        private void CrateStopTimer()
+        {
+            var stoppedTime = (_targetPosition - transform.position).magnitude / Speed;
+            _timeCoroutine = StartCoroutine(StartStopTimer(stoppedTime));
+        }
+        
 
         private void SetDamageRadius()
         {
@@ -70,16 +78,19 @@ namespace Survivors.Units.Weapon.Projectiles
             }
         }
 
+        private IEnumerator StartStopTimer(float stoppedTime)
+        {
+            yield return new WaitForSeconds(stoppedTime);
+            _isStopped = true;
+            yield return new WaitForSeconds(_destroyDelay);
+            Destroy();
+        }
+
         private void Update()
         {
-            if (!IsTargetPositionReached) {
+            if (!_isStopped) {
                 UpdatePosition();
-            } else {
-                _destroyTimer += Time.deltaTime;
-            }
-            if (CanDestroy) {
-                Destroy();
-            }
+            } 
         }
 
         private void UpdatePosition()
@@ -102,8 +113,17 @@ namespace Survivors.Units.Weapon.Projectiles
         {
             HitCallback = null;
             Destroy(gameObject);
+            DisposeTimer();
             _disposable?.Dispose();
             _disposable = null;
+        }
+        private void DisposeTimer()
+        {
+            if (_timeCoroutine == null) {
+                return;
+            }
+            StopCoroutine(_timeCoroutine);
+            _timeCoroutine = null;
         }
     }
 }
