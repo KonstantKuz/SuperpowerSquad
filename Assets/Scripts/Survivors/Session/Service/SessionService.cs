@@ -78,7 +78,7 @@ namespace Survivors.Session.Service
         {
             _unitFactory.CreatePlayerUnit(UnitFactory.SIMPLE_PLAYER_ID);
             _enemyWavesSpawner.StartSpawn(_enemyWavesConfig); 
-            //_enemyHpsSpawner.StartSpawn();
+            _enemyHpsSpawner.StartSpawn();
         }
 
         private void ResetKills() => _kills.Value = 0;

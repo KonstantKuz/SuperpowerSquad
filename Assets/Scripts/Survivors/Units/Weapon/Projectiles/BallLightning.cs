@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Feofun.Extension;
 using Survivors.Extension;
 using Survivors.Location.Service;
 using Survivors.Units.Target;
@@ -68,6 +69,9 @@ namespace Survivors.Units.Weapon.Projectiles
 
         private void TryHit()
         {
+            if (this.IsDestroyed()) {
+                return;
+            }
             var hits = GetHits(transform.position, Params.DamageRadius, TargetType);
             foreach (var hit in hits) {
                 if (!CanDamageTarget(hit, TargetType, out var target)) {

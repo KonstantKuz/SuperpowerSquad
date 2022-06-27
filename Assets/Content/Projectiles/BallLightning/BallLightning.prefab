@@ -107,8 +107,7 @@ MonoBehaviour:
   _curveTimeFactor: 0.15
   _curveWidthFactor: 4
   _destroyDelay: 1.5
-  _stopDistance: 0.3
-  _meshScaleFactor: 0.3
+  _meshScaleFactor: 0.5
   _rootContainer: {fileID: 8931773721956351221}
   _meshContainer: {fileID: 7377496489766685687}
   _lightningDuration: 0.3
