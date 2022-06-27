@@ -197,7 +197,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4331444546958184133, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
       propertyPath: _angleBetweenShots
-      value: 30
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5225966623019145733, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
       propertyPath: _objectId
