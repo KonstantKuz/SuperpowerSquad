@@ -9,7 +9,6 @@ namespace Survivors.Units.Weapon.Projectiles.Params
         
         public float Speed => _attackModel.ProjectileSpeed;
         public float DamageRadius => _attackModel.DamageRadius;
-        public float DamageAngle => _attackModel.DamageAngle;
         public float AttackDistance => AdditionalAttackDistance + _attackModel.AttackDistance;
         public int Count => _attackModel.ShotCount.Value;
 
