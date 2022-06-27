@@ -1,17 +1,16 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Feofun.Components;
 using JetBrains.Annotations;
-using ModestTree;
-using Survivors.Squad.Component;
 using Survivors.Units.Target;
 using UnityEngine;
 using Zenject;
 
 namespace Survivors.Units.Component.TargetSearcher
 {
-    public class LargestHealthEnemySearcher : MonoBehaviour, ITargetSearcher, IInitializable<IUnit>
+    public class HealthiestEnemySearcher : MonoBehaviour, ITargetSearcher, IInitializable<IUnit>
     {
         private IUnit _owner;
         private UnitType _targetType;
@@ -29,17 +28,28 @@ namespace Survivors.Units.Component.TargetSearcher
         [CanBeNull]
         public ITarget Find()
         {
-            var targets = GetAllAtSearchDistance().ToArray();
-            return FindWithLargestHealth(targets);
-        }
-
-        public ITarget FindExcept(IEnumerable<ITarget> exceptTargets)
-        {
-            var targets = GetAllAtSearchDistance().Except(exceptTargets);
-            return FindWithLargestHealth(targets);
+            return FindHealthiestTarget(GetTargetsInRadius());
         }
         
-        private ITarget FindWithLargestHealth(IEnumerable<ITarget> targets)
+        public IEnumerable<ITarget> FindHealthiestTargets(int count)
+        {
+            var allTargets = GetTargetsInRadius().ToList();
+            var targetsToReturn = new List<ITarget>( );
+            for (int i = 0; i < count; i++)
+            {
+                if (allTargets.Count == 0)
+                {
+                    break;
+                }
+                var healthiestTarget = FindHealthiestTarget(allTargets);
+                allTargets.Remove(healthiestTarget);
+                targetsToReturn.Add(healthiestTarget);
+            }
+            return targetsToReturn;
+        }
+        
+        [CanBeNull]
+        private ITarget FindHealthiestTarget(IEnumerable<ITarget> targets)
         {
             ITarget result = null;
             var maxHealth = 0f;
@@ -47,7 +57,11 @@ namespace Survivors.Units.Component.TargetSearcher
             {
                 if (!target.IsAlive) continue;
                 var health = target.Root.parent.GetComponent<Health.Health>();
-                if(health == null) continue;
+                if (health == null)
+                {
+                    Debug.LogWarning("One of the target has no Health component or its Root not parented to the object with Health component.");
+                    continue;
+                }
                 if (health.CurrentValue.Value <= maxHealth) continue;
                 maxHealth = health.CurrentValue.Value;
                 result = target;
@@ -56,14 +70,9 @@ namespace Survivors.Units.Component.TargetSearcher
             return result;
         }
 
-        private IEnumerable<ITarget> GetAllAtSearchDistance()
+        private IEnumerable<ITarget> GetTargetsInRadius()
         {
-            return _targetService.AllTargetsOfType(_targetType).Where(IsAtSearchDistance);
-        }
-
-        private bool IsAtSearchDistance(ITarget target)
-        {
-            return Vector3.Distance(target.Root.position, _owner.SelfTarget.Root.position) <= SearchDistance;
+            return _targetService.GetTargetsInRadius(_owner.SelfTarget.Root.position, _targetType, SearchDistance);
         }
 
         public IEnumerable<ITarget> GetAllOrderedByDistance()

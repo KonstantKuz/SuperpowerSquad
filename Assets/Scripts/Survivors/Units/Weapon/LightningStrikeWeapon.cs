@@ -17,39 +17,22 @@ namespace Survivors.Units.Weapon
     {
         [SerializeField] private LightningStrike _lightningStrike;
 
-        private LargestHealthEnemySearcher _largestHealthEnemySearcher;
+        private HealthiestEnemySearcher _healthiestEnemySearcher;
         
         [Inject] private WorldObjectFactory _worldObjectFactory;
         
         private void Awake()
         {
-            _largestHealthEnemySearcher = gameObject.RequireComponentInParent<LargestHealthEnemySearcher>();
+            _healthiestEnemySearcher = gameObject.RequireComponentInParent<HealthiestEnemySearcher>();
         }
 
         public override void Fire(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
-            var targets = BuildTargets(target, projectileParams.Count);
+            var targets = _healthiestEnemySearcher.FindHealthiestTargets(projectileParams.Count);
             foreach (var finalTarget in targets)
             {
                 CreateLightning().Launch(finalTarget, projectileParams, hitCallback);
             }
-        }
-
-        private IEnumerable<ITarget> BuildTargets(ITarget initialTarget, int count)
-        {
-            var targets = new List<ITarget> { initialTarget };
-            var additionalTargetsCount = count - 1;
-            for (int i = 0; i < additionalTargetsCount; i++)
-            {
-                var otherTarget = _largestHealthEnemySearcher.FindExcept(targets);
-                if (otherTarget == null)
-                {
-                    targets.Add(initialTarget);
-                    continue;
-                }
-                targets.Add(otherTarget);
-            }
-            return targets;
         }
 
         private Projectile CreateLightning()
