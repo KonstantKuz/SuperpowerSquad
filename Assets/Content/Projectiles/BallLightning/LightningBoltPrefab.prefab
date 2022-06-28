@@ -58,17 +58,14 @@ MonoBehaviour:
   SortOrderInLayer: 0
   SoftParticlesFactor: 3
   RenderQueue: -1
-  LightningMaterialMesh: {fileID: 2100000, guid: c6b8576004384974191b466f0bdef64b,
-    type: 2}
-  LightningMaterialMeshNoGlow: {fileID: 2100000, guid: db76dde8469c5834887c024ae9f43289,
-    type: 2}
+  LightningMaterialMesh: {fileID: 2100000, guid: c6b8576004384974191b466f0bdef64b, type: 2}
+  LightningMaterialMeshNoGlow: {fileID: 2100000, guid: db76dde8469c5834887c024ae9f43289, type: 2}
   LightningTexture: {fileID: 2800000, guid: 51e598d31382bd740958e33ab6c64a66, type: 3}
-  LightningGlowTexture: {fileID: 2800000, guid: cab73e4c670527a4aae0af0c436a4350,
-    type: 3}
+  LightningGlowTexture: {fileID: 2800000, guid: cab73e4c670527a4aae0af0c436a4350, type: 3}
   LightningOriginParticleSystem: {fileID: 0}
   LightningDestinationParticleSystem: {fileID: 0}
   LightningTintColor: {r: 1, g: 1, b: 1, a: 1}
-  GlowTintColor: {r: 0, g: 0.111111164, b: 1, a: 1}
+  GlowTintColor: {r: 0, g: 0.6403699, b: 1, a: 0.48235294}
   MainTrunkTintColor: {r: 1, g: 1, b: 1, a: 1}
   SourceBlendMode: 5
   DestinationBlendMode: 1
@@ -192,7 +189,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1520764546740086}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1, y: -1, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 460870}

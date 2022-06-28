@@ -43,14 +43,10 @@ namespace Survivors.Units.Weapon.Projectiles
             _targetPosition = target.Root.position;
             _lightningBoltGenerator = gameObject.RequireComponent<LightningBoltGenerator>();
             _stoppedTime = (_targetPosition - transform.position).magnitude / Speed;
-            SetDamageRadius();
+
             SetMeshScale();
             TryHit();
             Observable.Interval(TimeSpan.FromSeconds(_hitTimeout)).Subscribe(it => { TryHit(); }).AddTo(_disposable);
-        }
-        private void SetDamageRadius()
-        {
-            _rootContainer.gameObject.RequireComponent<SphereCollider>().radius = Params.DamageRadius;
         }
 
         private void SetMeshScale()
@@ -91,9 +87,7 @@ namespace Survivors.Units.Weapon.Projectiles
         private void UpdateCurvePosition()
         {
             _curveTime += Time.deltaTime * Speed * _curveTimeFactor;
-            if (_curveTime > 1) {
-                _curveTime = 0;
-            }
+            _curveTime = Mathf.Repeat(_curveTime, 1);
             var localPosition = _rootContainer.localPosition;
             _rootContainer.localPosition = new Vector3(_animationCurve.Evaluate(_curveTime) * _curveWidthFactor, localPosition.y, localPosition.z);
         }

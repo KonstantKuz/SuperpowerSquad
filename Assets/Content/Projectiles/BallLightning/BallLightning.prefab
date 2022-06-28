@@ -111,7 +111,7 @@ MonoBehaviour:
   _rootContainer: {fileID: 8931773721956351221}
   _meshContainer: {fileID: 7377496489766685687}
   _lightningDuration: 0.3
-  _hitTimeout: 0.7
+  _hitTimeout: 0.5
 --- !u!114 &1024700755053865788
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247,7 +247,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8931773721956351221}
-  - component: {fileID: 3008358706448422533}
   m_Layer: 0
   m_Name: Root
   m_TagString: Untagged
@@ -270,19 +269,6 @@ Transform:
   m_Father: {fileID: 7565168170003881727}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &3008358706448422533
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4545727612451389635}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1001 &6065206023132467784
 PrefabInstance:
   m_ObjectHideFlags: 0
