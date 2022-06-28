@@ -24,7 +24,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 269ff3f31f8f4b7882aad71773c7caac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _startHeight: 10
+  _startHeight: 12
   _meteor: {fileID: 7683346025323251018, guid: 86a67281177fd0842a0c380b0381c4b4, type: 3}
   _randomDelay: 0.5
 --- !u!1001 &3920995920394443207

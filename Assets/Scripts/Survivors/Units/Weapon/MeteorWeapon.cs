@@ -52,9 +52,7 @@ namespace Survivors.Units.Weapon
             Action<GameObject> hitCallback)
         {
             var projectile = _objectFactory.CreateObject(_meteor.gameObject).RequireComponent<Meteor>();
-            projectile.transform.SetPositionAndRotation(
-                position + _startHeight * Vector3.up,
-                Quaternion.LookRotation(Vector3.down));
+            projectile.transform.position = position + _startHeight * Vector3.up;
             
             projectile.Launch(targetUnitType,
                 projectileParams,

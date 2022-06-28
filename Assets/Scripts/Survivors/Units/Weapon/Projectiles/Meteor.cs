@@ -1,4 +1,5 @@
 ﻿using System;
+using SuperMaxim.Core.Extensions;
 using Survivors.Location.Service;
 using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
@@ -43,7 +44,7 @@ namespace Survivors.Units.Weapon.Projectiles
         }
         private void UpdatePosition()
         {
-            transform.position += transform.forward * _speed * Time.deltaTime;
+            transform.position += Vector3.down * _speed * Time.deltaTime;
         }
         
         private void PlayVfx(Vector3 pos, Vector3 up)
