@@ -34,17 +34,17 @@ namespace Survivors.Units.Component.TargetSearcher
         
         public IEnumerable<Unit> FindHealthiestUnits(int count)
         {
-            var allTargets = GetUnitsInRadius().ToList();
+            var unitsInRadius = GetUnitsInRadius().ToList();
             var targetsToReturn = new List<Unit>();
             for (int i = 0; i < count; i++)
             {
-                if (allTargets.Count == 0)
-                {
-                    break;
-                }
-                var healthiestTarget = FindHealthiestUnit(allTargets);
-                allTargets.Remove(healthiestTarget);
-                targetsToReturn.Add(healthiestTarget);
+                if (unitsInRadius.Count == 0) { break; }
+
+                var healthiestUnit = FindHealthiestUnit(unitsInRadius);
+                if(healthiestUnit == null) { continue; }
+                
+                unitsInRadius.Remove(healthiestUnit);
+                targetsToReturn.Add(healthiestUnit);
             }
             return targetsToReturn;
         }
