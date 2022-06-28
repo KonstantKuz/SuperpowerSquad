@@ -6,6 +6,7 @@ using JetBrains.Annotations;
 using SuperMaxim.Core.Extensions;
 using SuperMaxim.Messaging;
 using Survivors.Units.Messages;
+using UnityEngine;
 using Zenject;
 
 namespace Survivors.Units.Service
@@ -56,9 +57,25 @@ namespace Survivors.Units.Service
         //TODO: seems that there are problems with IUnit interface. Should we get rid of it? 
         public IEnumerable<Unit> GetEnemyUnits()
         {
-            return GetAllUnitsOfType(UnitType.ENEMY)
+            return GetAllUnits(UnitType.ENEMY);
+        }
+
+        public IEnumerable<Unit> GetAllUnits(UnitType unitType)
+        {
+            return GetAllUnitsOfType(unitType)
                 .Select(it => it as Unit)
                 .Where(it => it != null);
+        }
+        
+        public IEnumerable<Unit> GetUnitsInRadius(Vector3 from, UnitType unitType, float radius)
+        {
+            foreach (var target in GetAllUnits(unitType))
+            {
+                var distance = Vector3.Distance(from, target.SelfTarget.Root.position);
+                if(distance > radius)
+                    continue;
+                yield return target;
+            }
         }
     }
 }

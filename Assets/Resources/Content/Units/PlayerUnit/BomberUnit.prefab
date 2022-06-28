@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _barrel: {fileID: 8186796900186291429}
   _aimInXZPlane: 1
+  _supportShotCount: 1
   _ammo: {fileID: 8359154654400591705, guid: 52ba0fe4115567a4089979a4ee6b5495, type: 3}
   _angleBetweenShots: 50
 --- !u!1001 &3920995920394443207
