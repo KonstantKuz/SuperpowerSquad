@@ -1,5 +1,4 @@
 ﻿using System;
-using SuperMaxim.Core.Extensions;
 using Survivors.Location.Service;
 using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
@@ -11,6 +10,8 @@ namespace Survivors.Units.Weapon.Projectiles
     {
         [SerializeField]
         private GameObject _hitVfx;
+        [SerializeField]
+        private float _explosionScaleMultiplier;
         
         private Action<GameObject> _hitCallback;
         private UnitType _targetType;
@@ -52,6 +53,7 @@ namespace Survivors.Units.Weapon.Projectiles
             if (_hitVfx == null) return;
             var vfx = _objectFactory.CreateObject(_hitVfx);
             vfx.transform.SetPositionAndRotation(pos, Quaternion.LookRotation(up));
+            vfx.transform.localScale *= _params.DamageRadius * _explosionScaleMultiplier;
         }
         
         private void Destroy()

@@ -25,6 +25,13 @@ namespace Survivors.Units.Component.TargetSearcher
         
         private int EnemyLayer => _enemyLayer == -1 ? _enemyLayer = LayerMask.GetMask("Enemy") : _enemyLayer;
         
+        public void Init(IUnit owner)
+        {
+            _targetType = owner.UnitType.GetTargetUnitType();
+            _searchDistance = owner.Model.AttackModel.AttackDistance;
+            _clusterRadius = (owner.Model.AttackModel as PlayerAttackModel).DamageRadius;
+        }        
+        
         public ITarget Find()
         {
             var targets = _targetService.AllTargetsOfType(_targetType).ToList();
@@ -49,13 +56,6 @@ namespace Survivors.Units.Component.TargetSearcher
         public IEnumerable<ITarget> GetAllOrderedByDistance()
         {
             throw new System.NotImplementedException();
-        }
-
-        public void Init(IUnit owner)
-        {
-            _targetType = owner.UnitType.GetTargetUnitType();
-            _searchDistance = owner.Model.AttackModel.AttackDistance;
-            _clusterRadius = (owner.Model.AttackModel as PlayerAttackModel).DamageRadius;
         }
     }
 }

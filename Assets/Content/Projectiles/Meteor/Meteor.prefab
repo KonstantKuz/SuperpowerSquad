@@ -76,6 +76,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _hitVfx: {fileID: 1324124168371050, guid: b3637514970b53a4283e0320598da028, type: 3}
+  _explosionScaleMultiplier: 0.2
 --- !u!1001 &4136411199505888603
 PrefabInstance:
   m_ObjectHideFlags: 0
