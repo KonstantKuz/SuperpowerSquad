@@ -124,7 +124,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc3dd8e329554beb973ac571cddcee93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _lightningBoltPrefab: {fileID: 11423590, guid: c0c356ca5fe9b1443b4b8759ed02eb2f, type: 3}
+  _boltPrefab: {fileID: 11423590, guid: 323176a7c5eb97b49b31963973e0d3fd, type: 3}
 --- !u!1 &3557906090203256902
 GameObject:
   m_ObjectHideFlags: 0

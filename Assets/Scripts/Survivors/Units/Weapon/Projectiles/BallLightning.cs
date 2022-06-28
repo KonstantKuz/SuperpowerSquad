@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using Feofun.Extension;
 using Survivors.Extension;
 using Survivors.Location.Service;
 using Survivors.Units.Target;
@@ -30,32 +28,26 @@ namespace Survivors.Units.Weapon.Projectiles
         private WorldObjectFactory _objectFactory;
         
         private Vector3 _targetPosition;
-        private float _curveTime;
-        private bool _isStopped;
-        private Coroutine _timeCoroutine;
+        private float _curveTime; 
+        private float _lifeTimer;      
+        private float _stoppedTime;
+
         private LightningBoltGenerator _lightningBoltGenerator;
         private CompositeDisposable _disposable = new CompositeDisposable();
+        
+        private bool CanDestroy => _lifeTimer >= _stoppedTime + _destroyDelay;
 
         public override void Launch(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             base.Launch(target, projectileParams, hitCallback);
-            DisposeTimer();
             _targetPosition = target.Root.position;
             _lightningBoltGenerator = gameObject.RequireComponent<LightningBoltGenerator>();
+            _stoppedTime = (_targetPosition - transform.position).magnitude / Speed;
             SetDamageRadius();
             SetMeshScale();
             TryHit();
-            CrateStopTimer();
             Observable.Interval(TimeSpan.FromSeconds(_hitTimeout)).Subscribe(it => { TryHit(); }).AddTo(_disposable);
         }
-
-        private void CrateStopTimer()
-        {
-            var stoppedTime = (_targetPosition - transform.position).magnitude / Speed;
-            _timeCoroutine = StartCoroutine(StartStopTimer(stoppedTime));
-        }
-        
-
         private void SetDamageRadius()
         {
             _rootContainer.gameObject.RequireComponent<SphereCollider>().radius = Params.DamageRadius;
@@ -72,25 +64,21 @@ namespace Survivors.Units.Weapon.Projectiles
             var hits = GetHits(transform.position, Params.DamageRadius, TargetType);
             foreach (var hit in hits) {
                 if (!CanDamageTarget(hit, TargetType, out var target)) {
-                    return;
+                    continue;
                 }
                 _lightningBoltGenerator.Hit(_objectFactory, _rootContainer, target.Center, _lightningDuration);
                 HitCallback?.Invoke(hit.gameObject);
             }
         }
-
-        private IEnumerator StartStopTimer(float stoppedTime)
-        {
-            yield return new WaitForSeconds(stoppedTime);
-            _isStopped = true;
-            yield return new WaitForSeconds(_destroyDelay);
-            Destroy(gameObject);
-        }
-
+        
         private void Update()
         {
-            if (!_isStopped) {
+            _lifeTimer += Time.deltaTime;
+            if (_lifeTimer < _stoppedTime) {
                 UpdatePosition();
+            }
+            if (CanDestroy) {
+                Destroy(gameObject);
             } 
         }
 
@@ -113,18 +101,8 @@ namespace Survivors.Units.Weapon.Projectiles
         private void OnDestroy()
         {
             HitCallback = null;
-            DisposeTimer();
             _disposable?.Dispose();
             _disposable = null;
-        }
-        
-        private void DisposeTimer()
-        {
-            if (_timeCoroutine == null) {
-                return;
-            }
-            StopCoroutine(_timeCoroutine);
-            _timeCoroutine = null;
         }
     }
 }
