@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using Feofun.Components;
 using JetBrains.Annotations;
+using Survivors.Units.Service;
 using Survivors.Units.Target;
 using UnityEngine;
 using Zenject;
@@ -15,8 +15,8 @@ namespace Survivors.Units.Component.TargetSearcher
         private IUnit _owner;
         private UnitType _targetType;
 
-        [Inject] private TargetService _targetService;
-
+        [Inject] private UnitService _unitService;
+        
         private float SearchDistance => _owner.Model.AttackModel.TargetSearchRadius;
         
         public void Init(IUnit owner)
@@ -28,20 +28,21 @@ namespace Survivors.Units.Component.TargetSearcher
         [CanBeNull]
         public ITarget Find()
         {
-            return FindHealthiestTarget(GetTargetsInRadius());
+            var healthiestUnit = FindHealthiestUnit(GetUnitsInRadius());
+            return healthiestUnit == null ? null : healthiestUnit.SelfTarget;
         }
         
-        public IEnumerable<ITarget> FindHealthiestTargets(int count)
+        public IEnumerable<Unit> FindHealthiestUnits(int count)
         {
-            var allTargets = GetTargetsInRadius().ToList();
-            var targetsToReturn = new List<ITarget>( );
+            var allTargets = GetUnitsInRadius().ToList();
+            var targetsToReturn = new List<Unit>();
             for (int i = 0; i < count; i++)
             {
                 if (allTargets.Count == 0)
                 {
                     break;
                 }
-                var healthiestTarget = FindHealthiestTarget(allTargets);
+                var healthiestTarget = FindHealthiestUnit(allTargets);
                 allTargets.Remove(healthiestTarget);
                 targetsToReturn.Add(healthiestTarget);
             }
@@ -49,14 +50,14 @@ namespace Survivors.Units.Component.TargetSearcher
         }
         
         [CanBeNull]
-        private ITarget FindHealthiestTarget(IEnumerable<ITarget> targets)
+        private Unit FindHealthiestUnit(IEnumerable<Unit> units)
         {
-            ITarget result = null;
+            Unit result = null;
             var maxHealth = 0f;
-            foreach (var target in targets)
+            foreach (var unit in units)
             {
-                if (!target.IsAlive) continue;
-                var health = target.Root.parent.GetComponent<Health.Health>();
+                if (!unit.SelfTarget.IsAlive) continue;
+                var health = unit.Health;
                 if (health == null)
                 {
                     Debug.LogWarning("One of the target has no Health component or its Root not parented to the object with Health component.");
@@ -64,15 +65,15 @@ namespace Survivors.Units.Component.TargetSearcher
                 }
                 if (health.CurrentValue.Value <= maxHealth) continue;
                 maxHealth = health.CurrentValue.Value;
-                result = target;
+                result = unit;
             }
 
             return result;
         }
 
-        private IEnumerable<ITarget> GetTargetsInRadius()
+        private IEnumerable<Unit> GetUnitsInRadius()
         {
-            return _targetService.GetTargetsInRadius(_owner.SelfTarget.Root.position, _targetType, SearchDistance);
+            return _unitService.GetUnitsInRadius(_owner.SelfTarget.Root.position, _targetType, SearchDistance);
         }
 
         public IEnumerable<ITarget> GetAllOrderedByDistance()

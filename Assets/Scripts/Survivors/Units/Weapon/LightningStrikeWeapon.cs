@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using JetBrains.Annotations;
 using Survivors.Extension;
 using Survivors.Location.Service;
 using Survivors.Units.Component.TargetSearcher;
@@ -28,10 +25,10 @@ namespace Survivors.Units.Weapon
 
         public override void Fire(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
-            var targets = _healthiestEnemySearcher.FindHealthiestTargets(projectileParams.Count);
-            foreach (var finalTarget in targets)
+            var healthiestUnits = _healthiestEnemySearcher.FindHealthiestUnits(projectileParams.Count);
+            foreach (var unit in healthiestUnits)
             {
-                CreateLightning().Launch(finalTarget, projectileParams, hitCallback);
+                CreateLightning().Launch(unit.SelfTarget, projectileParams, hitCallback);
             }
         }
 
