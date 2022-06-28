@@ -16,10 +16,9 @@ namespace Survivors.Enemy.Spawn
         private Coroutine _spawnCoroutine;
         
         [Inject] private EnemyWavesSpawner _enemyWavesSpawner;
-        [Inject] private HpsSpawnerConfigLoader _config;   
+        [Inject] private HpsSpawnerConfig _config;   
         [Inject] private IMessenger _messenger;
         [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
-        private HpsSpawnerConfig Config => _config.Config;
 
         private void Awake()
         {
@@ -48,10 +47,10 @@ namespace Survivors.Enemy.Spawn
             var time = 0.0f;
             while (true)
             {
-                var timeToNextWave = Random.Range(Config.MinInterval, Config.MaxInterval);
+                var timeToNextWave = Random.Range(_config.MinInterval, _config.MaxInterval);
                 yield return new WaitForSeconds(timeToNextWave);
                 time += timeToNextWave;
-                var health = timeToNextWave * (Config.StartingHPS + Config.HPSSpeed * time);
+                var health = timeToNextWave * (_config.StartingHPS + _config.HPSSpeed * time);
                 SpawnWave(health);
             }
         }
@@ -59,9 +58,9 @@ namespace Survivors.Enemy.Spawn
         private void SpawnWave(float health)
         {
             Log($"Spawning wave of health {health}");
-            var desiredUnitCount = Random.Range(Config.MinWaveSize, Config.MaxWaveSize + 1);
+            var desiredUnitCount = Random.Range(_config.MinWaveSize, _config.MaxWaveSize + 1);
             var averageHealth = health / desiredUnitCount;
-            var enemyUnitConfig = _enemyUnitConfigs.Get(Config.EnemyId);
+            var enemyUnitConfig = _enemyUnitConfigs.Get(_config.EnemyId);
             var averageLevel = EnemyUnitConfig.MIN_LEVEL + (averageHealth - enemyUnitConfig.Health) / enemyUnitConfig.HealthStep;
 
             if (averageLevel < EnemyUnitConfig.MIN_LEVEL)
@@ -106,7 +105,7 @@ namespace Survivors.Enemy.Spawn
             return new EnemyWaveConfig
             {
                 Count = count,
-                EnemyId = Config.EnemyId,
+                EnemyId = _config.EnemyId,
                 EnemyLevel = level
             };
         }
