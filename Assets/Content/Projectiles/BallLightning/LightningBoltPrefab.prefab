@@ -65,7 +65,7 @@ MonoBehaviour:
   LightningOriginParticleSystem: {fileID: 0}
   LightningDestinationParticleSystem: {fileID: 0}
   LightningTintColor: {r: 1, g: 1, b: 1, a: 1}
-  GlowTintColor: {r: 0, g: 0.6403699, b: 1, a: 0.48235294}
+  GlowTintColor: {r: 0, g: 0.6403699, b: 1, a: 0.27450982}
   MainTrunkTintColor: {r: 1, g: 1, b: 1, a: 1}
   SourceBlendMode: 5
   DestinationBlendMode: 1
