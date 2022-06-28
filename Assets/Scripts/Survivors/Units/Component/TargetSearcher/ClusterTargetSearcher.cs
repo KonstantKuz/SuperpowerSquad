@@ -34,8 +34,8 @@ namespace Survivors.Units.Component.TargetSearcher
             
             foreach (var target in targets)
             {
+                if (!target.IsAlive) continue;                
                 if (Vector3.Distance(target.Root.position, pos) > _searchDistance) continue;
-                if (!target.IsAlive) continue;
                 var score = Physics.OverlapSphereNonAlloc(target.Root.position, _clusterRadius, _hitColliders, EnemyLayer);
                 if (score <= bestTargetScore) continue;
                 
