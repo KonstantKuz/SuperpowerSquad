@@ -9,39 +9,39 @@ namespace Survivors.Units.Weapon.Projectiles
 {
     public class LightningBoltGenerator : MonoBehaviour
     {
-        private struct LightningBoltData
+        private struct BoltData
         {
             public LightningBoltPrefabScript Lightning { get; set; }
             public Transform EndPosition { get; set; }
         }
 
         [SerializeField]
-        private LightningBoltPrefabScript _lightningBoltPrefab;
+        private LightningBoltPrefabScript _boltPrefab;
 
-        private readonly List<LightningBoltData> _lightnings = new List<LightningBoltData>();
+        private readonly List<BoltData> _lightnings = new List<BoltData>();
         private CompositeDisposable _disposable = new CompositeDisposable();
 
         public void Hit(WorldObjectFactory objectFactory, Transform container, Transform endPosition, float duration)
         {
-            var lightningData = CreateLightning(objectFactory, container, endPosition);
-            _lightnings.Add(lightningData);
-            Observable.Timer(TimeSpan.FromSeconds(duration)).Subscribe(it => Destroy(lightningData)).AddTo(_disposable);
+            var boltData = CreateLightning(objectFactory, container, endPosition);
+            _lightnings.Add(boltData);
+            Observable.Timer(TimeSpan.FromSeconds(duration)).Subscribe(it => Destroy(boltData)).AddTo(_disposable);
         }
 
-        private void Destroy(LightningBoltData lightningData)
+        private void Destroy(BoltData data)
         {
-            Destroy(lightningData.Lightning);
-            _lightnings.Remove(lightningData);
+            Destroy(data.Lightning);
+            _lightnings.Remove(data);
         }
 
-        private LightningBoltData CreateLightning(WorldObjectFactory objectFactory, Transform container, Transform endPosition)
+        private BoltData CreateLightning(WorldObjectFactory objectFactory, Transform container, Transform endPosition)
         {
-            var lightningBolt = objectFactory.CreateObject(_lightningBoltPrefab.gameObject, container).GetComponent<LightningBoltPrefabScript>();
-            lightningBolt.transform.localPosition = Vector3.zero;
-            lightningBolt.Source.transform.localPosition = Vector3.zero;
-            lightningBolt.Destination.transform.position = endPosition.position;
-            return new LightningBoltData {
-                    Lightning = lightningBolt,
+            var lightning = objectFactory.CreateObject(_boltPrefab.gameObject, container).GetComponent<LightningBoltPrefabScript>();
+            lightning.transform.localPosition = Vector3.zero;
+            lightning.Source.transform.localPosition = Vector3.zero;
+            lightning.Destination.transform.position = endPosition.position;
+            return new BoltData {
+                    Lightning = lightning,
                     EndPosition = endPosition,
             };
         }

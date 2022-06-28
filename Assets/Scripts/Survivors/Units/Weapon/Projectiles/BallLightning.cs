@@ -69,9 +69,6 @@ namespace Survivors.Units.Weapon.Projectiles
 
         private void TryHit()
         {
-            if (this.IsDestroyed()) {
-                return;
-            }
             var hits = GetHits(transform.position, Params.DamageRadius, TargetType);
             foreach (var hit in hits) {
                 if (!CanDamageTarget(hit, TargetType, out var target)) {
@@ -87,7 +84,7 @@ namespace Survivors.Units.Weapon.Projectiles
             yield return new WaitForSeconds(stoppedTime);
             _isStopped = true;
             yield return new WaitForSeconds(_destroyDelay);
-            Destroy();
+            Destroy(gameObject);
         }
 
         private void Update()
@@ -113,14 +110,14 @@ namespace Survivors.Units.Weapon.Projectiles
             _rootContainer.localPosition = new Vector3(_animationCurve.Evaluate(_curveTime) * _curveWidthFactor, localPosition.y, localPosition.z);
         }
 
-        private void Destroy()
+        private void OnDestroy()
         {
             HitCallback = null;
-            Destroy(gameObject);
             DisposeTimer();
             _disposable?.Dispose();
             _disposable = null;
         }
+        
         private void DisposeTimer()
         {
             if (_timeCoroutine == null) {
