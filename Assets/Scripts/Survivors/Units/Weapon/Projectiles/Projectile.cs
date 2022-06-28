@@ -24,14 +24,6 @@ namespace Survivors.Units.Weapon.Projectiles
             Params = projectileParams;
         }
 
-        private void OnCollisionEnter(Collision other)
-        {
-            if (!CanDamageTarget(other.collider, TargetType, out var target)) {
-                return;
-            }
-            var contact = other.GetContact(0);
-            TryHit(other.gameObject, contact.point, contact.normal);
-        }
         public static bool CanDamageTarget(Collider targetCollider, UnitType type, [CanBeNull] out ITarget target)
         {
             target = null;
@@ -78,6 +70,14 @@ namespace Survivors.Units.Weapon.Projectiles
                            return target.IsTargetValidAndAlive() && target.UnitType == targetType;
                        })
                        .ToArray();
+        }
+
+        private void OnTriggerEnter(Collider other)
+        {
+            if (!CanDamageTarget(other, TargetType, out var target)) {
+                return;
+            }
+            TryHit(other.gameObject, transform.position, -transform.forward);
         }
     }
 }
