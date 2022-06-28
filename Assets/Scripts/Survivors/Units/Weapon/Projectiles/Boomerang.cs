@@ -75,17 +75,5 @@ namespace Survivors.Units.Weapon.Projectiles
             HitCallback = null;
             Destroy(gameObject);
         }
-        
-        public void OnTriggerEnter(Collider collider)
-        {
-            if (!CanDamageTarget(collider, TargetType, out var target)) {
-                return;
-            }
-            TryHitTargetsInRadius(transform.position, 
-                Params.DamageRadius,
-                TargetType,
-                null,
-                HitCallback);
-        }
     }
 }

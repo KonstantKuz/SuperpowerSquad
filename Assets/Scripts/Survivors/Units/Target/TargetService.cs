@@ -34,9 +34,8 @@ namespace Survivors.Units.Target
                 yield return target;
             }
         }
-
-
-
+        
+        
         [CanBeNull]
         public ITarget FindClosestTargetOfType(UnitType unitType, Vector3 pos)
         {
