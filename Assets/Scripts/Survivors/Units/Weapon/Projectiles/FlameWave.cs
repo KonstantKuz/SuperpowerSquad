@@ -22,7 +22,9 @@ namespace Survivors.Units.Weapon.Projectiles
         // обнаружил, что партиклы движутся быстрее в зависимости от скейла
         // если фактическую скорость не поделить на размер, то триггер очень сильно отстает от партиклов при damage radius > 1
         private float ParticlesSpeed => Speed / Params.DamageRadius;
-        
+        private bool IsActive => _lifeTime <= FlameLifeTime;
+        private bool CanDestroy => _lifeTime > FlameLifeTime + _destroyDelay;
+
         public override void Launch(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             base.Launch(target, projectileParams, hitCallback);
@@ -63,24 +65,21 @@ namespace Survivors.Units.Weapon.Projectiles
             mainModule.startLifetime = FlameLifeTime;
         }
 
-        private void OnTriggerEnter(Collider other)
+        protected override void TryHit(GameObject target, Vector3 hitPos, Vector3 collisionNorm)
         {
-            if (!CanDamageTarget(other, TargetType, out var target))
-            {
-                return;
-            }
-            HitCallback?.Invoke(other.gameObject);
+            HitCallback?.Invoke(target);
         }
-        
+
         private void Update()
         {
             _lifeTime += Time.deltaTime;
-            _trigger.SetActive(_lifeTime <= FlameLifeTime);
-            if (_lifeTime <= FlameLifeTime)
+            _trigger.SetActive(IsActive);
+            if (IsActive)
             {
                 MoveFlameTrigger();
             }
-            if (_lifeTime > FlameLifeTime + _destroyDelay)
+
+            if (CanDestroy)
             {
                 Destroy(gameObject);
             }
