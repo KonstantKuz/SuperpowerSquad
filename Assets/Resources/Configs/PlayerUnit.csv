@@ -8,4 +8,5 @@ BomberUnit,100,8,2,150,2,12
 CircularSawUnit,100,3,1,50,0,50
 BoomerangUnit,100,5,1,50,2,20
 LightningStrikeUnit,100,10,1,50,1,
-BallLightningUnit,100,15,2,50,4,2
+BallLightningUnit,100,15,2,50,4,2,
+MeteorUnit,100,8,5,150,2,30,
