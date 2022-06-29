@@ -44,6 +44,7 @@ namespace Survivors.Units.Weapon.Projectiles
             if (_timeLeft > 0) {
                 return;
             }
+            
             Destroy();
         }
         private void UpdatePosition()

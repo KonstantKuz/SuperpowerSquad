@@ -13,7 +13,7 @@ namespace Survivors.Squad.Model
         private readonly FloatModifiableParameter _speed;
         private readonly FloatModifiableParameter _collectRadius;
 
-        public SquadModel(SquadParams config, float startingMaxHealth)
+        public SquadModel(SquadConfig config, float startingMaxHealth)
         {
             _speed = new FloatModifiableParameter(Parameters.SPEED, config.Speed, this);
             _collectRadius = new FloatModifiableParameter(Parameters.COLLECT_RADIUS, config.CollectRadius, this);

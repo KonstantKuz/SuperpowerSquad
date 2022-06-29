@@ -4,7 +4,6 @@
     {
         public float Speed { get; set; }
         public float DamageRadius { get; set; }
-        public float DamageAngle { get; set; }
         public float AttackDistance { get; set; }
         public int Count { get; set; }
     }
