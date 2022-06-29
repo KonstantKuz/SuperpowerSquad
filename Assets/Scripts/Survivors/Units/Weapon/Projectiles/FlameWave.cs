@@ -9,6 +9,7 @@ namespace Survivors.Units.Weapon.Projectiles
 {
     public class FlameWave : Projectile
     {
+        [SerializeField] private float _damageAngle = 160f;
         [SerializeField] private float _destroyDelay = 1f;
         [SerializeField] private GameObject _trigger;
         [SerializeField] private GameObject _particlesRoot;
@@ -67,6 +68,13 @@ namespace Survivors.Units.Weapon.Projectiles
 
         protected override void TryHit(GameObject target, Vector3 hitPos, Vector3 collisionNorm)
         {
+            if (!FlameCharge.IsInsideCone(target.transform.position,
+                _trigger.transform.position,
+                _trigger.transform.forward,
+                _damageAngle / 2))
+            {
+                return;
+            }
             HitCallback?.Invoke(target);
         }
 

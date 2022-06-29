@@ -107,7 +107,7 @@ namespace Survivors.Units.Weapon.Projectiles
                    IsInsideDistanceRange(target, transform.position, flameDistanceMin, flameDistanceMax);
         }
         
-        private static bool IsInsideCone(Vector3 target, Vector3 coneOrigin, Vector3 coneDirection, float maxAngle)
+        public static bool IsInsideCone(Vector3 target, Vector3 coneOrigin, Vector3 coneDirection, float maxAngle)
         {
             var targetDirection = target - coneOrigin;
             var angle = Vector3.Angle(coneDirection, targetDirection.XZ());
