@@ -1,16 +1,12 @@
-﻿using System.IO;
-using Feofun.Config;
-using Feofun.Config.Csv;
+﻿using System.Runtime.Serialization;
 
 namespace Survivors.Squad.Config
 {
-    public class SquadConfig : ILoadableConfig
+    public class SquadConfig
     {
-        public SquadParams Params { get; private set; }
-        
-        public void Load(Stream stream)
-        {
-            Params = new CsvSerializer().ReadSingleObject<SquadParams>(stream);
-        }
+        [DataMember] 
+        public float Speed;
+        [DataMember]
+        public float CollectRadius;
     }
 }
