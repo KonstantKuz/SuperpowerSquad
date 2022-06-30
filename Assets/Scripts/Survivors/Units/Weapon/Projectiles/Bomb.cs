@@ -61,12 +61,7 @@ namespace Survivors.Units.Weapon.Projectiles
         private void OnHit(GameObject target)
         { 
             HitCallback?.Invoke(target);
-
-            if (target.TryGetComponent(out ExplosionReaction explosionReaction))
-            {
-                _explosionReactionParams.ExplosionPosition = transform.position;
-                explosionReaction.OnExplosionReact(_explosionReactionParams);
-            }
+            ExplosionReaction.TryExecuteOn(target, transform.position, _explosionReactionParams);
         }
         
         private void Destroy()

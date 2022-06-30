@@ -23,6 +23,14 @@ namespace Survivors.Units.Component.Health
             _damageable = gameObject.GetComponent<IDamageable>();
             _damageable.OnDeath += OnDeath;
         }
+
+        public static void TryExecuteOn(GameObject target, Vector3 explosionPosition, ExplosionReactionParams reactionParams)
+        {
+            if (!target.TryGetComponent(out ExplosionReaction explosionReaction)) { return; }
+            
+            reactionParams.ExplosionPosition = explosionPosition;
+            explosionReaction.OnExplosionReact(reactionParams);
+        }
         
         public void OnExplosionReact(ExplosionReactionParams reactionParams)
         {
