@@ -26,6 +26,7 @@ namespace Survivors.Units.Component.Health
         
         public void OnExplosionReact(ExplosionReactionParams reactionParams)
         {
+            if(gameObject == null) { return; } 
             if(!_owner.IsActive) { return; }
             
             var move = CreateJumpMove(reactionParams);

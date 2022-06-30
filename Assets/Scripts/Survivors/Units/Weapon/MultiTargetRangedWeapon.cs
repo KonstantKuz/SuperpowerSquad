@@ -66,13 +66,9 @@ namespace Survivors.Units.Weapon
         private static void SelectDistinctTargets(ICollection<ITarget> selectedTargets, int countToSelect, float minDistanceBetweenTargets, ICollection<ITarget> possibleTargets)
         {
             for (int i = 0; i < countToSelect; i++) {
-                var newTarget = possibleTargets.FirstOrDefault(it =>
-                    {
-                        if (it.Center == null) return false;
-                        var lastSelectedTarget = selectedTargets.LastOrDefault();
-                        if (lastSelectedTarget == null || lastSelectedTarget.Center == null) return false;
-                        return Vector3.Distance(selectedTargets.Last().Center.position, it.Center.position) >= minDistanceBetweenTargets;
-                    });
+                var newTarget = possibleTargets
+                    .FirstOrDefault(it =>
+                        Vector3.Distance(selectedTargets.Last().Center.position, it.Center.position) >= minDistanceBetweenTargets);
                 if (newTarget == null) return;
                 
                 possibleTargets.Remove(newTarget);
