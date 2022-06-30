@@ -53,7 +53,7 @@ namespace Survivors.Units.Weapon.Projectiles
         private void ScaleStartSpeed(ParticleSystem.MainModule main, float scaleFactor)
         {
             var startSpeed = main.startSpeed;
-            if (startSpeed.constant < Mathf.Epsilon)
+            if (Mathf.Abs(startSpeed.constant) < Mathf.Epsilon)
             {
                 return;
             }
