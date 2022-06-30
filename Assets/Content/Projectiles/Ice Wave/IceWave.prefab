@@ -122,6 +122,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 4767316375159337454}
     m_Modifications:
+    - target: {fileID: 111852, guid: 31bf3cc5d3c41d346b326d486971fad4, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 114038, guid: 31bf3cc5d3c41d346b326d486971fad4, type: 3}
       propertyPath: m_Name
       value: Ice Wave

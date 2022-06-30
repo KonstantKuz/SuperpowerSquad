@@ -46,15 +46,21 @@ namespace Survivors.Units.Weapon.Projectiles
                 var main = particle.main;
                 main.startLifetime = _lifeTime;
 
-                var startSpeed = main.startSpeed;
-                if (startSpeed.constant < Mathf.Epsilon)
-                {
-                    continue;
-                }
-                startSpeed.constantMin /= _lifeTime;
-                startSpeed.constantMax /= _lifeTime;
-                main.startSpeed = startSpeed;
+                ScaleStartSpeed(main, 1f / _lifeTime);
             }
+        }
+
+        private void ScaleStartSpeed(ParticleSystem.MainModule main, float scaleFactor)
+        {
+            var startSpeed = main.startSpeed;
+            if (startSpeed.constant < Mathf.Epsilon)
+            {
+                return;
+            }
+
+            startSpeed.constantMin *= scaleFactor;
+            startSpeed.constantMax *= scaleFactor;
+            main.startSpeed = startSpeed;
         }
 
         private void Update()
@@ -65,6 +71,11 @@ namespace Survivors.Units.Weapon.Projectiles
                 Destroy(gameObject);
                 return;
             }
+            ScaleUpTrigger();
+        }
+
+        private void ScaleUpTrigger()
+        {
             _trigger.radius += Speed * _triggerScaleMultiplier * Time.deltaTime;
         }
 
