@@ -1,5 +1,6 @@
 ﻿using System;
 using Survivors.Location.Service;
+using Survivors.Units.Component.Health;
 using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
 using Zenject;
@@ -12,7 +13,9 @@ namespace Survivors.Units.Weapon.Projectiles
         private GameObject _hitVfx;
         [SerializeField]
         private float _explosionScaleMultiplier;
-        
+        [SerializeField] 
+        private ExplosionReactionParams _explosionReactionParams;
+    
         private Action<GameObject> _hitCallback;
         private UnitType _targetType;
         private IProjectileParams _params;
@@ -39,10 +42,17 @@ namespace Survivors.Units.Weapon.Projectiles
                 return;
             }
 
-            Projectile.TryHitTargetsInRadius(transform.position, _params.DamageRadius, _targetType, null, _hitCallback);
+            Projectile.TryHitTargetsInRadius(transform.position, _params.DamageRadius, _targetType, null, OnHit);
             PlayVfx(transform.position, Vector3.forward);
             Destroy();
         }
+        
+        private void OnHit(GameObject target)
+        { 
+            _hitCallback?.Invoke(target);
+            ExplosionReaction.TryExecuteOn(target, transform.position, _explosionReactionParams);
+        }
+        
         private void UpdatePosition()
         {
             transform.position += Vector3.down * _speed * Time.deltaTime;
