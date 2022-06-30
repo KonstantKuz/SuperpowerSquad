@@ -6,6 +6,7 @@ using Survivors.Units.Enemy.Config;
 using Survivors.Units.Enemy.Model;
 using Survivors.Units.Player.Config;
 using Survivors.Units.Player.Model;
+using Survivors.Units.Player.Model.Session;
 using Zenject;
 
 namespace Survivors.Units.Service
@@ -37,7 +38,7 @@ namespace Survivors.Units.Service
         private void ConfigurePlayerUnit(Unit unit)
         {
             var config = _playerUnitConfigs.Get(unit.ObjectId);
-            var model = new PlayerUnitModel(config);
+            var model = new PlayerUnitSessionModel(config);
             unit.Init(model);
         }
     }

@@ -3,6 +3,7 @@ using Feofun.Components;
 using Survivors.Extension;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Player.Model;
+using Survivors.Units.Player.Model.Session;
 using Survivors.Units.Weapon;
 using Survivors.Units.Weapon.Projectiles.Params;
 using UniRx;
@@ -17,7 +18,7 @@ namespace Survivors.Units.Player.Attack
         
         private Unit _ownerUnit;
         private Squad.Squad _squad;
-        private PlayerAttackModel _attackModel;
+        private PlayerAttackSessionModel _attackSessionModel;
         private CompositeDisposable _disposable;
         
         public void Init(IUnit unit)
@@ -26,18 +27,18 @@ namespace Survivors.Units.Player.Attack
             _disposable = new CompositeDisposable();
             
             _ownerUnit = unit as Unit;
-            if (!(unit.Model.AttackModel is PlayerAttackModel attackModel))
+            if (!(unit.Model.AttackModel is PlayerAttackSessionModel attackModel))
             {
                 throw new ArgumentException($"Unit must be a player unit, gameObj:= {gameObject.name}");
             }
-            _attackModel = attackModel;
+            _attackSessionModel = attackModel;
         }
         public void Init(Squad.Squad squad)
         {
             Assert.IsNotNull(_ownerUnit);      
-            Assert.IsNotNull(_attackModel);
+            Assert.IsNotNull(_attackSessionModel);
             _squad = squad;
-            _attackModel.ShotCount.Subscribe(CreateSaws).AddTo(_disposable);
+            _attackSessionModel.ShotCount.Subscribe(CreateSaws).AddTo(_disposable);
             _squad.UnitsCount.Subscribe(UpdateRadius).AddTo(_disposable);
         }
         
@@ -56,7 +57,7 @@ namespace Survivors.Units.Player.Attack
 
         private PlayerProjectileParams GetSawParamsForSquad()
         {
-            var projectileParams = _attackModel.CreatePlayerProjectileParams();
+            var projectileParams = _attackSessionModel.CreatePlayerProjectileParams();
             projectileParams.AdditionalAttackDistance += _squad.SquadRadius;
             return projectileParams;
         }
@@ -69,7 +70,7 @@ namespace Survivors.Units.Player.Attack
         private void DoDamage(GameObject target)
         {
             var damageable = target.RequireComponent<IDamageable>();
-            damageable.TakeDamage(_attackModel.AttackDamage);
+            damageable.TakeDamage(_attackSessionModel.AttackDamage);
             Debug.Log($"Damage applied, target:= {target.name}");
         }
 

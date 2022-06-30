@@ -1,32 +1,28 @@
 ﻿using Feofun.Modifiers;
 using Feofun.Modifiers.Parameters;
 using Survivors.Modifiers;
-using Survivors.Units.Model;
-using Survivors.Units.Player.Config;
-using Survivors.Units.Weapon.Projectiles;
+using Survivors.Units.Player.Model.Meta;
 using Survivors.Units.Weapon.Projectiles.Params;
 using UniRx;
 
-namespace Survivors.Units.Player.Model
+namespace Survivors.Units.Player.Model.Session
 {
-    public class PlayerAttackModel : IAttackModel
+    public class PlayerAttackSessionModel : IPlayerAttackModel
     {
-        private readonly PlayerAttackConfig _config;
         private readonly FloatModifiableParameter _attackDamage;
         private readonly FloatModifiableParameter _attackInterval;
         private readonly FloatModifiableParameter _projectileSpeed;
         private readonly FloatModifiableParameter _damageRadius;
         private readonly FloatModifiableParameter _attackDistance;
 
-        public PlayerAttackModel(PlayerAttackConfig config, IModifiableParameterOwner parameterOwner)
+        public PlayerAttackSessionModel(IPlayerAttackModel model, IModifiableParameterOwner parameterOwner)
         {
-            _config = config;
-            _attackDamage = new FloatModifiableParameter(Parameters.ATTACK_DAMAGE, _config.AttackDamage, parameterOwner);
-            _attackInterval = new FloatModifiableParameter(Parameters.ATTACK_INTERVAL, _config.AttackInterval, parameterOwner);
-            _attackDistance = new FloatModifiableParameter(Parameters.ATTACK_DISTANCE, _config.AttackDistance, parameterOwner);
+            _attackDamage = new FloatModifiableParameter(Parameters.ATTACK_DAMAGE, model.AttackDamage, parameterOwner);
+            _attackInterval = new FloatModifiableParameter(Parameters.ATTACK_INTERVAL, model.AttackInterval.Value, parameterOwner);
+            _attackDistance = new FloatModifiableParameter(Parameters.ATTACK_DISTANCE, model.AttackDistance, parameterOwner);
             
-            _projectileSpeed = new FloatModifiableParameter(Parameters.PROJECTILE_SPEED, _config.ProjectileSpeed, parameterOwner);
-            _damageRadius = new FloatModifiableParameter(Parameters.DAMAGE_RADIUS, _config.DamageRadius, parameterOwner);
+            _projectileSpeed = new FloatModifiableParameter(Parameters.PROJECTILE_SPEED, model.ProjectileSpeed, parameterOwner);
+            _damageRadius = new FloatModifiableParameter(Parameters.DAMAGE_RADIUS, model.DamageRadius, parameterOwner);
             
             var shotCount = new FloatModifiableParameter(Parameters.SHOT_COUNT, 1, parameterOwner);
             ShotCount = shotCount.ReactiveValue.Select(it => (int) it).ToReactiveProperty();

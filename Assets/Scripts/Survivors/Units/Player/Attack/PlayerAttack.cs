@@ -5,6 +5,7 @@ using Survivors.Extension;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Component.TargetSearcher;
 using Survivors.Units.Player.Model;
+using Survivors.Units.Player.Model.Session;
 using Survivors.Units.Player.Movement;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon;
@@ -26,7 +27,7 @@ namespace Survivors.Units.Player.Attack
         private string _attackAnimationName;
         
         private BaseWeapon _weapon;
-        private PlayerAttackModel _playerAttackModel;
+        private PlayerAttackSessionModel _playerAttackSessionModel;
         private Animator _animator;
         private ITargetSearcher _targetSearcher;
         private MovementController _movementController;
@@ -48,9 +49,9 @@ namespace Survivors.Units.Player.Attack
             Dispose();
             _disposable = new CompositeDisposable();
             _owner = (Unit) unit;
-            _playerAttackModel = (PlayerAttackModel) unit.Model.AttackModel;
+            _playerAttackSessionModel = (PlayerAttackSessionModel) unit.Model.AttackModel;
             
-            _playerAttackModel.AttackInterval.Subscribe(UpdateAnimationSpeed).AddTo(_disposable);
+            _playerAttackSessionModel.AttackInterval.Subscribe(UpdateAnimationSpeed).AddTo(_disposable);
             if (HasWeaponAnimationHandler) {
                 _weaponAnimationHandler.OnFireEvent += Fire;
             }
@@ -66,7 +67,7 @@ namespace Survivors.Units.Player.Attack
                 ? ownTimerManager
                 : squad.WeaponTimerManager;
 
-            _timerManager.Subscribe(_owner.ObjectId, _playerAttackModel, OnAttackReady);
+            _timerManager.Subscribe(_owner.ObjectId, _playerAttackSessionModel, OnAttackReady);
         }
         
         private void Awake()
@@ -120,13 +121,13 @@ namespace Survivors.Units.Player.Attack
             if (IsTargetInvalid) {
                 return;
             }
-            _weapon.Fire(_target, _playerAttackModel.CreateProjectileParams(), DoDamage);
+            _weapon.Fire(_target, _playerAttackSessionModel.CreateProjectileParams(), DoDamage);
         }
 
         private void DoDamage(GameObject target)
         {
             var damageable = target.RequireComponent<IDamageable>();
-            damageable.TakeDamage(_playerAttackModel.AttackDamage);
+            damageable.TakeDamage(_playerAttackSessionModel.AttackDamage);
             Debug.Log($"Damage applied, target:= {target.name}");
         }
 

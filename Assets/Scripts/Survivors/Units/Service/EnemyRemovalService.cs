@@ -10,7 +10,7 @@ using Zenject;
 
 namespace Survivors.Units.Service
 {
-    public class EnemyRemovalService: MonoBehaviour, IWorldScope
+    public class EnemyRemovalService : MonoBehaviour, IWorldScope
     {
         [SerializeField] private int _softLimit;
         [SerializeField] private int _hardLimit;

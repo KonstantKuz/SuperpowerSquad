@@ -3,6 +3,7 @@ using System.Linq;
 using Feofun.Components;
 using Survivors.Units.Model;
 using Survivors.Units.Player.Model;
+using Survivors.Units.Player.Model.Session;
 using Survivors.Units.Target;
 using UnityEngine;
 using Zenject;
@@ -29,7 +30,7 @@ namespace Survivors.Units.Component.TargetSearcher
         {
             _targetType = owner.UnitType.GetTargetUnitType();
             _searchDistance = owner.Model.AttackModel.AttackDistance;
-            _clusterRadius = (owner.Model.AttackModel as PlayerAttackModel).DamageRadius;
+            _clusterRadius = (owner.Model.AttackModel as PlayerAttackSessionModel).DamageRadius;
         }        
         
         public ITarget Find()
