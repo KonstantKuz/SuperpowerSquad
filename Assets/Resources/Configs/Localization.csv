@@ -10,6 +10,11 @@ PyroUnit,Flamethrower,Flamethrower
 SniperUnit,Sniper rifle,Sniper rifle
 BomberUnit,Bomb,Bomb
 CircularSawUnit,A circular saw,A circular saw
+BoomerangUnit,Boomerang,Boomerang
+LightningStrikeUnit,Lightning Strike,Lightning Strike
+BallLightningUnit,Ball Lightning,Ball Lightning
+MeteorUnit,Meteor,Meteor
+IceWaveUnit,Ice Wave,Ice Wave
 ShotCountUpgrade,Shot count,Shot count
 AttackTimeUpgrade,Attack speed,Attack speed
 ProjectileSpeedUpgrade,Projectile speed,Projectile speed
