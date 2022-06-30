@@ -1,6 +1,5 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
-using Survivors.Player.Model;
 using Survivors.Session.Config;
 
 namespace Survivors.Analytics
