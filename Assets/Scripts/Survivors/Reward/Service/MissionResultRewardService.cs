@@ -5,12 +5,14 @@ using Survivors.Player.Wallet;
 using Survivors.Reward.Config;
 using Survivors.Reward.Model;
 using Survivors.Session.Model;
+using Zenject;
 
 namespace Survivors.Reward.Service
 {
     [PublicAPI]
     public class MissionResultRewardService
     {
+        [Inject]
         private readonly ConfigCollection<SessionResult, MissionRewardsConfig> _missionRewards;
 
         public List<RewardItem> CalculateRewards(SessionResult result, Session.Model.Session session)

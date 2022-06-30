@@ -36,7 +36,7 @@ namespace Survivors.Session.Service
         [Inject] private Analytics.Analytics _analytics;
         
         private PlayerProgress PlayerProgress => _playerProgressService.Progress;
-        private Model.Session Session => _repository.Require();
+        public Model.Session Session => _repository.Require();
         
         public IReadOnlyReactiveProperty<int> Kills => _kills;
         public LevelMissionConfig LevelConfig => _levelsConfig.Values[LevelId];
