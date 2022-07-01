@@ -2,7 +2,6 @@
 using System.Linq;
 using AppsFlyerSDK;
 using Logger.Extension;
-using ILogger = Logger.ILogger;
 
 namespace Survivors.Analytics.Wrapper
 {

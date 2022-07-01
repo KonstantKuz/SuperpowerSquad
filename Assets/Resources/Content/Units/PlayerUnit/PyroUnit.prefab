@@ -186,7 +186,7 @@ PrefabInstance:
     - target: {fileID: 4331444546958184133, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
       propertyPath: _ammo
       value: 
-      objectReference: {fileID: 5497661428694648794, guid: 26bea9183413de14b81ea7028f0fde3b, type: 3}
+      objectReference: {fileID: 3111521240564955993, guid: 30a7835369eb2674fb7c3cf32e176ddb, type: 3}
     - target: {fileID: 4331444546958184133, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
       propertyPath: _aimInXZPlane
       value: 1
@@ -197,7 +197,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4331444546958184133, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
       propertyPath: _angleBetweenShots
-      value: 30
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5225966623019145733, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
       propertyPath: _objectId

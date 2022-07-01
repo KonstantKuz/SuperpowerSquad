@@ -1,10 +1,9 @@
-﻿using Feofun.UI.Components;
-using Feofun.UI.Components.Button;
+﻿using Feofun.UI.Components.Button;
 using Feofun.UI.Screen;
 using JetBrains.Annotations;
+using Survivors.Reward.Service;
 using Survivors.Session.Model;
 using Survivors.UI.Screen.World;
-using Survivors.Units;
 using UnityEngine;
 using Zenject;
 
@@ -26,15 +25,20 @@ namespace Survivors.UI.Screen.Debriefing
         private GameObject _losePanel;
         
         [Inject]
-        private ScreenSwitcher _screenSwitcher;
+        private ScreenSwitcher _screenSwitcher;       
+        [Inject]
+        private MissionResultRewardService _missionResultRewardService;  
+        [Inject]
+        private IRewardApplyService _rewardApplyService;
 
         [PublicAPI]
-        public void Init(SessionResult result)
+        public void Init(SessionResult result, Session.Model.Session session)
         {
             _winPanel.SetActive(result == SessionResult.Win);     
             _losePanel.SetActive(result == SessionResult.Lose); 
             _nextButton.gameObject.SetActive(result == SessionResult.Win);     
             _reloadButton.gameObject.SetActive(result == SessionResult.Lose);
+            _rewardApplyService.ApplyRewards(_missionResultRewardService.CalculateRewards(result, session));
         }
         public void OnEnable()
         {

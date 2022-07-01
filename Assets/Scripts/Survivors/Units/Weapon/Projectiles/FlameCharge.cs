@@ -14,7 +14,8 @@ namespace Survivors.Units.Weapon.Projectiles
         private const float MAX_FLAME_ANGLE = 80f;
         private const float MIN_POSSIBLE_EMISSION_DURATION = 0.05f;
         private const float DAMAGE_DISTANCE_STEP_MULTIPLIER = 0.8f;
-        
+
+        [SerializeField] private float _initialDamageAngle = 30f;
         [SerializeField] private float _initialFlameWidth = 3f;
         [SerializeField] private float _emissionCountMultiplier = 0.05f;
         [SerializeField] private float _flameLifeTimeMultiplier = 1.1f;
@@ -28,7 +29,7 @@ namespace Survivors.Units.Weapon.Projectiles
         private float FlameThrowDuration =>  Mathf.Max(MIN_POSSIBLE_EMISSION_DURATION, _initialFlameWidth / Speed);
         private float FlameLifeTime =>_flameLifeTimeMultiplier * Params.AttackDistance / Speed;
         private float FlameWidth => FlameThrowDuration * Speed;
-        private float FlameAngle => Mathf.Clamp(Params.DamageAngle / 2, 0, MAX_FLAME_ANGLE);
+        private float FlameAngle => Mathf.Clamp(_initialDamageAngle * Params.DamageRadius / 2, 0, MAX_FLAME_ANGLE);
         
         public override void Launch(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
@@ -106,7 +107,7 @@ namespace Survivors.Units.Weapon.Projectiles
                    IsInsideDistanceRange(target, transform.position, flameDistanceMin, flameDistanceMax);
         }
         
-        private static bool IsInsideCone(Vector3 target, Vector3 coneOrigin, Vector3 coneDirection, float maxAngle)
+        public static bool IsInsideCone(Vector3 target, Vector3 coneOrigin, Vector3 coneDirection, float maxAngle)
         {
             var targetDirection = target - coneOrigin;
             var angle = Vector3.Angle(coneDirection, targetDirection.XZ());
