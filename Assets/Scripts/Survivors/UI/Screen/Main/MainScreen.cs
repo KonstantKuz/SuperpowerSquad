@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Feofun.UI.Dialog;
 using Feofun.UI.Screen;
@@ -36,11 +37,12 @@ namespace Survivors.UI.Screen.Main
             Assert.IsNull(_disposable);
             _disposable = new CompositeDisposable();
             
-            _joystick.Attach(transform);
-            _levelProgressBar.Init(_sessionService.LevelId);
-
             _world.Setup();
             _sessionService.Start();
+        
+            _joystick.Attach(transform);
+            _levelProgressBar.Init(_sessionService.LevelId);
+            
             StartCoroutine(WaitForAnimationUpdateBeforePause());
         }
         
@@ -66,9 +68,19 @@ namespace Survivors.UI.Screen.Main
 
         public override IEnumerator Hide()
         {
+            Dispose();
+            return base.Hide();
+        }
+
+        private void Dispose()
+        {
             _disposable?.Dispose();
             _disposable = null;
-            return base.Hide();
+        }
+
+        private void OnDestroy()
+        {
+            Dispose();
         }
     }
 }

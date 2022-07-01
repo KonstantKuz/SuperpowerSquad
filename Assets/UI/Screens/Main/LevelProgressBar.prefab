@@ -649,8 +649,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 09f6211f6e65c954aaa270a94ff2525d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _levelStep: 5
-  _progressBarView: {fileID: 7931783256842051783}
+  _levelBar: {fileID: 7931783256842051783}
+  _progressByStep:
+  - Step: 1
+    ProgressValue: 0.19
+  - Step: 2
+    ProgressValue: 0.4
+  - Step: 3
+    ProgressValue: 0.62
+  - Step: 4
+    ProgressValue: 0.81
+  - Step: 5
+    ProgressValue: 1
 --- !u!1 &8413487189664964579
 GameObject:
   m_ObjectHideFlags: 0
@@ -870,7 +880,7 @@ MonoBehaviour:
   m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 0.797
+  m_FillAmount: 0.81
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0

@@ -1,3 +1,6 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Feofun.UI.Components;
 using UnityEngine;
 
@@ -5,12 +8,25 @@ namespace Survivors.UI.Screen.Main
 {
     public class LevelProgressBar : MonoBehaviour
     {
-        [SerializeField] private float _levelStep;
-        [SerializeField] private ProgressBarView _progressBarView;
+        private const int MIN_LEVEL_NUMBER = 1;
+        private const int MAX_LEVEL_NUMBER = 5;
+        
+        [SerializeField] private ProgressBarView _levelBar;
+        [SerializeField] private List<ProgressByStep> _progressByStep;
 
-        public void Init(int currentLevel)
+        public void Init(float currentLevel)
         {
-            _progressBarView.SetValueWithLoop(currentLevel + 1 / _levelStep);
+            _levelBar.IsIndependentUpdate = true;
+            
+            var step = Mathf.Clamp(currentLevel + 1, MIN_LEVEL_NUMBER, MAX_LEVEL_NUMBER);
+            _levelBar.SetData(_progressByStep.First(it => it.Step == step).ProgressValue);
+        }
+        
+        [Serializable]
+        private struct ProgressByStep
+        {
+            public int Step;
+            public float ProgressValue;
         }
     }
 }
