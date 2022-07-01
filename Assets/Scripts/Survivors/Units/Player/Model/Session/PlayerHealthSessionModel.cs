@@ -1,7 +1,6 @@
 ﻿using Feofun.Modifiers;
 using Feofun.Modifiers.Parameters;
 using Survivors.Modifiers;
-using Survivors.Units.Player.Model.Meta;
 using UniRx;
 
 namespace Survivors.Units.Player.Model.Session

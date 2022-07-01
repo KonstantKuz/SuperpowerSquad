@@ -5,7 +5,6 @@ using Survivors.Location.Service;
 using Survivors.Units.Enemy.Config;
 using Survivors.Units.Enemy.Model;
 using Survivors.Units.Player.Config;
-using Survivors.Units.Player.Model;
 using Survivors.Units.Player.Model.Session;
 using Zenject;
 

@@ -5,16 +5,24 @@ namespace Survivors.Player.Inventory.Model
 {
     public class Inventory
     {
+        public UnitsMetaUpgrades UnitsUpgrades { get; }
+        public Inventory()
+        {
+            UnitsUpgrades = new UnitsMetaUpgrades();
+        }
+    }
+
+    public class UnitsMetaUpgrades
+    {
         [JsonProperty]
-        private Dictionary<string, int> _metaUpgrades = new Dictionary<string, int>();
+        private Dictionary<string, int> _upgrades = new Dictionary<string, int>();
        
-        private int GetUpgradeCount(string upgradeId) => _metaUpgrades.ContainsKey(upgradeId) ? _metaUpgrades[upgradeId] : 0;
+        public int GetUpgradeCount(string upgradeId) => _upgrades.ContainsKey(upgradeId) ? _upgrades[upgradeId] : 0;
         
         public void AddUpgrade(string upgradeId)
         {
-            _metaUpgrades[upgradeId] = GetUpgradeCount(upgradeId) + 1;
+            _upgrades[upgradeId] = GetUpgradeCount(upgradeId) + 1;
         }
-
-        public Dictionary<string, int> MetaUpgrades => _metaUpgrades;
+        public Dictionary<string, int> Upgrades => _upgrades;
     }
 }

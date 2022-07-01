@@ -1,13 +1,8 @@
-﻿using Survivors.Units.Model;
-using Survivors.Units.Player.Config;
+﻿using Survivors.Units.Player.Config;
 using UniRx;
 
 namespace Survivors.Units.Player.Model.Meta
 {
-    public interface IPlayerHealthModel : IHealthModel
-    {
-    }
-
     public class PlayerHealthModel : IPlayerHealthModel
     {
         private readonly PlayerUnitConfig _config;
@@ -16,7 +11,7 @@ namespace Survivors.Units.Player.Model.Meta
         public PlayerHealthModel(PlayerUnitConfig config)
         {
             _config = config;
-            _maxHealth = new ReactiveProperty<float>(_config.Health);
+            _maxHealth = new ReactiveProperty<float>(StartingMaxHealth);
         }
         public float StartingMaxHealth => _config.Health;
         public IReadOnlyReactiveProperty<float> MaxHealth => _maxHealth;
