@@ -13,6 +13,7 @@ namespace Survivors.Config
         public const string UPGRADES = "Upgrades";
         public const string CONSTANTS = "Constants";
         public const string ENEMY_SPAWNER = "EnemySpawner";   
-        public const string LEVEL_MISSION = "LevelMission";
+        public const string LEVEL_MISSION = "LevelMission";   
+        public const string MISSION_REWARDS = "MissionRewards";
     }
 }

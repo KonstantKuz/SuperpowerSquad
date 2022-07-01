@@ -1,5 +1,5 @@
+using Logger;
 using UnityEngine;
-using Logger.Assets.Scripts;
 
 namespace Survivors.Logger
 {

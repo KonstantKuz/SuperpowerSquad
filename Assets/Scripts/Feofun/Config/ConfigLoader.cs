@@ -2,18 +2,16 @@
 using System.IO;
 using Feofun.Config.Serializers;
 using JetBrains.Annotations;
-using Logger.Assets.Scripts;
+using Logger.Extension;
 using SuperMaxim.Core.Extensions;
 using UnityEngine;
 using Zenject;
-using ILogger = Logger.Assets.Scripts.ILogger;
+using ILogger = Logger.ILogger;
 
 namespace Feofun.Config
 {
     public class ConfigLoader
     {
-        private static readonly ILogger _logger = LoggerFactory.GetLogger<ConfigLoader>();
-        
         private static string MAIN_PATH = "Configs";
         
         private readonly DiContainer _container;
@@ -33,12 +31,26 @@ namespace Feofun.Config
         {
             return RegisterSingle<StringKeyedConfigCollection<TValue>>(configName, withId, optional);
         }  
+        
+        public ConfigLoader RegisterSingleObjectConfig<TValue>(string configName, bool withId = false, bool optional = false)
+        {
+            return Register<SingleObjectConfig<TValue>, TValue>(configName, withId, optional,
+                config => config.Value);
+        }
         public ConfigLoader RegisterCollection<TKey, TValue>(string configName, bool withId = false, bool optional = false)
                 where TValue : ICollectionItem<TKey>
         {
             return RegisterSingle<ConfigCollection<TKey, TValue>>(configName, withId, optional);
         }
-        public ConfigLoader RegisterSingle<T>(string configName, bool withId = false, bool optional = false) where T : ILoadableConfig
+
+        public ConfigLoader RegisterSingle<T>(string configName, bool withId = false, bool optional = false)
+            where T : ILoadableConfig
+        {
+            return Register<T, T>(configName, withId, optional, config => config);
+        }
+        
+        private ConfigLoader Register<TLoadableConfig, TValue>(string configName, bool withId, bool optional, Func<TLoadableConfig, TValue> GetValueFunc)
+            where TLoadableConfig : ILoadableConfig
         {
             try {
                 var configText = FindConfigText(configName);
@@ -48,19 +60,20 @@ namespace Feofun.Config
                 if (configText == null) {
                     throw new NullReferenceException($"Config:={configName} not found on path:= {MAIN_PATH}/{configName}");
                 }
-                var config = _deserializer.Deserialize<T>(configText);
-                var binder = _container.Bind(typeof(T));
+                var config = _deserializer.Deserialize<TLoadableConfig>(configText);
+                var binder = _container.Bind(typeof(TValue));
+                var value = GetValueFunc.Invoke(config);
                 if (withId) {
-                    binder.WithId(configName).FromInstance(config);
+                    binder.WithId(configName).FromInstance(value);
                 }
                 else {
-                    binder.FromInstance(config).AsSingle();    
+                    binder.FromInstance(value).AsSingle();    
                 }
                 return this;
             }
             catch (Exception)
             {
-                _logger.Error($"Failed to parse config {configName}");
+                this.Logger().Error($"Failed to parse config {configName}");
                 throw;
             }
         }

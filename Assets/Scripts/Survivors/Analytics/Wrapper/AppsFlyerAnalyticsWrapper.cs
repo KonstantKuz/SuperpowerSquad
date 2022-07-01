@@ -1,21 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AppsFlyerSDK;
-using Logger.Assets.Scripts;
-using ILogger = Logger.Assets.Scripts.ILogger;
+using Logger.Extension;
 
 namespace Survivors.Analytics.Wrapper
 {
     public class AppsFlyerAnalyticsWrapper : IAnalyticsImpl
     {
-        private static readonly ILogger _logger = LoggerFactory.GetLogger<AppsFlyerAnalyticsWrapper>();
         
         private const string DEV_KEY = "9gdCn4p9McTuPMAjnzTk4Y";
         private const string APP_ID = "1626072143";
 
         public void Init()
         {
-            _logger.Info("Initializing AppsFlyer SDK");
+            this.Logger().Info("Initializing AppsFlyer SDK");
             AppsFlyer.initSDK(DEV_KEY, APP_ID);
             AppsFlyer.startSDK();
         }

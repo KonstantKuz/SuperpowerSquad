@@ -1,12 +1,13 @@
 ﻿using System.Linq;
 using Feofun.Config;
-using Logger.Assets.Scripts;
+using Logger.Extension;
 using SuperMaxim.Messaging;
+using Survivors.App.Config;
 using Survivors.Enemy.Spawn;
 using Survivors.Enemy.Spawn.Config;
 using Survivors.Location;
-using Survivors.Player.Model;
-using Survivors.Player.Service;
+using Survivors.Player.Progress.Model;
+using Survivors.Player.Progress.Service;
 using Survivors.Session.Config;
 using Survivors.Session.Messages;
 using Survivors.Session.Model;
@@ -16,13 +17,11 @@ using Survivors.Units.Service;
 using UniRx;
 using UnityEngine;
 using Zenject;
-using ILogger = Logger.Assets.Scripts.ILogger;
 
 namespace Survivors.Session.Service
 {
     public class SessionService : IWorldScope
     {
-        private static readonly ILogger _logger = LoggerFactory.GetLogger<SessionService>();
         
         private readonly IntReactiveProperty _kills = new IntReactiveProperty(0);
         
@@ -38,9 +37,10 @@ namespace Survivors.Session.Service
         [Inject] private readonly StringKeyedConfigCollection<LevelMissionConfig> _levelsConfig;
         [Inject] private PlayerProgressService _playerProgressService;
         [Inject] private Analytics.Analytics _analytics;
+        [Inject] private ConstantsConfig _constantsConfig;
         
         private PlayerProgress PlayerProgress => _playerProgressService.Progress;
-        private Model.Session Session => _repository.Require();
+        public Model.Session Session => _repository.Require();
         
         public IReadOnlyReactiveProperty<int> Kills => _kills;
         public LevelMissionConfig LevelConfig => _levelsConfig.Values[LevelId];
@@ -60,7 +60,6 @@ namespace Survivors.Session.Service
             CreateSession();
             CreateSquad();
             SpawnUnits();
-            _analytics.ReportLevelStart(LevelId);
         }
 
         private void CreateSession()
@@ -69,7 +68,7 @@ namespace Survivors.Session.Service
             var newSession = Model.Session.Build(levelConfig);
             _repository.Set(newSession);
             _playerProgressService.OnSessionStarted(levelConfig.Level);
-            _logger.Debug($"Kill enemies:= {levelConfig.KillCount}");
+            this.Logger().Debug($"Kill enemies:= {levelConfig.KillCount}");
         }
     
         private void CreateSquad()
@@ -80,8 +79,8 @@ namespace Survivors.Session.Service
         }
         private void SpawnUnits()
         {
-            _unitFactory.CreatePlayerUnit(UnitFactory.SIMPLE_PLAYER_ID);
-            _enemyWavesSpawner.StartSpawn(_enemyWavesConfig);
+            _unitFactory.CreatePlayerUnit(_constantsConfig.FirstUnit);
+            _enemyWavesSpawner.StartSpawn(_enemyWavesConfig); 
             _enemyHpsSpawner.StartSpawn();
         }
 
@@ -92,7 +91,7 @@ namespace Survivors.Session.Service
             
             Session.AddKill();
             _kills.Value = Session.Kills;
-            _logger.Trace($"Killed enemies:= {Session.Kills}");
+            this.Logger().Trace($"Killed enemies:= {Session.Kills}");
             if (Session.IsMaxKills) {
                 EndSession(UnitType.PLAYER);
             }

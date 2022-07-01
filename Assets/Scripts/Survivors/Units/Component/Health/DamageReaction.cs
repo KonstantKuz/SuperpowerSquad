@@ -30,6 +30,7 @@ namespace Survivors.Units.Component.Health
 
         private void OnDamageTakenReact()
         {
+            if(gameObject == null) { return; } 
             PlayScalePunch();
             PlayColorBlink();
         }

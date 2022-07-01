@@ -2,16 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Logger.Assets.Scripts;
+using Logger.Extension;
 using Survivors.UI.Screen;
 using UnityEngine;
-using ILogger = Logger.Assets.Scripts.ILogger;
 
 namespace Feofun.UI.Screen
 {
     public abstract class BaseScreen : MonoBehaviour
     {
-        private static readonly ILogger _logger = LoggerFactory.GetLogger<BaseScreen>();
         
         private const string METHOD_INIT_NAME = "Init";
         
@@ -42,7 +40,7 @@ namespace Feofun.UI.Screen
                 return;
             }
             if (initMethodInfo == null) {
-                _logger.Error($"CallScreenInit error, init method not found for params length, screen:= {GetType().Name}, params: {GetParamNames(initParams)}");
+                this.Logger().Error($"CallScreenInit error, init method not found for params length, screen:= {GetType().Name}, params: {GetParamNames(initParams)}");
                 return;
             }
             initMethodInfo.Invoke(this, initParams);
