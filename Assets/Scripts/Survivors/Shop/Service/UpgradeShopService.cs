@@ -18,19 +18,19 @@ namespace Survivors.Shop.Service
         {
             var product = GetProductById(upgradeId);
 
-            return _walletService.TryRemove(product.Currency, product.GetFinalCost(level));
+            return _walletService.TryRemove(product.ProductConfig.Currency, product.GetFinalCost(level));
         }
 
         public bool HasEnoughCurrency(string productId, int level)
         {
             var product = GetProductById(productId);
-            return _walletService.HasEnoughCurrency(product.Currency, product.GetFinalCost(level));
+            return _walletService.HasEnoughCurrency(product.ProductConfig.Currency, product.GetFinalCost(level));
         }
 
         public IObservable<bool> HasEnoughCurrencyAsObservable(string productId, int level)
         {
             var product = GetProductById(productId);
-            return _walletService.HasEnoughCurrencyAsObservable(product.Currency, product.GetFinalCost(level));
+            return _walletService.HasEnoughCurrencyAsObservable(product.ProductConfig.Currency, product.GetFinalCost(level));
         }
 
         private UpgradeProductConfig GetProductById(string productId) => _shopConfig.Get(productId);
