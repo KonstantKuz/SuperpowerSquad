@@ -211,6 +211,10 @@ PrefabInstance:
       propertyPath: _attackAnimationName
       value: Throw
       objectReference: {fileID: 0}
+    - target: {fileID: 7298992107422189896, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8793492476147260267, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
       propertyPath: m_IsActive
       value: 0
