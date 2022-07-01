@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
+using Logger.Extension;
 using Survivors.UI.Screen;
 using UnityEngine;
 
@@ -9,6 +10,7 @@ namespace Feofun.UI.Screen
 {
     public abstract class BaseScreen : MonoBehaviour
     {
+        
         private const string METHOD_INIT_NAME = "Init";
         
         private List<MethodInfo> _initMethodInfos;
@@ -38,7 +40,7 @@ namespace Feofun.UI.Screen
                 return;
             }
             if (initMethodInfo == null) {
-                Debug.LogError($"CallScreenInit error, init method not found for params length, screen:= {GetType().Name}, params: {GetParamNames(initParams)}");
+                this.Logger().Error($"CallScreenInit error, init method not found for params length, screen:= {GetType().Name}, params: {GetParamNames(initParams)}");
                 return;
             }
             initMethodInfo.Invoke(this, initParams);

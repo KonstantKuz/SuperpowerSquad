@@ -6,6 +6,7 @@ using Feofun.Extension;
 using Feofun.Modifiers;
 using JetBrains.Annotations;
 using Survivors.Config;
+using Logger.Extension;
 using Survivors.Location;
 using Survivors.Modifiers;
 using Survivors.Modifiers.Config;
@@ -13,7 +14,6 @@ using Survivors.Squad.Upgrade.Config;
 using Survivors.Squad.UpgradeSelection;
 using Survivors.Units;
 using Survivors.Units.Service;
-using UnityEngine;
 using UnityEngine.Assertions;
 using Zenject;
 
@@ -22,6 +22,7 @@ namespace Survivors.Squad.Upgrade
     [PublicAPI]
     public class UpgradeService : IWorldScope
     {
+        
         [Inject] private UpgradesConfig _config;
         [Inject] private World _world;
         [Inject] private UnitFactory _unitFactory;
@@ -57,7 +58,7 @@ namespace Survivors.Squad.Upgrade
             state.IncreaseLevel(upgradeBranchId);
             SaveState(state);
             ApplyUpgrade(upgradeBranchId, SquadUpgradeState.GetLevel(upgradeBranchId));
-            Debug.Log($"Upgrade:={upgradeBranchId} applied, level:= {state.GetLevel(upgradeBranchId)}");
+            this.Logger().Debug($"Upgrade:={upgradeBranchId} applied, level:= {state.GetLevel(upgradeBranchId)}");
         }
         public void AddUnit(string unitId)
         {

@@ -1,4 +1,5 @@
 ﻿using Feofun.Components;
+using Logger.Extension;
 using Survivors.Extension;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Enemy.Model;
@@ -59,7 +60,7 @@ namespace Survivors.Units.Enemy
         {
             var damageable = target.RequireComponent<IDamageable>();
             damageable.TakeDamage(_attackModel.AttackDamage);
-            Debug.Log($"Damage applied, target:= {target.name}");
+            this.Logger().Trace($"Damage applied, target:= {target.name}");
         }
     }
 }

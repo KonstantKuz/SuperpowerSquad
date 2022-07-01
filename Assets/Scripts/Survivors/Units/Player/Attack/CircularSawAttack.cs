@@ -1,5 +1,6 @@
 using System;
 using Feofun.Components;
+using Logger.Extension;
 using Survivors.Extension;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Player.Model;
@@ -14,6 +15,7 @@ namespace Survivors.Units.Player.Attack
 {
     public class CircularSawAttack : MonoBehaviour, IInitializable<IUnit>, IUnitDeathEventReceiver, IInitializable<Squad.Squad>
     {
+        
         [SerializeField] private CircularSawWeapon _circularSawWeapon;
         
         private Unit _ownerUnit;
@@ -71,7 +73,7 @@ namespace Survivors.Units.Player.Attack
         {
             var damageable = target.RequireComponent<IDamageable>();
             damageable.TakeDamage(_attackSessionModel.AttackDamage);
-            Debug.Log($"Damage applied, target:= {target.name}");
+            this.Logger().Trace($"Damage applied, target:= {target.name}");
         }
 
         private void Dispose()

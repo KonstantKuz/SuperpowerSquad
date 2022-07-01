@@ -2,9 +2,11 @@
 using System.IO;
 using Feofun.Config.Serializers;
 using JetBrains.Annotations;
+using Logger.Extension;
 using SuperMaxim.Core.Extensions;
 using UnityEngine;
 using Zenject;
+using ILogger = Logger.ILogger;
 
 namespace Feofun.Config
 {
@@ -71,7 +73,7 @@ namespace Feofun.Config
             }
             catch (Exception)
             {
-                Debug.LogError($"Failed to parse config {configName}");
+                this.Logger().Error($"Failed to parse config {configName}");
                 throw;
             }
         }

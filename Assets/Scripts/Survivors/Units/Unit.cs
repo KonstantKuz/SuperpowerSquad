@@ -4,6 +4,7 @@ using EasyButtons;
 using Feofun.Components;
 using Feofun.Modifiers;
 using JetBrains.Annotations;
+using Logger.Extension;
 using SuperMaxim.Core.Extensions;
 using Survivors.App;
 using Survivors.Location.Model;
@@ -119,7 +120,7 @@ namespace Survivors.Units
         public void AddModifier(IModifier modifier)
         {
             if (!(Model is PlayerUnitSessionModel sessionModel)) {
-                Debug.LogError($"Unit model must be the PlayerUnitSessionModel, current model:= {Model.GetType().Name}");
+                this.Logger().Error($"Unit model must be the PlayerUnitSessionModel, current model:= {Model.GetType().Name}");
                 return;
             }
             sessionModel.AddModifier(modifier);

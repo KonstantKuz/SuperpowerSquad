@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Feofun.Components;
 using JetBrains.Annotations;
+using Logger.Extension;
 using Survivors.Extension;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Component.TargetSearcher;
@@ -128,7 +129,7 @@ namespace Survivors.Units.Player.Attack
         {
             var damageable = target.RequireComponent<IDamageable>();
             damageable.TakeDamage(_playerAttackSessionModel.AttackDamage);
-            Debug.Log($"Damage applied, target:= {target.name}");
+            this.Logger().Trace($"Damage applied, target:= {target.name}");
         }
 
         private void OnDestroy()

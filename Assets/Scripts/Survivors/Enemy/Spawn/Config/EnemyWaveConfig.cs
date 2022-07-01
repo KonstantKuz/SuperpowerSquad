@@ -12,5 +12,6 @@ namespace Survivors.Enemy.Spawn.Config
         public string EnemyId;       
         [DataMember]
         public int EnemyLevel;
+        
     }
 }
