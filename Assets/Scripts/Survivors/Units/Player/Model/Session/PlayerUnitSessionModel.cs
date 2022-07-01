@@ -1,14 +1,13 @@
 ﻿using Feofun.Modifiers;
 using Survivors.Units.Model;
-using Survivors.Units.Player.Model.Meta;
 
 namespace Survivors.Units.Player.Model.Session
 {
     public class PlayerUnitSessionModel : ModifiableParameterOwner, IPlayerUnitModel
     {
-        private readonly PlayerUnitModel _base;
+        private readonly IPlayerUnitModel _base;
 
-        public PlayerUnitSessionModel(PlayerUnitModel unit)
+        public PlayerUnitSessionModel(IPlayerUnitModel unit)
         {
             _base = unit;
             PlayerHealthModel = new PlayerHealthSessionModel(unit.PlayerHealthModel, this);

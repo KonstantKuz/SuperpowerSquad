@@ -77,7 +77,7 @@ namespace Survivors.Session.Service
         }
         private void SpawnUnits()
         {
-            _unitFactory.CreatePlayerUnit(_constantsConfig.FirstUnit);
+            _unitFactory.CreateInitialUnitsForSquad(_constantsConfig.FirstUnit);
             _enemyWavesSpawner.StartSpawn(_enemyWavesConfig); 
             _enemyHpsSpawner.StartSpawn();
         }

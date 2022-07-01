@@ -1,7 +1,6 @@
 ﻿using Feofun.Modifiers;
 using Feofun.Modifiers.Parameters;
 using Survivors.Modifiers;
-using Survivors.Units.Player.Model.Meta;
 using Survivors.Units.Weapon.Projectiles.Params;
 using UniRx;
 
