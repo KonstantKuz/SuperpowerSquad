@@ -4,7 +4,7 @@ using System.Linq;
 using Feofun.Config;
 using Survivors.Analytics;
 using Survivors.Location;
-using Survivors.Player.Service;
+using Survivors.Player.Progress.Service;
 using Survivors.Session.Config;
 using Survivors.Session.Service;
 using Survivors.Squad.Component;

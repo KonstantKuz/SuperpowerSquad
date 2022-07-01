@@ -52,7 +52,7 @@ namespace Survivors.UI.Screen.World
         {
             yield return new WaitForSeconds(_afterSessionDelay);
             _world.CleanUp();
-            _screenSwitcher.SwitchTo(DebriefingScreen.ID.ToString(), result);
+            _screenSwitcher.SwitchTo(DebriefingScreen.ID.ToString(), result, _sessionService.Session);
         }
 
  
