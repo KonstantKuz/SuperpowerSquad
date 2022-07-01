@@ -15,7 +15,10 @@ namespace Survivors.UI.Dialog.PauseDialog
         [Inject] private Joystick _joystick;
         
         private IDisposable _disposable;
-        
+        private readonly Subject<Unit> _closeEvent = new Subject<Unit>();
+
+        public IObservable<Unit> CloseEvent => _closeEvent;
+
         private void OnEnable()
         {
             Dispose();
@@ -27,6 +30,8 @@ namespace Survivors.UI.Dialog.PauseDialog
         {
             _dialogManager.Hide<PauseDialog>();
             _world.UnPause();
+            _closeEvent.OnNext(Unit.Default);
+            _closeEvent.OnCompleted();            
         }
 
         private void OnDisable()

@@ -6,7 +6,9 @@ using Survivors.Config;
 using Survivors.Enemy.Spawn.Config;
 using Survivors.Loot.Config;
 using Survivors.Modifiers.Config;
+using Survivors.Reward.Config;
 using Survivors.Session.Config;
+using Survivors.Session.Model;
 using Survivors.Units.Enemy.Config;
 using Survivors.Squad.Config;
 using Survivors.Squad.Upgrade.Config;
@@ -33,7 +35,8 @@ namespace Survivors.App
                 .RegisterSingleObjectConfig<UpgradeBranchSelectionConfig>(Configs.CONSTANTS)  
                 .RegisterSingleObjectConfig<ConstantsConfig>(Configs.CONSTANTS)
                 .RegisterSingleObjectConfig<HpsSpawnerConfig>(Configs.ENEMY_SPAWNER)
-                .RegisterStringKeyedCollection<LevelMissionConfig>(Configs.LEVEL_MISSION);
+                .RegisterStringKeyedCollection<LevelMissionConfig>(Configs.LEVEL_MISSION)
+                .RegisterCollection<SessionResult, MissionRewardsConfig>(Configs.MISSION_REWARDS);
         }
     }
 }

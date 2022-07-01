@@ -1,8 +1,7 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace Survivors.Player.Model
+namespace Survivors.Player.Progress.Model
 {
     public class PlayerProgress
     {

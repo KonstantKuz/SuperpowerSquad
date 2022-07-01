@@ -1,9 +1,9 @@
 ﻿using SuperMaxim.Messaging;
-using Survivors.Player.Model;
+using Survivors.Player.Progress.Model;
 using Survivors.Session.Messages;
 using Survivors.Session.Model;
 
-namespace Survivors.Player.Service
+namespace Survivors.Player.Progress.Service
 {
     public class PlayerProgressService
     {

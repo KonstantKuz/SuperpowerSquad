@@ -5,8 +5,8 @@ using Survivors.App.Config;
 using Survivors.Enemy.Spawn;
 using Survivors.Enemy.Spawn.Config;
 using Survivors.Location;
-using Survivors.Player.Model;
-using Survivors.Player.Service;
+using Survivors.Player.Progress.Model;
+using Survivors.Player.Progress.Service;
 using Survivors.Session.Config;
 using Survivors.Session.Messages;
 using Survivors.Session.Model;
@@ -38,7 +38,7 @@ namespace Survivors.Session.Service
         [Inject] private ConstantsConfig _constantsConfig;
         
         private PlayerProgress PlayerProgress => _playerProgressService.Progress;
-        private Model.Session Session => _repository.Require();
+        public Model.Session Session => _repository.Require();
         
         public IReadOnlyReactiveProperty<int> Kills => _kills;
         public LevelMissionConfig LevelConfig => _levelsConfig.Values[LevelId];
@@ -58,7 +58,6 @@ namespace Survivors.Session.Service
             CreateSession();
             CreateSquad();
             SpawnUnits();
-            _analytics.ReportLevelStart();
         }
 
         private void CreateSession()
