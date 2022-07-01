@@ -1,3 +1,4 @@
 MaxUnitUpgrade,4
 MaxAbilityUpgrade,2
 HealthScaleIncrementFactor,1
+FirstUnit,RocketUnit
