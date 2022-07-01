@@ -11,7 +11,7 @@ DamageRadius1,AddValue,DamageRadius,1,Unit
 CollectRadiusSquad10,AddValue,CollectRadius,10,Squad
 SpeedSquad2,AddValue,Speed,2,Squad
 DamageRadius0.5,AddValue,DamageRadius,0.5,Unit
-AttackDamage50Percent,AddPercent,AttackDamage,100,Unit
+AttackDamage50Percent,AddPercent,AttackDamage,50,Unit
 AttackInterval0.5,AddValue,AttackInterval,-0.5,Unit
 AttackDamageTier1,AddPercent,AttackDamage,50,Unit
 DamageRadiusTier1,AddValue,DamageRadius,0.5,Unit
