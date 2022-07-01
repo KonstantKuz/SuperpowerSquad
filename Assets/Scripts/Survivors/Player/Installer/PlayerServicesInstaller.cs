@@ -1,5 +1,6 @@
 using Survivors.Player.Inventory.Service;
-using Survivors.Player.Service;
+using Survivors.Player.Progress.Service;
+using Survivors.Player.Wallet;
 using Zenject;
 
 namespace Survivors.Player.Installer
@@ -9,7 +10,10 @@ namespace Survivors.Player.Installer
         public static void Install(DiContainer container)
         {
             container.Bind<PlayerProgressService>().AsSingle();
-            container.Bind<PlayerProgressRepository>().AsSingle();     
+            container.Bind<PlayerProgressRepository>().AsSingle();    
+            
+            container.Bind<WalletService>().AsSingle();            
+            container.Bind<WalletRepository>().AsSingle();
             
             container.Bind<InventoryService>().AsSingle();
             container.Bind<InventoryRepository>().AsSingle();

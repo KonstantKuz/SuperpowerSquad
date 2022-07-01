@@ -1,11 +1,12 @@
 ﻿using System.Linq;
 using Feofun.Config;
 using SuperMaxim.Messaging;
+using Survivors.App.Config;
 using Survivors.Enemy.Spawn;
 using Survivors.Enemy.Spawn.Config;
 using Survivors.Location;
-using Survivors.Player.Model;
-using Survivors.Player.Service;
+using Survivors.Player.Progress.Model;
+using Survivors.Player.Progress.Service;
 using Survivors.Session.Config;
 using Survivors.Session.Messages;
 using Survivors.Session.Model;
@@ -34,9 +35,10 @@ namespace Survivors.Session.Service
         [Inject] private readonly StringKeyedConfigCollection<LevelMissionConfig> _levelsConfig;
         [Inject] private PlayerProgressService _playerProgressService;
         [Inject] private Analytics.Analytics _analytics;
+        [Inject] private ConstantsConfig _constantsConfig;
         
         private PlayerProgress PlayerProgress => _playerProgressService.Progress;
-        private Model.Session Session => _repository.Require();
+        public Model.Session Session => _repository.Require();
         
         public IReadOnlyReactiveProperty<int> Kills => _kills;
         public LevelMissionConfig LevelConfig => _levelsConfig.Values[LevelId];
@@ -56,7 +58,6 @@ namespace Survivors.Session.Service
             CreateSession();
             CreateSquad();
             SpawnUnits();
-            _analytics.ReportLevelStart();
         }
 
         private void CreateSession()
@@ -76,7 +77,7 @@ namespace Survivors.Session.Service
         }
         private void SpawnUnits()
         {
-            _unitFactory.CreatePlayerUnit(UnitFactory.SIMPLE_PLAYER_ID);
+            _unitFactory.CreatePlayerUnit(_constantsConfig.FirstUnit);
             _enemyWavesSpawner.StartSpawn(_enemyWavesConfig); 
             _enemyHpsSpawner.StartSpawn();
         }

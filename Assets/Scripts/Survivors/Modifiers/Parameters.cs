@@ -11,6 +11,7 @@
         public const string ATTACK_DISTANCE = "AttackDistance";
         public const string SHOT_COUNT = "ShotCount";
         public const string SPEED = "Speed";    
-        public const string COLLECT_RADIUS = "CollectRadius";
+        public const string COLLECT_RADIUS = "CollectRadius";   
+        public const string STARTING_UNIT_COUNT = "StartingUnitCount";
     }
 }

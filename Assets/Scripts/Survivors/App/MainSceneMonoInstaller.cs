@@ -5,6 +5,7 @@ using Survivors.Analytics;
 using Survivors.Location;
 using Survivors.Modifiers;
 using Survivors.Player.Installer;
+using Survivors.Reward.Installer;
 using Survivors.Squad.Installer;
 using Survivors.UI;
 using Survivors.Units.Installer;
@@ -42,6 +43,7 @@ namespace Survivors.App
             UnitServicesInstaller.Install(Container);
             SquadServicesInstaller.Install(Container);
             PlayerServicesInstaller.Install(Container);
+            RewardServicesInstaller.Install(Container); 
             
             _worldServicesInstaller.Install(Container);
             _uiInstaller.Install(Container);

@@ -1,11 +1,11 @@
 ﻿using Feofun.Config;
+using Survivors.App.Config;
 using Survivors.Extension;
 using Survivors.Location;
 using Survivors.Location.Service;
 using Survivors.Squad.Config;
 using Survivors.Squad.Model;
 using Survivors.Units.Player.Config;
-using Survivors.Units.Service;
 using Zenject;
 
 namespace Survivors.Squad
@@ -18,10 +18,11 @@ namespace Survivors.Squad
         [Inject] private WorldObjectFactory _worldObjectFactory;
         [Inject] private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
         [Inject] private SquadConfig _squadConfig;
+        [Inject] private ConstantsConfig _constantsConfig;
         
         public Squad CreateSquad()
         {
-            var startingMaxHealth = _playerUnitConfigs.Get(UnitFactory.SIMPLE_PLAYER_ID).Health;
+            var startingMaxHealth = _playerUnitConfigs.Get(_constantsConfig.FirstUnit).Health;
             var model = new SquadModel(_squadConfig, startingMaxHealth);
             var squad = _worldObjectFactory.CreateObject(SQUAD_NAME, _world.transform).RequireComponent<Squad>();
             squad.transform.SetPositionAndRotation(_world.Spawn.transform.position, _world.Spawn.transform.rotation);

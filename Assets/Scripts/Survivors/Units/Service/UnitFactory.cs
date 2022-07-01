@@ -12,13 +12,11 @@ namespace Survivors.Units.Service
 {
     public class UnitFactory
     {
-        public const string SIMPLE_PLAYER_ID = "StandardUnit";
-        
         [Inject] private World _world;
         [Inject] private WorldObjectFactory _worldObjectFactory;
         [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
         [Inject] private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
-        
+
         public Unit CreatePlayerUnit(string unitId)
         {
             var unit = _worldObjectFactory.CreateObject(unitId).RequireComponent<Unit>();
