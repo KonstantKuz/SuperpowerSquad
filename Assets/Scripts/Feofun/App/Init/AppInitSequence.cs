@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Logger.Extension;
 using UnityEngine;
 
 namespace Feofun.App.Init
@@ -25,7 +26,7 @@ namespace Feofun.App.Init
                 return;
             }
             var step = _steps.Dequeue();
-            Debug.Log($"AppInitSequence run step= {step.GetType().Name}");
+            this.Logger().Debug($"AppInitSequence run step= {step.GetType().Name}");
             step.Run(Next);
         }
     }

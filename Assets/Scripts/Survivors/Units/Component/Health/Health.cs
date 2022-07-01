@@ -1,14 +1,17 @@
 ﻿using System;
 using Feofun.Extension;
+using Logger.Extension;
 using Survivors.Units.Model;
 using UniRx;
 using UnityEngine;
 using UnityEngine.Assertions;
+using ILogger = Logger.ILogger;
 
 namespace Survivors.Units.Component.Health
 {
     public class Health : MonoBehaviour, IDamageable, IHealthBarOwner
     {
+        
         private IHealthModel _healthModel;
         private ReactiveProperty<float> _currentHealth;
         private IDisposable _disposable;
@@ -67,8 +70,8 @@ namespace Survivors.Units.Component.Health
         
         private void LogDamage(float damage)
         {
-#if UNITY_EDITOR            
-            Debug.Log($"Damage: -" + damage + " CurrentHealth: " + _currentHealth.Value + " GameObj:= " + gameObject.name);
+#if UNITY_EDITOR
+            this.Logger().Trace($"Damage: -" + damage + " CurrentHealth: " + _currentHealth.Value + " GameObj:= " + gameObject.name);
 #endif            
         }
 

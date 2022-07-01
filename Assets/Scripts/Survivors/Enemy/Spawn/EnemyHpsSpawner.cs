@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Feofun.Config;
+using Logger.Extension;
 using SuperMaxim.Messaging;
 using Survivors.Enemy.Spawn.Config;
 using Survivors.Session.Messages;
@@ -113,10 +114,10 @@ namespace Survivors.Enemy.Spawn
         {
             _messenger.Unsubscribe<SessionEndMessage>(OnSessionFinished);
         }
-        private static void Log(string message)
+        private void Log(string message)
         {
 #if UNITY_EDITOR
-            Debug.Log(message);            
+            this.Logger().Trace(message);            
 #endif            
         }
     }
