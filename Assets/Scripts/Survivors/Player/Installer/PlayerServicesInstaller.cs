@@ -1,6 +1,7 @@
 using Survivors.Player.Inventory.Service;
 using Survivors.Player.Progress.Service;
 using Survivors.Player.Wallet;
+using Survivors.Shop.Service;
 using Zenject;
 
 namespace Survivors.Player.Installer
@@ -16,7 +17,9 @@ namespace Survivors.Player.Installer
             container.Bind<WalletRepository>().AsSingle();
             
             container.Bind<InventoryService>().AsSingle();
-            container.Bind<InventoryRepository>().AsSingle();
+            container.Bind<InventoryRepository>().AsSingle();       
+            
+            container.Bind<UpgradeShopService>().AsSingle();
         }
     }
 }

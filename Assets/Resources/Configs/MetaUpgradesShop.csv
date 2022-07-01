@@ -1,0 +1,4 @@
+Id,Currency,Cost,LevelCostIncrease
+AttackDamage,Soft,200,100
+StartingUnitCount,Soft,200,100
+StartingHealth,Soft,200,100

@@ -9,6 +9,7 @@ using Survivors.Modifiers.Config;
 using Survivors.Reward.Config;
 using Survivors.Session.Config;
 using Survivors.Session.Model;
+using Survivors.Shop.Config;
 using Survivors.Units.Enemy.Config;
 using Survivors.Squad.Config;
 using Survivors.Squad.Upgrade.Config;
@@ -30,7 +31,8 @@ namespace Survivors.App
                 .RegisterStringKeyedCollection<DroppingLootConfig>(Configs.DROPPING_LOOT)
                 .RegisterStringKeyedCollection<SquadLevelConfig>(Configs.SQUAD_LEVEL)
                 .RegisterSingleObjectConfig<SquadConfig>(Configs.SQUAD)
-                .RegisterStringKeyedCollection<ParameterUpgradeConfig>(Configs.MODIFIERS, true)
+                .RegisterStringKeyedCollection<ParameterUpgradeConfig>(Configs.MODIFIERS, true)            
+                .RegisterStringKeyedCollection<UpgradeProductConfig>(Configs.META_UPGRADES_SHOP)
                 .RegisterSingle<UpgradesConfig>(Configs.UPGRADES)          
                 .RegisterStringKeyedCollection<ParameterUpgradeConfig>(Configs.META_UPGRADES, true)  
                 .RegisterSingleObjectConfig<UpgradeBranchSelectionConfig>(Configs.CONSTANTS)  
