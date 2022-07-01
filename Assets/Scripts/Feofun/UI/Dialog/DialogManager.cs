@@ -24,7 +24,7 @@ namespace Feofun.UI.Dialog
         {
             _dialogs.ForEach(it => it.Hide());
         }
-        public void Show<TDialog>() where TDialog : BaseDialog
+        public TDialog Show<TDialog>() where TDialog : BaseDialog
         {
             var dialog = GetDialog<TDialog>();
             if (_activeDialogs.Contains(dialog)) {
@@ -32,6 +32,7 @@ namespace Feofun.UI.Dialog
             }
             AddActiveDialog(dialog);
             dialog.Show();
+            return dialog as TDialog;
         }
         public void Show<TDialog, TParam>(TParam initParam)
                 where TDialog : BaseDialog, IUiInitializable<TParam>
