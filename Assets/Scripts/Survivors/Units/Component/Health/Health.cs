@@ -1,12 +1,11 @@
 ﻿using System;
 using Feofun.Extension;
-using Logger.Assets.Scripts;
-using Logger.Assets.Scripts.Extension;
+using Logger.Extension;
 using Survivors.Units.Model;
 using UniRx;
 using UnityEngine;
 using UnityEngine.Assertions;
-using ILogger = Logger.Assets.Scripts.ILogger;
+using ILogger = Logger.ILogger;
 
 namespace Survivors.Units.Component.Health
 {

@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using Logger.Assets.Scripts.Extension;
+using Logger.Extension;
 using UnityEngine;
 
 namespace Feofun.App.Init

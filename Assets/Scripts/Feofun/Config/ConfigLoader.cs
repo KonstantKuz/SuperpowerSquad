@@ -2,12 +2,11 @@
 using System.IO;
 using Feofun.Config.Serializers;
 using JetBrains.Annotations;
-using Logger.Assets.Scripts;
-using Logger.Assets.Scripts.Extension;
+using Logger.Extension;
 using SuperMaxim.Core.Extensions;
 using UnityEngine;
 using Zenject;
-using ILogger = Logger.Assets.Scripts.ILogger;
+using ILogger = Logger.ILogger;
 
 namespace Feofun.Config
 {

@@ -2,8 +2,7 @@
 using System.Linq;
 using Feofun.Extension;
 using Feofun.UI.Dialog;
-using Logger.Assets.Scripts;
-using Logger.Assets.Scripts.Extension;
+using Logger.Extension;
 using ModestTree;
 using Survivors.Location;
 using Survivors.Squad.Service;
@@ -15,7 +14,7 @@ using Survivors.UI.Dialog.UpgradeDialog;
 using Survivors.UI.Dialog.UpgradeDialog.Model;
 using UniRx;
 using Zenject;
-using ILogger = Logger.Assets.Scripts.ILogger;
+using ILogger = Logger.ILogger;
 
 namespace Survivors.Squad.UpgradeSelection
 {

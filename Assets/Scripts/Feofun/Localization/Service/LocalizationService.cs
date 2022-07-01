@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Feofun.Localization.Config;
 using JetBrains.Annotations;
-using Logger.Assets.Scripts.Extension;
+using Logger.Extension;
 using SuperMaxim.Core.Extensions;
 using UnityEngine;
 using Zenject;

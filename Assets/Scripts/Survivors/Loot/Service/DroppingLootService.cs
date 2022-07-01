@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
 using Feofun.Config;
-using Logger.Assets.Scripts.Extension;
+using Logger.Extension;
 using Survivors.Location;
 using Survivors.Location.Service;
 using Survivors.Loot.Config;

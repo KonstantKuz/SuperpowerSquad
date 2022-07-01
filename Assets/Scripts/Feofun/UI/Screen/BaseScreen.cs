@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using Logger.Assets.Scripts.Extension;
+using Logger.Extension;
 using Survivors.UI.Screen;
 using UnityEngine;
 

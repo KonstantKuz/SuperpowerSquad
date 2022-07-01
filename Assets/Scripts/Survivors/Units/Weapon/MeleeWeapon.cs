@@ -1,5 +1,5 @@
 ﻿using System;
-using Logger.Assets.Scripts.Extension;
+using Logger.Extension;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles.Params;

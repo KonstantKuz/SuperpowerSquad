@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections;
-using Logger.Assets.Scripts.Extension;
+using Logger.Extension;
 using ModestTree;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Target;

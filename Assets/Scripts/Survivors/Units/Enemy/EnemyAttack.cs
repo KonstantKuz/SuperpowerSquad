@@ -1,5 +1,5 @@
 ﻿using Feofun.Components;
-using Logger.Assets.Scripts.Extension;
+using Logger.Extension;
 using Survivors.Extension;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Enemy.Model;

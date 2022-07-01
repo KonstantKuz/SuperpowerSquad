@@ -5,7 +5,7 @@ using Feofun.Config;
 using Feofun.Extension;
 using Feofun.Modifiers;
 using JetBrains.Annotations;
-using Logger.Assets.Scripts.Extension;
+using Logger.Extension;
 using Survivors.Location;
 using Survivors.Modifiers;
 using Survivors.Modifiers.Config;

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Logger.Assets.Scripts.Extension;
+using Logger.Extension;
 
 namespace Survivors.Analytics.Wrapper
 {

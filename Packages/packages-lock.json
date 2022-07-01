@@ -38,13 +38,6 @@
       "source": "local-tarball",
       "dependencies": {}
     },
-    "com.inspiritum.unity-logger": {
-      "version": "https://gitlab.inspiritum.com/game-dev/unity-logger.git#0.0.4",
-      "depth": 0,
-      "source": "git",
-      "dependencies": {},
-      "hash": "bb7f2488ba9bdcb7dd97069334eec547fe9a3682"
-    },
     "com.madsbangh.easybuttons": {
       "version": "1.3.0",
       "depth": 0,

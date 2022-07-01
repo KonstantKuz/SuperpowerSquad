@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AppsFlyerSDK;
-using Logger.Assets.Scripts;
-using Logger.Assets.Scripts.Extension;
-using ILogger = Logger.Assets.Scripts.ILogger;
+using Logger.Extension;
+using ILogger = Logger.ILogger;
 
 namespace Survivors.Analytics.Wrapper
 {

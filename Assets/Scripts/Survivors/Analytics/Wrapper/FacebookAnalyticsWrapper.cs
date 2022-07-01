@@ -1,9 +1,8 @@
 ﻿using System.Collections.Generic;
 using Facebook.Unity;
-using Logger.Assets.Scripts;
-using Logger.Assets.Scripts.Extension;
+using Logger.Extension;
 using UnityEngine;
-using ILogger = Logger.Assets.Scripts.ILogger;
+using ILogger = Logger.ILogger;
 
 namespace Survivors.Analytics.Wrapper
 {

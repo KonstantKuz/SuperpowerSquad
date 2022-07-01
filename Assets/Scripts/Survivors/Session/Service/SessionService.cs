@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 using Feofun.Config;
-using Logger.Assets.Scripts.Extension;
+using Logger.Extension;
 using SuperMaxim.Messaging;
 using Survivors.Enemy.Spawn;
 using Survivors.Enemy.Spawn.Config;

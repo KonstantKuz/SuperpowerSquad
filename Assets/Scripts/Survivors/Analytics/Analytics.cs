@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
-using Logger.Assets.Scripts;
-using Logger.Assets.Scripts.Extension;
-using ILogger = Logger.Assets.Scripts.ILogger;
+using Logger.Extension;
 using Zenject;
 
 namespace Survivors.Analytics
