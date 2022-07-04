@@ -3,6 +3,7 @@ using Feofun.UI.Screen;
 using JetBrains.Annotations;
 using Survivors.Reward.Service;
 using Survivors.Session.Model;
+using Survivors.UI.Screen.Main;
 using Survivors.UI.Screen.World;
 using UnityEngine;
 using Zenject;
@@ -48,7 +49,7 @@ namespace Survivors.UI.Screen.Debriefing
 
         private void OnReload()
         {
-            _screenSwitcher.SwitchTo(WorldScreen.ID.ToString());
+            _screenSwitcher.SwitchTo(MainScreen.ID.ToString());
         }
     }
 }

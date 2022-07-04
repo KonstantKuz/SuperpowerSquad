@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using Logger.Extension;
 using ModestTree;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Target;
@@ -61,7 +62,7 @@ namespace Survivors.Units.Weapon.Projectiles
         {
             var targetObj = target as MonoBehaviour;
             if (targetObj == null) {
-                Debug.LogWarning("Target is not a monobehaviour");
+                this.Logger().Warn("Target is not a monobehaviour");
                 return;
             }
             if (targetObj.GetComponent<IDamageable>() == null) {

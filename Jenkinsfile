@@ -16,6 +16,7 @@ pipeline {
     }
     environment {
         OUTPUT_FILE_NAME = 'survivors'
+        GIT_SSL_NO_VERIFY=true
     }      
     stages {                                    
         stage ('Android') {
@@ -51,20 +52,22 @@ pipeline {
                         stage ("Build") { 
                             options {
                                 lock('UnityLicense')
-                            }                      
-                            steps {      
-                                withCredentials([usernamePassword(credentialsId: 'UnityUser', usernameVariable: 'UNITY_USER_NAME', passwordVariable: 'UNITY_USER_PASSWORD'), string(credentialsId: 'UnityLicenseKey', variable: 'UNITY_LICENSE')]) {                                   
+                            }           
+                            steps {
+                                withCredentials([usernamePassword(credentialsId: 'UnityUser', usernameVariable: 'UNITY_USER_NAME', passwordVariable: 'UNITY_USER_PASSWORD'), 
+                                        string(credentialsId: 'UnityLicenseKey', variable: 'UNITY_LICENSE')]) {                                   
                                     sh 'xvfb-run --auto-servernum --server-args="-screen 0 640x480x24" $UNITY_PATH -batchmode -nographics -quit -serial $UNITY_LICENSE -username $UNITY_USER_NAME -password $UNITY_USER_PASSWORD -logFile -'               
-                                }   
+                                }  
                                 script {
                                     UNITY_PARAMS=''
                                     if(params.DebugConsole) {
                                         UNITY_PARAMS=UNITY_PARAMS + '-debugConsole '
                                     }
-                                }                                                                                           
-                                withCredentials([string(credentialsId: 'SurvivorsAndroidKeystorePass', variable: 'KEYSTORE_PASS')]) {
+                                }        
+                                withCredentials([string(credentialsId: 'SurvivorsAndroidKeystorePass', variable: 'KEYSTORE_PASS'), 
+                                        gitUsernamePassword(credentialsId: 'gitlab_inspiritum_smash_master', gitToolName: 'Default')]) {
                                     sh '$UNITY_PATH -nographics -buildTarget Android -quit -batchmode -projectPath . -executeMethod Editor.Builder.BuildAndroid ' + UNITY_PARAMS + '-keyStorePassword $KEYSTORE_PASS -noUnityLogo -outputFileName $OUTPUT_FILE_NAME -logFile -'              
-                                }
+                                }                                                                                  
                             }   
                             post {
                                 always {
@@ -90,13 +93,15 @@ pipeline {
                             }                                              
                             steps {
                                 sh "rm -f build/*.symbols.zip"
-                                withCredentials([usernamePassword(credentialsId: 'UnityUser', usernameVariable: 'UNITY_USER_NAME', passwordVariable: 'UNITY_USER_PASSWORD'), string(credentialsId: 'UnityLicenseKey', variable: 'UNITY_LICENSE')]) {                                   
+                                withCredentials([usernamePassword(credentialsId: 'UnityUser', usernameVariable: 'UNITY_USER_NAME', passwordVariable: 'UNITY_USER_PASSWORD'), 
+                                        string(credentialsId: 'UnityLicenseKey', variable: 'UNITY_LICENSE')]) {                                   
                                     sh 'xvfb-run --auto-servernum --server-args="-screen 0 640x480x24" $UNITY_PATH -batchmode -nographics -quit -serial $UNITY_LICENSE -username $UNITY_USER_NAME -password $UNITY_USER_PASSWORD -logFile -'               
                                 }    
                                 script {
                                     UNITY_PARAMS=''
-                                }                                                                                                                                                              
-                                withCredentials([string(credentialsId: 'SurvivorsAndroidKeystorePass', variable: 'KEYSTORE_PASS')]) {
+                                }                                                                                                                                                             
+                                withCredentials([string(credentialsId: 'SurvivorsAndroidKeystorePass', variable: 'KEYSTORE_PASS'), 
+                                        gitUsernamePassword(credentialsId: 'gitlab_inspiritum_smash_master', gitToolName: 'Default')]) {
                                     sh '$UNITY_PATH -nographics -buildTarget Android -quit -batchmode -projectPath . -executeMethod Editor.Builder.BuildAndroid ' + UNITY_PARAMS + '-buildAab -noUnityLogo -keyStorePassword $KEYSTORE_PASS -outputFileName $OUTPUT_FILE_NAME -logFile -'              
                                 }
                             }
@@ -152,10 +157,13 @@ pipeline {
                     options {
                         lock('UnityLicense')
                     }                  
-                    steps {
-                        withCredentials([usernamePassword(credentialsId: 'UnityUser', usernameVariable: 'UNITY_USER_NAME', passwordVariable: 'UNITY_USER_PASSWORD'), string(credentialsId: 'UnityLicenseKey', variable: 'UNITY_LICENSE')]) {                                   
+                    steps {                    
+                        withCredentials([usernamePassword(credentialsId: 'UnityUser', usernameVariable: 'UNITY_USER_NAME', passwordVariable: 'UNITY_USER_PASSWORD'), 
+                                string(credentialsId: 'UnityLicenseKey', variable: 'UNITY_LICENSE'), 
+                                gitUsernamePassword(credentialsId: 'gitlab_inspiritum_smash_master', gitToolName: 'Default')]) {                                  
                             sh '$UNITY_PATH -batchmode -nographics -quit -serial $UNITY_LICENSE -username $UNITY_USER_NAME -password $UNITY_USER_PASSWORD -projectPath . -logFile -'               
-                        }           
+                        }    
+   
                         script {
                             UNITY_PARAMS=''
                             if(params.IpaForAppStore) {
@@ -166,12 +174,17 @@ pipeline {
                             if(params.DebugConsole) {
                                 UNITY_PARAMS=UNITY_PARAMS + '-debugConsole '
                             }
-                        }                    
-                        sh '$UNITY_PATH -nographics -buildTarget iOS -quit -batchmode -projectPath . -executeMethod Editor.Builder.BuildIos ' + UNITY_PARAMS + ' -noUnityLogo -logFile -'
+                        }         
+                           
+                        withCredentials([gitUsernamePassword(credentialsId: 'gitlab_inspiritum_smash_master', gitToolName: 'Default')]) {
+                            sh '$UNITY_PATH -nographics -buildTarget iOS -quit -batchmode -projectPath . -executeMethod Editor.Builder.BuildIos ' + UNITY_PARAMS + ' -noUnityLogo -logFile -'                        
+                        }
                     }
                     post {
                         always {
-                            sh script: '$UNITY_PATH -batchmode -nographics -returnlicense -projectPath . -logFile -', label: "ReturnLicense"
+                            withCredentials([gitUsernamePassword(credentialsId: 'gitlab_inspiritum_smash_master', gitToolName: 'Default')]) {
+                                sh script: '$UNITY_PATH -batchmode -nographics -returnlicense -projectPath . -logFile -', label: "ReturnLicense"
+                            }
                         }
                     }                     
                 } 

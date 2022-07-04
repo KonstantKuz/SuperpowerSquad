@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Feofun.Config;
+using Logger.Extension;
 using SuperMaxim.Messaging;
 using Survivors.App.Config;
 using Survivors.Enemy.Spawn;
@@ -21,6 +22,7 @@ namespace Survivors.Session.Service
 {
     public class SessionService : IWorldScope
     {
+        
         private readonly IntReactiveProperty _kills = new IntReactiveProperty(0);
         
         [Inject] private EnemyWavesSpawner _enemyWavesSpawner;
@@ -66,7 +68,7 @@ namespace Survivors.Session.Service
             var newSession = Model.Session.Build(levelConfig);
             _repository.Set(newSession);
             _playerProgressService.OnSessionStarted(levelConfig.Level);
-            Debug.Log($"Kill enemies:= {levelConfig.KillCount}");
+            this.Logger().Debug($"Kill enemies:= {levelConfig.KillCount}");
         }
     
         private void CreateSquad()
@@ -90,7 +92,7 @@ namespace Survivors.Session.Service
             Session.AddKill();
             _playerProgressService.AddKill();
             _kills.Value = Session.Kills;
-            Debug.Log($"Killed enemies:= {Session.Kills}");
+            this.Logger().Trace($"Killed enemies:= {Session.Kills}");
             if (Session.IsMaxKills) {
                 EndSession(UnitType.PLAYER);
             }

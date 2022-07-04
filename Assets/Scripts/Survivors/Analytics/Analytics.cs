@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using JetBrains.Annotations;
-using UnityEngine;
+using Logger.Extension;
 using Zenject;
 
 namespace Survivors.Analytics
@@ -9,7 +9,7 @@ namespace Survivors.Analytics
     public class Analytics
     {
         public const char SEPARATOR = '_';
-        
+
         [Inject] 
         private IEventParamProvider _eventParamProvider;
         
@@ -23,7 +23,7 @@ namespace Survivors.Analytics
 
         public void Init()
         {
-            Debug.Log("Initializing Analytics");
+            this.Logger().Info("Initializing Analytics");
             foreach (var impl in _impls)
             {
                 impl.Init();

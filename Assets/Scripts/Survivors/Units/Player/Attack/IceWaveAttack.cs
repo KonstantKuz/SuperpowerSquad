@@ -1,10 +1,9 @@
 using Feofun.Components;
+using Logger.Extension;
 using Survivors.Extension;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Player.Model;
 using Survivors.Units.Weapon;
-using Survivors.Units.Weapon.Projectiles.Params;
-using UniRx;
 using UnityEngine;
 
 namespace Survivors.Units.Player.Attack
@@ -43,7 +42,7 @@ namespace Survivors.Units.Player.Attack
         {
             var damageable = target.RequireComponent<IDamageable>();
             damageable.TakeDamage(_playerAttackModel.AttackDamage);
-            Debug.Log($"Damage applied, target:= {target.name}");
+            this.Logger().Trace($"Damage applied, target:= {target.name}");
         }
 
         private void OnDestroy()
