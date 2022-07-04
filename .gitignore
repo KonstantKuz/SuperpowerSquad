@@ -75,3 +75,5 @@ crashlytics-build.properties
 [Aa]ssets/Plugins/GameDevWare.Serialization.meta
 *.DotSettings
 
+**/[Aa]ssets/Resources/Logger/LoggerConfig.build.xml
+**/[Aa]ssets/Resources/Logger/LoggerConfig.build.xml.meta
