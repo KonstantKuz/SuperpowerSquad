@@ -64,8 +64,9 @@ pipeline {
                                     if(params.DebugConsole) {
                                         UNITY_PARAMS=UNITY_PARAMS + '-debugConsole '
                                     }
+                                    UNITY_PARAMS=UNITY_PARAMS + '-loggerLevel ' + params.LoggerLevel  
                                 }   
-                                 UNITY_PARAMS=UNITY_PARAMS + '-loggerLevel ' + params.LoggerLevel     
+   
                                 withCredentials([string(credentialsId: 'SurvivorsAndroidKeystorePass', variable: 'KEYSTORE_PASS'), 
                                         gitUsernamePassword(credentialsId: 'gitlab_inspiritum_smash_master', gitToolName: 'Default')]) {
                                     sh '$UNITY_PATH -nographics -buildTarget Android -quit -batchmode -projectPath . -executeMethod Editor.Builder.BuildAndroid ' + UNITY_PARAMS + '-keyStorePassword $KEYSTORE_PASS -noUnityLogo -outputFileName $OUTPUT_FILE_NAME -logFile -'              
@@ -177,7 +178,7 @@ pipeline {
                             if(params.DebugConsole) {
                                 UNITY_PARAMS=UNITY_PARAMS + '-debugConsole '
                             }
-                             UNITY_PARAMS=UNITY_PARAMS + '-loggerLevel ' + params.LoggerLevel
+                            UNITY_PARAMS=UNITY_PARAMS + '-loggerLevel ' + params.LoggerLevel
                         }         
                            
                         withCredentials([gitUsernamePassword(credentialsId: 'gitlab_inspiritum_smash_master', gitToolName: 'Default')]) {
