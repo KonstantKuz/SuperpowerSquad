@@ -88,6 +88,7 @@ namespace Survivors.Session.Service
             if (deathCause != DeathCause.Killed) return;
             
             Session.AddKill();
+            _playerProgressService.AddKill();
             _kills.Value = Session.Kills;
             Debug.Log($"Killed enemies:= {Session.Kills}");
             if (Session.IsMaxKills) {

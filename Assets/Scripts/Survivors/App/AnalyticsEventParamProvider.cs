@@ -51,6 +51,7 @@ namespace Survivors.App
                 EventParams.TOTAL_ENEMY_HEALTH => GetTotalEnemyHealth(),
                 EventParams.AVERAGE_ENEMY_LIFETIME => GetAverageEnemyLifetime(),
                 EventParams.STAND_RATIO => GetStandRatio(),
+                EventParams.TOTAL_KILLS => _playerProgressService.Progress.Kills,
                 
                 _ => throw new ArgumentOutOfRangeException(nameof(paramName), paramName, $"Unsupported analytics parameter {paramName}")
             };
