@@ -38,20 +38,32 @@ namespace Survivors.Analytics.Wrapper
             var additionalParams = eventParamProvider.GetParams(new []
             {
                 EventParams.WINS,
-                EventParams.DEFEATS
+                EventParams.DEFEATS,
+                EventParams.PASS_NUMBER
             });
             var profile = new YandexAppMetricaUserProfile();
             var updates = new List<YandexAppMetricaUserProfileUpdate>
             {
-                new YandexAppMetricaStringAttribute("last_event").WithValue(
-                    BuildLastEventName(eventName, eventParams)), 
-                new YandexAppMetricaNumberAttribute("kills").WithValue(Convert.ToDouble(eventParams[EventParams.TOTAL_KILLS])), 
-                new YandexAppMetricaNumberAttribute("level_id").WithValue(Convert.ToDouble(eventParams[EventParams.LEVEL_ID])),
-                new YandexAppMetricaNumberAttribute("wins").WithValue(Convert.ToDouble(additionalParams[EventParams.WINS])),
-                new YandexAppMetricaNumberAttribute("wins").WithValue(Convert.ToDouble(additionalParams[EventParams.DEFEATS]))
+                BuildStringAttribute("last_event", BuildLastEventName(eventName, eventParams)), 
+                BuildFloatAttribute("kills", eventParams[EventParams.TOTAL_KILLS]), 
+                BuildFloatAttribute("level_id", eventParams[EventParams.LEVEL_ID]),
+                BuildFloatAttribute("wins", additionalParams[EventParams.WINS]),
+                BuildFloatAttribute("defeats", additionalParams[EventParams.DEFEATS]),
+                BuildFloatAttribute("levels", eventParams[EventParams.LEVEL_NUMBER]),
+                BuildFloatAttribute("level_retry", additionalParams[EventParams.PASS_NUMBER])
             };
             profile.ApplyFromArray(updates);
             AppMetrica.Instance.ReportUserProfile(profile);
+        }
+
+        private static YandexAppMetricaUserProfileUpdate BuildFloatAttribute(string name, object value)
+        {
+            return new YandexAppMetricaNumberAttribute(name).WithValue(Convert.ToDouble(value));
+        }
+        
+        private static YandexAppMetricaUserProfileUpdate BuildStringAttribute(string name, string value)
+        {
+            return new YandexAppMetricaStringAttribute(name).WithValue(value);
         }
 
         private static string BuildLastEventName(string eventName, Dictionary<string,object> eventParams)
