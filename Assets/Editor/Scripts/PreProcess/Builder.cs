@@ -50,7 +50,7 @@ namespace Editor.Scripts.PreProcess
 
         private static void ApplyCommonParams()
         {
-            BuildPreprocessor.Prepare(HasCmdLineKey("-debugConsole"), GetCmdLineArgumentValue("-loggerLevel"));
+            BuildPreprocessor.Prepare(true,HasCmdLineKey("-debugConsole"), GetCmdLineArgumentValue("-loggerLevel"));
         }
 
         private static string[] GetSceneList() => DefaultSceneList;

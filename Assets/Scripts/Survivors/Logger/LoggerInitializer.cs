@@ -11,7 +11,11 @@ namespace Survivors.Logger
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void Configure()
         {
-            var configured = LoggerConfigurator.Configure(BUILD_LOGGER_CONFIG_PATH);
+            var configPath = EDITOR_LOGGER_CONFIG_PATH;
+#if PLATFORM_BUILD
+            configPath = BUILD_LOGGER_CONFIG_PATH;
+#endif
+            var configured = LoggerConfigurator.Configure(configPath);
             LoggerFactory.GetLogger(typeof(LoggerInitializer)).Info($"Logger has configured:= {configured}, Actiive logger:={LoggerConfigurator.ActiveLogger}");
         }
     }
