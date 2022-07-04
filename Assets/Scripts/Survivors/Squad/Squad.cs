@@ -97,7 +97,6 @@ namespace Survivors.Squad
             OnDeath?.Invoke();
             _units.Clear();
         }
-
         public void AddUnit(Unit unit)
         {
             unit.transform.SetParent(Destination.transform);

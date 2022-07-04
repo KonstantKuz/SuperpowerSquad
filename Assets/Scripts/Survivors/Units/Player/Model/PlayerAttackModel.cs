@@ -3,7 +3,7 @@ using Feofun.Modifiers.Parameters;
 using Survivors.Modifiers;
 using Survivors.Units.Model;
 using Survivors.Units.Player.Config;
-using Survivors.Units.Weapon.Projectiles;
+using Survivors.Units.Service;
 using Survivors.Units.Weapon.Projectiles.Params;
 using UniRx;
 
@@ -12,16 +12,19 @@ namespace Survivors.Units.Player.Model
     public class PlayerAttackModel : IAttackModel
     {
         private readonly PlayerAttackConfig _config;
+        
         private readonly FloatModifiableParameter _attackDamage;
         private readonly FloatModifiableParameter _attackInterval;
         private readonly FloatModifiableParameter _projectileSpeed;
         private readonly FloatModifiableParameter _damageRadius;
         private readonly FloatModifiableParameter _attackDistance;
 
-        public PlayerAttackModel(PlayerAttackConfig config, IModifiableParameterOwner parameterOwner)
+        public PlayerAttackModel(PlayerAttackConfig config, IModifiableParameterOwner parameterOwner, MetaParameterCalculator parameterCalculator)
         {
             _config = config;
-            _attackDamage = new FloatModifiableParameter(Parameters.ATTACK_DAMAGE, _config.AttackDamage, parameterOwner);
+            _attackDamage = new FloatModifiableParameter(Parameters.ATTACK_DAMAGE, _config.AttackDamage, parameterOwner); 
+            parameterCalculator.InitParam(_attackDamage, parameterOwner);
+            
             _attackInterval = new FloatModifiableParameter(Parameters.ATTACK_INTERVAL, _config.AttackInterval, parameterOwner);
             _attackDistance = new FloatModifiableParameter(Parameters.ATTACK_DISTANCE, _config.AttackDistance, parameterOwner);
             

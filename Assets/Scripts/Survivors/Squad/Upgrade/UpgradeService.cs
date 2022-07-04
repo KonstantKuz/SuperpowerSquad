@@ -5,6 +5,7 @@ using Feofun.Config;
 using Feofun.Extension;
 using Feofun.Modifiers;
 using JetBrains.Annotations;
+using Survivors.Config;
 using Logger.Extension;
 using Survivors.Location;
 using Survivors.Modifiers;
@@ -27,8 +28,8 @@ namespace Survivors.Squad.Upgrade
         [Inject] private UnitFactory _unitFactory;
         [Inject] private ModifierFactory _modifierFactory;
         [Inject] private SquadUpgradeRepository _repository;
-        
-        [Inject] private StringKeyedConfigCollection<ParameterUpgradeConfig> _modifierConfigs;
+        [Inject(Id = Configs.MODIFIERS)]
+        private StringKeyedConfigCollection<ParameterUpgradeConfig> _modifierConfigs;
         public SquadUpgradeState SquadUpgradeState => _repository.Require();
       
         public void OnWorldSetup()

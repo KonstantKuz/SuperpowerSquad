@@ -516,7 +516,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Add Unit
+  m_Text: Add Upgrade
 --- !u!1 &6021526244738652169
 GameObject:
   m_ObjectHideFlags: 0
@@ -1291,7 +1291,7 @@ GameObject:
   - component: {fileID: 8968264650979196688}
   - component: {fileID: 8969343859534984022}
   m_Layer: 0
-  m_Name: AddUnitsPanel
+  m_Name: AddMetaUpgradePanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

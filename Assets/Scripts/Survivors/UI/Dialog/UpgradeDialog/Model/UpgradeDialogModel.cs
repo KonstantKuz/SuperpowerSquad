@@ -5,10 +5,12 @@ using System.Linq;
 using Feofun.Config;
 using Feofun.Extension;
 using Feofun.Localization;
+using Survivors.Config;
 using Survivors.Modifiers;
 using Survivors.Modifiers.Config;
 using Survivors.Squad.Upgrade;
 using Survivors.Squad.Upgrade.Config;
+using Zenject;
 
 namespace Survivors.UI.Dialog.UpgradeDialog.Model
 {
@@ -20,6 +22,7 @@ namespace Survivors.UI.Dialog.UpgradeDialog.Model
         private readonly List<UpgradeItemModel> _upgrades;
         private readonly UpgradesConfig _upgradesConfig;
         private readonly SquadUpgradeState _upgradeState;
+        [Inject(Id = Configs.MODIFIERS)]
         private readonly StringKeyedConfigCollection<ParameterUpgradeConfig> _modifierConfigs;
         public IReadOnlyCollection<UpgradeItemModel> Upgrades => _upgrades;
         public UpgradeDialogInitModel InitModel { get; }

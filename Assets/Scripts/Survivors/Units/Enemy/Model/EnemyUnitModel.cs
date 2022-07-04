@@ -30,9 +30,5 @@ namespace Survivors.Units.Enemy.Model
             return currentHealth <= _config.Health ? EnemyUnitConfig.MIN_LEVEL : EnemyUnitConfig.MIN_LEVEL + (int) Mathf.Ceil((currentHealth - _config.Health) / _config.HealthStep);
         }
         public float CalculateScale(int level) => _config.CalculateScale(level);
-        public void AddModifier(IModifier modifier)
-        {
-            //do nothing
-        }
     }
 }

@@ -10,10 +10,12 @@ namespace Survivors.Config
         public const string SQUAD = "Squad";
         public const string SQUAD_LEVEL = "SquadLevel";
         public const string MODIFIERS = "Modifiers";
-        public const string UPGRADES = "Upgrades";
+        public const string UPGRADES = "Upgrades";    
+        public const string META_UPGRADES = "MetaUpgrades";
         public const string CONSTANTS = "Constants";
         public const string ENEMY_SPAWNER = "EnemySpawner";   
         public const string LEVEL_MISSION = "LevelMission";   
-        public const string MISSION_REWARDS = "MissionRewards";
+        public const string MISSION_REWARDS = "MissionRewards";     
+        public const string META_UPGRADES_SHOP = "MetaUpgradesShop";
     }
 }
