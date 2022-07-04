@@ -7,6 +7,7 @@ using Survivors.Session.Messages;
 using Survivors.Session.Model;
 using Survivors.Session.Service;
 using Survivors.UI.Screen.Debriefing;
+using Survivors.UI.Screen.Debriefing.Model;
 using UniRx;
 using UnityEngine;
 using UnityEngine.EventSystems;
@@ -48,7 +49,8 @@ namespace Survivors.UI.Screen.World
         {
             yield return new WaitForSeconds(_afterSessionDelay);
             _world.CleanUp();
-            _screenSwitcher.SwitchTo(DebriefingScreen.ID.ToString(), result, _sessionService.Session);
+            var debriefingModel = new DebriefingScreenModel(result, _sessionService.Session);
+            _screenSwitcher.SwitchTo(DebriefingScreen.ID.ToString(), debriefingModel);
         }
     }
 }
