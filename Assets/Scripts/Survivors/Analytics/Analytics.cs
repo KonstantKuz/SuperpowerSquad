@@ -51,7 +51,7 @@ namespace Survivors.Analytics
         {
             foreach (var impl in _impls)
             {
-                impl.ReportEventWithParams(eventName, eventParams);
+                impl.ReportEventWithParams(eventName, eventParams, _eventParamProvider);
             }
         }
 
