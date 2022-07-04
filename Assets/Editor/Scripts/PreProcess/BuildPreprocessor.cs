@@ -4,14 +4,14 @@ namespace Editor.Scripts.PreProcess
 {
     public static class BuildPreprocessor
     {
-        private const string DEBUG_CONSOLE_DEFINE = "DEBUG_CONSOLE_ENABLED";
-
-
+        private const string DEBUG_CONSOLE_DEFINE = "DEBUG_CONSOLE_ENABLED"; 
+        private const string JENKINS_BUILD_DEFINE = "JENKINS_BUILD";
+        
         public static void Prepare(bool debugConsoleEnabled, [CanBeNull] string loggerLevel)
         {
             SetDebugConsoleEnabled(debugConsoleEnabled);
             if (!string.IsNullOrEmpty(loggerLevel)) {
-                SetLoggerLevel(loggerLevel);
+                BuildLoggerConfig(loggerLevel);
             }
         }
 
@@ -26,9 +26,9 @@ namespace Editor.Scripts.PreProcess
                 DefineSymbolsUtil.Remove(DEBUG_CONSOLE_DEFINE);
             }
         }  
-        private static void SetLoggerLevel(string loggerLevel)
+        private static void BuildLoggerConfig(string loggerLevel)
         {
-            ConfigReplacer.ReplaceLoggerLevel(loggerLevel);
+            ConfigPreprocessor.BuildLoggerConfig(loggerLevel);
         }
     }
 }
