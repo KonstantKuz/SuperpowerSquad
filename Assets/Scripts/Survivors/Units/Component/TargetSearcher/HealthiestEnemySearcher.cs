@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Feofun.Components;
 using JetBrains.Annotations;
+using Logger.Extension;
 using Survivors.Units.Service;
 using Survivors.Units.Target;
 using UnityEngine;
@@ -60,7 +61,7 @@ namespace Survivors.Units.Component.TargetSearcher
                 var health = unit.Health;
                 if (health == null)
                 {
-                    Debug.LogWarning("One of the target has no Health component or its Root not parented to the object with Health component.");
+                    this.Logger().Warn("One of the target has no Health component or its Root not parented to the object with Health component.");
                     continue;
                 }
                 if (health.CurrentValue.Value <= maxHealth) continue;

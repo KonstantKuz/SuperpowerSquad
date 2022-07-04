@@ -6,12 +6,11 @@ using SuperMaxim.Messaging;
 using Survivors.Session.Messages;
 using Survivors.Session.Model;
 using Survivors.Session.Service;
-using Survivors.UI.Dialog.PauseDialog;
 using Survivors.UI.Screen.Debriefing;
 using Survivors.UI.Screen.Debriefing.Model;
 using UniRx;
 using UnityEngine;
-using UnityEngine.Assertions;
+using UnityEngine.EventSystems;
 using Zenject;
 
 namespace Survivors.UI.Screen.World
@@ -25,44 +24,20 @@ namespace Survivors.UI.Screen.World
         [SerializeField]
         private float _afterSessionDelay = 2;
 
-        private CompositeDisposable _disposable;
-
         [Inject] private SessionService _sessionService;
         [Inject] private IMessenger _messenger;
         [Inject] private ScreenSwitcher _screenSwitcher;     
         [Inject] private Location.World _world;
-        [Inject] private DialogManager _dialogManager;
+        [Inject] private Joystick _joystick;
         [Inject] private Analytics.Analytics _analytics;
 
         [PublicAPI]
         public void Init()
         {
-            _world.Setup();
-            _sessionService.Start();
-            StartCoroutine(WaitForAnimationUpdateBeforePause());
-            _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
-        }
-
-        public override IEnumerator Hide()
-        {
-            _disposable.Dispose();
-            _disposable = null;
-            return base.Hide();
-        }
-
-        private IEnumerator WaitForAnimationUpdateBeforePause()
-        {
-            yield return new WaitForEndOfFrame();
-            var pauseDialog = _dialogManager.Show<PauseDialog>();
-            
-            Assert.IsNull(_disposable);
-            _disposable = new CompositeDisposable();
-            pauseDialog.CloseEvent.Subscribe(OnSessionStarted).AddTo(_disposable);
-        }
-
-        private void OnSessionStarted(Unit _)
-        {
+            _world.UnPause();
             _analytics.ReportLevelStart();
+            _joystick.Attach(transform);
+            _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
         }
 
         private void OnSessionFinished(SessionEndMessage evn)

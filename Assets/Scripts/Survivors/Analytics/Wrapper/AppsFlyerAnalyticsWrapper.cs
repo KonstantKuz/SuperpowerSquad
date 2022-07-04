@@ -1,18 +1,19 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using AppsFlyerSDK;
-using UnityEngine;
+using Logger.Extension;
 
 namespace Survivors.Analytics.Wrapper
 {
-    public class AppsFlyerAnalyticsWrapper: IAnalyticsImpl
+    public class AppsFlyerAnalyticsWrapper : IAnalyticsImpl
     {
+        
         private const string DEV_KEY = "9gdCn4p9McTuPMAjnzTk4Y";
         private const string APP_ID = "1626072143";
 
         public void Init()
         {
-            Debug.Log("Initializing AppsFlyer SDK");
+            this.Logger().Info("Initializing AppsFlyer SDK");
             AppsFlyer.initSDK(DEV_KEY, APP_ID);
             AppsFlyer.startSDK();
         }
