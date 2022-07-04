@@ -11,6 +11,12 @@ namespace Feofun.UI.Components
         protected bool _isValueInitialized;
         
         public void Reset() => _isValueInitialized = false;
+
+        public void Reset(TValue initialValue)
+        {
+            Reset();
+            SetData(initialValue);
+        }
         
         public void SetData(TValue value)
         {

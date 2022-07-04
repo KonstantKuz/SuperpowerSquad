@@ -1,9 +1,11 @@
+using System;
 using System.Collections;
 using UnityEngine;
 using Feofun.UI.Components;
 using Survivors.Session.Model;
 using Survivors.UI.Screen.Debriefing.Model;
 using TMPro;
+using UnityEngine.Assertions;
 
 namespace Survivors.UI.Screen.Debriefing
 {
@@ -20,6 +22,7 @@ namespace Survivors.UI.Screen.Debriefing
         [SerializeField] private AnimatedIntView _unitProgressText;
 
         private ResultPanelModel _model;
+        private Coroutine _showStatisticsCoroutine;
 
         public void Init(ResultPanelModel model)
         {
@@ -28,15 +31,14 @@ namespace Survivors.UI.Screen.Debriefing
             _losePanel.SetActive(model.SessionResult == SessionResult.Lose);
             ResetStatistics();
             ResetUnitProgress();
-            StartCoroutine(DelayedAnimateStatistics());
+            StopStatisticAnimation();
+            _showStatisticsCoroutine = StartCoroutine(ShowStatisticWithDelay());
         }
 
         private void ResetStatistics()
         {
-            _killCountText.Reset();
-            _killCountText.SetData(0);
-            _coinsCountText.Reset();
-            _coinsCountText.SetData(0);
+            _killCountText.Reset(0);
+            _coinsCountText.Reset(0);
         }
 
         private void ResetUnitProgress()
@@ -49,12 +51,13 @@ namespace Survivors.UI.Screen.Debriefing
             InitUnitProgressView(previousUnitProgress);
         }
 
-        private IEnumerator DelayedAnimateStatistics()
+        private IEnumerator ShowStatisticWithDelay()
         {
             yield return new WaitForSeconds(_animateValuesDelay);
             InitStatistics(_model.KillCount, _model.CoinsCount);
             var currentUnitProgress = _model.CurrentLevel / PROGRESS_LEVELS_COUNT;
             InitUnitProgressView(currentUnitProgress);
+            _showStatisticsCoroutine = null;
         }
 
         private void InitStatistics(int killCount, int coinsCount)
@@ -69,6 +72,18 @@ namespace Survivors.UI.Screen.Debriefing
             _unitProgressView.SetData(barProgress);
             var textProgress = barProgress * 100f;
             _unitProgressText.SetData((int) textProgress);
+        }
+
+        private void OnDisable()
+        {
+            StopStatisticAnimation();
+        }
+
+        private void StopStatisticAnimation()
+        {
+            if (_showStatisticsCoroutine == null) return;
+            StopCoroutine(_showStatisticsCoroutine);
+            _showStatisticsCoroutine = null;
         }
     }
 }
