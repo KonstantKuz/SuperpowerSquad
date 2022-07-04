@@ -16,7 +16,7 @@ namespace Survivors.Squad.Model
             StartingMaxHealth = startingHealth;
             
             _maxHealth = new FloatModifiableParameter(Parameters.HEALTH, StartingMaxHealth, parameterOwner);  
-            parameterCalculator.CalculateParam(_maxHealth, parameterOwner);
+            parameterCalculator.InitParam(_maxHealth, parameterOwner);
         }
         public float StartingMaxHealth { get; }
         public IReadOnlyReactiveProperty<float> MaxHealth => _maxHealth.ReactiveValue;

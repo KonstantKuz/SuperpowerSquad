@@ -20,7 +20,7 @@ namespace Survivors.Units.Service
             _modifierConfigs = modifierConfigs;
             _modifierFactory = modifierFactory;
         }
-        public void CalculateParam(FloatModifiableParameter parameter, IModifiableParameterOwner owner)
+        public void InitParam(FloatModifiableParameter parameter, IModifiableParameterOwner owner)
         {
             parameter.Reset();
             var upgradeCount = _unitsUpgrades.GetUpgradeCount(parameter.Name);

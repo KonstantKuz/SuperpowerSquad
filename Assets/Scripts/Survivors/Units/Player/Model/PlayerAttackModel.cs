@@ -23,7 +23,7 @@ namespace Survivors.Units.Player.Model
         {
             _config = config;
             _attackDamage = new FloatModifiableParameter(Parameters.ATTACK_DAMAGE, _config.AttackDamage, parameterOwner); 
-            parameterCalculator.CalculateParam(_attackDamage, parameterOwner);
+            parameterCalculator.InitParam(_attackDamage, parameterOwner);
             
             _attackInterval = new FloatModifiableParameter(Parameters.ATTACK_INTERVAL, _config.AttackInterval, parameterOwner);
             _attackDistance = new FloatModifiableParameter(Parameters.ATTACK_DISTANCE, _config.AttackDistance, parameterOwner);

@@ -21,7 +21,7 @@ namespace Survivors.Squad.Model
             _collectRadius = new FloatModifiableParameter(Parameters.COLLECT_RADIUS, config.CollectRadius, this);
             
             _startingUnitCount = new FloatModifiableParameter(Parameters.STARTING_UNIT_COUNT, 1, this);
-            parameterCalculator.CalculateParam(_startingUnitCount, this);
+            parameterCalculator.InitParam(_startingUnitCount, this);
             
             HealthModel = new SquadHealthModel(this, startingHealth, parameterCalculator);
         }
