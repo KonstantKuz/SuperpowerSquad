@@ -1,5 +1,4 @@
 ﻿using Survivors.Units.Player.Model;
-using Survivors.Units.Player.Model.Session;
 
 namespace Survivors.Units.Weapon.Projectiles.Params
 {

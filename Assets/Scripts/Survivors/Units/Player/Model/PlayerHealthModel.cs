@@ -4,7 +4,7 @@ using Survivors.Modifiers;
 using Survivors.Units.Model;
 using UniRx;
 
-namespace Survivors.Units.Player.Model.Session
+namespace Survivors.Units.Player.Model
 {
     public class PlayerHealthModel : IHealthModel
     {

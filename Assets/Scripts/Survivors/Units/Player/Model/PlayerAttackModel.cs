@@ -7,7 +7,7 @@ using Survivors.Units.Service;
 using Survivors.Units.Weapon.Projectiles.Params;
 using UniRx;
 
-namespace Survivors.Units.Player.Model.Session
+namespace Survivors.Units.Player.Model
 {
     public class PlayerAttackModel : IAttackModel
     {

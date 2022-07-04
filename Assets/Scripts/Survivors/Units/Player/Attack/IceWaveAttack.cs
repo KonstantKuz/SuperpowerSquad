@@ -2,7 +2,7 @@ using Feofun.Components;
 using Logger.Extension;
 using Survivors.Extension;
 using Survivors.Units.Component.Health;
-using Survivors.Units.Player.Model.Session;
+using Survivors.Units.Player.Model;
 using Survivors.Units.Weapon;
 using UnityEngine;
 

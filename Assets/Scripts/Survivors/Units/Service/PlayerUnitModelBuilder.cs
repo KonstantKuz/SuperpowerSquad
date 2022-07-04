@@ -6,7 +6,7 @@ using Survivors.Modifiers.Config;
 using Survivors.Player.Inventory.Service;
 using Survivors.Units.Model;
 using Survivors.Units.Player.Config;
-using Survivors.Units.Player.Model.Session;
+using Survivors.Units.Player.Model;
 using Zenject;
 
 namespace Survivors.Units.Service

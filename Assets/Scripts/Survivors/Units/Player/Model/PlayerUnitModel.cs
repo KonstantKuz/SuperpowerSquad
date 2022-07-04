@@ -3,7 +3,7 @@ using Survivors.Units.Model;
 using Survivors.Units.Player.Config;
 using Survivors.Units.Service;
 
-namespace Survivors.Units.Player.Model.Session
+namespace Survivors.Units.Player.Model
 {
     public class PlayerUnitModel : ModifiableParameterOwner, IUnitModel
     {

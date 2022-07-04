@@ -3,7 +3,6 @@ using System.Linq;
 using Feofun.Components;
 using Survivors.Units.Model;
 using Survivors.Units.Player.Model;
-using Survivors.Units.Player.Model.Session;
 using Survivors.Units.Target;
 using UnityEngine;
 using Zenject;

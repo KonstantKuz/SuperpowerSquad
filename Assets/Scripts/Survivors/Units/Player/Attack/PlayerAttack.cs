@@ -6,7 +6,6 @@ using Survivors.Extension;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Component.TargetSearcher;
 using Survivors.Units.Player.Model;
-using Survivors.Units.Player.Model.Session;
 using Survivors.Units.Player.Movement;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon;

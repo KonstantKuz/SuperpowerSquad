@@ -14,7 +14,7 @@ using Survivors.Units.Service;
 using Survivors.Units.Target;
 using Zenject;
 using Survivors.Units.Model;
-using Survivors.Units.Player.Model.Session;
+using Survivors.Units.Player.Model;
 using Survivors.Units.Player.Movement;
 using UnityEngine;
 
