@@ -119,11 +119,11 @@ namespace Survivors.Units
 
         public void AddModifier(IModifier modifier)
         {
-            if (!(Model is PlayerUnitModel sessionModel)) {
-                this.Logger().Error($"Unit model must be the PlayerUnitSessionModel, current model:= {Model.GetType().Name}");
+            if (!(Model is PlayerUnitModel playerUnitModel)) {
+                this.Logger().Error($"Unit model must be the PlayerUnitModel, current model:= {Model.GetType().Name}");
                 return;
             }
-            sessionModel.AddModifier(modifier);
+            playerUnitModel.AddModifier(modifier);
         }
     }
 }
