@@ -41,7 +41,7 @@ namespace Survivors.UI.Screen.Main
             _sessionService.Start();
         
             _joystick.Attach(transform);
-            _levelProgressBar.Init(_sessionService.LevelId);
+            _levelProgressBar.Init(_sessionService.LevelId + 1);
             
             StartCoroutine(WaitForAnimationUpdateBeforePause());
         }

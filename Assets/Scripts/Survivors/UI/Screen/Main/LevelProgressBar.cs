@@ -12,16 +12,16 @@ namespace Survivors.UI.Screen.Main
         private const int MAX_LEVEL_NUMBER = 5;
         
         [SerializeField] private ProgressBarView _levelBar;
-        [SerializeField] private List<ProgressByStep> _progressByStep;
+  
+        [SerializeField] private List<ProgressByStep> _progressByStep;  //todo: can use SerializableDictionary<TKey, TValue>
 
-        public void Init(float currentLevel)
+        public void Init(int currentLevel)
         {
             _levelBar.IsIndependentUpdate = true;
             
-            var step = Mathf.Clamp(currentLevel + 1, MIN_LEVEL_NUMBER, MAX_LEVEL_NUMBER);
+            var step = Mathf.Clamp(currentLevel, MIN_LEVEL_NUMBER, MAX_LEVEL_NUMBER);
             _levelBar.SetData(_progressByStep.First(it => it.Step == step).ProgressValue);
         }
-        
         [Serializable]
         private struct ProgressByStep
         {
