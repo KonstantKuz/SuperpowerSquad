@@ -40,7 +40,7 @@ namespace Survivors.UI.Screen.Main
             _world.Setup();
             _sessionService.Start();
         
-            _joystick.Attach(transform);
+            _joystick.Attach(transform); // todo: can be added to the parent screen 
             _levelProgressBar.Init(_sessionService.LevelId + 1);
             
             StartCoroutine(WaitForAnimationUpdateBeforePause());
