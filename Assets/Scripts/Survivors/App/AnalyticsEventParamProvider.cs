@@ -39,6 +39,9 @@ namespace Survivors.App
             {
                 return GetUpgrade(paramName.Split(Analytics.Analytics.SEPARATOR)[1]);
             }
+
+            var playerProgress = _playerProgressService.Progress;
+            
             return paramName switch
             {
                 EventParams.LEVEL_ID => _sessionService.LevelId,
@@ -51,7 +54,9 @@ namespace Survivors.App
                 EventParams.TOTAL_ENEMY_HEALTH => GetTotalEnemyHealth(),
                 EventParams.AVERAGE_ENEMY_LIFETIME => GetAverageEnemyLifetime(),
                 EventParams.STAND_RATIO => GetStandRatio(),
-                EventParams.TOTAL_KILLS => _playerProgressService.Progress.Kills,
+                EventParams.TOTAL_KILLS => playerProgress.Kills,
+                EventParams.WINS => playerProgress.WinCount,
+                EventParams.DEFEATS => playerProgress.LoseCount,
                 
                 _ => throw new ArgumentOutOfRangeException(nameof(paramName), paramName, $"Unsupported analytics parameter {paramName}")
             };

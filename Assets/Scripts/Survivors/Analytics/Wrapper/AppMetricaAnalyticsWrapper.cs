@@ -35,16 +35,20 @@ namespace Survivors.Analytics.Wrapper
             Dictionary<string, object> eventParams,
             IEventParamProvider eventParamProvider)
         {
+            var additionalParams = eventParamProvider.GetParams(new []
+            {
+                EventParams.WINS,
+                EventParams.DEFEATS
+            });
             var profile = new YandexAppMetricaUserProfile();
-            YandexAppMetricaUserProfileUpdate u1 = new YandexAppMetricaStringAttribute("last_event").WithValue(
-                BuildLastEventName(eventName, eventParams));
-            YandexAppMetricaUserProfileUpdate u2 =
-                new YandexAppMetricaNumberAttribute("kills").WithValue(Convert.ToDouble(eventParams[EventParams.TOTAL_KILLS]));
-            YandexAppMetricaUserProfileUpdate u3 =
-                new YandexAppMetricaNumberAttribute("level_id").WithValue(Convert.ToDouble(eventParams[EventParams.LEVEL_ID]));
             var updates = new List<YandexAppMetricaUserProfileUpdate>
             {
-                u1, u2, u3
+                new YandexAppMetricaStringAttribute("last_event").WithValue(
+                    BuildLastEventName(eventName, eventParams)), 
+                new YandexAppMetricaNumberAttribute("kills").WithValue(Convert.ToDouble(eventParams[EventParams.TOTAL_KILLS])), 
+                new YandexAppMetricaNumberAttribute("level_id").WithValue(Convert.ToDouble(eventParams[EventParams.LEVEL_ID])),
+                new YandexAppMetricaNumberAttribute("wins").WithValue(Convert.ToDouble(additionalParams[EventParams.WINS])),
+                new YandexAppMetricaNumberAttribute("wins").WithValue(Convert.ToDouble(additionalParams[EventParams.DEFEATS]))
             };
             profile.ApplyFromArray(updates);
             AppMetrica.Instance.ReportUserProfile(profile);

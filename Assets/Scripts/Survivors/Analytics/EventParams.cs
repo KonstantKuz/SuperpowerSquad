@@ -15,5 +15,7 @@
         public const string AVERAGE_ENEMY_LIFETIME = "enemy_lifetime";
         public const string STAND_RATIO = "stand_ratio";
         public const string TOTAL_KILLS = "total_kills";
+        public const string WINS = "wins";
+        public const string DEFEATS = "defeats";
     }
 }

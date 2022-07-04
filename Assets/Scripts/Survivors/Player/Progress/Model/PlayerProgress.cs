@@ -10,6 +10,7 @@ namespace Survivors.Player.Progress.Model
 
         public int GameCount { get; set; }
         public int WinCount { get; set; }
+        public int LoseCount => GameCount - WinCount;
         public int LevelNumber => WinCount;
         public int Kills { get; set; }
 
