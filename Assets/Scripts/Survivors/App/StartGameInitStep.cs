@@ -1,6 +1,7 @@
 using Feofun.App.Init;
 using Feofun.UI.Screen;
 using JetBrains.Annotations;
+using Survivors.UI.Screen.Main;
 using Survivors.UI.Screen.World;
 using Survivors.Units.Enemy;
 using Zenject;
@@ -17,7 +18,7 @@ namespace Survivors.App
         {
             DOTweenInitializer.Init();
             NavMeshInitializer.Init();
-            _screenSwitcher.SwitchTo(WorldScreen.ID.ToString());
+            _screenSwitcher.SwitchTo(MainScreen.ID.ToString());
             Next();
         }
     }
