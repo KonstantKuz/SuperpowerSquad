@@ -20,7 +20,7 @@ namespace Survivors.Units.Player.Attack
         
         private Unit _ownerUnit;
         private Squad.Squad _squad;
-        private PlayerAttackSessionModel _attackSessionModel;
+        private PlayerAttackModel _attackModel;
         private CompositeDisposable _disposable;
         
         public void Init(IUnit unit)
@@ -29,18 +29,18 @@ namespace Survivors.Units.Player.Attack
             _disposable = new CompositeDisposable();
             
             _ownerUnit = unit as Unit;
-            if (!(unit.Model.AttackModel is PlayerAttackSessionModel attackModel))
+            if (!(unit.Model.AttackModel is PlayerAttackModel attackModel))
             {
                 throw new ArgumentException($"Unit must be a player unit, gameObj:= {gameObject.name}");
             }
-            _attackSessionModel = attackModel;
+            _attackModel = attackModel;
         }
         public void Init(Squad.Squad squad)
         {
             Assert.IsNotNull(_ownerUnit);      
-            Assert.IsNotNull(_attackSessionModel);
+            Assert.IsNotNull(_attackModel);
             _squad = squad;
-            _attackSessionModel.ShotCount.Subscribe(CreateSaws).AddTo(_disposable);
+            _attackModel.ShotCount.Subscribe(CreateSaws).AddTo(_disposable);
             _squad.UnitsCount.Subscribe(UpdateRadius).AddTo(_disposable);
         }
         
@@ -59,7 +59,7 @@ namespace Survivors.Units.Player.Attack
 
         private PlayerProjectileParams GetSawParamsForSquad()
         {
-            var projectileParams = _attackSessionModel.CreatePlayerProjectileParams();
+            var projectileParams = _attackModel.CreatePlayerProjectileParams();
             projectileParams.AdditionalAttackDistance += _squad.SquadRadius;
             return projectileParams;
         }
@@ -72,7 +72,7 @@ namespace Survivors.Units.Player.Attack
         private void DoDamage(GameObject target)
         {
             var damageable = target.RequireComponent<IDamageable>();
-            damageable.TakeDamage(_attackSessionModel.AttackDamage);
+            damageable.TakeDamage(_attackModel.AttackDamage);
             this.Logger().Trace($"Damage applied, target:= {target.name}");
         }
 

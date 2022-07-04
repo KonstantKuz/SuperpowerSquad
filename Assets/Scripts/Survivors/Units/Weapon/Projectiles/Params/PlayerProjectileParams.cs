@@ -5,17 +5,17 @@ namespace Survivors.Units.Weapon.Projectiles.Params
 {
     public class PlayerProjectileParams : IProjectileParams
     {
-        private PlayerAttackSessionModel _attackSessionModel;
+        private PlayerAttackModel _attackModel;
         public float AdditionalAttackDistance { get; set; }
         
-        public float Speed => _attackSessionModel.ProjectileSpeed;
-        public float DamageRadius => _attackSessionModel.DamageRadius;
-        public float AttackDistance => AdditionalAttackDistance + _attackSessionModel.AttackDistance;
-        public int Count => _attackSessionModel.ShotCount.Value;
+        public float Speed => _attackModel.ProjectileSpeed;
+        public float DamageRadius => _attackModel.DamageRadius;
+        public float AttackDistance => AdditionalAttackDistance + _attackModel.AttackDistance;
+        public int Count => _attackModel.ShotCount.Value;
 
-        public PlayerProjectileParams(PlayerAttackSessionModel attackSessionModel)
+        public PlayerProjectileParams(PlayerAttackModel attackModel)
         {
-            _attackSessionModel = attackSessionModel;
+            _attackModel = attackModel;
             AdditionalAttackDistance = 0;
         }
     }

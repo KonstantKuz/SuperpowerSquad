@@ -97,12 +97,10 @@ namespace Survivors.Squad
             OnDeath?.Invoke();
             _units.Clear();
         }
-        public void AddUnit(Unit unit, bool initial = false)
+        public void AddUnit(Unit unit)
         {
             unit.transform.SetParent(Destination.transform);
-            if (!initial) {
-                Model.AddUnit(unit.Model);
-            }
+            Model.AddUnit(unit.Model);
             _units.Add(unit);
             InitializeSquadComponents(unit.gameObject);
             UpdateFormationAndRadius();
@@ -139,7 +137,7 @@ namespace Survivors.Squad
         {
             Assert.IsTrue(_units.Count > 0);
             var nextUnit = _playerUnitConfigs.Values[_units.Count % _playerUnitConfigs.Values.Count];
-            _unitFactory.CreatePlayerUnitForSession(nextUnit.Id);
+            _unitFactory.CreatePlayerUnit(nextUnit.Id);
         }
 
         [Button]

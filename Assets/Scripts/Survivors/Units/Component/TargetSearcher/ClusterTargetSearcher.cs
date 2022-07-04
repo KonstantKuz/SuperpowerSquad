@@ -30,7 +30,7 @@ namespace Survivors.Units.Component.TargetSearcher
         {
             _targetType = owner.UnitType.GetTargetUnitType();
             _searchDistance = owner.Model.AttackModel.AttackDistance;
-            _clusterRadius = (owner.Model.AttackModel as PlayerAttackSessionModel).DamageRadius;
+            _clusterRadius = (owner.Model.AttackModel as PlayerAttackModel).DamageRadius;
         }        
         
         public ITarget Find()

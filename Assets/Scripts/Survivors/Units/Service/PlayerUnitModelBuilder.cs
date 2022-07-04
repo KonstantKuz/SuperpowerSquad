@@ -4,9 +4,8 @@ using JetBrains.Annotations;
 using Survivors.Config;
 using Survivors.Modifiers.Config;
 using Survivors.Player.Inventory.Service;
+using Survivors.Units.Model;
 using Survivors.Units.Player.Config;
-using Survivors.Units.Player.Model;
-using Survivors.Units.Player.Model.Meta;
 using Survivors.Units.Player.Model.Session;
 using Zenject;
 
@@ -23,14 +22,10 @@ namespace Survivors.Units.Service
         private readonly InventoryService _inventoryService;
         [Inject]
         private readonly ModifierFactory _modifierFactory;
-        public IPlayerUnitModel BuildMetaUnit(string unitId)
+        public IUnitModel BuildUnit(string unitId)
         {
-            return new PlayerUnitModel(_playerUnitConfigs.Get(unitId),
+            return new PlayerUnitModel(_playerUnitConfigs.Get(unitId), 
                                        new MetaParameterCalculator(_inventoryService.Inventory.UnitsUpgrades, _modifierConfigs, _modifierFactory));
-        }  
-        public IPlayerUnitModel BuildSessionUnit(string unitId)
-        {
-            return new PlayerUnitSessionModel(BuildMetaUnit(unitId));
         }
     }
 }

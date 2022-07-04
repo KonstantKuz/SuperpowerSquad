@@ -2,8 +2,6 @@ using Feofun.Components;
 using Logger.Extension;
 using Survivors.Extension;
 using Survivors.Units.Component.Health;
-using Survivors.Units.Player.Model;
-using Survivors.Units.Player.Model.Meta;
 using Survivors.Units.Player.Model.Session;
 using Survivors.Units.Weapon;
 using UnityEngine;
@@ -17,12 +15,12 @@ namespace Survivors.Units.Player.Attack
         private Unit _owner;
         private Squad.Squad _squad;
         private IWeaponTimerManager _weaponTimer;
-        private PlayerAttackSessionModel _playerAttackModel;
+        private PlayerAttackModel _playerAttackModel;
         
         public void Init(IUnit unit)
         {
             _owner = (Unit) unit;
-            _playerAttackModel = (PlayerAttackSessionModel) unit.Model.AttackModel;
+            _playerAttackModel = (PlayerAttackModel) unit.Model.AttackModel;
         }
         
         public void Init(Squad.Squad squad)

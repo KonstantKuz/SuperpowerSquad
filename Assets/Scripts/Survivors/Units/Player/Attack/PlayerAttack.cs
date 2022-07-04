@@ -28,7 +28,7 @@ namespace Survivors.Units.Player.Attack
         private string _attackAnimationName;
         
         private BaseWeapon _weapon;
-        private PlayerAttackSessionModel _playerAttackSessionModel;
+        private PlayerAttackModel _playerAttackModel;
         private Animator _animator;
         private ITargetSearcher _targetSearcher;
         private MovementController _movementController;
@@ -50,9 +50,9 @@ namespace Survivors.Units.Player.Attack
             Dispose();
             _disposable = new CompositeDisposable();
             _owner = (Unit) unit;
-            _playerAttackSessionModel = (PlayerAttackSessionModel) unit.Model.AttackModel;
+            _playerAttackModel = (PlayerAttackModel) unit.Model.AttackModel;
             
-            _playerAttackSessionModel.AttackInterval.Subscribe(UpdateAnimationSpeed).AddTo(_disposable);
+            _playerAttackModel.AttackInterval.Subscribe(UpdateAnimationSpeed).AddTo(_disposable);
             if (HasWeaponAnimationHandler) {
                 _weaponAnimationHandler.OnFireEvent += Fire;
             }
@@ -68,7 +68,7 @@ namespace Survivors.Units.Player.Attack
                 ? ownTimerManager
                 : squad.WeaponTimerManager;
 
-            _timerManager.Subscribe(_owner.ObjectId, _playerAttackSessionModel, OnAttackReady);
+            _timerManager.Subscribe(_owner.ObjectId, _playerAttackModel, OnAttackReady);
         }
         
         private void Awake()
@@ -122,13 +122,13 @@ namespace Survivors.Units.Player.Attack
             if (IsTargetInvalid) {
                 return;
             }
-            _weapon.Fire(_target, _playerAttackSessionModel.CreateProjectileParams(), DoDamage);
+            _weapon.Fire(_target, _playerAttackModel.CreateProjectileParams(), DoDamage);
         }
 
         private void DoDamage(GameObject target)
         {
             var damageable = target.RequireComponent<IDamageable>();
-            damageable.TakeDamage(_playerAttackSessionModel.AttackDamage);
+            damageable.TakeDamage(_playerAttackModel.AttackDamage);
             this.Logger().Trace($"Damage applied, target:= {target.name}");
         }
 

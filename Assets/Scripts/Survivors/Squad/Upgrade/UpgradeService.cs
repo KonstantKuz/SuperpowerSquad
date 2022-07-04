@@ -62,7 +62,7 @@ namespace Survivors.Squad.Upgrade
         }
         public void AddUnit(string unitId)
         {
-            var unit = _unitFactory.CreatePlayerUnitForSession(unitId);
+            var unit = _unitFactory.CreatePlayerUnit(unitId);
             AddExistingModifiers(unit);
         }
         private void ApplyUpgrade(string upgradeBranchId, int level)

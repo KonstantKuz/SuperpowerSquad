@@ -20,18 +20,17 @@ namespace Survivors.Units.Service
             _modifierConfigs = modifierConfigs;
             _modifierFactory = modifierFactory;
         }
-        public FloatModifiableParameter CalculateParam(FloatModifiableParameter parameter, IModifiableParameterOwner owner)
+        public void CalculateParam(FloatModifiableParameter parameter, IModifiableParameterOwner owner)
         {
             parameter.Reset();
             var upgradeCount = _unitsUpgrades.GetUpgradeCount(parameter.Name);
-            if (upgradeCount <= 0) return parameter;
+            if (upgradeCount <= 0) return;
             var modificatorConfig = _modifierConfigs.Find(parameter.Name);
-            if (modificatorConfig == null) return parameter;
+            if (modificatorConfig == null) return;
             var modificator = _modifierFactory.Create(modificatorConfig.ModifierConfig);
             for (int i = 0; i < upgradeCount; i++) {
                 modificator.Apply(owner);
             }
-            return parameter;
         }
     }
 }

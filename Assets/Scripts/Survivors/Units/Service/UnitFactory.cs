@@ -20,19 +20,19 @@ namespace Survivors.Units.Service
         {
             CheckSquad();
             for (int i = 0; i < _world.Squad.Model.StartingUnitCount; i++) {
-                CreatePlayerUnitForSession(unitId, true);
+                CreatePlayerUnit(unitId);
             }
         }
 
         private void CheckSquad() => Assert.IsNotNull(_world.Squad, "Squad is null, should call this method only inside game session");
 
-        public Unit CreatePlayerUnitForSession(string unitId, bool initial = false)
+        public Unit CreatePlayerUnit(string unitId)
         {
             CheckSquad();
             var unit = _worldObjectFactory.CreateObject(unitId).RequireComponent<Unit>();
-            var model = _playerUnitModelBuilder.BuildSessionUnit(unitId);
+            var model = _playerUnitModelBuilder.BuildUnit(unitId);
             unit.Init(model);
-            _world.Squad.AddUnit(unit, initial);
+            _world.Squad.AddUnit(unit);
             return unit;
         }
         

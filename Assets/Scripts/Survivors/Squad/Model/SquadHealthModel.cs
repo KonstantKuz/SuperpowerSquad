@@ -9,20 +9,16 @@ namespace Survivors.Squad.Model
 {
     public class SquadHealthModel : IHealthModel
     {
-        private readonly MetaParameterCalculator _parameterCalculator;   
-        private readonly IModifiableParameterOwner _parameterOwner;
-        
         private readonly FloatModifiableParameter _maxHealth;
-        private readonly FloatModifiableParameter _startingMaxHealth;
 
         public SquadHealthModel(IModifiableParameterOwner parameterOwner, float startingHealth, MetaParameterCalculator parameterCalculator)
         {
-            _parameterOwner = parameterOwner;
-            _parameterCalculator = parameterCalculator;
-            _startingMaxHealth = new FloatModifiableParameter(Parameters.STARTING_HEALTH, startingHealth, parameterOwner);
+            StartingMaxHealth = startingHealth;
+            
             _maxHealth = new FloatModifiableParameter(Parameters.HEALTH, StartingMaxHealth, parameterOwner);  
+            parameterCalculator.CalculateParam(_maxHealth, parameterOwner);
         }
-        public float StartingMaxHealth => _parameterCalculator.CalculateParam(_startingMaxHealth, _parameterOwner).Value;
+        public float StartingMaxHealth { get; }
         public IReadOnlyReactiveProperty<float> MaxHealth => _maxHealth.ReactiveValue;
     }
 }
