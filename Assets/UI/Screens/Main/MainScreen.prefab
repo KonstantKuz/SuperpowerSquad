@@ -298,10 +298,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4632546218681469743}
   - component: {fileID: 4482512192203989236}
-  - component: {fileID: 9022073780298897174}
-  - component: {fileID: 2615926568400496801}
-  - component: {fileID: 4562744194627143330}
-  - component: {fileID: 8024451137539058587}
   m_Layer: 5
   m_Name: MainScreen
   m_TagString: Untagged
@@ -344,61 +340,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _levelProgressBar: {fileID: 8230614213789688015}
---- !u!114 &9022073780298897174
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4203869353063743845}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cc4d85ac2b66442f9805336e5ddfa71a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _view: {fileID: 2615926568400496801}
---- !u!114 &2615926568400496801
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4203869353063743845}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fc128aee7b6c4b26a40e574a13ae16eb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _upgradeItemPrefab: {fileID: 6386813181152707967, guid: 956b37399a32fdc4d83925d8ea70d1fd, type: 3}
-  _root: {fileID: 1169171945742456929}
---- !u!114 &4562744194627143330
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4203869353063743845}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1c18ed5ca5284b7ab042f6661e7c50f1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _activatableObjects:
-  - {fileID: 6304588136834679477}
-  - {fileID: 5823897602672277267}
---- !u!114 &8024451137539058587
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4203869353063743845}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c1051cba074c4e809a0dddd04a837852, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _neededCount: 1
 --- !u!1 &4591214062693849721
 GameObject:
   m_ObjectHideFlags: 0
@@ -716,18 +657,6 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
---- !u!114 &5823897602672277267
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6431794648078391890}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 14465a1aa3d242c39ca6928e3403ce76, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &6553138040787352061
 GameObject:
   m_ObjectHideFlags: 0
@@ -1423,7 +1352,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 586769191374899730, guid: c32c8d7ef121b8049a04862d10ab1b10, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -286.34647
       objectReference: {fileID: 0}
     - target: {fileID: 1417259385361506885, guid: c32c8d7ef121b8049a04862d10ab1b10, type: 3}
       propertyPath: m_AnchorMax.y
@@ -1448,6 +1377,10 @@ PrefabInstance:
     - target: {fileID: 1825262772689910626, guid: c32c8d7ef121b8049a04862d10ab1b10, type: 3}
       propertyPath: m_Name
       value: UpgradeView
+      objectReference: {fileID: 0}
+    - target: {fileID: 1825262772689910626, guid: c32c8d7ef121b8049a04862d10ab1b10, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2105823838680384014, guid: c32c8d7ef121b8049a04862d10ab1b10, type: 3}
       propertyPath: m_SizeDelta.x
@@ -1495,7 +1428,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3942630923464704561, guid: c32c8d7ef121b8049a04862d10ab1b10, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -286.34647
       objectReference: {fileID: 0}
     - target: {fileID: 4205815785182085060, guid: c32c8d7ef121b8049a04862d10ab1b10, type: 3}
       propertyPath: m_SizeDelta.y
@@ -1665,6 +1598,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8508688137520740949, guid: c32c8d7ef121b8049a04862d10ab1b10, type: 3}
+      propertyPath: _view
+      value: 
+      objectReference: {fileID: 40077500453377234}
     - target: {fileID: 8828938923961624724, guid: c32c8d7ef121b8049a04862d10ab1b10, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -1683,17 +1620,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8828938923961624724, guid: c32c8d7ef121b8049a04862d10ab1b10, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
+      value: -286.34647
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c32c8d7ef121b8049a04862d10ab1b10, type: 3}
---- !u!1 &6431794648078391890 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1825262772689910626, guid: c32c8d7ef121b8049a04862d10ab1b10, type: 3}
-  m_PrefabInstance: {fileID: 4618144506529030448}
-  m_PrefabAsset: {fileID: 0}
 --- !u!224 &1169171945742456929 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 5777918508667074897, guid: c32c8d7ef121b8049a04862d10ab1b10, type: 3}
   m_PrefabInstance: {fileID: 4618144506529030448}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &40077500453377234 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4654632615303181794, guid: c32c8d7ef121b8049a04862d10ab1b10, type: 3}
+  m_PrefabInstance: {fileID: 4618144506529030448}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fc128aee7b6c4b26a40e574a13ae16eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
