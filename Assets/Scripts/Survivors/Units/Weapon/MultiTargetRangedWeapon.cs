@@ -42,6 +42,7 @@ namespace Survivors.Units.Weapon
             var selectedTargets = new List<ITarget> { initialTarget };            
             var possibleTargets = _targetSearcher
                 .GetAllOrderedByDistance()
+                .Where(it => it != null && it.IsAlive)
                 .Except(selectedTargets)                
                 .ToList();
             
