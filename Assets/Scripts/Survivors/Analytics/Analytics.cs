@@ -41,7 +41,8 @@ namespace Survivors.Analytics
                 EventParams.LEVEL_ID,
                 EventParams.LEVEL_NUMBER,
                 EventParams.LEVEL_LOOP,
-                EventParams.PASS_NUMBER
+                EventParams.PASS_NUMBER,
+                EventParams.TOTAL_KILLS
             });
             
             ReportEventToAllImpls(Events.LEVEL_START, eventParams);
@@ -51,7 +52,7 @@ namespace Survivors.Analytics
         {
             foreach (var impl in _impls)
             {
-                impl.ReportEventWithParams(eventName, eventParams);
+                impl.ReportEventWithParams(eventName, eventParams, _eventParamProvider);
             }
         }
 
@@ -65,7 +66,8 @@ namespace Survivors.Analytics
                 EventParams.SQUAD_LEVEL,
                 $"{EventParams.UPGRADE}{SEPARATOR}{upgradeBranch}",
                 EventParams.ENEMY_KILLED,
-                EventParams.TIME_SINCE_LEVEL_START
+                EventParams.TIME_SINCE_LEVEL_START,
+                EventParams.TOTAL_KILLS
             });
             
             ReportEventToAllImpls(Events.LEVEL_UP, eventParams);
@@ -84,10 +86,11 @@ namespace Survivors.Analytics
                 EventParams.ENEMY_KILLED,
                 EventParams.TOTAL_ENEMY_HEALTH,
                 EventParams.AVERAGE_ENEMY_LIFETIME,
-                EventParams.STAND_RATIO
+                EventParams.STAND_RATIO,
+                EventParams.TOTAL_KILLS
             });
             
-            eventParams[EventParams.LEVEL_RESULT] = isPlayerWinner ? "win" : "lose";
+            eventParams[EventParams.LEVEL_RESULT] = isPlayerWinner ? LevelResult.WIN : LevelResult.LOSE;
             
             ReportEventToAllImpls(Events.LEVEL_FINISHED, eventParams);
         }

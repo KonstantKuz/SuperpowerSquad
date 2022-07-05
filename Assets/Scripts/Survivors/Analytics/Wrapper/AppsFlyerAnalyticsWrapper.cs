@@ -23,7 +23,8 @@ namespace Survivors.Analytics.Wrapper
             AppsFlyer.sendEvent(message, parameters);
         }
 
-        public void ReportEventWithParams(string eventName, Dictionary<string, object> eventParams)
+        public void ReportEventWithParams(string eventName, Dictionary<string, object> eventParams,
+            IEventParamProvider eventParamProvider)
         {
             eventParams ??= new Dictionary<string, object>();
             ReportEvent(eventName, eventParams.ToDictionary(it => it.Key, it => it.Value.ToString()));
