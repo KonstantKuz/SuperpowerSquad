@@ -3,6 +3,7 @@ using Feofun.UI.Components.Button;
 using Feofun.UI.Dialog;
 using Survivors.App.Config;
 using Survivors.Location;
+using Survivors.Player.Progress.Service;
 using Survivors.Units;
 using Survivors.Units.Service;
 using UnityEngine;
@@ -18,6 +19,8 @@ namespace Survivors.UI.Dialog.ReviveDialog
         [Inject] private World _world;
         [Inject] private UnitService _unitService;
         [Inject] private ConstantsConfig _constantsConfig;
+        [Inject] private Analytics.Analytics _analytics;
+        [Inject] private PlayerProgressService _playerProgressService;
 
         private void Awake()
         {
@@ -39,6 +42,8 @@ namespace Survivors.UI.Dialog.ReviveDialog
         {
             _world.Squad.RestoreHealth();
             KillEnemiesAroundSquad();
+            _playerProgressService.AddRevive();
+            _analytics.ReportRevive();
             Hide();
         }
 

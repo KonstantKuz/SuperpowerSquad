@@ -87,12 +87,31 @@ namespace Survivors.Analytics
                 EventParams.TOTAL_ENEMY_HEALTH,
                 EventParams.AVERAGE_ENEMY_LIFETIME,
                 EventParams.STAND_RATIO,
-                EventParams.TOTAL_KILLS
+                EventParams.TOTAL_KILLS,
+                EventParams.REVIVE_COUNT
             });
             
             eventParams[EventParams.LEVEL_RESULT] = isPlayerWinner ? LevelResult.WIN : LevelResult.LOSE;
             
             ReportEventToAllImpls(Events.LEVEL_FINISHED, eventParams);
+        }
+
+        public void ReportRevive()
+        {
+            var eventParams = _eventParamProvider.GetParams(new[]
+            {
+                EventParams.LEVEL_ID,
+                EventParams.LEVEL_NUMBER,
+                EventParams.LEVEL_LOOP,
+                EventParams.PASS_NUMBER,
+                EventParams.SQUAD_LEVEL,
+                EventParams.TIME_SINCE_LEVEL_START,
+                EventParams.ENEMY_KILLED,
+                EventParams.TOTAL_KILLS,
+                EventParams.REVIVE_COUNT
+            });
+            
+            ReportEventToAllImpls(Events.REVIVE, eventParams);
         }
     }
 }

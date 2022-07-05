@@ -57,6 +57,7 @@ namespace Survivors.App
                 EventParams.TOTAL_KILLS => playerProgress.Kills,
                 EventParams.WINS => playerProgress.WinCount,
                 EventParams.DEFEATS => playerProgress.LoseCount,
+                EventParams.REVIVE_COUNT => playerProgress.Revives,
                 
                 _ => throw new ArgumentOutOfRangeException(nameof(paramName), paramName, $"Unsupported analytics parameter {paramName}")
             };
