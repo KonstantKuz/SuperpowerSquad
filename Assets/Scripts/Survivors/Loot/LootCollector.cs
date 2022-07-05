@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Feofun.Components;
+using Survivors.Location;
 using Survivors.Loot.Service;
 using Survivors.Session.Service;
 using UniRx;
@@ -22,6 +23,8 @@ namespace Survivors.Loot
         private DroppingLootService _lootService;
         [Inject]
         private SessionService _sessionService;
+        [Inject] 
+        private World _world;
 
         private Squad.Squad _squad;
         private CompositeDisposable _disposable;
@@ -62,10 +65,12 @@ namespace Survivors.Loot
 
         private void TryCollect(DroppingLoot loot)
         {
+            if (_world.IsPaused) return;            
             if (Vector3.Distance(loot.transform.position, transform.position) > LOOT_DESTROY_DISTANCE)
             {
                 return;
             }
+            
             _lootService.OnLootCollected(loot.Config);
             _movingLoots.Remove(loot);
             Destroy(loot.gameObject);
