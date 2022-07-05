@@ -4,17 +4,17 @@ using Zenject;
 
 namespace Survivors.UI.Components.ActivatableObject.Conditions
 {
-    public class LevelCondition : MonoBehaviour, ICondition
+    public class GameCountCondition : MonoBehaviour, ICondition
     {
         [SerializeField]
-        public int _neededLevel;
+        public int _neededCount;
 
         [Inject]
         private PlayerProgressService _playerProgress;
 
         public bool IsAllow()
         {
-            return _playerProgress.Progress.LevelNumber >= _neededLevel;
+            return _playerProgress.Progress.GameCount >= _neededCount;
         }
     }
 }

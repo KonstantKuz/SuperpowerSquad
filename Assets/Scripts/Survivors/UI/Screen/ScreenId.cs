@@ -5,6 +5,7 @@
         None,
         Main,
         World,
+        Menu,
         Debriefing,
     }
 }
