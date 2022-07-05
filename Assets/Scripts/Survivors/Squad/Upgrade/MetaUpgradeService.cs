@@ -1,21 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Feofun.Config;
-using Feofun.Extension;
+﻿using Feofun.Config;
 using Feofun.Modifiers;
 using JetBrains.Annotations;
-using Survivors.Config;
 using Logger.Extension;
+using ModestTree;
+using Survivors.App.Config;
+using Survivors.Config;
 using Survivors.Location;
-using Survivors.Modifiers;
 using Survivors.Modifiers.Config;
+using Survivors.Player.Inventory.Model;
 using Survivors.Player.Inventory.Service;
-using Survivors.Squad.Upgrade.Config;
-using Survivors.Squad.UpgradeSelection;
-using Survivors.Units;
-using Survivors.Units.Service;
-using UnityEngine.Assertions;
 using Zenject;
 
 namespace Survivors.Squad.Upgrade
@@ -23,137 +16,50 @@ namespace Survivors.Squad.Upgrade
     [PublicAPI]
     public class MetaUpgradeService : IWorldScope
     {
-
         [Inject]
         private InventoryService _inventoryService;
-        [Inject] private UpgradesConfig _config;
-        [Inject] private World _world;
-        [Inject] private UnitFactory _unitFactory;
-        [Inject] private ModifierFactory _modifierFactory;
-        [Inject] private SquadUpgradeRepository _repository;
-        [Inject(Id = Configs.MODIFIERS)]
-        
-        private StringKeyedConfigCollection<ParameterUpgradeConfig> _modifierConfigs;
-        public SquadUpgradeState SquadUpgradeState => _repository.Require();
-      
+        [Inject]
+        private World _world;
+        [Inject(Id = Configs.META_UPGRADES)]
+        private readonly StringKeyedConfigCollection<ParameterUpgradeConfig> _modifierConfigs;
+        [Inject]
+        private readonly ModifierFactory _modifierFactory;
+        [Inject]
+        private ConstantsConfig _constantsConfig;
+
+        public UnitsMetaUpgrades MetaUpgrades => _inventoryService.Inventory.UnitsUpgrades;
+
         public void OnWorldSetup()
         {
-            _repository.Set(SquadUpgradeState.Create());
         }
 
-        public void AddRandomUpgrade()
+        public bool IsMaxUpgradeLevel(string upgradeId)
         {
-            Upgrade(_config.GetUpgradeBranchIds().ToList().Random());
-        } 
-        public void ApplyAllUpgrades()
-        {
-            foreach (string upgradeBranchId in _config.GetUpgradeBranchIds()) {
-                var upgradeBranchConfig = _config.GetUpgradeBranch(upgradeBranchId);
-                for (int i = 0; i < upgradeBranchConfig.MaxLevel; i++) {
-                    Upgrade(upgradeBranchId);
-                }
-            }
+            return MetaUpgrades.GetUpgradeLevel(upgradeId) >= _constantsConfig.MaxMetaUpgradeLevel;
         }
+
         public void Upgrade(string upgradeId)
         {
+            if (IsMaxUpgradeLevel(upgradeId)) {
+                this.Logger().Error($"Meta upgrade error, upgrade: {upgradeId} is max level, level:{MetaUpgrades.GetUpgradeLevel(upgradeId)}");
+                return;
+            }
             _inventoryService.AddUpgrade(upgradeId);
-        }
-        public void Upgrade(string upgradeId)
-        {
-            _inventoryService.AddUpgrade(upgradeId);
-        }
-        public void AddUnit(string unitId)
-        {
-            var unit = _unitFactory.CreatePlayerUnit(unitId);
-            AddExistingModifiers(unit);
-        }
-        private void ApplyUpgrade(string upgradeBranchId, int level)
-        {
-            var upgradeBranch = _config.GetUpgradeBranch(upgradeBranchId);
-            var upgradeConfig = upgradeBranch.GetLevel(level);
-            
-            switch (upgradeConfig.Type)
-            {
-                case UpgradeType.Unit:
-                    Assert.IsFalse(upgradeConfig.IsTargetAllUnits);
-                    AddUnit(upgradeConfig.TargetId);
-                    break;
-                case UpgradeType.Modifier: {
-                    AddModifier(upgradeConfig);
-                    break;
-                }
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            ApplyUpgrade(upgradeId);
         }
 
-        private void AddModifier(UpgradeLevelConfig upgradeLevelConfig)
+        private void ApplyUpgrade(string upgradeId)
         {
-            var modifierConfig = _modifierConfigs.Get(upgradeLevelConfig.ModifierId);
-            var modifier = _modifierFactory.Create(modifierConfig.ModifierConfig);
-            _world.Squad.AddModifier(modifier, modifierConfig.Target, upgradeLevelConfig.TargetId);
-        }
-
-       
-
-        private void AddExistingModifiers(Unit newUnit)
-        {
-            var unitId = newUnit.Model.Id;
-            var existingUpgrades = new List<Tuple<string, int>>();
-            existingUpgrades.AddRange(GetUnitUpgrades(unitId));
-            existingUpgrades.AddRange(GetAbilitiesUpgrades(unitId));
-            
-            foreach (var (upgradeId, level) in existingUpgrades)
-            {
-                var upgradeConfig = _config.GetUpgradeConfig(upgradeId, level);
-                if (upgradeConfig.Type == UpgradeType.Unit) continue;
-                
-                var modifierConfig = _modifierConfigs.Get(upgradeConfig.ModifierId);
-                if (modifierConfig.Target == ModifierTarget.Squad) continue;
-                
-                var modifier = _modifierFactory.Create(modifierConfig.ModifierConfig);
-                newUnit.AddModifier(modifier);
-            }
-        }
-
-        private IEnumerable<Tuple<string, int>> GetAbilitiesUpgrades(string unitId)
-        {
-            foreach (var upgrade in SquadUpgradeState.Upgrades)
-            {
-                var upgradeBranch = _config.GetUpgradeBranch(upgrade.Key);
-                if (upgradeBranch.BranchType == UpgradeBranchType.Unit) continue;
-
-                for (int level = 1; level <= upgrade.Value; level++) {
-                    var levelConfig = upgradeBranch.GetLevel(level);
-                    if (levelConfig.IsValidTarget(unitId)) {
-                        yield return new Tuple<string, int>(upgrade.Key, level);
-                    }
-                }
-            }
-        }
-
-        private IEnumerable<Tuple<string, int>> GetUnitUpgrades(string unitId)
-        {
-            var unitLevel = SquadUpgradeState.GetLevel(unitId);
-            for (int level = 1; level < unitLevel; level++)
-            {
-
-                yield return new Tuple<string, int>(unitId, level);
-            }
-        }
-        private void SaveState(SquadUpgradeState state)
-        {
-            _repository.Set(state);
-        }
-        private void ResetProgress()
-        {
-            _repository.Delete();
-        }
+            var modificatorConfig = _modifierConfigs.Find(upgradeId);
+            if (modificatorConfig == null) return;
+            var modificator = _modifierFactory.Create(modificatorConfig.ModifierConfig);
+            Assert.IsNotNull(_world.Squad, "Squad is null, should call this method only inside game session");
+            _world.Squad.AddModifier(modificator, modificatorConfig.Target);
+        }  
+        
         public void OnWorldCleanUp()
         {
-            ResetProgress();
+            
         }
-
-
     }
 }

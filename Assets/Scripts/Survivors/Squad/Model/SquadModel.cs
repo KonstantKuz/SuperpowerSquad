@@ -13,16 +13,18 @@ namespace Survivors.Squad.Model
     {
         private readonly FloatModifiableParameter _speed;
         private readonly FloatModifiableParameter _collectRadius;
-        private readonly FloatModifiableParameter _startingUnitCount;
+        private readonly FloatModifiableParameter _startingUnitModifiableCount;
+        private readonly IReadOnlyReactiveProperty<int> _startingUnitCount;
 
         public SquadModel(SquadConfig config, float startingHealth, MetaParameterCalculator parameterCalculator)
         {
             _speed = new FloatModifiableParameter(Parameters.SPEED, config.Speed, this);
             _collectRadius = new FloatModifiableParameter(Parameters.COLLECT_RADIUS, config.CollectRadius, this);
-            
-            _startingUnitCount = new FloatModifiableParameter(Parameters.STARTING_UNIT_COUNT, 1, this);
-            parameterCalculator.InitParam(_startingUnitCount, this);
-            
+
+            _startingUnitModifiableCount = new FloatModifiableParameter(Parameters.STARTING_UNIT_COUNT, 1, this);
+            parameterCalculator.InitParam(_startingUnitModifiableCount, this);
+            _startingUnitCount = _startingUnitModifiableCount.ReactiveValue.Select(it => (int) it).ToReactiveProperty();
+
             HealthModel = new SquadHealthModel(this, startingHealth, parameterCalculator);
         }
 
@@ -33,7 +35,8 @@ namespace Survivors.Squad.Model
         }
 
         public IHealthModel HealthModel { get; }
-        public int StartingUnitCount => (int) _startingUnitCount.Value;
+
+        public IReadOnlyReactiveProperty<int> StartingUnitCount => _startingUnitCount;
         public IReadOnlyReactiveProperty<float> Speed => _speed.ReactiveValue;
         public IReadOnlyReactiveProperty<float> CollectRadius => _collectRadius.ReactiveValue;
     }

@@ -33,3 +33,5 @@ Speed,Speed {0},Speed {0}
 unit +1,unit +1,unit +1
 lvl,lvl {0},lvl {0}
 Level,Level {0},Level {0}
+revive,revive,revive
+restart,restart,restart

@@ -16,10 +16,9 @@ namespace Survivors.Units.Service
         [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
         [Inject] private PlayerUnitModelBuilder _playerUnitModelBuilder;
         
-        public void CreateInitialUnitsForSquad(string unitId)
+        public void CreatePlayerUnits(string unitId, int count)
         {
-            CheckSquad();
-            for (int i = 0; i < _world.Squad.Model.StartingUnitCount; i++) {
+            for (int i = 0; i < count; i++) {
                 CreatePlayerUnit(unitId);
             }
         }

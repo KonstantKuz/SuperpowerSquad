@@ -13,7 +13,9 @@ namespace Survivors.Squad.Installer
             container.Bind<SquadFactory>().AsSingle();
             container.BindInterfacesAndSelfTo<SquadProgressService>().AsSingle();
             container.BindInterfacesAndSelfTo<UpgradeService>().AsSingle();
-            container.BindInterfacesAndSelfTo<UpgradeSelectionService>().AsSingle();   
+            container.BindInterfacesAndSelfTo<UpgradeSelectionService>().AsSingle();           
+            
+            container.BindInterfacesAndSelfTo<MetaUpgradeService>().AsSingle();   
             
             container.Bind<SquadProgressRepository>().AsSingle();           
             container.Bind<SquadUpgradeRepository>().AsSingle();  

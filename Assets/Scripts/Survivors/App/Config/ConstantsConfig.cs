@@ -8,10 +8,13 @@ namespace Survivors.App.Config
         private int _healthScaleIncrementFactor;
 
         [DataMember(Name = "FirstUnit")]
-        private string _firstUnit;
+        private string _firstUnit;    
+        
+        [DataMember(Name = "MaxMetaUpgradeLevel")]
+        private int _maxMetaUpgradeLevel;
 
         public int HealthScaleIncrementFactor => _healthScaleIncrementFactor;
-
         public string FirstUnit => _firstUnit;
+        public int MaxMetaUpgradeLevel => _maxMetaUpgradeLevel;
     }
 }
