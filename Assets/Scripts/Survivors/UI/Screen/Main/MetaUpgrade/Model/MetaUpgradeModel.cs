@@ -14,7 +14,8 @@ namespace Survivors.UI.Screen.Main.MetaUpgrade.Model
 {
     public class MetaUpgradeModel
     {
-        private const string LEVEL_LOCALIZATION_ID = "lvl";
+        private const string LEVEL_LOCALIZATION_ID = "lvl";  
+        private const string UPGRADE_NAME_LOCALIZATION_PREFIX = "Meta";
 
         private readonly StringKeyedConfigCollection<ParameterUpgradeConfig> _modifierConfigs;
         private readonly MetaUpgradeService _upgradeService;
@@ -50,7 +51,7 @@ namespace Survivors.UI.Screen.Main.MetaUpgrade.Model
             var nextLevel = _upgradeService.GetLevel(id) + 1;
             return new MetaUpgradeItemModel() {
                     Id = id,
-                    Name = LocalizableText.Create(id),
+                    Name = LocalizableText.Create(UPGRADE_NAME_LOCALIZATION_PREFIX + id),
                     Level = LocalizableText.Create(LEVEL_LOCALIZATION_ID, nextLevel),
                     PriceModel = CreatePriceModel(id, nextLevel),
                     OnClick = () => _onUpgrade?.Invoke(upgradeConfig.Id),
