@@ -3,4 +3,4 @@ MaxAbilityUpgrade,2
 HealthScaleIncrementFactor,1
 FirstUnit,RocketUnit
 ReviveEnemyRemoveRadius,3
-MaxMetaUpgradeLevel,2
+MaxMetaUpgradeLevel,100
