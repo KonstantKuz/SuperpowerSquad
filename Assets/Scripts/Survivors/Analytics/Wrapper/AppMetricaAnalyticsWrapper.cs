@@ -31,9 +31,7 @@ namespace Survivors.Analytics.Wrapper
             UpdateProfileParams(eventName, eventParams, eventParamProvider);
         }
 
-        private static void UpdateProfileParams(string eventName, 
-            Dictionary<string, object> eventParams,
-            IEventParamProvider eventParamProvider)
+        private static void UpdateProfileParams(string eventName, Dictionary<string, object> eventParams, IEventParamProvider eventParamProvider)
         {
             var additionalParams = RequestAdditionalParams(eventName, eventParams, eventParamProvider);
             var profile = new YandexAppMetricaUserProfile();
@@ -95,7 +93,8 @@ namespace Survivors.Analytics.Wrapper
             {
                 Events.LEVEL_START => $"level_start_{eventParams[EventParams.LEVEL_ID]}",
                 Events.LEVEL_FINISHED => $"level_finished_{eventParams[EventParams.LEVEL_ID]}_{eventParams[EventParams.LEVEL_RESULT]}",
-                Events.LEVEL_UP => $"squad_level_{eventParams[EventParams.LEVEL_ID]}_{eventParams[EventParams.SQUAD_LEVEL]}",
+                Events.LEVEL_UP => $"squad_level_{eventParams[EventParams.LEVEL_ID]}_{eventParams[EventParams.SQUAD_LEVEL]}",           
+                Events.META_UPGRADE_LEVEL_UP => $"upgrade_buy_{eventParams[EventParams.LEVEL_ID]}",
                 _ => throw new ArgumentOutOfRangeException(nameof(eventName), eventName, null)
             };
         }

@@ -55,7 +55,19 @@ namespace Survivors.Analytics
                 impl.ReportEventWithParams(eventName, eventParams, _eventParamProvider);
             }
         }
-
+        public void ReportMetaUpgradeLevelUp(string upgradeId)
+        {
+            var eventParams = _eventParamProvider.GetParams(new[]
+            {
+                    EventParams.LEVEL_ID,
+                    EventParams.LEVEL_NUMBER,
+                    EventParams.LEVEL_LOOP,
+                    $"{EventParams.META_UPGRADE}{SEPARATOR}{upgradeId}",
+                    EventParams.TOTAL_KILLS
+            });
+            
+            ReportEventToAllImpls(Events.META_UPGRADE_LEVEL_UP, eventParams);
+        }
         public void ReportLevelUp(string upgradeBranch)
         {
             var eventParams = _eventParamProvider.GetParams(new[]
