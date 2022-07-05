@@ -5,7 +5,6 @@ using Survivors.Units.Model;
 using UniRx;
 using UnityEngine;
 using UnityEngine.Assertions;
-using ILogger = Logger.ILogger;
 
 namespace Survivors.Units.Component.Health
 {
@@ -20,8 +19,7 @@ namespace Survivors.Units.Component.Health
         public IReadOnlyReactiveProperty<float> MaxValue => _healthModel.MaxHealth;
         public IReadOnlyReactiveProperty<float> CurrentValue => _currentHealth;
         public bool DamageEnabled { get; set; }
-        
-        public event Action<DeathCause> OnDeath;
+        public event Action OnZeroHealth;
         public event Action OnDamageTaken;
         
         public void Init(IHealthModel health)
@@ -42,18 +40,10 @@ namespace Survivors.Units.Component.Health
             
             OnDamageTaken?.Invoke();
             if (_currentHealth.Value <= 0) {
-                Die();
+                OnZeroHealth?.Invoke();
             }
         }
-        
-        private void Die()
-        {
-            DamageEnabled = false;
-            OnDeath?.Invoke(DeathCause.Killed);
-            OnDeath = null;
-            OnDamageTaken = null;
-        }
-        
+
         private void ChangeHealth(float delta, bool allowOverMax = false)
         {
             var newValue = Mathf.Max(0, _currentHealth.Value + delta);
@@ -62,7 +52,7 @@ namespace Survivors.Units.Component.Health
         
         private void OnDestroy()
         {
-            OnDeath = null;
+            OnZeroHealth = null;
             OnDamageTaken = null;
             _disposable?.Dispose();
             _disposable = null;

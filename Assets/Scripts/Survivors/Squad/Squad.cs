@@ -57,7 +57,7 @@ namespace Survivors.Squad
         public void Init(SquadModel model)
         {
             Model = model;
-            _damageable.OnDeath += CheckRespawn;
+            _damageable.OnZeroHealth += CheckRespawn;
             InitializeSquadComponents(gameObject);
             IsActive = true;
         }        
@@ -90,7 +90,7 @@ namespace Survivors.Squad
             Model = null;
         }
 
-        private void CheckRespawn(DeathCause deathCause)
+        private void CheckRespawn()
         {
             OnZeroHealth?.Invoke();
         }
@@ -98,7 +98,7 @@ namespace Survivors.Squad
         public void Kill()
         {
             IsActive = false;
-            _damageable.OnDeath -= CheckRespawn;
+            _damageable.OnZeroHealth -= CheckRespawn;
             OnDeath?.Invoke();
             _units.ForEach(it => it.Kill(DeathCause.Killed));
             _units.Clear();
