@@ -14,7 +14,7 @@ using Zenject;
 namespace Survivors.Squad.Upgrade
 {
     [PublicAPI]
-    public class MetaUpgradeService : IWorldScope
+    public class MetaUpgradeService
     {
         [Inject]
         private InventoryService _inventoryService;
@@ -28,11 +28,7 @@ namespace Survivors.Squad.Upgrade
         private ConstantsConfig _constantsConfig;
 
         public UnitsMetaUpgrades MetaUpgrades => _inventoryService.Inventory.UnitsUpgrades;
-
-        public void OnWorldSetup()
-        {
-        }
-
+        
         public bool IsMaxLevel(string upgradeId)
         {
             return MetaUpgrades.GetUpgradeLevel(upgradeId) >= _constantsConfig.MaxMetaUpgradeLevel;
@@ -65,10 +61,6 @@ namespace Survivors.Squad.Upgrade
             var modificator = _modifierFactory.Create(modificatorConfig.ModifierConfig);
             Assert.IsNotNull(_world.Squad, "Squad is null, should call this method only inside game session");
             _world.Squad.AddModifier(modificator, modificatorConfig.Target);
-        }
-        public void OnWorldCleanUp()
-        {
-            
         }
     }
 }
