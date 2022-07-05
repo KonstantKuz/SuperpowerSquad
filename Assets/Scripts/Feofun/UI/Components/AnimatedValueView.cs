@@ -7,8 +7,14 @@ namespace Feofun.UI.Components
     {
         [SerializeField] 
         protected float _animationTime = 0.5f;
+
+        [SerializeField]
+        private bool _isIndependentUpdate;
+        
         protected Tweener _currentTween;
         protected bool _isValueInitialized;
+
+        public bool IsIndependentUpdate => _isIndependentUpdate;
         
         public void Reset() => _isValueInitialized = false;
 

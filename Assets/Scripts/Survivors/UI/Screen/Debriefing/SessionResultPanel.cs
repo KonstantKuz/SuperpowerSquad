@@ -68,7 +68,6 @@ namespace Survivors.UI.Screen.Debriefing
 
         private void InitUnitProgressView(float barProgress)
         {
-            _unitProgressView.IsIndependentUpdate = true;
             _unitProgressView.SetData(barProgress);
             var textProgress = barProgress * 100f;
             _unitProgressText.SetData((int) textProgress);
