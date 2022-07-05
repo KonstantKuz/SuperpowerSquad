@@ -50,6 +50,7 @@ namespace Survivors.Squad
         public float SquadRadius { get; private set; }
         public bool IsMoving => _joystick.Direction.sqrMagnitude > 0;
         public Vector3 MoveDirection => new Vector3(_joystick.Horizontal, 0, _joystick.Vertical);
+        public Vector3 Position => Destination.transform.position;
 
         public event Action OnZeroHealth;
         public event Action OnDeath;

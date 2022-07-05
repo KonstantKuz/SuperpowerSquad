@@ -50,7 +50,7 @@ namespace Survivors.UI.Dialog.ReviveDialog
 
         private void KillEnemiesAroundSquad()
         {
-            var enemiesNearby = _unitService.GetUnitsInRadius(_world.Squad.transform.position, UnitType.ENEMY,
+            var enemiesNearby = _unitService.GetUnitsInRadius(_world.Squad.Position, UnitType.ENEMY,
                 _constantsConfig.ReviveEnemyRemoveRadius).ToList();
             enemiesNearby.ForEach(it => it.Kill(DeathCause.Removed));
         }
