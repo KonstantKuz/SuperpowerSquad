@@ -39,6 +39,7 @@ namespace Survivors.UI.Screen.Main.MetaUpgrade
                 return;
             }
             _upgradeService.Upgrade(upgradeId);
+            _model.RebuildUpgradeItem(upgradeId);
         }
 
         private void OnDisable()

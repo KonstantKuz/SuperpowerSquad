@@ -8,6 +8,7 @@ using Survivors.Shop.Service;
 using Survivors.Squad.Upgrade;
 using Survivors.UI.Components.PriceButton;
 using Survivors.Util;
+using UniRx;
 
 namespace Survivors.UI.Screen.Main.MetaUpgrade.Model
 {
@@ -15,12 +16,15 @@ namespace Survivors.UI.Screen.Main.MetaUpgrade.Model
     {
         private const string LEVEL_LOCALIZATION_ID = "lvl";
 
+        private readonly StringKeyedConfigCollection<ParameterUpgradeConfig> _modifierConfigs;
         private readonly MetaUpgradeService _upgradeService;
         private readonly UpgradeShopService _shopService;
 
-        private readonly List<MetaUpgradeItemModel> _upgrades;
-
-        public IReadOnlyCollection<MetaUpgradeItemModel> Upgrades => _upgrades;
+        private readonly Action<string> _onUpgrade;
+        private readonly List<ReactiveProperty<MetaUpgradeItemModel>> _upgrades;
+        
+        public IReadOnlyCollection<IObservable<MetaUpgradeItemModel>> Upgrades => _upgrades;
+        
 
         public MetaUpgradeModel(StringKeyedConfigCollection<ParameterUpgradeConfig> modifierConfigs,
                                 MetaUpgradeService upgradeService,
@@ -29,10 +33,18 @@ namespace Survivors.UI.Screen.Main.MetaUpgrade.Model
         {
             _upgradeService = upgradeService;
             _shopService = shopService;
-            _upgrades = modifierConfigs.Select(id => BuildUpgradeItemModel(id, onUpgrade)).ToList();
+            _modifierConfigs = modifierConfigs;
+            _onUpgrade = onUpgrade;
+            _upgrades = modifierConfigs.Select(id => new ReactiveProperty<MetaUpgradeItemModel>(BuildUpgradeItemModel(id))).ToList();
         }
 
-        private MetaUpgradeItemModel BuildUpgradeItemModel(ParameterUpgradeConfig upgradeConfig, Action<string> onUpgrade)
+        public void RebuildUpgradeItem(string upgradeId)
+        {
+            var property = _upgrades.First(it => it.Value.Id == upgradeId);
+            property.SetValueAndForceNotify(BuildUpgradeItemModel(_modifierConfigs.Get(upgradeId)));
+        }
+
+        private MetaUpgradeItemModel BuildUpgradeItemModel(ParameterUpgradeConfig upgradeConfig)
         {
             var id = upgradeConfig.Id;
             var nextLevel = _upgradeService.GetLevel(id) + 1;
@@ -41,7 +53,7 @@ namespace Survivors.UI.Screen.Main.MetaUpgrade.Model
                     Name = LocalizableText.Create(id),
                     Level = LocalizableText.Create(LEVEL_LOCALIZATION_ID, nextLevel),
                     PriceModel = CreatePriceModel(id, nextLevel),
-                    OnClick = () => onUpgrade?.Invoke(upgradeConfig.Id),
+                    OnClick = () => _onUpgrade?.Invoke(upgradeConfig.Id),
             };
         }
 
