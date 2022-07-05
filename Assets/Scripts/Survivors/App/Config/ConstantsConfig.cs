@@ -10,8 +10,13 @@ namespace Survivors.App.Config
         [DataMember(Name = "FirstUnit")]
         private string _firstUnit;
 
+        [DataMember(Name = "ReviveEnemyRemoveRadius")]
+        private float _reviveEnemyRemoveRadius;
+
         public int HealthScaleIncrementFactor => _healthScaleIncrementFactor;
 
         public string FirstUnit => _firstUnit;
+
+        public float ReviveEnemyRemoveRadius => _reviveEnemyRemoveRadius;
     }
 }

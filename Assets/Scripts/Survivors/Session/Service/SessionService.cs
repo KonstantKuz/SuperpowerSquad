@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using Feofun.Config;
+using Feofun.UI.Dialog;
 using Logger.Extension;
 using SuperMaxim.Messaging;
 using Survivors.App.Config;
@@ -12,6 +13,7 @@ using Survivors.Session.Config;
 using Survivors.Session.Messages;
 using Survivors.Session.Model;
 using Survivors.Squad;
+using Survivors.UI.Dialog.ReviveDialog;
 using Survivors.Units;
 using Survivors.Units.Service;
 using UniRx;
@@ -38,6 +40,7 @@ namespace Survivors.Session.Service
         [Inject] private PlayerProgressService _playerProgressService;
         [Inject] private Analytics.Analytics _analytics;
         [Inject] private ConstantsConfig _constantsConfig;
+        [Inject] private DialogManager _dialogManager;
         
         private PlayerProgress PlayerProgress => _playerProgressService.Progress;
         public Model.Session Session => _repository.Require();
@@ -75,6 +78,7 @@ namespace Survivors.Session.Service
         {
             var squad = _squadFactory.CreateSquad();
             _world.Squad = squad;
+            squad.OnZeroHealth += OnSquadZeroHealth;
             squad.OnDeath += OnSquadDeath;
         }
         private void SpawnUnits()
@@ -97,10 +101,16 @@ namespace Survivors.Session.Service
             }
         }
 
+        private void OnSquadZeroHealth()
+        {
+            _dialogManager.Show<ReviveDialog>();
+        }
+
         private void OnSquadDeath()
         {
             EndSession(UnitType.ENEMY);
         }
+        
         private void EndSession(UnitType winner)
         {
             Dispose();
@@ -117,7 +127,7 @@ namespace Survivors.Session.Service
         {
             _unitService.OnEnemyUnitDeath -= OnEnemyUnitDeath;
             if (_world.Squad != null) {
-                _world.Squad.OnDeath -= OnSquadDeath;
+                _world.Squad.OnZeroHealth -= OnSquadZeroHealth;
             }
         }
         public void OnWorldCleanUp()

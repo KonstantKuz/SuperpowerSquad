@@ -86,5 +86,10 @@ namespace Survivors.Units.Component.Health
             Assert.IsTrue(value >= 0);
             ChangeHealth(value, allowOverMax);
         }
+
+        public void Restore()
+        {
+            Add(_healthModel.MaxHealth.Value);
+        }
     }
 }
