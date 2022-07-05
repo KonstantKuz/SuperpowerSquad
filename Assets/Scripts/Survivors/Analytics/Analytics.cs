@@ -90,7 +90,7 @@ namespace Survivors.Analytics
                 EventParams.TOTAL_KILLS
             });
             
-            eventParams[EventParams.LEVEL_RESULT] = isPlayerWinner ? "win" : "lose";
+            eventParams[EventParams.LEVEL_RESULT] = isPlayerWinner ? LevelResult.WIN : LevelResult.LOSE;
             
             ReportEventToAllImpls(Events.LEVEL_FINISHED, eventParams);
         }

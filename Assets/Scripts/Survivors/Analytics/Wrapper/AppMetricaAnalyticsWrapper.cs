@@ -35,12 +35,7 @@ namespace Survivors.Analytics.Wrapper
             Dictionary<string, object> eventParams,
             IEventParamProvider eventParamProvider)
         {
-            var additionalParams = eventParamProvider.GetParams(new []
-            {
-                EventParams.WINS,
-                EventParams.DEFEATS,
-                EventParams.PASS_NUMBER
-            });
+            var additionalParams = RequestAdditionalParams(eventName, eventParams, eventParamProvider);
             var profile = new YandexAppMetricaUserProfile();
             var updates = new List<YandexAppMetricaUserProfileUpdate>
             {
@@ -54,6 +49,34 @@ namespace Survivors.Analytics.Wrapper
             };
             profile.ApplyFromArray(updates);
             AppMetrica.Instance.ReportUserProfile(profile);
+        }
+
+        private static Dictionary<string, object> RequestAdditionalParams(string eventName, Dictionary<string, object> eventParams,
+            IEventParamProvider eventParamProvider)
+        {
+            var additionalParams = eventParamProvider.GetParams(new[]
+            {
+                EventParams.WINS,
+                EventParams.DEFEATS,
+                EventParams.PASS_NUMBER
+            });
+            if (eventName == Events.LEVEL_FINISHED)
+            {
+                AddLevelResultToWinDefeatCount(eventParams, additionalParams);
+            }
+
+            return additionalParams;
+        }
+
+        private static void AddLevelResultToWinDefeatCount(IReadOnlyDictionary<string, object> eventParams, IDictionary<string, object> additionalParams)
+        {
+            additionalParams[EventParams.WINS] = Convert.ToInt32(additionalParams[EventParams.WINS]) +
+                                                 ((string)eventParams[EventParams.LEVEL_RESULT] == LevelResult.WIN ? 1 : 0);
+            
+            additionalParams[EventParams.DEFEATS] = Convert.ToInt32(additionalParams[EventParams.DEFEATS]) +
+                                                    ((string)eventParams[EventParams.LEVEL_RESULT] == LevelResult.LOSE
+                                                        ? 1
+                                                        : 0);
         }
 
         private static YandexAppMetricaUserProfileUpdate BuildFloatAttribute(string name, object value)
