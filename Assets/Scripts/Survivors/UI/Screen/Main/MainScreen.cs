@@ -1,11 +1,7 @@
-using System;
 using System.Collections;
-using Feofun.UI.Dialog;
 using Feofun.UI.Screen;
 using JetBrains.Annotations;
-using SuperMaxim.Messaging;
 using Survivors.Session.Service;
-using Survivors.UI.Dialog.PauseDialog;
 using Survivors.UI.Screen.World;
 using UniRx;
 using UniRx.Triggers;

@@ -1,6 +1,4 @@
 using System;
-using Survivors.Shop.Config;
-using Survivors.Util;
 
 namespace Survivors.UI.Components.PriceButton
 {
@@ -13,15 +11,5 @@ namespace Survivors.UI.Components.PriceButton
         public string CurrencyIconPath;
         public bool ShowIcon => CurrencyIconPath != null;
         
-        /*public static PriceButtonModel FromProduct(ProductConfig product, ShopService shop)
-        {
-            return new PriceButtonModel() {
-                    Price = product.CurrencyCount,
-                    PriceText = product.CurrencyCount.ToString(),
-                    Enabled = true,
-                    CanBuy = shop.HasEnoughCurrencyAsObservable(product.ProductId),
-                    CurrencyIconPath = IconPath.GetCurrency(product.Currency.ToString())
-            };
-        }*/
     }
 }

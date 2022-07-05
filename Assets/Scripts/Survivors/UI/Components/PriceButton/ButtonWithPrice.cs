@@ -1,5 +1,6 @@
 ﻿using System;
 using Feofun.UI.Components.Button;
+using TMPro;
 using UniRx;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,7 +10,7 @@ namespace Survivors.UI.Components.PriceButton
     public sealed class ButtonWithPrice : MonoBehaviour
     {
         [SerializeField] 
-        private Text _priceText;
+        private TextMeshProUGUI _priceText;
         [SerializeField]
         private ActionButton _actionButton; 
         [SerializeField]

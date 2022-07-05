@@ -33,21 +33,27 @@ namespace Survivors.Squad.Upgrade
         {
         }
 
-        public bool IsMaxUpgradeLevel(string upgradeId)
+        public bool IsMaxLevel(string upgradeId)
         {
             return MetaUpgrades.GetUpgradeLevel(upgradeId) >= _constantsConfig.MaxMetaUpgradeLevel;
+        }  
+        public int GetLevel(string upgradeId)
+        {
+            return MetaUpgrades.GetUpgradeLevel(upgradeId);
+        }   
+        public int GetNextLevel(string upgradeId)
+        {
+            return MetaUpgrades.GetUpgradeLevel(upgradeId) + 1;
         }
-
         public void Upgrade(string upgradeId)
         {
-            if (IsMaxUpgradeLevel(upgradeId)) {
+            if (IsMaxLevel(upgradeId)) {
                 this.Logger().Error($"Meta upgrade error, upgrade: {upgradeId} is max level, level:{MetaUpgrades.GetUpgradeLevel(upgradeId)}");
                 return;
             }
             _inventoryService.AddUpgrade(upgradeId);
             ApplyUpgrade(upgradeId);
         }
-
         private void ApplyUpgrade(string upgradeId)
         {
             var modificatorConfig = _modifierConfigs.Find(upgradeId);
@@ -55,8 +61,7 @@ namespace Survivors.Squad.Upgrade
             var modificator = _modifierFactory.Create(modificatorConfig.ModifierConfig);
             Assert.IsNotNull(_world.Squad, "Squad is null, should call this method only inside game session");
             _world.Squad.AddModifier(modificator, modificatorConfig.Target);
-        }  
-        
+        }
         public void OnWorldCleanUp()
         {
             
