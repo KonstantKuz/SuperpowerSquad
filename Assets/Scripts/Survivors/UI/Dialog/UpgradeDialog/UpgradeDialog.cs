@@ -1,6 +1,7 @@
 ﻿using Feofun.Config;
 using Feofun.UI.Components;
 using Feofun.UI.Dialog;
+using Survivors.Config;
 using Survivors.Modifiers.Config;
 using Survivors.Squad.Upgrade;
 using Survivors.Squad.Upgrade.Config;
@@ -19,7 +20,8 @@ namespace Survivors.UI.Dialog.UpgradeDialog
         [Inject] private DialogManager _dialogManager;
         [Inject] private UpgradeService _upgradeService;
         [Inject] private UpgradesConfig _upgradesConfig;
-        [Inject] private StringKeyedConfigCollection<ParameterUpgradeConfig> _modifierConfigs;
+        [Inject(Id = Configs.MODIFIERS)]
+        private StringKeyedConfigCollection<ParameterUpgradeConfig> _modifierConfigs;
         
         private UpgradeDialogModel _model;
 

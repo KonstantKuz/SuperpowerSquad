@@ -1,11 +1,10 @@
 ﻿using Feofun.Config;
+using ModestTree;
 using Survivors.Extension;
 using Survivors.Location;
 using Survivors.Location.Service;
 using Survivors.Units.Enemy.Config;
 using Survivors.Units.Enemy.Model;
-using Survivors.Units.Player.Config;
-using Survivors.Units.Player.Model;
 using Zenject;
 
 namespace Survivors.Units.Service
@@ -15,15 +14,28 @@ namespace Survivors.Units.Service
         [Inject] private World _world;
         [Inject] private WorldObjectFactory _worldObjectFactory;
         [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
-        [Inject] private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
+        [Inject] private PlayerUnitModelBuilder _playerUnitModelBuilder;
         
+        public void CreateInitialUnitsForSquad(string unitId)
+        {
+            CheckSquad();
+            for (int i = 0; i < _world.Squad.Model.StartingUnitCount; i++) {
+                CreatePlayerUnit(unitId);
+            }
+        }
+
+        private void CheckSquad() => Assert.IsNotNull(_world.Squad, "Squad is null, should call this method only inside game session");
+
         public Unit CreatePlayerUnit(string unitId)
         {
+            CheckSquad();
             var unit = _worldObjectFactory.CreateObject(unitId).RequireComponent<Unit>();
-            ConfigurePlayerUnit(unit);
+            var model = _playerUnitModelBuilder.BuildUnit(unitId);
+            unit.Init(model);
             _world.Squad.AddUnit(unit);
             return unit;
         }
+        
         public Unit CreateEnemy(string unitId, int level)
         {
             var enemy = _worldObjectFactory.CreateObject(unitId).RequireComponent<Unit>();
@@ -31,12 +43,6 @@ namespace Survivors.Units.Service
             var model = new EnemyUnitModel(config, level);
             enemy.Init(model);
             return enemy;
-        }
-        private void ConfigurePlayerUnit(Unit unit)
-        {
-            var config = _playerUnitConfigs.Get(unit.ObjectId);
-            var model = new PlayerUnitModel(config);
-            unit.Init(model);
         }
     }
 }

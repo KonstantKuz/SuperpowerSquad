@@ -10,7 +10,8 @@ namespace Survivors.Units.Installer
         {
             container.Bind<UnitFactory>().AsSingle();
             container.Bind<TargetService>().AsSingle();
-            container.Bind<UnitService>().AsSingle();
+            container.Bind<UnitService>().AsSingle();     
+            container.Bind<PlayerUnitModelBuilder>().AsSingle();
         }
     }
 }

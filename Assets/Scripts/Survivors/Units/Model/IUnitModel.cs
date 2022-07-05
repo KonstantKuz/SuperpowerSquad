@@ -1,4 +1,3 @@
-using Feofun.Modifiers;
 
 namespace Survivors.Units.Model
 {
@@ -7,6 +6,5 @@ namespace Survivors.Units.Model
         string Id { get; }
         IHealthModel HealthModel { get; }
         IAttackModel AttackModel { get; }
-        void AddModifier(IModifier modifier);
     }
 }
