@@ -20,6 +20,8 @@ namespace Survivors.Location
         [CanBeNull]
         public Squad.Squad Squad { get; set; }
 
+        public bool IsPaused => Time.timeScale == 0;
+
         public Vector3 GetGroundIntersection(Ray withRay)
         {
             var plane = new Plane(Ground.up, Ground.position);
