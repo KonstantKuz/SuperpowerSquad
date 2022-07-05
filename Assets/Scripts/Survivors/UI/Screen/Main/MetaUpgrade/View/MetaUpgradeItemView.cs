@@ -16,7 +16,10 @@ namespace Survivors.UI.Screen.Main.MetaUpgrade.View
         [SerializeField] 
         private Image _icon;
         [SerializeField]
-        private ButtonWithPrice _buttonWithPrice;
+        private ButtonWithPrice _buttonWithPrice;     
+        
+        [SerializeField]
+        private GameObject _maxLevelContainer;
         
         
         public void Init(MetaUpgradeItemModel model)
@@ -24,7 +27,9 @@ namespace Survivors.UI.Screen.Main.MetaUpgrade.View
             _name.SetTextFormatted(model.Name);
             _level.SetTextFormatted(model.Level);
             _icon.sprite = Resources.Load<Sprite>(IconPath.GetMetaUpgrade(model.Id));
+            _maxLevelContainer.SetActive(model.IsMaxLevel);
             _buttonWithPrice.Init(model.PriceModel, model.OnClick);
+            _buttonWithPrice.gameObject.SetActive(!model.IsMaxLevel);
         }
     }
 }

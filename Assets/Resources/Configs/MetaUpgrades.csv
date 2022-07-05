@@ -1,4 +1,4 @@
 Id,Modifier,ParameterName,Value,Target
-AttackDamage,AddPercent,AttackDamage,1,Unit
 StartingUnitCount,AddValue,StartingUnitCount,1,Squad
+AttackDamage,AddPercent,AttackDamage,1,Unit
 Health,AddValue,Health,50,Squad

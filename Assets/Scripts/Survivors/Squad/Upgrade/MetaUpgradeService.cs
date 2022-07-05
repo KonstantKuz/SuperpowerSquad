@@ -43,7 +43,11 @@ namespace Survivors.Squad.Upgrade
         }   
         public int GetNextLevel(string upgradeId)
         {
-            return MetaUpgrades.GetUpgradeLevel(upgradeId) + 1;
+            var level = MetaUpgrades.GetUpgradeLevel(upgradeId);
+            if (IsMaxLevel(upgradeId)) {
+                return level;
+            }
+            return level + 1;
         }
         public void Upgrade(string upgradeId)
         {
