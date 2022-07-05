@@ -1,6 +1,6 @@
-﻿using Feofun.UI.Components.Button;
+﻿using System.Linq;
+using Feofun.UI.Components.Button;
 using Feofun.UI.Dialog;
-using SuperMaxim.Core.Extensions;
 using Survivors.App.Config;
 using Survivors.Location;
 using Survivors.Units;
@@ -50,9 +50,9 @@ namespace Survivors.UI.Dialog.ReviveDialog
 
         private void KillEnemiesAroundSquad()
         {
-            _unitService.GetUnitsInRadius(_world.Squad.transform.position, UnitType.ENEMY,
-                _constantsConfig.ReviveEnemyRemoveRadius)
-                .ForEach(it => it.Kill(DeathCause.Removed));
+            var enemiesNearby = _unitService.GetUnitsInRadius(_world.Squad.transform.position, UnitType.ENEMY,
+                _constantsConfig.ReviveEnemyRemoveRadius).ToList();
+            enemiesNearby.ForEach(it => it.Kill(DeathCause.Removed));
         }
     }
 }
