@@ -39,5 +39,12 @@ namespace Survivors.Player.Progress.Service
             progress.IncreasePassCount(levelId);
             SetProgress(progress);
         }
+
+        public void AddKill()
+        {
+            var progress = Progress;
+            progress.Kills++;
+            SetProgress(progress);  //TODO: check that it's not very slow 
+        }
     }
 }

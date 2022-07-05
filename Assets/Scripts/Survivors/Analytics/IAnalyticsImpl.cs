@@ -7,6 +7,7 @@ namespace Survivors.Analytics
     public interface IAnalyticsImpl
     {
         void Init();
-        void ReportEventWithParams(string eventName, [CanBeNull] Dictionary<string, object> eventParams);
+        void ReportEventWithParams(string eventName, [CanBeNull] Dictionary<string, object> eventParams,
+            IEventParamProvider eventParamProvider);
     }
 }
