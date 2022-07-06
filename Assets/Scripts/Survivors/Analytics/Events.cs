@@ -7,5 +7,6 @@
         public const string LEVEL_UP = "squad_level";    
         public const string META_UPGRADE_LEVEL_UP = "upgrade_buy";
         public const string LEVEL_FINISHED = "level_finish";
+        public const string REVIVE = "revive";
     }
 }

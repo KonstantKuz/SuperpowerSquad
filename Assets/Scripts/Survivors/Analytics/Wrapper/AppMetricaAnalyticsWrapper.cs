@@ -45,8 +45,18 @@ namespace Survivors.Analytics.Wrapper
                 BuildFloatAttribute("levels", eventParams[EventParams.LEVEL_NUMBER]),
                 BuildFloatAttribute("level_retry", additionalParams[EventParams.PASS_NUMBER])
             };
+            TryAddReviveCount(eventParams, updates);
             profile.ApplyFromArray(updates);
             AppMetrica.Instance.ReportUserProfile(profile);
+        }
+
+        private static void TryAddReviveCount(IReadOnlyDictionary<string, object> eventParams, ICollection<YandexAppMetricaUserProfileUpdate> updates)
+        {
+            if (eventParams.ContainsKey(EventParams.REVIVE_COUNT))
+            {
+                updates.Add(BuildFloatAttribute($"revives_{Convert.ToInt32(eventParams[EventParams.LEVEL_ID])}",
+                    eventParams[EventParams.REVIVE_COUNT]));
+            }
         }
 
         private static Dictionary<string, object> RequestAdditionalParams(string eventName, Dictionary<string, object> eventParams,
@@ -95,6 +105,7 @@ namespace Survivors.Analytics.Wrapper
                 Events.LEVEL_FINISHED => $"level_finished_{eventParams[EventParams.LEVEL_ID]}_{eventParams[EventParams.LEVEL_RESULT]}",
                 Events.LEVEL_UP => $"squad_level_{eventParams[EventParams.LEVEL_ID]}_{eventParams[EventParams.SQUAD_LEVEL]}",           
                 Events.META_UPGRADE_LEVEL_UP => "upgrade_buy",
+                Events.REVIVE => $"revive_{eventParams[EventParams.LEVEL_ID]}_{eventParams[EventParams.REVIVE_COUNT]}",
                 _ => throw new ArgumentOutOfRangeException(nameof(eventName), eventName, null)
             };
         }

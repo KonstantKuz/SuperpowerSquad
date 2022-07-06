@@ -50,13 +50,15 @@ namespace Survivors.Squad
         public float SquadRadius { get; private set; }
         public bool IsMoving => _joystick.Direction.sqrMagnitude > 0;
         public Vector3 MoveDirection => new Vector3(_joystick.Horizontal, 0, _joystick.Vertical);
-        
-        public event Action OnDeath;        
+        public Vector3 Position => Destination.transform.position;
+
+        public event Action OnZeroHealth;
+        public event Action OnDeath;
         
         public void Init(SquadModel model)
         {
             Model = model;
-            _damageable.OnDeath += Kill;
+            _damageable.OnZeroHealth += CheckRespawn;
             InitializeSquadComponents(gameObject);
             IsActive = true;
         }        
@@ -87,14 +89,19 @@ namespace Survivors.Squad
         {
             _units.Clear();
             Model = null;
-        }        
+        }
+
+        private void CheckRespawn()
+        {
+            OnZeroHealth?.Invoke();
+        }
         
-        private void Kill(DeathCause deathCause)
+        public void Kill()
         {
             IsActive = false;
-            _damageable.OnDeath -= Kill;
-            _units.ForEach(it => it.Kill(deathCause));
+            _damageable.OnZeroHealth -= CheckRespawn;
             OnDeath?.Invoke();
+            _units.ForEach(it => it.Kill(DeathCause.Killed));
             _units.Clear();
         }
         public void AddUnit(Unit unit)
@@ -204,6 +211,10 @@ namespace Survivors.Squad
             UpdateSquadRadius();
         }
 
-           
+
+        public void RestoreHealth()
+        {
+            GetComponent<Health>().Restore();
+        }
     }
 }

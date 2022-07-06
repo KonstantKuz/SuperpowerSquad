@@ -8,7 +8,7 @@ namespace Survivors.Units.Player.Damageable
     public class DamageableChild : MonoBehaviour, IDamageable
     {
         private IDamageable _parentDamageable;
-        public event Action<DeathCause> OnDeath;
+        public event Action OnZeroHealth;
         public event Action OnDamageTaken;
         public bool DamageEnabled { get; set; } = true;
         private IDamageable ParentDamageable
@@ -17,15 +17,14 @@ namespace Survivors.Units.Player.Damageable
             {
                 if (_parentDamageable == null) {
                     _parentDamageable = transform.parent.gameObject.RequireComponentInParent<IDamageable>();
-                    _parentDamageable.OnDeath += OnParentDeath;
+                    _parentDamageable.OnZeroHealth += OnParentZeroHealth;
                 }
                 return _parentDamageable;
             }
         }
-        private void OnParentDeath(DeathCause deathCause)
+        private void OnParentZeroHealth()
         {
-            _parentDamageable.OnDeath -= OnParentDeath;
-            OnDeath?.Invoke(deathCause);
+            OnZeroHealth?.Invoke();
         }
 
         public void TakeDamage(float damage)
@@ -37,5 +36,12 @@ namespace Survivors.Units.Player.Damageable
             OnDamageTaken?.Invoke();
         }
 
+        private void OnDestroy()
+        {
+            if (_parentDamageable != null)
+            {
+                _parentDamageable.OnZeroHealth -= OnParentZeroHealth;
+            }
+        }
     }
 }

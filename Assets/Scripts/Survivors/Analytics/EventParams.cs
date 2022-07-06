@@ -18,5 +18,6 @@
         public const string TOTAL_KILLS = "total_kills";
         public const string WINS = "wins";
         public const string DEFEATS = "defeats";
+        public const string REVIVE_COUNT = "revive";
     }
 }

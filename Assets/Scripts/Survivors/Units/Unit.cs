@@ -74,7 +74,11 @@ namespace Survivors.Units
             _deathEventReceivers = GetComponentsInChildren<IUnitDeathEventReceiver>();
             _deactivateEventReceivers = GetComponentsInChildren<IUnitDeactivateEventReceiver>();
 
-            _damageable.OnDeath += Kill;
+            if (UnitType == UnitType.ENEMY)
+            {
+                _damageable.OnZeroHealth += DieOnZeroHealth;
+            }
+
             IsActive = true;
             _spawnTime = Time.time;
             Health = GetComponent<Health>();
@@ -91,12 +95,18 @@ namespace Survivors.Units
         [Button]
         public void Kill(DeathCause deathCause)
         {
-            _damageable.OnDeath -= Kill;
+            _damageable.DamageEnabled = false;
+            _damageable.OnZeroHealth -= DieOnZeroHealth;
             IsActive = false;
             _deathEventReceivers.ForEach(it => it.OnDeath(deathCause));
             _death.PlayDeath();
             OnDeath?.Invoke(this, deathCause);
             OnDeath = null;
+        }
+
+        private void DieOnZeroHealth()
+        {
+            Kill(DeathCause.Killed);
         }
 
         private void UpdateComponents()

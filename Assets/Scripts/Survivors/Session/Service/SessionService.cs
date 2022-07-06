@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Feofun.Config;
 using Feofun.Extension;
+using Feofun.UI.Dialog;
 using Logger.Extension;
 
 using SuperMaxim.Messaging;
@@ -14,6 +15,7 @@ using Survivors.Session.Config;
 using Survivors.Session.Messages;
 using Survivors.Session.Model;
 using Survivors.Squad;
+using Survivors.UI.Dialog.ReviveDialog;
 using Survivors.Units;
 using Survivors.Units.Service;
 using UniRx;
@@ -41,6 +43,7 @@ namespace Survivors.Session.Service
         [Inject] private PlayerProgressService _playerProgressService;
         [Inject] private Analytics.Analytics _analytics;
         [Inject] private ConstantsConfig _constantsConfig;
+        [Inject] private DialogManager _dialogManager;
         
         private CompositeDisposable _disposable;
         
@@ -81,6 +84,7 @@ namespace Survivors.Session.Service
         {
             var squad = _squadFactory.CreateSquad();
             _world.Squad = squad;
+            squad.OnZeroHealth += OnSquadZeroHealth;
             squad.OnDeath += OnSquadDeath;
             squad.Model.StartingUnitCount.Diff().Subscribe(CreatePlayerUnits).AddTo(_disposable);
         }
@@ -113,10 +117,16 @@ namespace Survivors.Session.Service
             }
         }
 
+        private void OnSquadZeroHealth()
+        {
+            _dialogManager.Show<ReviveDialog>();
+        }
+
         private void OnSquadDeath()
         {
             EndSession(UnitType.ENEMY);
         }
+        
         private void EndSession(UnitType winner)
         {
             Dispose();
@@ -134,14 +144,20 @@ namespace Survivors.Session.Service
             _disposable?.Dispose();
             _disposable = null;
             _unitService.OnEnemyUnitDeath -= OnEnemyUnitDeath;
-            if (_world.Squad != null) {
-                _world.Squad.OnDeath -= OnSquadDeath;
+            var squad = _world.Squad;
+            if (squad != null) {
+                squad.OnZeroHealth -= OnSquadZeroHealth;
+                squad.OnDeath -= OnSquadDeath;
             }
         }
         public void OnWorldCleanUp()
         {
             Dispose();
         }
-        
+
+        public void AddRevive()
+        {
+            Session.AddRevive();
+        }
     }
 }

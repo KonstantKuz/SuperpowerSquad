@@ -1,4 +1,3 @@
-using System;
 using DG.Tweening;
 using UnityEngine;
 
@@ -25,7 +24,6 @@ namespace Survivors.Units.Component.Health
             _damageable = gameObject.GetComponent<IDamageable>();
             _startColor = _renderer.material.GetColor(BASE_COLOR);
             _damageable.OnDamageTaken += OnDamageTakenReact;
-            _damageable.OnDeath += OnDeath;
         }
 
         private void OnDamageTakenReact()
@@ -57,7 +55,6 @@ namespace Survivors.Units.Component.Health
             return _renderer.material.DOColor(color, BASE_COLOR, _colorBlinkDuration).SetEase(ease);
         }
 
-        private void OnDeath(DeathCause _) => Dispose();
         private void OnDestroy() => Dispose();
 
         private void Dispose()
@@ -65,7 +62,6 @@ namespace Survivors.Units.Component.Health
             _scalePunch?.Kill(true); 
             _colorBlink?.Kill(true);
             _damageable.OnDamageTaken -= OnDamageTakenReact;
-            _damageable.OnDeath -= OnDeath;
         }
     }
 }
