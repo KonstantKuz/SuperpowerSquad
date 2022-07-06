@@ -95,11 +95,7 @@ namespace Survivors.Units
         [Button]
         public void Kill(DeathCause deathCause)
         {
-            if (Health != null)
-            {
-                Health.DamageEnabled = false;
-            }
-
+            _damageable.DamageEnabled = false;
             _damageable.OnZeroHealth -= DieOnZeroHealth;
             IsActive = false;
             _deathEventReceivers.ForEach(it => it.OnDeath(deathCause));
