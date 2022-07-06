@@ -1,11 +1,8 @@
-using System;
 using System.Collections;
-using Feofun.UI.Dialog;
 using Feofun.UI.Screen;
 using JetBrains.Annotations;
-using SuperMaxim.Messaging;
 using Survivors.Session.Service;
-using Survivors.UI.Dialog.PauseDialog;
+using Survivors.UI.Screen.Menu;
 using Survivors.UI.Screen.World;
 using UniRx;
 using UniRx.Triggers;
@@ -20,7 +17,8 @@ namespace Survivors.UI.Screen.Main
     {
         public const ScreenId ID = ScreenId.Main;
         public override ScreenId ScreenId => ID;
-        public override string Url => ScreenName;
+        public static readonly string URL = MenuScreen.ID + "/" + ID;
+        public override string Url => URL;
 
         [SerializeField] private LevelProgressBar _levelProgressBar;
         

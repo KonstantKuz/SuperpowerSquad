@@ -2,6 +2,7 @@
 using Survivors.Player.Progress.Model;
 using Survivors.Session.Messages;
 using Survivors.Session.Model;
+using UniRx;
 
 namespace Survivors.Player.Progress.Service
 {
@@ -9,12 +10,16 @@ namespace Survivors.Player.Progress.Service
     {
         private readonly PlayerProgressRepository _repository;
         
+        private readonly IntReactiveProperty _gameCount; 
+       
+        public IReadOnlyReactiveProperty<int> GameCount => _gameCount;
         public PlayerProgress Progress => _repository.Get() ?? PlayerProgress.Create();
 
         public PlayerProgressService(IMessenger messenger, 
                                      PlayerProgressRepository repository)
         {
             _repository = repository;
+            _gameCount = new IntReactiveProperty(Progress.GameCount);
             messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
         }
 
@@ -31,6 +36,7 @@ namespace Survivors.Player.Progress.Service
         private void SetProgress(PlayerProgress progress)
         {
             _repository.Set(progress);
+            _gameCount.Value = progress.GameCount;
         }
 
         public void OnSessionStarted(int levelId)

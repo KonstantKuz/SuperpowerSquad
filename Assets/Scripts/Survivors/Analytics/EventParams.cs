@@ -8,7 +8,8 @@
         public const string PASS_NUMBER = "pass_number";
         public const string SQUAD_LEVEL = "squad_level_number";
         public const string ENEMY_KILLED = "enemy_killed";
-        public const string UPGRADE = "upgrade";
+        public const string UPGRADE = "upgrade";      
+        public const string META_UPGRADE = "meta_upgrade";
         public const string TIME_SINCE_LEVEL_START = "time";
         public const string LEVEL_RESULT = "result";
         public const string TOTAL_ENEMY_HEALTH = "enemy_health";

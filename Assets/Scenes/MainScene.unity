@@ -509,6 +509,18 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1697553081795966949, guid: 35125c194a51b14489fcf91a7da5dd53, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2292900471282456655, guid: 35125c194a51b14489fcf91a7da5dd53, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2292900471282456655, guid: 35125c194a51b14489fcf91a7da5dd53, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3514698043046846563, guid: 35125c194a51b14489fcf91a7da5dd53, type: 3}
       propertyPath: m_Name
       value: UI
@@ -595,6 +607,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3514698043046846575, guid: 35125c194a51b14489fcf91a7da5dd53, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9210896758612948320, guid: 35125c194a51b14489fcf91a7da5dd53, type: 3}
+      propertyPath: m_SizeDelta.x
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

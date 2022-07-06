@@ -50,7 +50,7 @@ namespace Survivors.UI.Screen.World
             yield return new WaitForSeconds(_afterSessionDelay);
             _world.CleanUp();
             var debriefingModel = new DebriefingScreenModel(result, _sessionService.Session);
-            _screenSwitcher.SwitchTo(DebriefingScreen.ID.ToString(), debriefingModel);
+            _screenSwitcher.SwitchTo(DebriefingScreen.URL, debriefingModel);
         }
     }
 }

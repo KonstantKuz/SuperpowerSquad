@@ -17,10 +17,9 @@ namespace Survivors.Shop.Service
         public bool TryBuy(string upgradeId, int level)
         {
             var product = GetProductById(upgradeId);
-
             return _walletService.TryRemove(product.ProductConfig.Currency, product.GetFinalCost(level));
         }
-
+        
         public bool HasEnoughCurrency(string productId, int level)
         {
             var product = GetProductById(productId);
@@ -33,6 +32,6 @@ namespace Survivors.Shop.Service
             return _walletService.HasEnoughCurrencyAsObservable(product.ProductConfig.Currency, product.GetFinalCost(level));
         }
 
-        private UpgradeProductConfig GetProductById(string productId) => _shopConfig.Get(productId);
+        public UpgradeProductConfig GetProductById(string productId) => _shopConfig.Get(productId);
     }
 }

@@ -19,11 +19,7 @@ namespace Survivors.UI.Screen.World.SquadProgress
         
         private SquadProgressModel _model;
         private CompositeDisposable _disposable;
-
-        private void Awake()
-        {
-            _expView.IsIndependentUpdate = true;
-        }
+        
         private void OnEnable()
         {
             Dispose();

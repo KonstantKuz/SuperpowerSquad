@@ -16,8 +16,8 @@ namespace Survivors.Cheats
         
         [Inject] private LocalizationService _localizationService;     
         [Inject] private SquadProgressService _squadProgressService;
-        [Inject] private UpgradeService _upgradeService;   
-        [Inject] private InventoryService _inventoryService;
+        [Inject] private UpgradeService _upgradeService;
+        [Inject] private MetaUpgradeService _metaUpgradeService;
 
         [SerializeField] private GameObject _fpsMonitor;
         [SerializeField] private GameObject _debugConsole;
@@ -42,7 +42,7 @@ namespace Survivors.Cheats
         public void AddRandomSquadUpgrade() => _upgradeService.AddRandomUpgrade();   
         public void ApplyAllSquadUpgrades() => _upgradeService.ApplyAllUpgrades();  
         public void AddUnit(string unitId) => _upgradeService.AddUnit(unitId);
-        public void AddMetaUpgrade(string upgradeId) => _inventoryService.AddUpgrade(upgradeId);
+        public void AddMetaUpgrade(string upgradeId) => _metaUpgradeService.Upgrade(upgradeId);
         
         public void SetLanguage(string language)
         {

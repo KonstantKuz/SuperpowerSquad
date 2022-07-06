@@ -24,20 +24,23 @@ namespace Survivors.App
         [Inject] private StringKeyedConfigCollection<LevelMissionConfig> _levelsConfig;
         [Inject] private SquadProgressService _squadProgressService;
         [Inject] private SquadUpgradeRepository _squadUpgradeRepository;
-        [Inject] private UnitService _unitService;
+        [Inject] private UnitService _unitService;       
+        [Inject] private MetaUpgradeService _metaUpgradeService;
         [Inject] private World _world;
         
         
         public Dictionary<string, object> GetParams(IEnumerable<string> paramNames)
         {
-            return paramNames.ToDictionary(it => it, it => GetValue(it));
+            return paramNames.ToDictionary(it => it, GetValue);
         }
 
         private object GetValue(string paramName)
         {
-            if (paramName.StartsWith(EventParams.UPGRADE))
-            {
+            if (paramName.StartsWith(EventParams.UPGRADE)) {
                 return GetUpgrade(paramName.Split(Analytics.Analytics.SEPARATOR)[1]);
+            }   
+            if (paramName.StartsWith(EventParams.META_UPGRADE)) {
+                return GetMetaUpgrade(paramName.Split(Analytics.Analytics.SEPARATOR)[2]);
             }
 
             var playerProgress = _playerProgressService.Progress;
@@ -78,6 +81,10 @@ namespace Survivors.App
         private string GetUpgrade(string upgradeBranch)
         {
             return $"{upgradeBranch}_{_squadUpgradeRepository.Get().GetLevel(upgradeBranch)}";
+        } 
+        private string GetMetaUpgrade(string upgradeId)
+        {
+            return $"{upgradeId}_{_metaUpgradeService.GetLevel(upgradeId)}";
         }
 
         private int GetPassNumber()

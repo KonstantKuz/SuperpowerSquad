@@ -18,7 +18,7 @@ namespace Survivors.App
         {
             DOTweenInitializer.Init();
             NavMeshInitializer.Init();
-            _screenSwitcher.SwitchTo(MainScreen.ID.ToString());
+            _screenSwitcher.SwitchTo(MainScreen.URL);
             Next();
         }
     }

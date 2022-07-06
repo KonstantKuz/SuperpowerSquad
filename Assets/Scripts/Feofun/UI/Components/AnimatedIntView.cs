@@ -14,6 +14,7 @@ namespace Feofun.UI.Components
         }
 
         protected override Tweener Animate(int fromValue, int toValue, float time) =>
-                DOTween.To(() => fromValue, value => { Value = value; }, toValue, time);
+                DOTween.To(() => fromValue, value => { Value = value; }, toValue, time)
+                       .SetUpdate(IsIndependentUpdate);
     }
 }

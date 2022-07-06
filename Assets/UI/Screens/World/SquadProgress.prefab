@@ -207,6 +207,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7402654207986167683}
     m_Modifications:
+    - target: {fileID: 13781474706817937, guid: 4fdcfb7e5a4e6264cbeb6b2d96eca3ce, type: 3}
+      propertyPath: _isIndependentUpdate
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5475220072389213390, guid: 4fdcfb7e5a4e6264cbeb6b2d96eca3ce, type: 3}
       propertyPath: m_Name
       value: ProgressBar
