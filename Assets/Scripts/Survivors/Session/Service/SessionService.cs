@@ -2,7 +2,7 @@
 using Feofun.Config;
 using Feofun.Extension;
 using Logger.Extension;
-using ModestTree;
+
 using SuperMaxim.Messaging;
 using Survivors.App.Config;
 using Survivors.Enemy.Spawn;
@@ -19,6 +19,7 @@ using Survivors.Units.Service;
 using UniRx;
 using UnityEngine;
 using Zenject;
+using UnityEngine.Assertions;
 
 namespace Survivors.Session.Service
 {
@@ -86,6 +87,7 @@ namespace Survivors.Session.Service
 
         private void CreatePlayerUnits(int count)
         {
+            Assert.IsTrue(count >= 0, "Should add non-negative count of units");
             _unitFactory.CreatePlayerUnits(_constantsConfig.FirstUnit, count);
         }
 

@@ -41,7 +41,10 @@ namespace Survivors.Squad
         private SquadModel BuildSquadModel()
         {
             var startingHealth = _playerUnitConfigs.Get(_constantsConfig.FirstUnit).Health;
-            return new SquadModel(_squadConfig, startingHealth, new MetaParameterCalculator(_inventoryService.Inventory.UnitsUpgrades, _modifierConfigs, _modifierFactory));
+            return new SquadModel(_squadConfig, startingHealth, CreateParameterCalculator());
         }
+
+        private MetaParameterCalculator CreateParameterCalculator() =>
+                new MetaParameterCalculator(_inventoryService.Inventory.UnitsUpgrades, _modifierConfigs, _modifierFactory);
     }
 }
