@@ -13,7 +13,6 @@ namespace Survivors.Player.Progress.Model
         public int LoseCount => GameCount - WinCount;
         public int LevelNumber => WinCount;
         public int Kills { get; set; }
-        public int Revives { get; set; }
 
         public int GetPassCount(int levelId) => _passCount.ContainsKey(levelId) ? _passCount[levelId] : 0;
 

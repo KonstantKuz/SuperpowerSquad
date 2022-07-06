@@ -10,6 +10,7 @@ namespace Survivors.Session.Model
         private readonly float _startTime;        
         public int Kills { get; private set; }
         public SessionResult? Result { get; private set; }
+        public int Revives { get; private set; }
         
         public bool IsMaxKills => Kills >= _levelMissionConfig.KillCount;
 
@@ -27,6 +28,8 @@ namespace Survivors.Session.Model
             Result = unitType == UnitType.PLAYER ? SessionResult.Win : SessionResult.Lose;
         }
         public void AddKill() => Kills++;
+
+        public void AddRevive() => Revives++;
         
         public float SessionTime => Time.time - _startTime;        
     }

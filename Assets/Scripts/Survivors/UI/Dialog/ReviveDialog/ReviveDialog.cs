@@ -1,11 +1,7 @@
-﻿using System.Linq;
-using Feofun.UI.Components.Button;
+﻿using Feofun.UI.Components.Button;
 using Feofun.UI.Dialog;
-using Survivors.App.Config;
 using Survivors.Location;
-using Survivors.Player.Progress.Service;
-using Survivors.Units;
-using Survivors.Units.Service;
+using Survivors.Session.Service;
 using UnityEngine;
 using Zenject;
 
@@ -17,10 +13,7 @@ namespace Survivors.UI.Dialog.ReviveDialog
         [SerializeField] private ActionButton _restartButton;
         
         [Inject] private World _world;
-        [Inject] private UnitService _unitService;
-        [Inject] private ConstantsConfig _constantsConfig;
-        [Inject] private Analytics.Analytics _analytics;
-        [Inject] private PlayerProgressService _playerProgressService;
+        [Inject] private ReviveService _reviveService;
 
         private void Awake()
         {
@@ -40,10 +33,7 @@ namespace Survivors.UI.Dialog.ReviveDialog
 
         private void Revive()
         {
-            _world.Squad.RestoreHealth();
-            KillEnemiesAroundSquad();
-            _playerProgressService.AddRevive();
-            _analytics.ReportRevive();
+            _reviveService.Revive();
             Hide();
         }
 
@@ -51,13 +41,6 @@ namespace Survivors.UI.Dialog.ReviveDialog
         {
             _world.Squad.Kill();
             Hide();
-        }
-
-        private void KillEnemiesAroundSquad()
-        {
-            var enemiesNearby = _unitService.GetUnitsInRadius(_world.Squad.Position, UnitType.ENEMY,
-                _constantsConfig.ReviveEnemyRemoveRadius).ToList();
-            enemiesNearby.ForEach(it => it.Kill(DeathCause.Removed));
         }
     }
 }

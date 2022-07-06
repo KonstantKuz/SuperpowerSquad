@@ -127,14 +127,20 @@ namespace Survivors.Session.Service
         private void Dispose()
         {
             _unitService.OnEnemyUnitDeath -= OnEnemyUnitDeath;
-            if (_world.Squad != null) {
-                _world.Squad.OnZeroHealth -= OnSquadZeroHealth;
+            var squad = _world.Squad;
+            if (squad != null) {
+                squad.OnZeroHealth -= OnSquadZeroHealth;
+                squad.OnDeath -= OnSquadDeath;
             }
         }
         public void OnWorldCleanUp()
         {
             Dispose();
         }
-        
+
+        public void AddRevive()
+        {
+            Session.AddRevive();
+        }
     }
 }

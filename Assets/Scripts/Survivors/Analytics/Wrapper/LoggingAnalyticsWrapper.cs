@@ -10,9 +10,7 @@ namespace Survivors.Analytics.Wrapper
         
         public void Init()
         {
-#if UNITY_EDITOR
             _enabled = true;
-#endif
         }
 
         public void ReportEventWithParams(string eventName, Dictionary<string, object> eventParams,
