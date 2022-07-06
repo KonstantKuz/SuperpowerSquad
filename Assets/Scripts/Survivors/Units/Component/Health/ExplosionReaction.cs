@@ -21,7 +21,6 @@ namespace Survivors.Units.Component.Health
         {
             _owner = gameObject.GetComponent<Unit>();
             _damageable = gameObject.GetComponent<IDamageable>();
-            _damageable.OnDeath += OnDeath;
         }
 
         public static void TryExecuteOn(GameObject target, Vector3 explosionPosition, ExplosionReactionParams reactionParams)
@@ -62,13 +61,11 @@ namespace Survivors.Units.Component.Health
             return DOTween.Sequence().Append(rotate).Append(rotateBack);
         }
 
-        private void OnDeath(DeathCause _) => Dispose();
         private void OnDestroy() => Dispose();
 
         private void Dispose()
         {
             _explosionJump?.Kill(true); 
-            _damageable.OnDeath -= OnDeath;
         }
     }
 }

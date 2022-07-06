@@ -41,7 +41,8 @@ namespace Survivors.Analytics
                 EventParams.LEVEL_ID,
                 EventParams.LEVEL_NUMBER,
                 EventParams.LEVEL_LOOP,
-                EventParams.PASS_NUMBER
+                EventParams.PASS_NUMBER,
+                EventParams.TOTAL_KILLS
             });
             
             ReportEventToAllImpls(Events.LEVEL_START, eventParams);
@@ -51,10 +52,22 @@ namespace Survivors.Analytics
         {
             foreach (var impl in _impls)
             {
-                impl.ReportEventWithParams(eventName, eventParams);
+                impl.ReportEventWithParams(eventName, eventParams, _eventParamProvider);
             }
         }
-
+        public void ReportMetaUpgradeLevelUp(string upgradeId)
+        {
+            var eventParams = _eventParamProvider.GetParams(new[]
+            {
+                    EventParams.LEVEL_ID,
+                    EventParams.LEVEL_NUMBER,
+                    EventParams.LEVEL_LOOP,
+                    $"{EventParams.META_UPGRADE}{SEPARATOR}{upgradeId}",
+                    EventParams.TOTAL_KILLS
+            });
+            
+            ReportEventToAllImpls(Events.META_UPGRADE_LEVEL_UP, eventParams);
+        }
         public void ReportLevelUp(string upgradeBranch)
         {
             var eventParams = _eventParamProvider.GetParams(new[]
@@ -65,7 +78,8 @@ namespace Survivors.Analytics
                 EventParams.SQUAD_LEVEL,
                 $"{EventParams.UPGRADE}{SEPARATOR}{upgradeBranch}",
                 EventParams.ENEMY_KILLED,
-                EventParams.TIME_SINCE_LEVEL_START
+                EventParams.TIME_SINCE_LEVEL_START,
+                EventParams.TOTAL_KILLS
             });
             
             ReportEventToAllImpls(Events.LEVEL_UP, eventParams);
@@ -84,12 +98,32 @@ namespace Survivors.Analytics
                 EventParams.ENEMY_KILLED,
                 EventParams.TOTAL_ENEMY_HEALTH,
                 EventParams.AVERAGE_ENEMY_LIFETIME,
-                EventParams.STAND_RATIO
+                EventParams.STAND_RATIO,
+                EventParams.TOTAL_KILLS,
+                EventParams.REVIVE_COUNT
             });
             
-            eventParams[EventParams.LEVEL_RESULT] = isPlayerWinner ? "win" : "lose";
+            eventParams[EventParams.LEVEL_RESULT] = isPlayerWinner ? LevelResult.WIN : LevelResult.LOSE;
             
             ReportEventToAllImpls(Events.LEVEL_FINISHED, eventParams);
+        }
+
+        public void ReportRevive()
+        {
+            var eventParams = _eventParamProvider.GetParams(new[]
+            {
+                EventParams.LEVEL_ID,
+                EventParams.LEVEL_NUMBER,
+                EventParams.LEVEL_LOOP,
+                EventParams.PASS_NUMBER,
+                EventParams.SQUAD_LEVEL,
+                EventParams.TIME_SINCE_LEVEL_START,
+                EventParams.ENEMY_KILLED,
+                EventParams.TOTAL_KILLS,
+                EventParams.REVIVE_COUNT
+            });
+            
+            ReportEventToAllImpls(Events.REVIVE, eventParams);
         }
     }
 }

@@ -20,7 +20,8 @@ namespace Survivors.Location
             container.BindInterfacesAndSelfTo<WorldObjectFactory>().FromInstance(_worldObjectFactory).AsSingle();
             container.Bind<World>().FromInstance(_world);
             
-            container.BindInterfacesAndSelfTo<SessionService>().AsSingle();   
+            container.BindInterfacesAndSelfTo<SessionService>().AsSingle();
+            container.BindInterfacesAndSelfTo<ReviveService>().AsSingle();
             container.Bind<SessionRepository>().AsSingle();
             
             container.Bind<EnemyWavesSpawner>().FromInstance(_enemyWavesSpawner);

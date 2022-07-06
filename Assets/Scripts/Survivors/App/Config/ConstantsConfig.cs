@@ -5,13 +5,21 @@ namespace Survivors.App.Config
     public class ConstantsConfig
     {
         [DataMember(Name = "HealthScaleIncrementFactor")]
-        private int _healthScaleIncrementFactor;
+        private float _healthScaleIncrementFactor;
 
         [DataMember(Name = "FirstUnit")]
-        private string _firstUnit;
+        private string _firstUnit;    
+        
+        [DataMember(Name = "MaxMetaUpgradeLevel")]
+        private int _maxMetaUpgradeLevel;
 
-        public int HealthScaleIncrementFactor => _healthScaleIncrementFactor;
+        [DataMember(Name = "ReviveEnemyRemoveRadius")]
+        private float _reviveEnemyRemoveRadius;
 
+        public float HealthScaleIncrementFactor => _healthScaleIncrementFactor;
         public string FirstUnit => _firstUnit;
+        public int MaxMetaUpgradeLevel => _maxMetaUpgradeLevel;
+
+        public float ReviveEnemyRemoveRadius => _reviveEnemyRemoveRadius;
     }
 }

@@ -1,6 +1,5 @@
 ﻿using System.Runtime.Serialization;
 using Feofun.Config;
-using Feofun.Modifiers;
 using Feofun.Modifiers.Config;
 
 namespace Survivors.Modifiers.Config

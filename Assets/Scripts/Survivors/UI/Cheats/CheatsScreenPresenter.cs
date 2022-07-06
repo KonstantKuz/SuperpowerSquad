@@ -1,6 +1,10 @@
 ﻿using Feofun.Cheats;
+using Feofun.Config;
 using Feofun.UI.Components.Button;
 using Survivors.Cheats;
+using Survivors.Config;
+using Survivors.Modifiers.Config;
+using Survivors.Units.Player.Config;
 using UnityEngine;
 using UnityEngine.UI;
 using Zenject;
@@ -24,13 +28,24 @@ namespace Survivors.UI.Cheats
         [SerializeField] private ActionButton _setLanguage;
 
         [SerializeField] private ActionButton _setRussianLanguage;
-        [SerializeField] private ActionButton _setEnglishLanguage;
+        [SerializeField] private ActionButton _setEnglishLanguage;    
+        
+        [SerializeField] private DropdownWithButtonView _addUnitsView;
+        [SerializeField] private DropdownWithButtonView _addMetaUpgradeView;
 
         [Inject] private CheatsManager _cheatsManager;
         [Inject] private CheatsActivator _cheatsActivator;
+        
+        [Inject]
+        private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;     
+        [Inject(Id = Configs.META_UPGRADES)]
+        private StringKeyedConfigCollection<ParameterUpgradeConfig> _modifierConfigs;
 
         private void OnEnable()
         {
+            _addUnitsView.Init(_playerUnitConfigs.Keys, _cheatsManager.AddUnit);   
+            _addMetaUpgradeView.Init(_modifierConfigs.Keys, _cheatsManager.AddMetaUpgrade);
+            
             _closeButton.Init(HideCheatsScreen);
             _hideButton.Init(DisableCheats);
 

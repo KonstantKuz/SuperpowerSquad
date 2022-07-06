@@ -8,10 +8,6 @@ namespace Survivors.Units.Weapon.Projectiles
     public class LaserBullet : Bullet
     {
         [SerializeField]
-        private LineRenderer _lineRenderer;
-        [SerializeField]
-        private BoxCollider _collider;
-        [SerializeField]
         private float _widthFactor = 1;
         public override void Launch(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
@@ -25,10 +21,7 @@ namespace Survivors.Units.Weapon.Projectiles
                 return;
             }
             width *= _widthFactor;
-            _lineRenderer.startWidth = width;      
-            _lineRenderer.endWidth = width;
-            var colliderSize = _collider.size;
-            _collider.size = new Vector3(width, colliderSize.y, colliderSize.z);
+            transform.localScale = width * Vector3.one;
         }
 
         protected override void TryHit(GameObject target, Vector3 hitPos, Vector3 collisionNorm)

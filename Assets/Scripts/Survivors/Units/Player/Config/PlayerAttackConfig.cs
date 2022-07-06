@@ -11,10 +11,7 @@ namespace Survivors.Units.Player.Config
 
         [DataMember(Name = "DamageRadius")]
         private float _damageRadius;
-
-        [DataMember(Name = "DamageAngle")]
-        private float _damageAngle;
-
+        
         [DataMember(Name = "AttackDamage")]
         private int _attackDamage;
         
@@ -28,8 +25,6 @@ namespace Survivors.Units.Player.Config
 
         public float DamageRadius => _damageRadius;
         
-        public float DamageAngle => _damageAngle;
-
         public int AttackDamage => _attackDamage;
         
         public float AttackInterval => _attackInterval;

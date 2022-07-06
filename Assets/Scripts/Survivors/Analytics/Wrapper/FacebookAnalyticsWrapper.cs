@@ -50,7 +50,8 @@ namespace Survivors.Analytics.Wrapper
             FB.LogAppEvent(logEvent, valueToSum, parameters);
         }
 
-        public void ReportEventWithParams(string eventName, Dictionary<string, object> eventParams)
+        public void ReportEventWithParams(string eventName, Dictionary<string, object> eventParams,
+            IEventParamProvider eventParamProvider)
         {
             LogEvent(eventName, null, eventParams);
         }

@@ -4,6 +4,7 @@ using EasyButtons;
 using Feofun.Components;
 using Feofun.Modifiers;
 using JetBrains.Annotations;
+using Logger.Extension;
 using SuperMaxim.Core.Extensions;
 using Survivors.App;
 using Survivors.Location.Model;
@@ -13,6 +14,7 @@ using Survivors.Units.Service;
 using Survivors.Units.Target;
 using Zenject;
 using Survivors.Units.Model;
+using Survivors.Units.Player.Model;
 using Survivors.Units.Player.Movement;
 using UnityEngine;
 
@@ -24,15 +26,17 @@ namespace Survivors.Units
         private IDamageable _damageable;
         private IUnitDeath _death;
         private ITarget _selfTarget;
-        private IUnitDeathEventReceiver[] _deathEventReceivers;   
+        private IUnitDeathEventReceiver[] _deathEventReceivers;
         private IUnitDeactivateEventReceiver[] _deactivateEventReceivers;
         private MovementController _movementController;
         private bool _isActive;
         private float _spawnTime;
         private Collider _collider;
 
-        [Inject] private UnitService _unitService;
-        [Inject] private UpdateManager _updateManager;
+        [Inject]
+        private UnitService _unitService;
+        [Inject]
+        private UpdateManager _updateManager;
 
         public bool IsActive
         {
@@ -55,7 +59,8 @@ namespace Survivors.Units
         public MovementController MovementController => _movementController ??= GetComponent<MovementController>();
 
         public float LifeTime => Time.time - _spawnTime;
-        [CanBeNull] public Health Health { get; private set; }
+        [CanBeNull]
+        public Health Health { get; private set; }
         public Bounds Bounds => _collider.bounds;
 
         public void Init(IUnitModel model)
@@ -66,32 +71,42 @@ namespace Survivors.Units
             _damageable = gameObject.RequireComponent<IDamageable>();
             _death = gameObject.RequireComponent<IUnitDeath>();
             _selfTarget = gameObject.RequireComponent<ITarget>();
-            _deathEventReceivers = GetComponentsInChildren<IUnitDeathEventReceiver>();  
+            _deathEventReceivers = GetComponentsInChildren<IUnitDeathEventReceiver>();
             _deactivateEventReceivers = GetComponentsInChildren<IUnitDeactivateEventReceiver>();
-            
-            _damageable.OnDeath += Kill;
+
+            if (UnitType == UnitType.ENEMY)
+            {
+                _damageable.OnZeroHealth += DieOnZeroHealth;
+            }
+
             IsActive = true;
             _spawnTime = Time.time;
             Health = GetComponent<Health>();
             _collider = GetComponent<CapsuleCollider>();
-            
+
             foreach (var component in GetComponentsInChildren<IInitializable<IUnit>>()) {
                 component.Init(this);
             }
-            
+
             _unitService.Add(this);
             _updateManager.StartUpdate(UpdateComponents);
         }
-        
+
         [Button]
         public void Kill(DeathCause deathCause)
         {
-            _damageable.OnDeath -= Kill;
+            _damageable.DamageEnabled = false;
+            _damageable.OnZeroHealth -= DieOnZeroHealth;
             IsActive = false;
             _deathEventReceivers.ForEach(it => it.OnDeath(deathCause));
             _death.PlayDeath();
             OnDeath?.Invoke(this, deathCause);
             OnDeath = null;
+        }
+
+        private void DieOnZeroHealth()
+        {
+            Kill(DeathCause.Killed);
         }
 
         private void UpdateComponents()
@@ -114,7 +129,11 @@ namespace Survivors.Units
 
         public void AddModifier(IModifier modifier)
         {
-            Model.AddModifier(modifier);
+            if (!(Model is PlayerUnitModel playerUnitModel)) {
+                this.Logger().Error($"Unit model must be the PlayerUnitModel, current model:= {Model.GetType().Name}");
+                return;
+            }
+            playerUnitModel.AddModifier(modifier);
         }
     }
 }

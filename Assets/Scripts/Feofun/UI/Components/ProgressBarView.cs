@@ -9,7 +9,6 @@ namespace Feofun.UI.Components
     public class ProgressBarView : AnimatedValueView<float, Image> 
     {
         private Sequence _loopSequence;
-        public bool IsIndependentUpdate { get; set; }
         public override float Value
         {
             get => Component.fillAmount;

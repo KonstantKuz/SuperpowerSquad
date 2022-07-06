@@ -10,12 +10,13 @@ namespace Survivors.Analytics.Wrapper
         
         public void Init()
         {
-#if UNITY_EDITOR
+#if UNITY_EDITOR            
             _enabled = true;
-#endif
+#endif            
         }
 
-        public void ReportEventWithParams(string eventName, Dictionary<string, object> eventParams)
+        public void ReportEventWithParams(string eventName, Dictionary<string, object> eventParams,
+            IEventParamProvider eventParamProvider)
         {
             if (!_enabled) return;
             this.Logger().Info($"Event: {eventName}, Params: {DictionaryToString(eventParams)}");

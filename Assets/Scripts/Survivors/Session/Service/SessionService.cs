@@ -1,6 +1,9 @@
 ﻿using System.Linq;
 using Feofun.Config;
+using Feofun.Extension;
+using Feofun.UI.Dialog;
 using Logger.Extension;
+
 using SuperMaxim.Messaging;
 using Survivors.App.Config;
 using Survivors.Enemy.Spawn;
@@ -12,11 +15,13 @@ using Survivors.Session.Config;
 using Survivors.Session.Messages;
 using Survivors.Session.Model;
 using Survivors.Squad;
+using Survivors.UI.Dialog.ReviveDialog;
 using Survivors.Units;
 using Survivors.Units.Service;
 using UniRx;
 using UnityEngine;
 using Zenject;
+using UnityEngine.Assertions;
 
 namespace Survivors.Session.Service
 {
@@ -38,6 +43,9 @@ namespace Survivors.Session.Service
         [Inject] private PlayerProgressService _playerProgressService;
         [Inject] private Analytics.Analytics _analytics;
         [Inject] private ConstantsConfig _constantsConfig;
+        [Inject] private DialogManager _dialogManager;
+        
+        private CompositeDisposable _disposable;
         
         private PlayerProgress PlayerProgress => _playerProgressService.Progress;
         public Model.Session Session => _repository.Require();
@@ -53,6 +61,7 @@ namespace Survivors.Session.Service
             Dispose();
             _unitService.OnEnemyUnitDeath += OnEnemyUnitDeath;
             ResetKills();
+            _disposable = new CompositeDisposable();
         }
         
         public void Start()
@@ -75,11 +84,21 @@ namespace Survivors.Session.Service
         {
             var squad = _squadFactory.CreateSquad();
             _world.Squad = squad;
+            squad.OnZeroHealth += OnSquadZeroHealth;
             squad.OnDeath += OnSquadDeath;
+            squad.Model.StartingUnitCount.Diff().Subscribe(CreatePlayerUnits).AddTo(_disposable);
         }
+
+        private void CreatePlayerUnits(int count)
+        {
+            Assert.IsTrue(count >= 0, "Should add non-negative count of units");
+            _unitFactory.CreatePlayerUnits(_constantsConfig.FirstUnit, count);
+        }
+
         private void SpawnUnits()
         {
-            _unitFactory.CreatePlayerUnit(_constantsConfig.FirstUnit);
+            Assert.IsNotNull(_world.Squad, "Squad is null, should call this method only inside game session");
+            CreatePlayerUnits(_world.Squad.Model.StartingUnitCount.Value);
             _enemyWavesSpawner.StartSpawn(_enemyWavesConfig); 
             _enemyHpsSpawner.StartSpawn();
         }
@@ -90,6 +109,7 @@ namespace Survivors.Session.Service
             if (deathCause != DeathCause.Killed) return;
             
             Session.AddKill();
+            _playerProgressService.AddKill();
             _kills.Value = Session.Kills;
             this.Logger().Trace($"Killed enemies:= {Session.Kills}");
             if (Session.IsMaxKills) {
@@ -97,10 +117,16 @@ namespace Survivors.Session.Service
             }
         }
 
+        private void OnSquadZeroHealth()
+        {
+            _dialogManager.Show<ReviveDialog>();
+        }
+
         private void OnSquadDeath()
         {
             EndSession(UnitType.ENEMY);
         }
+        
         private void EndSession(UnitType winner)
         {
             Dispose();
@@ -115,15 +141,23 @@ namespace Survivors.Session.Service
         }
         private void Dispose()
         {
+            _disposable?.Dispose();
+            _disposable = null;
             _unitService.OnEnemyUnitDeath -= OnEnemyUnitDeath;
-            if (_world.Squad != null) {
-                _world.Squad.OnDeath -= OnSquadDeath;
+            var squad = _world.Squad;
+            if (squad != null) {
+                squad.OnZeroHealth -= OnSquadZeroHealth;
+                squad.OnDeath -= OnSquadDeath;
             }
         }
         public void OnWorldCleanUp()
         {
             Dispose();
         }
-        
+
+        public void AddRevive()
+        {
+            Session.AddRevive();
+        }
     }
 }
