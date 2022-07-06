@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using ModestTree;
 using SuperMaxim.Messaging;
 using Survivors.Location;
 using Survivors.Units.Enemy.Model;
 using Survivors.Units.Messages;
 using UnityEngine;
-using UnityEngine.Assertions;
 using Zenject;
+using Assert = UnityEngine.Assertions.Assert;
 
 namespace Survivors.Units.Service
 {
@@ -54,7 +55,7 @@ namespace Survivors.Units.Service
 
             if (_units.Count <= _hardLimit) return;
             candidatesFromNewestToOldest = GetCandidates(frustumPlanes);
-
+            
             RemoveHardWay(_units.Count - _hardLimit, candidatesFromNewestToOldest);
         }
 
@@ -62,6 +63,7 @@ namespace Survivors.Units.Service
         {
             for (int i = 0; i < removeCount; i++)
             {
+                if (candidatesFromNewestToOldest.IsEmpty()) break;
                 var first = candidatesFromNewestToOldest.Last();
                 if (first == null) break;
                 candidatesFromNewestToOldest.RemoveAt(candidatesFromNewestToOldest.Count - 1);
@@ -75,6 +77,7 @@ namespace Survivors.Units.Service
         {
             for (int i = 0; i < removeCount; i++)
             {
+                if (candidatesFromNewestToOldest.IsEmpty()) return;
                 var unit = candidatesFromNewestToOldest.Last();
                 if (unit == null) break;
                 candidatesFromNewestToOldest.RemoveAt(candidatesFromNewestToOldest.Count - 1);
