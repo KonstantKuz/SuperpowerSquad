@@ -40,7 +40,7 @@ namespace Survivors.App
                 return GetUpgrade(paramName.Split(Analytics.Analytics.SEPARATOR)[1]);
             }   
             if (paramName.StartsWith(EventParams.META_UPGRADE)) {
-                return GetMetaUpgrade(paramName.Split(Analytics.Analytics.SEPARATOR)[1]);
+                return GetMetaUpgrade(paramName.Split(Analytics.Analytics.SEPARATOR)[2]);
             }
 
             var playerProgress = _playerProgressService.Progress;
