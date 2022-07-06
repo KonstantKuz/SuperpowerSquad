@@ -15,7 +15,7 @@ namespace Survivors.Shop.Config
 
         public int GetFinalCost(int level)
         {
-            return ProductConfig.Cost + LevelCostIncrease * level;
+            return ProductConfig.Cost + LevelCostIncrease * (level - 1);
         }
 
     }

@@ -715,6 +715,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4450157569163827381, guid: 14d50e2644473744f928259c035090df, type: 3}
+      propertyPath: _isIndependentUpdate
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5481261257203730660, guid: 14d50e2644473744f928259c035090df, type: 3}
       propertyPath: m_fontSize
       value: 99.45
@@ -742,6 +746,14 @@ PrefabInstance:
     - target: {fileID: 7688971914272213025, guid: 14d50e2644473744f928259c035090df, type: 3}
       propertyPath: m_fontSize
       value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 8026819519400389236, guid: 14d50e2644473744f928259c035090df, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8026819519400389236, guid: 14d50e2644473744f928259c035090df, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8189288117359586993, guid: 14d50e2644473744f928259c035090df, type: 3}
       propertyPath: m_IsActive
@@ -834,6 +846,10 @@ PrefabInstance:
     - target: {fileID: 8489700068432560019, guid: 14d50e2644473744f928259c035090df, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8787376773959562755, guid: 14d50e2644473744f928259c035090df, type: 3}
+      propertyPath: _isIndependentUpdate
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 14d50e2644473744f928259c035090df, type: 3}

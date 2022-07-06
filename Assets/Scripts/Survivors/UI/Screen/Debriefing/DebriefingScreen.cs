@@ -6,7 +6,7 @@ using Survivors.Session.Model;
 using Survivors.UI.Screen.Main;
 using Survivors.Session.Service;
 using Survivors.UI.Screen.Debriefing.Model;
-using Survivors.UI.Screen.World;
+using Survivors.UI.Screen.Menu;
 using UnityEngine;
 using Zenject;
 
@@ -16,7 +16,9 @@ namespace Survivors.UI.Screen.Debriefing
     {
         public const ScreenId ID = ScreenId.Debriefing;
         public override ScreenId ScreenId => ID; 
-        public override string Url => ScreenName;
+        
+        public static readonly string URL = MenuScreen.ID + "/" + ID;
+        public override string Url => URL;
 
         [SerializeField]
         private SessionResultPanel _resultPanel;
@@ -55,7 +57,7 @@ namespace Survivors.UI.Screen.Debriefing
 
         private void OnReload()
         {
-            _screenSwitcher.SwitchTo(MainScreen.ID.ToString());
+            _screenSwitcher.SwitchTo(MainScreen.URL);
         }
     }
 }

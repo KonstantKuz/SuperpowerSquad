@@ -1,6 +1,8 @@
 ﻿using System.Linq;
 using Feofun.Config;
+using Feofun.Extension;
 using Logger.Extension;
+
 using SuperMaxim.Messaging;
 using Survivors.App.Config;
 using Survivors.Enemy.Spawn;
@@ -17,6 +19,7 @@ using Survivors.Units.Service;
 using UniRx;
 using UnityEngine;
 using Zenject;
+using UnityEngine.Assertions;
 
 namespace Survivors.Session.Service
 {
@@ -39,6 +42,8 @@ namespace Survivors.Session.Service
         [Inject] private Analytics.Analytics _analytics;
         [Inject] private ConstantsConfig _constantsConfig;
         
+        private CompositeDisposable _disposable;
+        
         private PlayerProgress PlayerProgress => _playerProgressService.Progress;
         public Model.Session Session => _repository.Require();
         
@@ -53,6 +58,7 @@ namespace Survivors.Session.Service
             Dispose();
             _unitService.OnEnemyUnitDeath += OnEnemyUnitDeath;
             ResetKills();
+            _disposable = new CompositeDisposable();
         }
         
         public void Start()
@@ -76,10 +82,19 @@ namespace Survivors.Session.Service
             var squad = _squadFactory.CreateSquad();
             _world.Squad = squad;
             squad.OnDeath += OnSquadDeath;
+            squad.Model.StartingUnitCount.Diff().Subscribe(CreatePlayerUnits).AddTo(_disposable);
         }
+
+        private void CreatePlayerUnits(int count)
+        {
+            Assert.IsTrue(count >= 0, "Should add non-negative count of units");
+            _unitFactory.CreatePlayerUnits(_constantsConfig.FirstUnit, count);
+        }
+
         private void SpawnUnits()
         {
-            _unitFactory.CreateInitialUnitsForSquad(_constantsConfig.FirstUnit);
+            Assert.IsNotNull(_world.Squad, "Squad is null, should call this method only inside game session");
+            CreatePlayerUnits(_world.Squad.Model.StartingUnitCount.Value);
             _enemyWavesSpawner.StartSpawn(_enemyWavesConfig); 
             _enemyHpsSpawner.StartSpawn();
         }
@@ -116,6 +131,8 @@ namespace Survivors.Session.Service
         }
         private void Dispose()
         {
+            _disposable?.Dispose();
+            _disposable = null;
             _unitService.OnEnemyUnitDeath -= OnEnemyUnitDeath;
             if (_world.Squad != null) {
                 _world.Squad.OnDeath -= OnSquadDeath;

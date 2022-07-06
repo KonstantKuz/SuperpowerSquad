@@ -23,7 +23,7 @@ namespace Survivors.Units.Service
         public void InitParam(FloatModifiableParameter parameter, IModifiableParameterOwner owner)
         {
             parameter.Reset();
-            var upgradeCount = _unitsUpgrades.GetUpgradeCount(parameter.Name);
+            var upgradeCount = _unitsUpgrades.GetUpgradeLevel(parameter.Name);
             if (upgradeCount <= 0) return;
             var modificatorConfig = _modifierConfigs.Find(parameter.Name);
             if (modificatorConfig == null) return;

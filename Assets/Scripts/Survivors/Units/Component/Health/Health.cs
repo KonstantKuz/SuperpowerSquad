@@ -5,7 +5,6 @@ using Survivors.Units.Model;
 using UniRx;
 using UnityEngine;
 using UnityEngine.Assertions;
-using ILogger = Logger.ILogger;
 
 namespace Survivors.Units.Component.Health
 {

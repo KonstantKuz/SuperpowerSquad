@@ -33,3 +33,10 @@ Speed,Speed {0},Speed {0}
 unit +1,unit +1,unit +1
 lvl,lvl {0},lvl {0}
 Level,Level {0},Level {0}
+revive,revive,revive
+restart,restart,restart
+MetaAttackDamage,Upgrade Damage,Upgrade Damage
+MetaStartingUnitCount,Add Unit,Add Unit
+MetaHealth,Upgrade Health,Upgrade Health
+Tap to play,Tap to play,Tap to play
+Max,Max,Max

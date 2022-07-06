@@ -22,7 +22,6 @@ namespace Survivors.UI.Dialog.UpgradeDialog.Model
         private readonly List<UpgradeItemModel> _upgrades;
         private readonly UpgradesConfig _upgradesConfig;
         private readonly SquadUpgradeState _upgradeState;
-        [Inject(Id = Configs.MODIFIERS)]
         private readonly StringKeyedConfigCollection<ParameterUpgradeConfig> _modifierConfigs;
         public IReadOnlyCollection<UpgradeItemModel> Upgrades => _upgrades;
         public UpgradeDialogInitModel InitModel { get; }
