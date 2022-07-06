@@ -26,7 +26,8 @@ namespace Survivors.Squad.Upgrade
         private readonly ModifierFactory _modifierFactory;
         [Inject]
         private ConstantsConfig _constantsConfig;
-
+        [Inject] 
+        private Analytics.Analytics _analytics;
         public UnitsMetaUpgrades MetaUpgrades => _inventoryService.Inventory.UnitsUpgrades;
         
         public bool IsMaxLevel(string upgradeId)
@@ -53,6 +54,7 @@ namespace Survivors.Squad.Upgrade
             }
             _inventoryService.AddUpgrade(upgradeId);
             ApplyUpgrade(upgradeId);
+            _analytics.ReportMetaUpgradeLevelUp(upgradeId);
         }
         private void ApplyUpgrade(string upgradeId)
         {
