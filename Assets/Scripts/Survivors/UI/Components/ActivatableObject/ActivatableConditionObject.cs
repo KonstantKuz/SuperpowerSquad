@@ -14,8 +14,8 @@ namespace Survivors.UI.Components.ActivatableObject
         private void Awake()
         {
             var conditions = GetComponents<ICondition>();
-            var observer = conditions.Select(it => it.IsAllow()).CombineLatest().Select(it => it.All(b => b));
-            _activatableObjects.ForEach(it => it.Init(observer));
+            var observable = conditions.Select(it => it.IsAllow()).CombineLatest().Select(it => it.All(b => b));
+            _activatableObjects.ForEach(it => it.Init(observable));
         }
     }
 }
