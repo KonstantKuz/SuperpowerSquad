@@ -1,5 +1,7 @@
 ﻿using System.Linq;
+using SuperMaxim.Core.Extensions;
 using Survivors.UI.Components.ActivatableObject.Conditions;
+using UniRx;
 using UnityEngine;
 
 namespace Survivors.UI.Components.ActivatableObject
@@ -9,20 +11,11 @@ namespace Survivors.UI.Components.ActivatableObject
         [SerializeField]
         private ActivatableObject[] _activatableObjects;
 
-        private ICondition[] _conditions;
-
         private void Awake()
         {
-            _conditions = GetComponents<ICondition>();
-        }
-
-        private void OnEnable()
-        {
-            var isAllow = _conditions.All(it => it.IsAllow());
-            foreach (var activatableObject in _activatableObjects) {
-                activatableObject.Init(isAllow);
-            }
-           
+            var conditions = GetComponents<ICondition>();
+            var observer = conditions.Select(it => it.IsAllow()).CombineLatest().Select(it => it.All(b => b));
+            _activatableObjects.ForEach(it => it.Init(observer));
         }
     }
 }

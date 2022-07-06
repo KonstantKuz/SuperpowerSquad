@@ -1,4 +1,6 @@
-﻿using Survivors.Player.Progress.Service;
+﻿using System;
+using Survivors.Player.Progress.Service;
+using UniRx;
 using UnityEngine;
 using Zenject;
 
@@ -12,9 +14,9 @@ namespace Survivors.UI.Components.ActivatableObject.Conditions
         [Inject]
         private PlayerProgressService _playerProgress;
 
-        public bool IsAllow()
+        public IObservable<bool> IsAllow()
         {
-            return _playerProgress.Progress.GameCount >= _neededCount;
+            return _playerProgress.GameCount.Select(gameCount => gameCount >= _neededCount);
         }
     }
 }
