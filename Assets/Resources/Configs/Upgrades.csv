@@ -40,13 +40,13 @@ CircularSawUnit,Unit,,CircularSawUnit
 ,Modifier,ProjectileSpeedTier1,CircularSawUnit
 ,Modifier,ShotCountTier1,CircularSawUnit
 BoomerangUnit,Unit,,BoomerangUnit
-,Modifier,DamageRadiusTier2,BoomerangUnit
+,Modifier,DamageRadiusTier1,BoomerangUnit
 ,Modifier,AttackDamageTier1,BoomerangUnit
 ,Unit,,BoomerangUnit
-,Modifier,DamageRadiusTier2,BoomerangUnit
+,Modifier,DamageRadiusTier1,BoomerangUnit
 ,Modifier,AttackDamageTier1,BoomerangUnit
 ,Unit,,BoomerangUnit
-,Modifier,DamageRadiusTier2,BoomerangUnit
+,Modifier,DamageRadiusTier1,BoomerangUnit
 ,Modifier,AttackDamageTier1,BoomerangUnit
 ,Unit,,BoomerangUnit
 LightningStrikeUnit,Unit,,LightningStrikeUnit
