@@ -10,4 +10,4 @@ BoomerangUnit,100,8,1,100,2,20
 LightningStrikeUnit,100,16,1,100,3,
 BallLightningUnit,100,8,2,100,4,2
 MeteorUnit,100,8,2,100,2,30
-IceWaveUnit,100,,1.5,50,3.5,1
+IceWaveUnit,100,,2,50,3.5,1

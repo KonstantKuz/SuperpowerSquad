@@ -71,13 +71,13 @@ BallLightningUnit,Unit,,BallLightningUnit
 ,Unit,,BallLightningUnit
 MeteorUnit,Unit,,MeteorUnit
 ,Modifier,DamageRadiusTier3,MeteorUnit
-,Modifier,ShotCountTier1,MeteorUnit
+,Modifier,AttackDamageTier1,MeteorUnit
 ,Unit,,MeteorUnit
 ,Modifier,DamageRadiusTier3,MeteorUnit
-,Modifier,ShotCountTier1,MeteorUnit
+,Modifier,AttackDamageTier1,MeteorUnit
 ,Unit,,MeteorUnit
 ,Modifier,DamageRadiusTier3,MeteorUnit
-,Modifier,ShotCountTier1,MeteorUnit
+,Modifier,AttackDamageTier1,MeteorUnit
 ,Unit,,MeteorUnit
 IceWaveUnit,Unit,,IceWaveUnit
 ,Modifier,DamageRadiusTier1,IceWaveUnit
