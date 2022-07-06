@@ -9,7 +9,7 @@
             </layout>
         </appender>
         <root>
-            <level value="Trace"/>
+            <level value="TRACE"/>
             <appender-ref ref="UnityDebugAppender"/>
         </root>
     </log4net>
