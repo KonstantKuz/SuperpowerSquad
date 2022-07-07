@@ -1,17 +1,14 @@
-using System;
 using System.Collections;
 using UnityEngine;
 using Feofun.UI.Components;
 using Survivors.Session.Model;
 using Survivors.UI.Screen.Debriefing.Model;
-using TMPro;
-using UnityEngine.Assertions;
 
 namespace Survivors.UI.Screen.Debriefing
 {
     public class SessionResultPanel : MonoBehaviour
     {
-        private const float PROGRESS_LEVELS_COUNT = 5f;
+        private const float PROGRESS_LEVELS_COUNT = 4f;
 
         [SerializeField] private float _animateValuesDelay;
         [SerializeField] private GameObject _winPanel;
@@ -45,9 +42,8 @@ namespace Survivors.UI.Screen.Debriefing
         {
             _unitProgressText.Reset();
             _unitProgressView.Reset();
-
-            var previousLevel = Mathf.Clamp(_model.CurrentLevel - 1, 0, PROGRESS_LEVELS_COUNT);
-            var previousUnitProgress = previousLevel / PROGRESS_LEVELS_COUNT;
+            
+            var previousUnitProgress = GetLevel() / PROGRESS_LEVELS_COUNT;
             InitUnitProgressView(previousUnitProgress);
         }
 
@@ -55,11 +51,11 @@ namespace Survivors.UI.Screen.Debriefing
         {
             yield return new WaitForSeconds(_animateValuesDelay);
             InitStatistics(_model.KillCount, _model.CoinsCount);
-            var currentUnitProgress = _model.CurrentLevel / PROGRESS_LEVELS_COUNT;
-            InitUnitProgressView(currentUnitProgress);
+            var unitProgress = (GetLevel() + 1) / PROGRESS_LEVELS_COUNT;
+            InitUnitProgressView(unitProgress);
             _showStatisticsCoroutine = null;
         }
-
+        private float GetLevel() => Mathf.Clamp(_model.CurrentLevel - 1, 0, PROGRESS_LEVELS_COUNT);
         private void InitStatistics(int killCount, int coinsCount)
         {
             _killCountText.SetData(killCount);
