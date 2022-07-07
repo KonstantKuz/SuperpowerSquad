@@ -17,7 +17,6 @@ namespace Survivors.UI.Screen.Main
 
         public void Init(int currentLevel)
         {
-
             var step = Mathf.Clamp(currentLevel, MIN_LEVEL_NUMBER, MAX_LEVEL_NUMBER);
             _levelBar.SetData(_progressByStep.First(it => it.Step == step).ProgressValue);
         }

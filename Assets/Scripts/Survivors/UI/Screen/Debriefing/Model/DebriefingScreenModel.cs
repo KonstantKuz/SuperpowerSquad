@@ -17,7 +17,7 @@ namespace Survivors.UI.Screen.Debriefing.Model
             Session = session;
         }
 
-        public ResultPanelModel BuildResultPanelModel(List<RewardItem> rewards, int levelNumber)
+        public ResultPanelModel BuildResultPanelModel(List<RewardItem> rewards)
         {
             var coinsCount = rewards.First(it => it.RewardId == Currency.Soft.ToString()).Count;
             return new ResultPanelModel
@@ -25,7 +25,7 @@ namespace Survivors.UI.Screen.Debriefing.Model
                 SessionResult = SessionResult,
                 KillCount = Session.Kills,
                 CoinsCount = coinsCount,
-                CurrentLevel = levelNumber
+                CurrentLevel = Session.LevelMissionConfig.Level
             };
         }
     }

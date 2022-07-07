@@ -4,7 +4,6 @@ using JetBrains.Annotations;
 using Survivors.Reward.Service;
 using Survivors.Session.Model;
 using Survivors.UI.Screen.Main;
-using Survivors.Session.Service;
 using Survivors.UI.Screen.Debriefing.Model;
 using Survivors.UI.Screen.Menu;
 using UnityEngine;
@@ -33,9 +32,7 @@ namespace Survivors.UI.Screen.Debriefing
         private MissionResultRewardService _missionResultRewardService;  
         [Inject]
         private IRewardApplyService _rewardApplyService;
-        [Inject]
-        private SessionService _sessionService;
-        
+
         [PublicAPI]
         public void Init(DebriefingScreenModel model)
         {
@@ -45,7 +42,7 @@ namespace Survivors.UI.Screen.Debriefing
             var rewards = _missionResultRewardService.CalculateRewards(model.SessionResult, model.Session);
             _rewardApplyService.ApplyRewards(rewards);
 
-            var resultPanelModel = model.BuildResultPanelModel(rewards, _sessionService.LevelId);
+            var resultPanelModel = model.BuildResultPanelModel(rewards);
             _resultPanel.Init(resultPanelModel);
         }
         
