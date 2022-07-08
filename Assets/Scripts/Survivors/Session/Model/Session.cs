@@ -15,6 +15,8 @@ namespace Survivors.Session.Model
         public bool IsMaxKills => Kills >= _levelMissionConfig.KillCount;
 
         public bool Completed => Result.HasValue;
+
+        public LevelMissionConfig LevelMissionConfig => _levelMissionConfig;
         
         private Session(LevelMissionConfig levelMissionConfig)
         {

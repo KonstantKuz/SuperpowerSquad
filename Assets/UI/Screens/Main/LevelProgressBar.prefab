@@ -656,13 +656,13 @@ MonoBehaviour:
   _levelBar: {fileID: 7931783256842051783}
   _progressByStep:
   - Step: 1
-    ProgressValue: 0.19
+    ProgressValue: 0.158
   - Step: 2
-    ProgressValue: 0.4
+    ProgressValue: 0.363
   - Step: 3
-    ProgressValue: 0.62
+    ProgressValue: 0.58
   - Step: 4
-    ProgressValue: 0.81
+    ProgressValue: 0.8
   - Step: 5
     ProgressValue: 1
 --- !u!114 &6304588136834679477
@@ -897,7 +897,7 @@ MonoBehaviour:
   m_PreserveAspect: 1
   m_FillCenter: 1
   m_FillMethod: 0
-  m_FillAmount: 0.81
+  m_FillAmount: 0.158
   m_FillClockwise: 1
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
