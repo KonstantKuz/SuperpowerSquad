@@ -1,5 +1,6 @@
 using System;
 using Feofun.Localization.Service;
+using Logger.Extension;
 using Survivors.Cheats.Data;
 using Survivors.Cheats.Repository;
 using Survivors.Player.Inventory.Service;
@@ -12,6 +13,7 @@ namespace Survivors.Cheats
 {
     public class CheatsManager : MonoBehaviour
     {
+        private const string TEST_LOG_MESSAGE = "Test log message";
         private readonly CheatRepository _repository = new CheatRepository();
         
         [Inject] private LocalizationService _localizationService;     
@@ -43,7 +45,17 @@ namespace Survivors.Cheats
         public void ApplyAllSquadUpgrades() => _upgradeService.ApplyAllUpgrades();  
         public void AddUnit(string unitId) => _upgradeService.AddUnit(unitId);
         public void AddMetaUpgrade(string upgradeId) => _metaUpgradeService.Upgrade(upgradeId);
-        
+
+        public void LogTestMessage()
+        {
+            var logger = this.Logger();
+            logger.Trace(TEST_LOG_MESSAGE);
+            logger.Debug(TEST_LOG_MESSAGE);      
+            logger.Info(TEST_LOG_MESSAGE);
+            logger.Warn(TEST_LOG_MESSAGE);     
+            logger.Error(TEST_LOG_MESSAGE);
+        }
+
         public void SetLanguage(string language)
         {
             _localizationService.SetLanguageOverride(language);
