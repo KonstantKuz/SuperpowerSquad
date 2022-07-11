@@ -1,4 +1,4 @@
 Id,Modifier,ParameterName,Value,Target
 ShotCount,AddValue,ShotCount,1,Unit
 AttackDamage,AddPercent,AttackDamage,1,Unit
-Health,AddValue,Health,50,Squad
+Health,AddValue,Health,25,Squad

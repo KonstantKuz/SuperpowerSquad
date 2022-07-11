@@ -5,11 +5,11 @@ Defeat,Defeat,Defeat
 Next,Next,Next
 Enemies left,Enemies left: {0},Enemies left: {0}
 Reload,Reload,Reload
-RocketUnit,Rocket launcher,Rocket launcher
-PyroUnit,Flamethrower,Flamethrower
-SniperUnit,Sniper rifle,Sniper rifle
+RocketUnit,Fireball,Fireball
+PyroUnit,Fiery Flame,Fiery Flame
+SniperUnit,Ice Beam,Ice Beam
 BomberUnit,Bomb,Bomb
-CircularSawUnit,A circular saw,A circular saw
+CircularSawUnit,Electric Blades,Electric Blades
 BoomerangUnit,Boomerang,Boomerang
 LightningStrikeUnit,Lightning Strike,Lightning Strike
 BallLightningUnit,Ball Lightning,Ball Lightning
