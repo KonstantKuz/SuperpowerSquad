@@ -285,7 +285,7 @@ MonoBehaviour:
   _scalePunchDuration: 0.2
   _colorBlinkDuration: 0.05
   _blinkColor: {r: 0.57602674, g: 0, b: 0.8490566, a: 1}
-  _renderer: {fileID: 6865408549396096829}
+  _renderer: {fileID: 356651600076448492}
 --- !u!114 &8473987040358760045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -436,10 +436,19 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 8e6aafd4fffe33e458c98e5e90d921d3, type: 2}
+    - target: {fileID: 8401470524166108951, guid: bf42f0ad7a63640f283f151f61de301f, type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: bf42f0ad7a63640f283f151f61de301f, type: 3}
 --- !u!4 &1037886190280867741 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2483779420891393389, guid: bf42f0ad7a63640f283f151f61de301f, type: 3}
+  m_PrefabInstance: {fileID: 3179373957657744112}
+  m_PrefabAsset: {fileID: 0}
+--- !u!137 &356651600076448492 stripped
+SkinnedMeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 2948858821183860764, guid: bf42f0ad7a63640f283f151f61de301f, type: 3}
   m_PrefabInstance: {fileID: 3179373957657744112}
   m_PrefabAsset: {fileID: 0}
