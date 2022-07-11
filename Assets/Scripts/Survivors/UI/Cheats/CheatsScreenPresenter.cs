@@ -30,6 +30,8 @@ namespace Survivors.UI.Cheats
         [SerializeField] private ActionButton _setRussianLanguage;
         [SerializeField] private ActionButton _setEnglishLanguage;    
         
+        [SerializeField] private ActionButton _testLogButton;    
+        
         [SerializeField] private DropdownWithButtonView _addUnitsView;
         [SerializeField] private DropdownWithButtonView _addMetaUpgradeView;
 
@@ -60,6 +62,7 @@ namespace Survivors.UI.Cheats
             _setLanguage.Init(() => _cheatsManager.SetLanguage(_inputField.text));
             _setEnglishLanguage.Init(() => _cheatsManager.SetLanguage(SystemLanguage.English.ToString()));
             _setRussianLanguage.Init(() => _cheatsManager.SetLanguage(SystemLanguage.Russian.ToString()));
+            _testLogButton.Init(() => _cheatsManager.LogTestMessage());
         }
         private void DisableCheats()
         {
