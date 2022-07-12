@@ -492,6 +492,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SimpleGun
       objectReference: {fileID: 0}
+    - target: {fileID: 2863393877755902103, guid: 486fd84829708fb459394feb9cab4163, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 486fd84829708fb459394feb9cab4163, type: 3}
 --- !u!1001 &7094247343622593431

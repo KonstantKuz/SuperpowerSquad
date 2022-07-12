@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Feofun.UI.Dialog;
 using Feofun.UI.Screen;
 using JetBrains.Annotations;
@@ -6,11 +7,13 @@ using SuperMaxim.Messaging;
 using Survivors.Session.Messages;
 using Survivors.Session.Model;
 using Survivors.Session.Service;
+using Survivors.Squad.Upgrade;
+using Survivors.UI.Dialog.PauseDialog;
+using Survivors.UI.Dialog.StartUnitDialog;
+using Survivors.UI.Dialog.StartUnitDialog.Model;
 using Survivors.UI.Screen.Debriefing;
 using Survivors.UI.Screen.Debriefing.Model;
-using UniRx;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using Zenject;
 
 namespace Survivors.UI.Screen.World
@@ -30,14 +33,24 @@ namespace Survivors.UI.Screen.World
         [Inject] private Location.World _world;
         [Inject] private Joystick _joystick;
         [Inject] private Analytics.Analytics _analytics;
-
+        [Inject] private DialogManager _dialogManager;
+        [Inject] private UpgradeService _upgradeService;
+        
         [PublicAPI]
         public void Init()
         {
-            _world.UnPause();
             _analytics.ReportLevelStart();
+            _dialogManager.Show<StartUnitDialog, Action<StartUnitSelection>>(OnChangeStartUnit);
             _joystick.Attach(transform);
             _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
+        }
+
+        private void OnChangeStartUnit(StartUnitSelection startUnitSelection)
+        {
+            _sessionService.ChangeStartUnit(startUnitSelection.UnitId);
+            _upgradeService.IncreaseLevel(startUnitSelection.UpgradeId);
+            _dialogManager.Hide<StartUnitDialog>();
+            _dialogManager.Show<PauseDialog>();
         }
 
         private void OnSessionFinished(SessionEndMessage evn)

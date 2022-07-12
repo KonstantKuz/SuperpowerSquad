@@ -5,12 +5,10 @@ using System.Linq;
 using Feofun.Config;
 using Feofun.Extension;
 using Feofun.Localization;
-using Survivors.Config;
 using Survivors.Modifiers;
 using Survivors.Modifiers.Config;
 using Survivors.Squad.Upgrade;
 using Survivors.Squad.Upgrade.Config;
-using Zenject;
 
 namespace Survivors.UI.Dialog.UpgradeDialog.Model
 {

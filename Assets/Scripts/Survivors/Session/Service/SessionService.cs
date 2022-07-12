@@ -3,7 +3,6 @@ using Feofun.Config;
 using Feofun.Extension;
 using Feofun.UI.Dialog;
 using Logger.Extension;
-
 using SuperMaxim.Messaging;
 using Survivors.App.Config;
 using Survivors.Enemy.Spawn;
@@ -70,7 +69,12 @@ namespace Survivors.Session.Service
             CreateSquad();
             SpawnUnits();
         }
-
+        public void ChangeStartUnit(string unitId)
+        {
+            CheckSquad();
+            _world.Squad.ResetUnits();
+            _unitFactory.CreatePlayerUnits(unitId, _world.Squad.Model.StartingUnitCount.Value);
+        }
         private void CreateSession()
         {
             var levelConfig = LevelConfig;
@@ -94,10 +98,11 @@ namespace Survivors.Session.Service
             Assert.IsTrue(count >= 0, "Should add non-negative count of units");
             _unitFactory.CreatePlayerUnits(_constantsConfig.FirstUnit, count);
         }
-
+        
+        private void CheckSquad() => Assert.IsNotNull(_world.Squad, "Squad is null, should call this method only inside game session");
         private void SpawnUnits()
         {
-            Assert.IsNotNull(_world.Squad, "Squad is null, should call this method only inside game session");
+            CheckSquad();
             CreatePlayerUnits(_world.Squad.Model.StartingUnitCount.Value);
             _enemyWavesSpawner.StartSpawn(_enemyWavesConfig); 
             _enemyHpsSpawner.StartSpawn();
@@ -159,5 +164,7 @@ namespace Survivors.Session.Service
         {
             Session.AddRevive();
         }
+
+    
     }
 }

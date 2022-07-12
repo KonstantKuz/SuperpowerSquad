@@ -105,6 +105,17 @@ namespace Survivors.Squad
             _units.ForEach(it => it.Kill(DeathCause.Killed));
             _units.Clear();
         }
+
+        public void ResetUnits()
+        {
+            _units.ForEach(it => {
+                it.Kill(DeathCause.Removed);
+                Destroy(it.gameObject);
+            });
+            _units.Clear();
+            Model.RemoveUnits();
+        }
+
         public void AddUnit(Unit unit)
         {
             unit.transform.SetParent(Destination.transform);

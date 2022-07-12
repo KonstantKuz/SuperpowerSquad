@@ -34,6 +34,11 @@ namespace Survivors.Squad.Model
             AddModifier(addHealthModifier);
         }
 
+        public void RemoveUnits()
+        {
+            GetParameter(Parameters.HEALTH).Reset();
+        }
+
         public IHealthModel HealthModel { get; }
 
         public IReadOnlyReactiveProperty<int> StartingUnitCount => _startingUnitCount;

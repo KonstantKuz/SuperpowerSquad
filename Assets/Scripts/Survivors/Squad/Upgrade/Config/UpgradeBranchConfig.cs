@@ -28,6 +28,7 @@ namespace Survivors.Squad.Upgrade.Config
             return _levels[level - 1];
         }
         public int MaxLevel => _levels.Count;
+        public IReadOnlyList<UpgradeLevelConfig> Levels => _levels;
         public string BranchUnitName => BranchType == UpgradeBranchType.Unit ? Id : null;
     }
 }
