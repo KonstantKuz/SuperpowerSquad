@@ -12,7 +12,7 @@ namespace Survivors.UI.Dialog.StartUnitDialog
     public class StartUnitDialog : BaseDialog, IUiInitializable<Action<StartUnitSelection>>
     {
         [SerializeField]
-        private StartUnitView _view;
+        private StartUnitDialogView _view;
         
         [Inject] private UpgradesConfig _upgradesConfig;   
    

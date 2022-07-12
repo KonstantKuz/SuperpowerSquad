@@ -7,7 +7,7 @@ using Zenject;
 
 namespace Survivors.UI.Dialog.StartUnitDialog.View
 {
-    public class StartUnitView : MonoBehaviour
+    public class StartUnitDialogView : MonoBehaviour
     {
         [SerializeField]
         private StartUnitItemView _itemPrefab;

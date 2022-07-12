@@ -113,7 +113,7 @@ namespace Survivors.Squad
                 Destroy(it.gameObject);
             });
             _units.Clear();
-            Model.RemoveUnits();
+            Model.OnRemoveUnits();
         }
 
         public void AddUnit(Unit unit)

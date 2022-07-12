@@ -34,7 +34,7 @@ namespace Survivors.Squad.Model
             AddModifier(addHealthModifier);
         }
 
-        public void RemoveUnits()
+        public void OnRemoveUnits()
         {
             var squadHealthModel = (SquadHealthModel) HealthModel;
             squadHealthModel.Reset();
