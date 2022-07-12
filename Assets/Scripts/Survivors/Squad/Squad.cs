@@ -106,7 +106,7 @@ namespace Survivors.Squad
             _units.Clear();
         }
 
-        public void ResetUnits()
+        public void RemoveUnits()
         {
             _units.ForEach(it => {
                 it.Kill(DeathCause.Removed);

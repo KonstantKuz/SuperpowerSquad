@@ -72,7 +72,7 @@ namespace Survivors.Session.Service
         public void ChangeStartUnit(string unitId)
         {
             CheckSquad();
-            _world.Squad.ResetUnits();
+            _world.Squad.RemoveUnits();
             _unitFactory.CreatePlayerUnits(unitId, _world.Squad.Model.StartingUnitCount.Value);
         }
         private void CreateSession()
