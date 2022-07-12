@@ -9,6 +9,8 @@ namespace Survivors.UI.Screen.World
 {
     public class EnemiesLeftView : MonoBehaviour
     {
+        [SerializeField] 
+        private ProgressBarView _progressView;
         [SerializeField]
         private TextMeshProLocalization _text;
 
@@ -20,13 +22,14 @@ namespace Survivors.UI.Screen.World
         {
             Dispose();
             _disposable = new CompositeDisposable();
+            _progressView.Reset(0);
             _sessionService.Kills.Subscribe(OnKill).AddTo(_disposable);
+            _text.SetTextFormatted(_text.LocalizationId, _sessionService.LevelConfig.Level);
         }
 
         private void OnKill(int killedCount)
         {
-            var enemiesLeft = Math.Max(_sessionService.LevelConfig.KillCount - killedCount, 0);
-            _text.SetTextFormatted(_text.LocalizationId, enemiesLeft);
+            _progressView.SetData((float) killedCount / _sessionService.LevelConfig.KillCount);
         }
 
         private void Dispose()
