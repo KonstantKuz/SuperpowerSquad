@@ -36,7 +36,8 @@ namespace Survivors.Squad.Model
 
         public void RemoveUnits()
         {
-            GetParameter(Parameters.HEALTH).Reset();
+            var squadHealthModel = (SquadHealthModel) HealthModel;
+            squadHealthModel.Reset();
         }
 
         public IHealthModel HealthModel { get; }
