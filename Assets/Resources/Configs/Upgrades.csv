@@ -1,5 +1,6 @@
 Id,Type,ModifierId,TargetId
-RocketUnit,Modifier,ShotCountTier1,RocketUnit
+RocketUnit,Unit,,RocketUnit
+,Modifier,ShotCountTier1,RocketUnit
 ,Modifier,AttackDamageTier1,RocketUnit
 ,Modifier,ShotCountTier1,RocketUnit
 ,Modifier,AttackDamageTier1,RocketUnit
