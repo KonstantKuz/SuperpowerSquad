@@ -17,6 +17,7 @@ namespace Survivors.Units.Component.Death
 
         private Animator _animator;
         private Tweener _disappearTween;
+        private Coroutine _disappear;
 
         private void Awake()
         {
@@ -25,9 +26,9 @@ namespace Survivors.Units.Component.Death
 
         public void PlayDeath()
         {
-            StartCoroutine(Disappear());
+            Dispose();
+            _disappear = StartCoroutine(Disappear());
         }
-        
         private IEnumerator Disappear()
         {
             EndAnimationIfStarted();
@@ -46,9 +47,18 @@ namespace Survivors.Units.Component.Death
             _disappearTween = null;
         }
 
+        private void Dispose()
+        {
+            if (_disappear != null) {
+                StopCoroutine(_disappear);
+                _disappear = null;
+            }
+            EndAnimationIfStarted();
+        }
+
         private void OnDisable()
         {
-            EndAnimationIfStarted();
+            Dispose();
         }
     }
 }
