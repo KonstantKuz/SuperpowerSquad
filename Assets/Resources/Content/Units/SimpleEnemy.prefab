@@ -102,6 +102,7 @@ GameObject:
   - component: {fileID: 7094039851140565474}
   - component: {fileID: 5316809173621734762}
   - component: {fileID: 8473987040358760045}
+  - component: {fileID: 6516722857376266591}
   m_Layer: 6
   m_Name: SimpleEnemy
   m_TagString: Untagged
@@ -300,6 +301,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _jumpRotationAngle: 50
   _jumpRotationTimeRatio: 0.9
+--- !u!114 &6516722857376266591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047533565645016285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bafbae33832e4a98a76a1a9c5d13e8cf, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3753810788131279791
 GameObject:
   m_ObjectHideFlags: 0
@@ -436,6 +449,10 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: 8e6aafd4fffe33e458c98e5e90d921d3, type: 2}
+    - target: {fileID: 8401470524166108951, guid: bf42f0ad7a63640f283f151f61de301f, type: 3}
+      propertyPath: m_CullingMode
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 8401470524166108951, guid: bf42f0ad7a63640f283f151f61de301f, type: 3}
       propertyPath: m_ApplyRootMotion
       value: 0
