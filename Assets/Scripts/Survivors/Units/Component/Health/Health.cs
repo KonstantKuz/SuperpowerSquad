@@ -32,7 +32,7 @@ namespace Survivors.Units.Component.Health
         
         public void TakeDamage(float damage)
         {
-            /*if (!DamageEnabled) {
+            if (!DamageEnabled) {
                 return;
             }
             ChangeHealth(-damage);
@@ -41,7 +41,7 @@ namespace Survivors.Units.Component.Health
             OnDamageTaken?.Invoke();
             if (_currentHealth.Value <= 0) {
                 OnZeroHealth?.Invoke();
-            }*/
+            }
         }
 
         private void ChangeHealth(float delta, bool allowOverMax = false)
