@@ -27,7 +27,7 @@ namespace Survivors.Units
         private IUnitDeath _death;
         private ITarget _selfTarget;
         private IUnitDeathEventReceiver[] _deathEventReceivers;
-        private IUnitDeactivateEventReceiver[] _deactivateEventReceivers;
+        private IUnitActivateEventReceiver[] _activateEventReceivers;
         private MovementController _movementController;
         private bool _isActive;
         private float _spawnTime;
@@ -44,8 +44,10 @@ namespace Survivors.Units
             set
             {
                 _isActive = value;
-                if (!_isActive) {
-                    _deactivateEventReceivers.ForEach(it => it.OnDeactivate());
+                if (_isActive) {
+                    _activateEventReceivers.ForEach(it => it.OnActivate());
+                } else {
+                    _activateEventReceivers.ForEach(it => it.OnDeactivate());
                 }
             }
         }
@@ -72,7 +74,7 @@ namespace Survivors.Units
             _death = gameObject.RequireComponent<IUnitDeath>();
             _selfTarget = gameObject.RequireComponent<ITarget>();
             _deathEventReceivers = GetComponentsInChildren<IUnitDeathEventReceiver>();
-            _deactivateEventReceivers = GetComponentsInChildren<IUnitDeactivateEventReceiver>();
+            _activateEventReceivers = GetComponentsInChildren<IUnitActivateEventReceiver>();
 
             if (UnitType == UnitType.ENEMY)
             {
