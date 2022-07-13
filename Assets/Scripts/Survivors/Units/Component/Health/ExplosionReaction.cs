@@ -53,8 +53,8 @@ namespace Survivors.Units.Component.Health
         }
         private void CompleteExplosionJump(Vector3 jumpPosition)
         {
-            _agent.Warp(jumpPosition);
             _agent.enabled = true;
+            _agent.Warp(jumpPosition);
             _owner.IsActive = true;
         }
 
