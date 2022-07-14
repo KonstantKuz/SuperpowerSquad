@@ -1,11 +1,13 @@
 ﻿using DG.Tweening;
 using Survivors.Extension;
 using UnityEngine;
+using UnityEngine.AI;
 
 namespace Survivors.Units.Component.Health
 {
-    [RequireComponent(typeof(Unit))]
-    [RequireComponent(typeof(IDamageable))]
+    [RequireComponent(typeof(Unit))]  
+    [RequireComponent(typeof(NavMeshAgent))]
+
     public class ExplosionReaction : MonoBehaviour
     {
         [SerializeField] private float _jumpRotationAngle;
@@ -13,14 +15,14 @@ namespace Survivors.Units.Component.Health
         [SerializeField] private float _jumpRotationTimeRatio;
         
         private Unit _owner;
-        private IDamageable _damageable;
-        
+
+        private NavMeshAgent _agent;
         private Sequence _explosionJump;
 
         private void Awake()
         {
-            _owner = gameObject.GetComponent<Unit>();
-            _damageable = gameObject.GetComponent<IDamageable>();
+            _owner = GetComponent<Unit>();
+            _agent = GetComponent<NavMeshAgent>();
         }
 
         public static void TryExecuteOn(GameObject target, Vector3 explosionPosition, ExplosionReactionParams reactionParams)
@@ -33,22 +35,33 @@ namespace Survivors.Units.Component.Health
         
         public void OnExplosionReact(ExplosionReactionParams reactionParams)
         {
-            if(gameObject == null) { return; } 
-            if(!_owner.IsActive) { return; }
+            if (gameObject == null) { return; } 
+            if (!_owner.IsActive) { return; }
             
-            var move = CreateJumpMove(reactionParams);
+            var move = CreateJumpMove(reactionParams, out var jumpPosition);
             var rotate = CreateJumpRotation(reactionParams);
             _explosionJump = DOTween.Sequence();
             _explosionJump.Append(move).Insert(0, rotate).Play();
-
+            
             _owner.IsActive = false;
-            _explosionJump.onComplete = () => { _owner.IsActive = true; };
+            _agent.enabled = false;
+            
+            _explosionJump.onComplete = () => {
+                CompleteExplosionJump(jumpPosition); 
+
+            };
+        }
+        private void CompleteExplosionJump(Vector3 jumpPosition)
+        {
+            _agent.enabled = true;
+            _agent.Warp(jumpPosition);
+            _owner.IsActive = true;
         }
 
-        private Tween CreateJumpMove(ExplosionReactionParams reactionParams)
+        private Tween CreateJumpMove(ExplosionReactionParams reactionParams, out Vector3 jumpPosition)
         {
-            var jumpDirection = transform.position - reactionParams.ExplosionPosition;
-            var jumpPosition = transform.position + reactionParams.JumpDistance * Vector3.ProjectOnPlane(jumpDirection, Vector3.up) /  jumpDirection.magnitude;
+            var jumpDirection = transform.position - reactionParams.ExplosionPosition; 
+            jumpPosition = transform.position + reactionParams.JumpDistance * Vector3.ProjectOnPlane(jumpDirection, Vector3.up) /  jumpDirection.magnitude;
             return transform.DOJump(jumpPosition, reactionParams.JumpHeight, 1, reactionParams.JumpDuration);
         }
 
@@ -65,7 +78,7 @@ namespace Survivors.Units.Component.Health
 
         private void Dispose()
         {
-            _explosionJump?.Kill(true); 
+            _explosionJump?.Kill(); 
         }
     }
 }
