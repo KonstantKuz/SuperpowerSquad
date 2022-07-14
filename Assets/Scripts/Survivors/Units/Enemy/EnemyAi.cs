@@ -12,7 +12,7 @@ using Zenject;
 namespace Survivors.Units.Enemy
 {
     [RequireComponent(typeof(NavMeshAgent))]
-    public class EnemyAi : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent, IUnitActivateEventReceiver
+    public class EnemyAi : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent, IUnitActiveStateReceiver
     {
         private const float ACCURATE_FOLLOW_DISTANCE = 1f;
         
@@ -137,16 +137,10 @@ namespace Survivors.Units.Enemy
             CurrentTarget = null;
         }
 
-        public void OnActivate()
+        public void OnActiveStateChanged(bool active)
         {
-            Active = true;
-            Stopped = false;
-        }
-
-        public void OnDeactivate()
-        {
-            Active = false;
-            Stopped = true;
+            Active = active;
+            Stopped = !active;
         }
     }
 }
