@@ -1,5 +1,5 @@
-MaxUnitUpgrade,3
-MaxAbilityUpgrade,2
+MaxUnitUpgrade,9
+MaxAbilityUpgrade,4
 HealthScaleIncrementFactor,0.5
 FirstUnit,RocketUnit
 ReviveEnemyRemoveRadius,3
