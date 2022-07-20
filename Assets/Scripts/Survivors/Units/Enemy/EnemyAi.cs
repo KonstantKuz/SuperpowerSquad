@@ -50,6 +50,9 @@ namespace Survivors.Units.Enemy
                 if (!_agent.enabled) {
                     return;
                 }
+                if (!_agent.isOnNavMesh) {
+                    return;
+                }
                 if (_agent.isStopped == value) {
                     return;
                 }
