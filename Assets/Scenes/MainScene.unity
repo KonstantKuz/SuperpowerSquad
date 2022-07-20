@@ -647,19 +647,7 @@ PrefabInstance:
     - target: {fileID: 8533064047903396560, guid: d6eb7c9c829425d47a84bcef4eeb0c9e, type: 3}
       propertyPath: m_NavMeshData
       value: 
-      objectReference: {fileID: 23800000, guid: 880dfc246e47b2542a429524ab036f6f, type: 2}
-    - target: {fileID: 8746036832828890121, guid: d6eb7c9c829425d47a84bcef4eeb0c9e, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 8
-      objectReference: {fileID: 0}
-    - target: {fileID: 8746036832828890122, guid: d6eb7c9c829425d47a84bcef4eeb0c9e, type: 3}
-      propertyPath: m_LocalScale.x
-      value: 70
-      objectReference: {fileID: 0}
-    - target: {fileID: 8746036832828890122, guid: d6eb7c9c829425d47a84bcef4eeb0c9e, type: 3}
-      propertyPath: m_LocalScale.z
-      value: 70
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 23800000, guid: ce62c350e19eb2248a4045a169ab7ebe, type: 2}
     - target: {fileID: 8746036833993048137, guid: d6eb7c9c829425d47a84bcef4eeb0c9e, type: 3}
       propertyPath: m_Name
       value: Location
