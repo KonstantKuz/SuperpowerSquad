@@ -2,7 +2,7 @@ pipeline {
     agent none
     options {
         timestamps()
-        timeout(time: 60, unit: 'MINUTES')
+        timeout(time: 120, unit: 'MINUTES')
     }
     parameters {
         choice(choices: ['Android', 'iOS'], name: 'Platform') 
