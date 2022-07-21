@@ -283,6 +283,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _unitSize: 1.5
+  _destinationLimit: 900
 --- !u!114 &543859091421779963
 MonoBehaviour:
   m_ObjectHideFlags: 0
