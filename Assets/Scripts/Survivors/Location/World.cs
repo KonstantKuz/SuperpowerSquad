@@ -31,13 +31,6 @@ namespace Survivors.Location
             return withRay.GetPoint(intersectionDist);
         }
         
-        [Button]
-        public void RebuildNavMesh()
-        {
-            var navMeshSurfaces = NavMeshSurface.activeSurfaces;
-            navMeshSurfaces.ForEach(x => x.BuildNavMesh());
-        }
-
         public void Pause()
         {
             Time.timeScale = 0;

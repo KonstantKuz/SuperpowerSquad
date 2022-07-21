@@ -151,7 +151,7 @@ Transform:
   m_GameObject: {fileID: 8746036832828890121}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 70, y: 1, z: 70}
+  m_LocalScale: {x: 200, y: 1, z: 200}
   m_Children: []
   m_Father: {fileID: 8746036833993048138}
   m_RootOrder: 1
@@ -231,9 +231,9 @@ MonoBehaviour:
   m_OverrideTileSize: 1
   m_TileSize: 1024
   m_OverrideVoxelSize: 1
-  m_VoxelSize: 0.1
+  m_VoxelSize: 0.25
   m_BuildHeightMesh: 0
-  m_NavMeshData: {fileID: 23800000, guid: ce62c350e19eb2248a4045a169ab7ebe, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: ace352fe864b694448f58f62eb111ca0, type: 2}
 --- !u!1 &8746036833295827785
 GameObject:
   m_ObjectHideFlags: 0
@@ -345,7 +345,6 @@ GameObject:
   - component: {fileID: 186752239828696303}
   - component: {fileID: 1866441843583567248}
   - component: {fileID: 6484450709119096639}
-  - component: {fileID: 2773654440026985911}
   m_Layer: 0
   m_Name: Location
   m_TagString: Untagged
@@ -455,17 +454,3 @@ MonoBehaviour:
   _softLimit: 200
   _hardLimit: 400
   _minRemovalAge: 1
---- !u!114 &2773654440026985911
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8746036833993048137}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05d4e2a02d954a4c9f4602711740a84e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _closestEdgeDistanceForRebuild: 20
-  _updatePeriod: 1

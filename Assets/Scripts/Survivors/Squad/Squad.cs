@@ -29,7 +29,8 @@ namespace Survivors.Squad
 {
     public class Squad : MonoBehaviour, IWorldScope
     {
-        [SerializeField] private float _unitSize;
+        [SerializeField] private float _unitSize;   
+        [SerializeField] private float _destinationLimit = 1000;
         
         private ISquadFormation _formation;
         private readonly IReactiveCollection<Unit> _units = new List<Unit>().ToReactiveCollection();
@@ -200,7 +201,13 @@ namespace Survivors.Squad
         private void Move(Vector3 joystickDirection)
         {
             var delta = Model.Speed.Value * joystickDirection * Time.deltaTime;
-            Destination.transform.position += delta;
+        
+            var position = Destination.transform.position;
+            position += delta;
+            if (Math.Abs(position.x) > _destinationLimit || Math.Abs(position.z) > _destinationLimit) {
+                return;
+            }
+            Destination.transform.position = position;
         }
 
         private void UpdateUnitsAnimations()
