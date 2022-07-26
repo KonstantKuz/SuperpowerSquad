@@ -48,6 +48,7 @@ namespace Survivors.App
             _worldServicesInstaller.Install(Container);
             _uiInstaller.Install(Container);
             _cheatsInstaller.Install(Container);
+            Container.Inject(PoolManager.Instance);
             
         }
     }

@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using Survivors.Location.Model;
-using Survivors.Session;
 using UnityEngine;
 using Zenject;
 using UniRx;
@@ -38,22 +37,38 @@ namespace Survivors.Location.Service
             }
         }
 
-        public GameObject CreateObject(string objectId, [CanBeNull] Transform container = null)
+        public GameObject CreateObject(string objectId, [CanBeNull] Transform container = null, bool usePool = false)
         {
             if (!_prefabs.ContainsKey(objectId)) {
                 throw new KeyNotFoundException($"No prefab with objectId {objectId} found");
             }
             var prefab = _prefabs[objectId];
-            return CreateObject(prefab, container);
+            return usePool ? CreatePoolingGameObject(prefab) : CreateObject(prefab, container);
         }
 
-        public GameObject CreateObject(GameObject prefab, [CanBeNull] Transform container = null)
+        public GameObject CreateObject(GameObject prefab, [CanBeNull] Transform container = null, bool usePool = false)
         {
+            
             var parentContainer = container == null ? _world.Spawn.transform : container.transform;
             var createdGameObject = _container.InstantiatePrefab(prefab, parentContainer);
             _createdObjects.Add(createdGameObject);
             createdGameObject.OnDestroyAsObservable().Subscribe((o) => OnDestroyObject(createdGameObject)).AddTo(_disposable);
             return createdGameObject;
+        }
+
+        public GameObject CreatePoolingGameObject(GameObject prefab)
+        {
+            if (!PoolManager.IsWarmPool(prefab)) {
+                PoolManager.WarmPool(prefab, 500);
+            }
+            var poolingGameObjet = PoolManager.SpawnObject(prefab);
+            _container.InjectGameObject(poolingGameObjet);
+            return poolingGameObjet;
+        }
+
+        public void ReleaseObject(GameObject gameObject)
+        {
+            PoolManager.ReleaseObject(gameObject);
         }
 
         private void OnDestroyObject(GameObject obj)
