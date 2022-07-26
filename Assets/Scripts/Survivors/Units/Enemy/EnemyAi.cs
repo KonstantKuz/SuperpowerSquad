@@ -12,7 +12,7 @@ using Zenject;
 namespace Survivors.Units.Enemy
 {
     [RequireComponent(typeof(NavMeshAgent))]
-    public class EnemyAi : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent, IUnitDeactivateEventReceiver
+    public class EnemyAi : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent, IUnitActiveStateReceiver
     {
         private const float ACCURATE_FOLLOW_DISTANCE = 1f;
         
@@ -41,6 +41,26 @@ namespace Survivors.Units.Enemy
 
         public NavMeshAgent NavMeshAgent => _agent;
         
+        private bool Active { get; set; } = true;
+
+        private bool Stopped {
+            get => _agent.isStopped;
+            set
+            {
+                if (!_agent.enabled) {
+                    return;
+                }
+                if (!_agent.isOnNavMesh) {
+                    return;
+                }
+                if (_agent.isStopped == value) {
+                    return;
+                }
+                _agent.isStopped = value;
+            }
+
+        }
+
         [CanBeNull] 
         public ITarget CurrentTarget
         {
@@ -76,36 +96,33 @@ namespace Survivors.Units.Enemy
 
         public void OnTick()
         {
-            if (_world.Squad == null) return;
-            
+            if (!Active || _world.Squad == null) return;
             UpdateAgentRadius();
-            
-            if (DistanceToSquad > _targetSelectionDistance) 
-            {
+            UpdateDestination();
+        }
+
+        private void UpdateDestination()
+        {
+            if (DistanceToSquad > _targetSelectionDistance) {
                 MoveTo(SquadPosition);
                 return;
             }
+            CurrentTarget = FindTarget();
             
-            FindTarget();
-
-            if (CurrentTarget == null)
-            {
-                _agent.isStopped = true;
+            if (CurrentTarget == null) {
+                Stopped = true;
                 return;
             }
-
             MoveTo(CurrentTarget.Root.position);
-            _agent.isStopped = false;
         }
 
         private void MoveTo(Vector3 destination)
         {
-            if (Vector3.Distance(transform.position, destination) > ACCURATE_FOLLOW_DISTANCE)
-            {
+            Stopped = false;
+            if (Vector3.Distance(transform.position, destination) > ACCURATE_FOLLOW_DISTANCE) {
                 _agent.destination = transform.position + (destination - transform.position).normalized;
             }
-            else
-            {
+            else {
                 _agent.destination = destination;
             }
         }
@@ -115,20 +132,18 @@ namespace Survivors.Units.Enemy
             _agent.radius = _initialAgentRadius + Mathf.Lerp(AgentRadiusNear, AgentRadiusAfar, 
                                                              (DistanceToSquad - _agentDistanceNear) / (_agentDistanceAfar - _agentDistanceNear));
         }
-
-        private void FindTarget()
-        {
-            CurrentTarget = _targetSearcher.Find();
-        }
-
+        [CanBeNull]
+        private ITarget FindTarget() => _targetSearcher.Find();
+        
         private void ClearTarget()
         {
             CurrentTarget = null;
         }
 
-        public void OnDeactivate()
+        public void OnActiveStateChanged(bool active)
         {
-            _agent.isStopped = true;
+            Active = active;
+            Stopped = !active;
         }
     }
 }

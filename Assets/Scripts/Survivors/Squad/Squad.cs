@@ -20,6 +20,7 @@ using Survivors.Units.Player.Config;
 using Survivors.Units.Service;
 using UniRx;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.Assertions;
 using Zenject;
 using Unit = Survivors.Units.Unit;
@@ -28,7 +29,8 @@ namespace Survivors.Squad
 {
     public class Squad : MonoBehaviour, IWorldScope
     {
-        [SerializeField] private float _unitSize;
+        [SerializeField] private float _unitSize;   
+        [SerializeField] private float _destinationLimit = 1000;
         
         private ISquadFormation _formation;
         private readonly IReactiveCollection<Unit> _units = new List<Unit>().ToReactiveCollection();
@@ -70,15 +72,15 @@ namespace Survivors.Squad
             TargetProvider = gameObject.RequireComponent<SquadTargetProvider>();   
             WeaponTimerManager = gameObject.RequireComponent<WeaponTimerManager>();
             _damageable = gameObject.RequireComponent<IDamageable>();
-            UpdateFormationAndRadius();
+            UpdateSquadRadius();
         }
 
         private void Update()
         {
             if (!IsActive) return;
             if (IsMoving) Move(MoveDirection);
-            SetUnitPositions();
             UpdateUnitsAnimations();
+            _units.ForEach(it => it.transform.localPosition = Vector3.zero);
         }
         
         public void OnWorldSetup()
@@ -104,13 +106,36 @@ namespace Survivors.Squad
             _units.ForEach(it => it.Kill(DeathCause.Killed));
             _units.Clear();
         }
+
+        public void RemoveUnits()
+        {
+            _units.ForEach(it => {
+                it.Kill(DeathCause.Removed);
+                Destroy(it.gameObject);
+            });
+            _units.Clear();
+            Model.OnRemoveUnits();
+        }
+
         public void AddUnit(Unit unit)
         {
             unit.transform.SetParent(Destination.transform);
             Model.AddUnit(unit.Model);
             _units.Add(unit);
             InitializeSquadComponents(unit.gameObject);
-            UpdateFormationAndRadius();
+            UpdateSquadRadius();
+            DisableUnitView(unit);
+        }
+
+        private void DisableUnitView(Unit unit)
+        {
+            if (_units.Count == 1)
+            {
+                return;
+            }
+            unit.GetComponent<NavMeshAgent>().enabled = false;
+            var renderers = unit.GetComponentsInChildren<Renderer>();
+            renderers.ForEach(it => it.enabled = false);
         }
 
         public void AddModifier(IModifier modifier, ModifierTarget target, [CanBeNull] string unitId = null)
@@ -163,19 +188,8 @@ namespace Survivors.Squad
             var units = _units.ToList();
             if (unitId != null) units = _units.Where(it => it.Model.Id == unitId).ToList();
             units.ForEach(unit => unit.AddModifier(modifier));
-        }        
-
-        private void SetUnitPositions()
-        {
-            //place long ranged units inside formations (close to center) and close ranged units to outer layers of formations            
-            var unitsOrderedByRange = _units.ToList().OrderByDescending(it => it.Model.AttackModel.AttackDistance).ToList();
-            var positionsOrderedByDistance = GetUnitOffsets().OrderBy(it => it.magnitude).ToList();
-            for (var unitIdx = 0; unitIdx < unitsOrderedByRange.Count; unitIdx++)
-            {
-                unitsOrderedByRange[unitIdx].transform.position = Destination.transform.position + positionsOrderedByDistance[unitIdx];
-            }
         }
-
+        
         private IEnumerable<Vector3> GetUnitOffsets()
         {
             for (int i = 0; i < _units.Count; i++)
@@ -187,7 +201,13 @@ namespace Survivors.Squad
         private void Move(Vector3 joystickDirection)
         {
             var delta = Model.Speed.Value * joystickDirection * Time.deltaTime;
-            Destination.transform.position += delta;
+        
+            var position = Destination.transform.position;
+            position += delta;
+            if (Math.Abs(position.x) > _destinationLimit || Math.Abs(position.z) > _destinationLimit) {
+                return;
+            }
+            Destination.transform.position = position;
         }
 
         private void UpdateUnitsAnimations()
@@ -199,18 +219,16 @@ namespace Survivors.Squad
         {
             var radius = _unitSize;
             var center = Destination.transform.position;
-            foreach (var unit in _units)
-                radius = Mathf.Max(radius, Vector3.Distance(unit.transform.position, center) + _unitSize);
-
+            
+            var positionsInCircle = GetUnitOffsets().OrderBy(it => it.magnitude).ToList();
+            if (positionsInCircle.Any())
+            {
+                var furtherPosition = Destination.transform.position + positionsInCircle.Last();
+                radius = Vector3.Distance(furtherPosition, center) + _unitSize;
+            }
+            
             SquadRadius = radius;
         }
-        
-        private void UpdateFormationAndRadius()
-        {
-            SetUnitPositions();
-            UpdateSquadRadius();
-        }
-
 
         public void RestoreHealth()
         {
