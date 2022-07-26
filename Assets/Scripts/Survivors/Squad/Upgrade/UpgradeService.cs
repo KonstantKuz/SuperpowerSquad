@@ -50,16 +50,21 @@ namespace Survivors.Squad.Upgrade
                 }
             }
         }
-        
         public void Upgrade(string upgradeBranchId)
         {
             if (SquadUpgradeState.IsMaxLevel(upgradeBranchId, _config)) return;
+            IncreaseLevel(upgradeBranchId);
+            ApplyUpgrade(upgradeBranchId, SquadUpgradeState.GetLevel(upgradeBranchId));
+            this.Logger().Debug($"Upgrade:={upgradeBranchId} applied, level:= {SquadUpgradeState.GetLevel(upgradeBranchId)}");
+        }
+
+        public void IncreaseLevel(string upgradeBranchId)
+        {
             var state = SquadUpgradeState;
             state.IncreaseLevel(upgradeBranchId);
             SaveState(state);
-            ApplyUpgrade(upgradeBranchId, SquadUpgradeState.GetLevel(upgradeBranchId));
-            this.Logger().Debug($"Upgrade:={upgradeBranchId} applied, level:= {state.GetLevel(upgradeBranchId)}");
         }
+
         public void AddUnit(string unitId)
         {
             var unit = _unitFactory.CreatePlayerUnit(unitId);

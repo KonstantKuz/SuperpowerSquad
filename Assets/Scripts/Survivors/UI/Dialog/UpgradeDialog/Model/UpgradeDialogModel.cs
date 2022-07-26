@@ -5,19 +5,17 @@ using System.Linq;
 using Feofun.Config;
 using Feofun.Extension;
 using Feofun.Localization;
-using Survivors.Config;
 using Survivors.Modifiers;
 using Survivors.Modifiers.Config;
 using Survivors.Squad.Upgrade;
 using Survivors.Squad.Upgrade.Config;
-using Zenject;
 
 namespace Survivors.UI.Dialog.UpgradeDialog.Model
 {
     public class UpgradeDialogModel
     {
         private const string LEVEL_LOCALIZATION_ID = "lvl";
-        private const string ADD_UNIT_LOCALIZATION_ID = "unit +1";
+        private const string ADD_UNIT_LOCALIZATION_ID = "weapon +1";
 
         private readonly List<UpgradeItemModel> _upgrades;
         private readonly UpgradesConfig _upgradesConfig;

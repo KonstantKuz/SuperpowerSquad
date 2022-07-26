@@ -1,4 +1,4 @@
 Id,Currency,Cost,LevelCostIncrease
-AttackDamage,Soft,50,125
-StartingUnitCount,Soft,50,250
-Health,Soft,50,100
+AttackDamage,Soft,2000,2000
+ShotCount,Soft,10000,5000
+Health,Soft,1000,1000

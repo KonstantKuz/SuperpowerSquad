@@ -388,10 +388,11 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 670224309865224971, guid: 27fe0680b4eb84d6ca87028ee4327ccc, type: 3}
+  - {fileID: 2100000, guid: 84c8fbb6876129f41a1991c976827731, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -547,10 +548,10 @@ Animator:
   m_GameObject: {fileID: 2968989901826586583}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 27fe0680b4eb84d6ca87028ee4327ccc, type: 3}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 1
+  m_Controller: {fileID: 9100000, guid: 8e6aafd4fffe33e458c98e5e90d921d3, type: 2}
+  m_CullingMode: 2
   m_UpdateMode: 0
-  m_ApplyRootMotion: 1
+  m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
   m_WarningMessage: 
   m_HasTransformHierarchy: 1

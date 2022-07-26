@@ -1,9 +1,11 @@
 using System.Collections.Generic;
 using System.Linq;
-using Feofun.App;
+using EasyButtons;
 using JetBrains.Annotations;
 using SuperMaxim.Core.Extensions;
 using UnityEngine;
+using UnityEngine.AI;
+using AppContext = Feofun.App.AppContext;
 
 namespace Survivors.Location
 {
@@ -16,7 +18,7 @@ namespace Survivors.Location
 
         public Transform Ground => _ground;
         public GameObject Spawn => _spawn;
-    
+
         [CanBeNull]
         public Squad.Squad Squad { get; set; }
 
@@ -28,7 +30,7 @@ namespace Survivors.Location
             plane.Raycast(withRay, out var intersectionDist);
             return withRay.GetPoint(intersectionDist);
         }
-
+        
         public void Pause()
         {
             Time.timeScale = 0;
@@ -54,8 +56,7 @@ namespace Survivors.Location
         {
             return GetDISubscribers<T>().Union(GetChildrenSubscribers<T>());
         }
+
         private static List<T> GetDISubscribers<T>() => AppContext.Container.ResolveAll<T>();
-
-
     }
 }

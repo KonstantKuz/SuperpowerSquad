@@ -44,6 +44,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Rifle
       objectReference: {fileID: 0}
+    - target: {fileID: 1643287253837802525, guid: 7d6581074d14feb4ea358d5b84176a3a, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2127372075451397799, guid: 7d6581074d14feb4ea358d5b84176a3a, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -275,10 +279,6 @@ PrefabInstance:
     - target: {fileID: 1143356745896943787, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.7
-      objectReference: {fileID: 0}
-    - target: {fileID: 1143356745896943787, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 1.5
       objectReference: {fileID: 0}
     - target: {fileID: 3254496561695502929, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
       propertyPath: m_Name
