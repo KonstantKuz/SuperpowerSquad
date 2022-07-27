@@ -29,18 +29,19 @@ namespace Survivors.Squad
 {
     public class Squad : MonoBehaviour, IWorldScope
     {
-        [SerializeField] private float _unitSize;   
-        [SerializeField] private float _destinationLimit = 1000;
-        
+        [SerializeField] private float _unitSize;
+
         private ISquadFormation _formation;
         private readonly IReactiveCollection<Unit> _units = new List<Unit>().ToReactiveCollection();
         
         private IDamageable _damageable;
-        private IReadOnlyReactiveProperty<int> _unitCount;        
+        private IReadOnlyReactiveProperty<int> _unitCount;
+        private Bounds _worldBBox;
 
         [Inject] private Joystick _joystick;
         [Inject] private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
         [Inject] private UnitFactory _unitFactory;
+        [Inject] private World _world;
         
         public bool IsActive { get; set; }
         
@@ -73,6 +74,7 @@ namespace Survivors.Squad
             WeaponTimerManager = gameObject.RequireComponent<WeaponTimerManager>();
             _damageable = gameObject.RequireComponent<IDamageable>();
             UpdateSquadRadius();
+            _worldBBox = _world.Ground.GetComponent<Collider>().bounds;
         }
 
         private void Update()
@@ -201,13 +203,14 @@ namespace Survivors.Squad
         private void Move(Vector3 joystickDirection)
         {
             var delta = Model.Speed.Value * joystickDirection * Time.deltaTime;
-        
-            var position = Destination.transform.position;
-            position += delta;
-            if (Math.Abs(position.x) > _destinationLimit || Math.Abs(position.z) > _destinationLimit) {
-                return;
-            }
-            Destination.transform.position = position;
+            Destination.transform.position = ClampByWorldBBox(Destination.transform.position + delta);
+        }
+
+        private Vector3 ClampByWorldBBox(Vector3 position)
+        {
+            position.x = Mathf.Clamp(position.x, _worldBBox.min.x, _worldBBox.max.x);
+            position.z = Mathf.Clamp(position.z, _worldBBox.min.z, _worldBBox.max.z);
+            return position;
         }
 
         private void UpdateUnitsAnimations()
