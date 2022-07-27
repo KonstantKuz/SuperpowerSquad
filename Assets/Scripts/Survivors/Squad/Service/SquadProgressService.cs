@@ -1,7 +1,10 @@
 ﻿using System;
 using Feofun.Config;
 using JetBrains.Annotations;
+using SuperMaxim.Messaging;
+using Survivors.App.Config;
 using Survivors.Location;
+using Survivors.Session.Messages;
 using Survivors.Squad.Config;
 using Survivors.Squad.Progress;
 using UniRx;
@@ -19,6 +22,11 @@ namespace Survivors.Squad.Service
         private SquadProgressRepository _repository;
         [Inject]
         private StringKeyedConfigCollection<SquadLevelConfig> _levelConfig;
+        [Inject] 
+        private ConstantsConfig _constantsConfig;
+        [Inject]
+        private IMessenger _messenger;    
+        
         public IReadOnlyReactiveProperty<int> Level => _level;    
         public IObservable<int> Exp => _exp;
         private SquadProgress Progress => _repository.Require();
@@ -30,7 +38,12 @@ namespace Survivors.Squad.Service
         public void OnWorldSetup()
         {
             SetProgress(SquadProgress.Create());
+            if (_constantsConfig.LevelUpBetweenWaves)
+            {
+                _messenger.Subscribe<WaveClearedMessage>(OnWaveCleared);
+            }
         }
+
         public void AddExp(int amount)
         {
             Assert.IsTrue(amount >= 0, "Added amount of Exp should be non-negative");
@@ -58,7 +71,20 @@ namespace Survivors.Squad.Service
         }
         public void OnWorldCleanUp()
         {
+            if (_constantsConfig.LevelUpBetweenWaves)
+            {
+                _messenger.Unsubscribe<WaveClearedMessage>(OnWaveCleared);
+            }            
             ResetProgress();
         }
+        
+        private void OnWaveCleared(WaveClearedMessage msg)
+        {
+            var progress = Progress;
+            if (progress.IsMaxLevel(_levelConfig)) return;
+
+            progress.Level++;
+            SetProgress(progress);
+        }   
     }
 }

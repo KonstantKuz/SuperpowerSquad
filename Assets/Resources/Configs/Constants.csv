@@ -4,3 +4,4 @@ HealthScaleIncrementFactor,0.5
 FirstUnit,RocketUnit
 ReviveEnemyRemoveRadius,3
 MaxMetaUpgradeLevel,100
+LevelUpBetweenWaves,TRUE
