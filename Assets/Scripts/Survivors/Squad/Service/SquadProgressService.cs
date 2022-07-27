@@ -1,13 +1,12 @@
 ﻿using System;
-using System.Linq;
 using Feofun.Config;
 using JetBrains.Annotations;
+using SuperMaxim.Messaging;
 using Survivors.App.Config;
 using Survivors.Location;
+using Survivors.Session.Messages;
 using Survivors.Squad.Config;
 using Survivors.Squad.Progress;
-using Survivors.Units;
-using Survivors.Units.Service;
 using UniRx;
 using UnityEngine.Assertions;
 using Zenject;
@@ -25,8 +24,8 @@ namespace Survivors.Squad.Service
         private StringKeyedConfigCollection<SquadLevelConfig> _levelConfig;
         [Inject] 
         private ConstantsConfig _constantsConfig;
-        [Inject] 
-        private UnitService _unitService;
+        [Inject]
+        private IMessenger _messenger;    
         
         public IReadOnlyReactiveProperty<int> Level => _level;    
         public IObservable<int> Exp => _exp;
@@ -41,7 +40,7 @@ namespace Survivors.Squad.Service
             SetProgress(SquadProgress.Create());
             if (_constantsConfig.LevelUpBetweenWaves)
             {
-                _unitService.OnEnemyUnitDeath += OnEnemyKilled;
+                _messenger.Subscribe<WaveClearedMessage>(OnWaveCleared);
             }
         }
 
@@ -74,20 +73,18 @@ namespace Survivors.Squad.Service
         {
             if (_constantsConfig.LevelUpBetweenWaves)
             {
-                _unitService.OnEnemyUnitDeath -= OnEnemyKilled;
+                _messenger.Unsubscribe<WaveClearedMessage>(OnWaveCleared);
             }            
             ResetProgress();
         }
         
-        private void OnEnemyKilled(IUnit unit, DeathCause deathCause)
+        private void OnWaveCleared(WaveClearedMessage msg)
         {
-            if (_unitService.HasUnitOfType(UnitType.ENEMY)) return;
-
             var progress = Progress;
             if (progress.IsMaxLevel(_levelConfig)) return;
 
             progress.Level++;
             SetProgress(progress);
-        }        
+        }   
     }
 }
