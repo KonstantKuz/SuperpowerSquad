@@ -30,7 +30,8 @@ namespace Survivors.Units.Player.Model
             
             _projectileSpeed = new FloatModifiableParameter(Parameters.PROJECTILE_SPEED, _config.ProjectileSpeed, parameterOwner);
             _damageRadius = new FloatModifiableParameter(Parameters.DAMAGE_RADIUS, _config.DamageRadius, parameterOwner);
-            
+            parameterCalculator.InitParam(_damageRadius, parameterOwner);
+
             var shotCount = new FloatModifiableParameter(Parameters.SHOT_COUNT, 1, parameterOwner);
             parameterCalculator.InitParam(shotCount, parameterOwner);
             ShotCount = shotCount.ReactiveValue.Select(it => (int) it).ToReactiveProperty();
