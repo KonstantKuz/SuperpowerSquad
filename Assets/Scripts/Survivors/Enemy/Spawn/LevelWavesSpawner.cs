@@ -1,4 +1,3 @@
-using SuperMaxim.Core.Extensions;
 using SuperMaxim.Messaging;
 using Survivors.Enemy.Spawn.Config;
 using Survivors.Location;
@@ -14,19 +13,25 @@ namespace Survivors.Enemy.Spawn
         [Inject] private EnemyWavesSpawner _enemyWavesSpawner;
 
         private LevelWavesConfig _currentLevelConfig;
-        private int _currentWaveIndex = -1;
+        private int _currentWaveIndex;
 
         public void StartSpawn(LevelWavesConfig levelConfig)
         {
             _currentLevelConfig = levelConfig;
+            _currentWaveIndex = 0;
             
-            SpawnNextWave();
-            _messenger.Subscribe<WaveClearedMessage>((msg) => SpawnNextWave());
+            SpawnCurrentWave();
+            _messenger.Subscribe<WaveClearedMessage>(SpawnNextWave);
         }
 
-        private void SpawnNextWave()
+        private void SpawnNextWave(WaveClearedMessage msg)
         {
             _currentWaveIndex++;
+            SpawnCurrentWave();
+        }
+
+        private void SpawnCurrentWave()
+        {
             var waveConfig = _currentLevelConfig.Waves[_currentWaveIndex];
             var enemiesLeft = waveConfig.Count;
             var subWavesCount = Random.Range(3, 5);
@@ -57,7 +62,7 @@ namespace Survivors.Enemy.Spawn
 
         public void OnWorldCleanUp()
         {
-            _messenger.Unsubscribe<WaveClearedMessage>((msg) => SpawnNextWave());
+            _messenger.Unsubscribe<WaveClearedMessage>(SpawnNextWave);
         }
     }
 }

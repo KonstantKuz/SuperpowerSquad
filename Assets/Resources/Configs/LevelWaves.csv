@@ -1,8 +1,8 @@
 Level,Count,EnemyId,EnemyLevel
 1,5,SimpleEnemy,1
-2,5,SimpleEnemy,1
 ,10,SimpleEnemy,1
 ,20,SimpleEnemy,1
-,30,SimpleEnemy,1
-,40,SimpleEnemy,1
+,20,SimpleEnemy,1
+,50,SimpleEnemy,1
+,50,SimpleEnemy,1
 ,50,SimpleEnemy,1
