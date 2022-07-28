@@ -100,9 +100,9 @@ namespace Survivors.Enemy.Spawn
             return FindEmptyPlace(waveConfig);
         }
 
-        private SpawnPlace FindEmptyPlace(EnemyWaveConfig waveConfig)
+        public SpawnPlace FindEmptyPlace(EnemyWaveConfig waveConfig, int rangeOffset = 0)
         {
-            for (int rangeTry = 1; rangeTry <= _rangeAttemptCount; rangeTry++)
+            for (int rangeTry = 1 + rangeOffset; rangeTry <= _rangeAttemptCount + rangeOffset; rangeTry++)
             {
                 for (int angleTry = 0; angleTry < _angleAttemptCount; angleTry++)
                 {
@@ -122,7 +122,7 @@ namespace Survivors.Enemy.Spawn
             return _minOutOfViewOffset + rangeTry * GetWaveRadius(waveConfig);
         }
 
-        private float GetWaveRadius(EnemyWaveConfig waveConfig)
+        public float GetWaveRadius(EnemyWaveConfig waveConfig)
         {
             var enemyConfig = _enemyUnitConfigs.Get(waveConfig.EnemyId);
             return Mathf.Sqrt(waveConfig.Count) * enemyConfig.CalculateScale(waveConfig.EnemyLevel);
@@ -133,7 +133,7 @@ namespace Survivors.Enemy.Spawn
             return IsPlaceOnNavMesh(place) && !IsPlaceBusy(place, waveConfig);
         }
 
-        private bool IsPlaceOnNavMesh(Vector3 place)
+        public bool IsPlaceOnNavMesh(Vector3 place)
         {
             return NavMesh.SamplePosition(place, out var hit, 1f, NavMesh.AllAreas);
         }

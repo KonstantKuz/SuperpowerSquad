@@ -29,7 +29,7 @@ namespace Survivors.Session.Service
         private readonly IntReactiveProperty _kills = new IntReactiveProperty(0);
         
         [Inject] private EnemyWavesSpawner _enemyWavesSpawner;
-        [Inject] private LevelWavesSpawner _levelWavesSpawner;
+        [Inject] private WaveGroupsSpawner _waveGroupsSpawner;
         [Inject] private EnemyWavesConfig _enemyWavesConfig;
         [Inject] private UnitFactory _unitFactory;     
         [Inject] private SquadFactory _squadFactory; 
@@ -104,7 +104,7 @@ namespace Survivors.Session.Service
             CheckSquad();
             CreatePlayerUnits(_world.Squad.Model.StartingUnitCount.Value);
             _enemyWavesSpawner.StartSpawn(_enemyWavesConfig); 
-            _levelWavesSpawner.StartSpawn(LevelConfig);
+            _waveGroupsSpawner.StartSpawn(LevelConfig);
         }
 
         private void ResetKills() => _kills.Value = 0;
