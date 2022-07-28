@@ -17,5 +17,6 @@ namespace Survivors.Config
         public const string LEVEL_MISSION = "LevelMission";   
         public const string MISSION_REWARDS = "MissionRewards";     
         public const string META_UPGRADES_SHOP = "MetaUpgradesShop";
+        public const string LEVELS_WITH_WAVES = "LevelWaves";
     }
 }

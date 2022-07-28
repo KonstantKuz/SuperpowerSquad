@@ -39,6 +39,7 @@ namespace Survivors.App
                 .RegisterSingleObjectConfig<ConstantsConfig>(Configs.CONSTANTS)
                 .RegisterSingleObjectConfig<HpsSpawnerConfig>(Configs.ENEMY_SPAWNER)
                 .RegisterStringKeyedCollection<LevelMissionConfig>(Configs.LEVEL_MISSION)
+                .RegisterSingle<WavesByLevelConfig>(Configs.LEVELS_WITH_WAVES)
                 .RegisterCollection<SessionResult, MissionRewardsConfig>(Configs.MISSION_REWARDS);
         }
     }

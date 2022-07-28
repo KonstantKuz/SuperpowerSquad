@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Feofun.UI.Components;
 using Survivors.Session.Service;
 using UniRx;
@@ -29,7 +30,7 @@ namespace Survivors.UI.Screen.World
 
         private void OnKill(int killedCount)
         {
-            _progressView.SetData((float) killedCount / _sessionService.LevelConfig.KillCount);
+            _progressView.SetData((float) killedCount / _sessionService.LevelConfig.Waves.Sum(it => it.Count));
         }
 
         private void Dispose()

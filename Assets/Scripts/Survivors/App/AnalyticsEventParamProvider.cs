@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Feofun.Config;
+using Logger.Extension;
 using Survivors.Analytics;
 using Survivors.Location;
 using Survivors.Player.Progress.Service;
@@ -106,6 +107,11 @@ namespace Survivors.App
         private float GetAverageEnemyLifetime()
         {
             var enemies = _unitService.GetEnemyUnits().ToList();
+            if (!enemies.Any())
+            {
+                this.Logger().Warn("Can't calculate average life time because all enemies are dead.");
+                return 0f;
+            }
             return enemies.Average(it => it.LifeTime);
         }
         
