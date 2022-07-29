@@ -54,16 +54,9 @@ namespace Survivors.Enemy.Spawn
             var enemiesLeftForSpawn = waveConfig.Count;
             var groupsCount = Random.Range(_spawnerConfig.MinGroupsCount, _spawnerConfig.MaxGroupsCount);
             var enemiesInGroup = enemiesLeftForSpawn / groupsCount;
-            while (enemiesLeftForSpawn > 0)
+            for (;enemiesLeftForSpawn > 0; enemiesLeftForSpawn -= enemiesInGroup)
             {
-                if (enemiesLeftForSpawn < enemiesInGroup)
-                {
-                    enemiesInGroup += enemiesLeftForSpawn;
-                }
-
-                SpawnGroup(enemiesInGroup, waveConfig);
-                
-                enemiesLeftForSpawn -= enemiesInGroup;
+                SpawnGroup(Mathf.Min(enemiesInGroup, enemiesLeftForSpawn), waveConfig);
             }
         }
 
