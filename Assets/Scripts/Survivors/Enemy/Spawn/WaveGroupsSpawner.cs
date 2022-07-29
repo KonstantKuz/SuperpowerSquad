@@ -36,10 +36,8 @@ namespace Survivors.Enemy.Spawn
             _currentLevelConfig = levelConfig;
             _currentWaveIndex = new IntReactiveProperty();
             _sessionService.Kills.Subscribe(UpdateCurrentWaveKillCount).AddTo(_disposable);
-
+            _sessionService.Kills.Subscribe(TrySpawnNextWave).AddTo(_disposable);
             SpawnCurrentWave();
-            _messenger.Subscribe<WaveClearedMessage>(SpawnNextWave);
-            _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
         }
 
         private void UpdateCurrentWaveKillCount(int globalKillCount)
@@ -47,20 +45,15 @@ namespace Survivors.Enemy.Spawn
             CurrentWaveKillCount = globalKillCount - _currentLevelConfig.Waves.Take(_currentWaveIndex.Value).Sum(it => it.Count);
         }
 
-        public void SpawnNextWave(WaveClearedMessage msg)
+        private void TrySpawnNextWave(int globalKillCount)
         {
-            if (_sessionService.SessionCompleted)
-            {
-                return;
-            }
-            
+            if (_sessionService.Session.IsMaxKills) return;
+            if (CurrentWaveKillCount < CurrentWaveCount) return;
+
+            CurrentWaveKillCount = 0;
+            _messenger.Publish(new WaveClearedMessage());
             _currentWaveIndex.Value++;
             SpawnCurrentWave();
-        }
-
-        private void OnSessionFinished(SessionEndMessage msg)
-        {
-            _messenger.Unsubscribe<WaveClearedMessage>(SpawnNextWave);
         }
         
         private void SpawnCurrentWave()
@@ -118,6 +111,7 @@ namespace Survivors.Enemy.Spawn
 
         private bool IsInsideCameraView(Vector3 position)
         {
+            Debug.DrawRay(position, Vector3.up, Color.red, 15);
             var screenPoint = UnityEngine.Camera.main.WorldToScreenPoint(position);
             return screenPoint.x > 0 && screenPoint.x < Screen.width && screenPoint.y > 0 && screenPoint.y < Screen.height;
         }
