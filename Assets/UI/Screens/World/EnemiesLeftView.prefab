@@ -284,7 +284,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Chapter 5
+  m_text: Wave 5
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 364d31561c263e449b231dd24aa9ef76, type: 2}
   m_sharedMaterial: {fileID: -1229812891129471450, guid: 364d31561c263e449b231dd24aa9ef76, type: 2}
@@ -365,4 +365,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 199542f765aa4248a781e70936d157e1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _localizationId: Chapter
+  _localizationId: Wave

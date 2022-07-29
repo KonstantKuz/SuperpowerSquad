@@ -18,8 +18,6 @@ namespace Survivors.UI.Screen.World
         [SerializeField]
         private TextMeshProLocalization _text;
 
-        [Inject] 
-        private IMessenger _messenger;
         [Inject]
         private WaveGroupsSpawner _waveGroupsSpawner;
         [Inject]
@@ -32,18 +30,18 @@ namespace Survivors.UI.Screen.World
             _disposable = new CompositeDisposable();
             _progressView.Reset(0);
             _sessionService.Kills.Subscribe(OnKill).AddTo(_disposable);
-            _text.SetTextFormatted(_text.LocalizationId, _sessionService.LevelConfig.Level);
-            _messenger.Subscribe<WaveClearedMessage>(ResetEnemiesLeft);
-        }
-
-        private void ResetEnemiesLeft(WaveClearedMessage msg)
-        {
-            _progressView.Reset(0);
+            _waveGroupsSpawner.CurrentWaveIndex.Subscribe(UpdateWaveNumber).AddTo(_disposable);
         }
 
         private void OnKill(int killedCount)
         {
-            _progressView.SetData((float) killedCount / _sessionService.LevelConfig.Waves.Sum(it => it.Count));
+            var killRatio = (float) _waveGroupsSpawner.CurrentWaveKillCount / _waveGroupsSpawner.CurrentWaveCount;
+            _progressView.SetData(killRatio == 1 ? 0 : killRatio);
+        }
+
+        private void UpdateWaveNumber(int waveIndex)
+        {
+            _text.SetTextFormatted(_text.LocalizationId, waveIndex + 1);
         }
 
         private void Dispose()

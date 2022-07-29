@@ -17,7 +17,7 @@ namespace Survivors.Enemy.Spawn
     public class WaveGroupsSpawner : MonoBehaviour
     {
         private LevelWavesConfig _currentLevelConfig;
-        private int _currentWaveIndex;
+        private IntReactiveProperty _currentWaveIndex;
         private CompositeDisposable _disposable;
         
         [Inject] private IMessenger _messenger;
@@ -25,9 +25,10 @@ namespace Survivors.Enemy.Spawn
         [Inject] private World _world;
         [Inject] private EnemyWavesSpawner _enemyWavesSpawner;
         [Inject] private GroupsSpawnerConfig _spawnerConfig;
-     
+
+        public IntReactiveProperty CurrentWaveIndex => _currentWaveIndex;
         public int CurrentWaveKillCount { get; private set; }
-        public int CurrentWaveCount => _currentLevelConfig.Waves[_currentWaveIndex].Count;
+        public int CurrentWaveCount => _currentLevelConfig.Waves[_currentWaveIndex.Value].Count;
         
         public void StartSpawn(LevelWavesConfig levelConfig)
         {
@@ -35,7 +36,7 @@ namespace Survivors.Enemy.Spawn
             _disposable = new CompositeDisposable();
             
             _currentLevelConfig = levelConfig;
-            _currentWaveIndex = 0;
+            _currentWaveIndex = new IntReactiveProperty();
             _sessionService.Kills.Subscribe(UpdateCurrentWaveKillCount).AddTo(_disposable);
 
             SpawnCurrentWave();
@@ -43,9 +44,9 @@ namespace Survivors.Enemy.Spawn
             _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
         }
 
-        public void UpdateCurrentWaveKillCount(int globalKillCount)
+        private void UpdateCurrentWaveKillCount(int globalKillCount)
         {
-            CurrentWaveKillCount = globalKillCount - _currentLevelConfig.Waves.Take(_currentWaveIndex).Sum(it => it.Count);
+            CurrentWaveKillCount = globalKillCount - _currentLevelConfig.Waves.Take(_currentWaveIndex.Value).Sum(it => it.Count);
         }
 
         public void SpawnNextWave(WaveClearedMessage msg)
@@ -55,7 +56,7 @@ namespace Survivors.Enemy.Spawn
                 return;
             }
             
-            _currentWaveIndex++;
+            _currentWaveIndex.Value++;
             SpawnCurrentWave();
         }
 
@@ -66,7 +67,7 @@ namespace Survivors.Enemy.Spawn
         
         private void SpawnCurrentWave()
         {
-            var waveConfig = _currentLevelConfig.Waves[_currentWaveIndex];
+            var waveConfig = _currentLevelConfig.Waves[_currentWaveIndex.Value];
             var enemiesLeftForSpawn = waveConfig.Count;
             var groupsCount = Random.Range(_spawnerConfig.MinGroupsCount, _spawnerConfig.MaxGroupsCount);
             var enemiesInGroup = enemiesLeftForSpawn / groupsCount;
