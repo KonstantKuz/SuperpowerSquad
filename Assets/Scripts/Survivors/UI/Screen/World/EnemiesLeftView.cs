@@ -35,7 +35,7 @@ namespace Survivors.UI.Screen.World
 
         private void OnKill(int killedCount)
         {
-            var killRatio = (float) _waveGroupsSpawner.CurrentWaveKillCount / _waveGroupsSpawner.CurrentWaveCount;
+            var killRatio = 1 - (float) _waveGroupsSpawner.CurrentWaveUnitCount / _waveGroupsSpawner.CurrentWaveCount;
             _progressView.SetData(killRatio == 1 ? 0 : killRatio);
         }
 
