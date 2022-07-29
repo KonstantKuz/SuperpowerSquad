@@ -14,8 +14,10 @@ namespace Survivors.Config
         public const string META_UPGRADES = "MetaUpgrades";
         public const string CONSTANTS = "Constants";
         public const string ENEMY_SPAWNER = "EnemySpawner";   
+        public const string GROUPS_SPAWNER = "GroupsSpawner";   
         public const string LEVEL_MISSION = "LevelMission";   
         public const string MISSION_REWARDS = "MissionRewards";     
         public const string META_UPGRADES_SHOP = "MetaUpgradesShop";
+        public const string LEVELS_WITH_WAVES = "LevelWaves";
     }
 }
