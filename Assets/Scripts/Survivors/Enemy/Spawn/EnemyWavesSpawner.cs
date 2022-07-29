@@ -41,6 +41,7 @@ namespace Survivors.Enemy.Spawn
 
         private void Awake()
         {
+            _placeProvider = new CompositeSpawnPlaceProvider(this, _world);
             ENEMY_LAYER = LayerMask.NameToLayer(ENEMY_LAYER_NAME);
             _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
         }
@@ -48,15 +49,9 @@ namespace Survivors.Enemy.Spawn
         public void StartSpawn(EnemyWavesConfig enemyWavesConfig)
         {
             Stop();
-            InitPlaceProvider();
             var orderedConfigs = enemyWavesConfig.EnemySpawns.OrderBy(it => it.SpawnTime);
             _waves = new List<EnemyWaveConfig>(orderedConfigs);
             _spawnCoroutine = StartCoroutine(SpawnWaves());
-        }
-
-        private void InitPlaceProvider()
-        {
-            _placeProvider = new CompositeSpawnPlaceProvider(this, _world);
         }
 
         private void OnSessionFinished(SessionEndMessage evn)
@@ -100,9 +95,9 @@ namespace Survivors.Enemy.Spawn
             return FindEmptyPlace(waveConfig);
         }
 
-        public SpawnPlace FindEmptyPlace(EnemyWaveConfig waveConfig, int rangeOffset = 0)
+        private SpawnPlace FindEmptyPlace(EnemyWaveConfig waveConfig)
         {
-            for (int rangeTry = 1 + rangeOffset; rangeTry <= _rangeAttemptCount + rangeOffset; rangeTry++)
+            for (int rangeTry = 1; rangeTry <= _rangeAttemptCount; rangeTry++)
             {
                 for (int angleTry = 0; angleTry < _angleAttemptCount; angleTry++)
                 {
@@ -133,7 +128,7 @@ namespace Survivors.Enemy.Spawn
             return IsPlaceOnNavMesh(place) && !IsPlaceBusy(place, waveConfig);
         }
 
-        public bool IsPlaceOnNavMesh(Vector3 place)
+        private bool IsPlaceOnNavMesh(Vector3 place)
         {
             return NavMesh.SamplePosition(place, out var hit, 1f, NavMesh.AllAreas);
         }
