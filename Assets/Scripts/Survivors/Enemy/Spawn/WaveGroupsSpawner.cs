@@ -1,8 +1,6 @@
-using System;
 using System.Linq;
 using SuperMaxim.Messaging;
 using Survivors.Enemy.Spawn.Config;
-using Survivors.Enemy.Spawn.PlaceProviders;
 using Survivors.Location;
 using Survivors.Session.Messages;
 using Survivors.Session.Service;
@@ -70,7 +68,7 @@ namespace Survivors.Enemy.Spawn
             var waveConfig = _currentLevelConfig.Waves[_currentWaveIndex.Value];
             var enemiesLeftForSpawn = waveConfig.Count;
             var groupsCount = Random.Range(_spawnerConfig.MinGroupsCount, _spawnerConfig.MaxGroupsCount);
-            var enemiesInGroup = enemiesLeftForSpawn / groupsCount;
+            var enemiesInGroup = Mathf.Max(enemiesLeftForSpawn, enemiesLeftForSpawn / groupsCount);
             for (;enemiesLeftForSpawn > 0; enemiesLeftForSpawn -= enemiesInGroup)
             {
                 SpawnGroup(Mathf.Min(enemiesInGroup, enemiesLeftForSpawn), waveConfig);
