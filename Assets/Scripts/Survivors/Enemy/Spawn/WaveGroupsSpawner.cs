@@ -1,9 +1,12 @@
+using System;
+using System.Linq;
 using SuperMaxim.Messaging;
 using Survivors.Enemy.Spawn.Config;
 using Survivors.Enemy.Spawn.PlaceProviders;
 using Survivors.Location;
 using Survivors.Session.Messages;
 using Survivors.Session.Service;
+using UniRx;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
@@ -13,23 +16,36 @@ namespace Survivors.Enemy.Spawn
 {
     public class WaveGroupsSpawner : MonoBehaviour
     {
+        private LevelWavesConfig _currentLevelConfig;
+        private int _currentWaveIndex;
+        private CompositeDisposable _disposable;
+        
         [Inject] private IMessenger _messenger;
         [Inject] private SessionService _sessionService;
         [Inject] private World _world;
         [Inject] private EnemyWavesSpawner _enemyWavesSpawner;
         [Inject] private GroupsSpawnerConfig _spawnerConfig;
+     
+        public int CurrentWaveKillCount { get; private set; }
+        public int CurrentWaveCount => _currentLevelConfig.Waves[_currentWaveIndex].Count;
         
-        private LevelWavesConfig _currentLevelConfig;
-        private int _currentWaveIndex;
-
         public void StartSpawn(LevelWavesConfig levelConfig)
         {
+            Dispose();
+            _disposable = new CompositeDisposable();
+            
             _currentLevelConfig = levelConfig;
             _currentWaveIndex = 0;
-            
+            _sessionService.Kills.Subscribe(UpdateCurrentWaveKillCount).AddTo(_disposable);
+
             SpawnCurrentWave();
             _messenger.Subscribe<WaveClearedMessage>(SpawnNextWave);
             _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
+        }
+
+        public void UpdateCurrentWaveKillCount(int globalKillCount)
+        {
+            CurrentWaveKillCount = globalKillCount - _currentLevelConfig.Waves.Take(_currentWaveIndex).Sum(it => it.Count);
         }
 
         public void SpawnNextWave(WaveClearedMessage msg)
@@ -112,6 +128,12 @@ namespace Survivors.Enemy.Spawn
         {
             var screenPoint = UnityEngine.Camera.main.WorldToScreenPoint(position);
             return screenPoint.x > 0 && screenPoint.x < Screen.width && screenPoint.y > 0 && screenPoint.y < Screen.height;
+        }
+
+        private void Dispose()
+        {
+            _disposable?.Dispose();
+            _disposable = null;
         }
     }
 }

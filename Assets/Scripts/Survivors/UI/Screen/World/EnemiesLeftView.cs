@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Linq;
 using Feofun.UI.Components;
+using SuperMaxim.Messaging;
+using Survivors.Enemy.Spawn;
+using Survivors.Session.Messages;
 using Survivors.Session.Service;
 using UniRx;
 using UnityEngine;
@@ -15,6 +18,10 @@ namespace Survivors.UI.Screen.World
         [SerializeField]
         private TextMeshProLocalization _text;
 
+        [Inject] 
+        private IMessenger _messenger;
+        [Inject]
+        private WaveGroupsSpawner _waveGroupsSpawner;
         [Inject]
         private SessionService _sessionService;
 
@@ -26,6 +33,12 @@ namespace Survivors.UI.Screen.World
             _progressView.Reset(0);
             _sessionService.Kills.Subscribe(OnKill).AddTo(_disposable);
             _text.SetTextFormatted(_text.LocalizationId, _sessionService.LevelConfig.Level);
+            _messenger.Subscribe<WaveClearedMessage>(ResetEnemiesLeft);
+        }
+
+        private void ResetEnemiesLeft(WaveClearedMessage msg)
+        {
+            _progressView.Reset(0);
         }
 
         private void OnKill(int killedCount)
