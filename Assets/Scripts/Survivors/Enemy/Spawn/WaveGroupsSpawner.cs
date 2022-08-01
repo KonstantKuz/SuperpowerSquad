@@ -43,10 +43,12 @@ namespace Survivors.Enemy.Spawn
         private void TrySpawnNextWave(int killCount)
         {
             CurrentWaveUnitCount--;
-            if (_sessionService.Session.IsMaxKills) return;
             if (CurrentWaveUnitCount > 0) return;
-          
-            _messenger.Publish(new WaveClearedMessage());
+
+            var isLastWave = _currentWaveIndex.Value >= _currentLevelConfig.Waves.Count - 1;
+            _messenger.Publish(new WaveClearedMessage {IsLastWave = isLastWave});
+            if (isLastWave) return;
+            
             _currentWaveIndex.Value++;
             SpawnCurrentWave();
         }
