@@ -460,6 +460,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: SquadProgress
       objectReference: {fileID: 0}
+    - target: {fileID: 5475220072389213390, guid: 3c7f6bef29cd91342829531ba0df0048, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7402654207986167683, guid: 3c7f6bef29cd91342829531ba0df0048, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
