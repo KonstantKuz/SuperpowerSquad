@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Survivors.Enemy.Spawn.Config;
+﻿using Survivors.Enemy.Spawn.Config;
 using Survivors.Units;
 using UnityEngine;
 
@@ -12,8 +11,6 @@ namespace Survivors.Session.Model
         public int Kills { get; private set; }
         public SessionResult? Result { get; private set; }
         public int Revives { get; private set; }
-        
-        public bool IsMaxKills => Kills >= _levelWavesConfig.Waves.Sum(it => it.Count);
 
         public bool Completed => Result.HasValue;
 
