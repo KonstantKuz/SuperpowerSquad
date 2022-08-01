@@ -4,7 +4,7 @@ namespace Survivors.App
 {
     public static class DOTweenInitializer
     {
-        private const int TWEENERS_CAPACITY = 500;
+        private const int TWEENERS_CAPACITY = 1250;
         private const int SEQUENCES_CAPACITY = 312;
 
         public static void Init()
