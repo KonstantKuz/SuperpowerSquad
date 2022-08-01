@@ -37,7 +37,7 @@ namespace Survivors.Enemy.Spawn
             _currentWaveIndex = new IntReactiveProperty();
 
             SpawnCurrentWave();
-            _sessionService.Kills.SkipLatestValueOnSubscribe().Subscribe(TrySpawnNextWave);
+            _sessionService.Kills.SkipLatestValueOnSubscribe().Subscribe(TrySpawnNextWave).AddTo(_disposable);
         }
 
         private void TrySpawnNextWave(int killCount)
@@ -106,7 +106,6 @@ namespace Survivors.Enemy.Spawn
 
         private bool IsInsideCameraView(Vector3 position)
         {
-            Debug.DrawRay(position, Vector3.up, Color.red, 15);
             var screenPoint = UnityEngine.Camera.main.WorldToScreenPoint(position);
             return screenPoint.x > 0 && screenPoint.x < Screen.width && screenPoint.y > 0 && screenPoint.y < Screen.height;
         }
