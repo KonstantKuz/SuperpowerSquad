@@ -1,5 +1,5 @@
 Id,Currency,Cost,LevelCostIncrease
-AttackDamage,Soft,75,125
-ShotCount,Soft,125,925
-Health,Soft,50,100
-DamageRadius,Soft,100,200
+AttackDamage,Soft,2000,2000
+ShotCount,Soft,10000,5000
+Health,Soft,1000,1000
+DamageRadius,Soft,2000,2000

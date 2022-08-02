@@ -4,7 +4,6 @@ using System.Linq;
 using Feofun.Config;
 using Logger.Extension;
 using Survivors.Analytics;
-using Survivors.Enemy.Spawn.Config;
 using Survivors.Location;
 using Survivors.Player.Progress.Service;
 using Survivors.Session.Config;
@@ -23,7 +22,7 @@ namespace Survivors.App
     {
         [Inject] private SessionService _sessionService;
         [Inject] private PlayerProgressService _playerProgressService;
-        [Inject] private WavesByLevelConfig _levelsConfig;
+        [Inject] private StringKeyedConfigCollection<LevelMissionConfig> _levelsConfig;
         [Inject] private SquadProgressService _squadProgressService;
         [Inject] private SquadUpgradeRepository _squadUpgradeRepository;
         [Inject] private UnitService _unitService;       
@@ -77,7 +76,7 @@ namespace Survivors.App
         private int GetLevelLoop()
         {
             var playerProgress = _playerProgressService.Progress;
-            return Mathf.Max(0, playerProgress.LevelNumber - _levelsConfig.LevelsCount);
+            return Mathf.Max(0, playerProgress.LevelNumber - _levelsConfig.Keys.Count);
         }
 
         private string GetUpgrade(string upgradeBranch)
@@ -92,7 +91,7 @@ namespace Survivors.App
         private int GetPassNumber()
         {
             var playerProgress = _playerProgressService.Progress;
-            var levelConfig = _levelsConfig.LevelConfigs[_sessionService.LevelId];
+            var levelConfig = _levelsConfig.Values[_sessionService.LevelId];
             return playerProgress.GetPassCount(levelConfig.Level);
         }
         

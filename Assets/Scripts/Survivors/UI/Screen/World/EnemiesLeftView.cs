@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Linq;
 using Feofun.UI.Components;
-using SuperMaxim.Messaging;
-using Survivors.Enemy.Spawn;
-using Survivors.Session.Messages;
 using Survivors.Session.Service;
 using UniRx;
 using UnityEngine;
@@ -19,8 +16,6 @@ namespace Survivors.UI.Screen.World
         private TextMeshProLocalization _text;
 
         [Inject]
-        private WaveGroupsSpawner _waveGroupsSpawner;
-        [Inject]
         private SessionService _sessionService;
 
         private CompositeDisposable _disposable;
@@ -30,18 +25,12 @@ namespace Survivors.UI.Screen.World
             _disposable = new CompositeDisposable();
             _progressView.Reset(0);
             _sessionService.Kills.Subscribe(OnKill).AddTo(_disposable);
-            _waveGroupsSpawner.CurrentWaveIndex.Subscribe(UpdateWaveNumber).AddTo(_disposable);
+            _text.SetTextFormatted(_text.LocalizationId, _sessionService.LevelConfig.Level);
         }
 
         private void OnKill(int killedCount)
         {
-            var killRatio = 1 - (float) _waveGroupsSpawner.CurrentWaveUnitCount / _waveGroupsSpawner.CurrentWaveCount;
-            _progressView.SetData(killRatio == 1 ? 0 : killRatio);
-        }
-
-        private void UpdateWaveNumber(int waveIndex)
-        {
-            _text.SetTextFormatted(_text.LocalizationId, waveIndex + 1);
+            _progressView.SetData((float) killedCount / _sessionService.LevelConfig.Waves.Sum(it => it.Count));
         }
 
         private void Dispose()

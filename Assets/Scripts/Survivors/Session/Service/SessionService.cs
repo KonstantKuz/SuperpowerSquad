@@ -115,6 +115,11 @@ namespace Survivors.Session.Service
             this.Logger().Trace($"Killed enemies:= {Session.Kills}");
             if (Session.IsMaxKills) {
                 EndSession(UnitType.PLAYER);
+                return;
+            }
+            if (!_unitService.HasUnitOfType(UnitType.ENEMY))
+            {
+                _messenger.Publish(new WaveClearedMessage());
             }
         }
 

@@ -1,9 +1,9 @@
 using SuperMaxim.Messaging;
 using Survivors.Enemy.Spawn.Config;
+using Survivors.Enemy.Spawn.PlaceProviders;
 using Survivors.Location;
 using Survivors.Session.Messages;
 using Survivors.Session.Service;
-using UniRx;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
@@ -13,53 +13,50 @@ namespace Survivors.Enemy.Spawn
 {
     public class WaveGroupsSpawner : MonoBehaviour
     {
-        private LevelWavesConfig _currentLevelConfig;
-        private IntReactiveProperty _currentWaveIndex;
-        private CompositeDisposable _disposable;
-        
         [Inject] private IMessenger _messenger;
         [Inject] private SessionService _sessionService;
         [Inject] private World _world;
         [Inject] private EnemyWavesSpawner _enemyWavesSpawner;
         [Inject] private GroupsSpawnerConfig _spawnerConfig;
-
-        private EnemyWaveConfig CurrentWave => _currentLevelConfig.Waves[_currentWaveIndex.Value];
-        public IntReactiveProperty CurrentWaveIndex => _currentWaveIndex;
-        public int CurrentWaveUnitCount { get; private set; }
-        public int CurrentWaveCount => CurrentWave.Count;
         
+        private LevelWavesConfig _currentLevelConfig;
+        private int _currentWaveIndex;
+
         public void StartSpawn(LevelWavesConfig levelConfig)
         {
-            Dispose();
-            _disposable = new CompositeDisposable();
-            
             _currentLevelConfig = levelConfig;
-            _currentWaveIndex = new IntReactiveProperty();
-
+            _currentWaveIndex = 0;
+            
             SpawnCurrentWave();
-            _sessionService.Kills.SkipLatestValueOnSubscribe().Subscribe(TrySpawnNextWave).AddTo(_disposable);
+            _messenger.Subscribe<WaveClearedMessage>(SpawnNextWave);
+            _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
         }
 
-        private void TrySpawnNextWave(int killCount)
+        public void SpawnNextWave(WaveClearedMessage msg)
         {
-            CurrentWaveUnitCount--;
-            if (_sessionService.Session.IsMaxKills) return;
-            if (CurrentWaveUnitCount > 0) return;
-          
-            _messenger.Publish(new WaveClearedMessage());
-            _currentWaveIndex.Value++;
+            if (_sessionService.SessionCompleted)
+            {
+                return;
+            }
+            
+            _currentWaveIndex++;
             SpawnCurrentWave();
+        }
+
+        private void OnSessionFinished(SessionEndMessage msg)
+        {
+            _messenger.Unsubscribe<WaveClearedMessage>(SpawnNextWave);
         }
         
         private void SpawnCurrentWave()
         {
-            CurrentWaveUnitCount = CurrentWave.Count;
-            var enemiesLeftForSpawn = CurrentWave.Count;
+            var waveConfig = _currentLevelConfig.Waves[_currentWaveIndex];
+            var enemiesLeftForSpawn = waveConfig.Count;
             var groupsCount = Random.Range(_spawnerConfig.MinGroupsCount, _spawnerConfig.MaxGroupsCount);
-            var enemiesInGroup = enemiesLeftForSpawn >= groupsCount ? enemiesLeftForSpawn / groupsCount : enemiesLeftForSpawn;
+            var enemiesInGroup = enemiesLeftForSpawn / groupsCount;
             for (;enemiesLeftForSpawn > 0; enemiesLeftForSpawn -= enemiesInGroup)
             {
-                SpawnGroup(Mathf.Min(enemiesInGroup, enemiesLeftForSpawn), CurrentWave);
+                SpawnGroup(Mathf.Min(enemiesInGroup, enemiesLeftForSpawn), waveConfig);
             }
         }
 
@@ -108,12 +105,6 @@ namespace Survivors.Enemy.Spawn
         {
             var screenPoint = UnityEngine.Camera.main.WorldToScreenPoint(position);
             return screenPoint.x > 0 && screenPoint.x < Screen.width && screenPoint.y > 0 && screenPoint.y < Screen.height;
-        }
-
-        private void Dispose()
-        {
-            _disposable?.Dispose();
-            _disposable = null;
         }
     }
 }
