@@ -80,8 +80,6 @@ namespace Survivors.Squad.Service
         
         private void OnWaveCleared(WaveClearedMessage msg)
         {
-            if (msg.IsLastWave) return;
-            
             var progress = Progress;
             if (progress.IsMaxLevel(_levelConfig)) return;
 

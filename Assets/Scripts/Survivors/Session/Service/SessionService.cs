@@ -1,5 +1,5 @@
-﻿using System.Collections;
-using System.Linq;
+﻿using System.Linq;
+using Feofun.Config;
 using Feofun.Extension;
 using Feofun.UI.Dialog;
 using Logger.Extension;
@@ -10,6 +10,7 @@ using Survivors.Enemy.Spawn.Config;
 using Survivors.Location;
 using Survivors.Player.Progress.Model;
 using Survivors.Player.Progress.Service;
+using Survivors.Session.Config;
 using Survivors.Session.Messages;
 using Survivors.Session.Model;
 using Survivors.Squad;
@@ -57,7 +58,6 @@ namespace Survivors.Session.Service
             _unitService.OnEnemyUnitDeath += OnEnemyUnitDeath;
             ResetKills();
             _disposable = new CompositeDisposable();
-            _messenger.Subscribe<WaveClearedMessage>(OnWaveCleared);
         }
         
         public void Start()
@@ -72,18 +72,6 @@ namespace Survivors.Session.Service
             _world.Squad.RemoveUnits();
             _unitFactory.CreatePlayerUnits(unitId, _world.Squad.Model.StartingUnitCount.Value);
         }
-        
-        public void OnWorldCleanUp()
-        {
-            _messenger.Unsubscribe<WaveClearedMessage>(OnWaveCleared);            
-            Dispose();
-        }
-
-        public void AddRevive()
-        {
-            Session.AddRevive();
-        }        
-        
         private void CreateSession()
         {
             var levelConfig = LevelConfig;
@@ -125,6 +113,9 @@ namespace Survivors.Session.Service
             _playerProgressService.AddKill();
             _kills.Value = Session.Kills;
             this.Logger().Trace($"Killed enemies:= {Session.Kills}");
+            if (Session.IsMaxKills) {
+                EndSession(UnitType.PLAYER);
+            }
         }
 
         private void OnSquadZeroHealth()
@@ -160,11 +151,16 @@ namespace Survivors.Session.Service
                 squad.OnDeath -= OnSquadDeath;
             }
         }
-        
-        private void OnWaveCleared(WaveClearedMessage msg)
+        public void OnWorldCleanUp()
         {
-            if (!msg.IsLastWave) return;
-            EndSession(UnitType.PLAYER);
+            Dispose();
         }
+
+        public void AddRevive()
+        {
+            Session.AddRevive();
+        }
+
+    
     }
 }
