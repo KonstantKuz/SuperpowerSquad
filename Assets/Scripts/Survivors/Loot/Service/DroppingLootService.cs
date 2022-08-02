@@ -2,7 +2,6 @@ using System;
 using System.Linq;
 using Feofun.Config;
 using Logger.Extension;
-using Survivors.App.Config;
 using Survivors.Location;
 using Survivors.Location.Service;
 using Survivors.Loot.Config;
@@ -21,11 +20,9 @@ namespace Survivors.Loot.Service
         [Inject] private UnitService _unitService;
         [Inject] private WorldObjectFactory _worldObjectFactory;
         [Inject] private StringKeyedConfigCollection<DroppingLootConfig> _droppingLoots;
-        [Inject] private ConstantsConfig _constantsConfig;
         
         public void OnWorldSetup()
         {
-            if (_constantsConfig.LevelUpBetweenWaves) return;
             _unitService.OnEnemyUnitDeath += TrySpawnLoot;
         }
 
@@ -67,7 +64,6 @@ namespace Survivors.Loot.Service
         
         public void OnWorldCleanUp()
         {
-            if (_constantsConfig.LevelUpBetweenWaves) return;            
             _unitService.OnEnemyUnitDeath -= TrySpawnLoot;
         }
 

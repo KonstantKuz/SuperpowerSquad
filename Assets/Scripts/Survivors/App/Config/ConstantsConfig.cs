@@ -16,15 +16,10 @@ namespace Survivors.App.Config
         [DataMember(Name = "ReviveEnemyRemoveRadius")]
         private float _reviveEnemyRemoveRadius;
 
-        [DataMember(Name = "LevelUpBetweenWaves")]
-        private bool _levelUpBetweenWaves;
-
         public float HealthScaleIncrementFactor => _healthScaleIncrementFactor;
         public string FirstUnit => _firstUnit;
         public int MaxMetaUpgradeLevel => _maxMetaUpgradeLevel;
 
         public float ReviveEnemyRemoveRadius => _reviveEnemyRemoveRadius;
-
-        public bool LevelUpBetweenWaves => _levelUpBetweenWaves;
     }
 }
