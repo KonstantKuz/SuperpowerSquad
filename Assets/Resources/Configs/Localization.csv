@@ -38,7 +38,6 @@ restart,restart,restart
 MetaAttackDamage,Upgrade Damage,Upgrade Damage
 MetaShotCount,Upgrade Shot Count,Upgrade Shot Count
 MetaHealth,Upgrade Health,Upgrade Health
-MetaDamageRadius,Upgrade Damage Radius,Upgrade Damage Radius
 Tap to play,Tap to play,Tap to play
 Max,Max,Max
 Chapter,Chapter {0},Chapter {0}

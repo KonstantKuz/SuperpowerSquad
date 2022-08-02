@@ -26,16 +26,19 @@ namespace Survivors.Session.Service
 {
     public class SessionService : IWorldScope
     {
+        
         private readonly IntReactiveProperty _kills = new IntReactiveProperty(0);
-
-        [Inject] private WaveGroupsSpawner _waveGroupsSpawner;
+        
+        [Inject] private EnemyWavesSpawner _enemyWavesSpawner;
+        [Inject] private EnemyHpsSpawner _enemyHpsSpawner;
+        [Inject] private EnemyWavesConfig _enemyWavesConfig;
         [Inject] private UnitFactory _unitFactory;     
         [Inject] private SquadFactory _squadFactory; 
         [Inject] private World _world;
         [Inject] private IMessenger _messenger;       
         [Inject] private UnitService _unitService;
         [Inject] private SessionRepository _repository;
-        [Inject] private WavesByLevelConfig _wavesByLevelConfig;
+        [Inject] private readonly StringKeyedConfigCollection<LevelMissionConfig> _levelsConfig;
         [Inject] private PlayerProgressService _playerProgressService;
         [Inject] private Analytics.Analytics _analytics;
         [Inject] private ConstantsConfig _constantsConfig;
@@ -47,8 +50,8 @@ namespace Survivors.Session.Service
         public Model.Session Session => _repository.Require();
         
         public IReadOnlyReactiveProperty<int> Kills => _kills;
-        public LevelWavesConfig LevelConfig => _wavesByLevelConfig.LevelConfigs[LevelId];
-        public int LevelId => Mathf.Min(PlayerProgress.LevelNumber, _wavesByLevelConfig.LevelsCount - 1);
+        public LevelMissionConfig LevelConfig => _levelsConfig.Values[LevelId];
+        public int LevelId => Mathf.Min(PlayerProgress.LevelNumber, _levelsConfig.Count() - 1);
         public float SessionTime => Session.SessionTime;
         public bool SessionCompleted => _repository.Exists() && Session.Completed;
         
@@ -78,7 +81,7 @@ namespace Survivors.Session.Service
             var newSession = Model.Session.Build(levelConfig);
             _repository.Set(newSession);
             _playerProgressService.OnSessionStarted(levelConfig.Level);
-            this.Logger().Debug($"Kill enemies:= {levelConfig.Waves.Sum(it => it.Count)}");
+            this.Logger().Debug($"Kill enemies:= {levelConfig.KillCount}");
         }
     
         private void CreateSquad()
@@ -101,7 +104,8 @@ namespace Survivors.Session.Service
         {
             CheckSquad();
             CreatePlayerUnits(_world.Squad.Model.StartingUnitCount.Value);
-            _waveGroupsSpawner.StartSpawn(LevelConfig);
+            _enemyWavesSpawner.StartSpawn(_enemyWavesConfig); 
+            _enemyHpsSpawner.StartSpawn();
         }
 
         private void ResetKills() => _kills.Value = 0;

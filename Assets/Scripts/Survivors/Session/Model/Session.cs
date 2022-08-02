@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Survivors.Enemy.Spawn.Config;
+﻿using Survivors.Session.Config;
 using Survivors.Units;
 using UnityEngine;
 
@@ -7,24 +6,24 @@ namespace Survivors.Session.Model
 {
     public class Session
     {
-        private readonly LevelWavesConfig _levelWavesConfig;
+        private readonly LevelMissionConfig _levelMissionConfig;
         private readonly float _startTime;        
         public int Kills { get; private set; }
         public SessionResult? Result { get; private set; }
         public int Revives { get; private set; }
         
-        public bool IsMaxKills => Kills >= _levelWavesConfig.Waves.Sum(it => it.Count);
+        public bool IsMaxKills => Kills >= _levelMissionConfig.KillCount;
 
         public bool Completed => Result.HasValue;
 
-        public int Level => _levelWavesConfig.Level;
+        public LevelMissionConfig LevelMissionConfig => _levelMissionConfig;
         
-        private Session(LevelWavesConfig levelWavesConfig)
+        private Session(LevelMissionConfig levelMissionConfig)
         {
-            _levelWavesConfig = levelWavesConfig;
+            _levelMissionConfig = levelMissionConfig;
             _startTime = Time.time;
         }
-        public static Session Build(LevelWavesConfig levelWavesConfig) => new Session(levelWavesConfig);
+        public static Session Build(LevelMissionConfig levelMissionConfig) => new Session(levelMissionConfig);
         
         public void SetResultByUnitType(UnitType unitType)
         {

@@ -41,7 +41,6 @@ namespace Survivors.Enemy.Spawn
 
         private void Awake()
         {
-            _placeProvider = new CompositeSpawnPlaceProvider(this, _world);
             ENEMY_LAYER = LayerMask.NameToLayer(ENEMY_LAYER_NAME);
             _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
         }
@@ -49,9 +48,15 @@ namespace Survivors.Enemy.Spawn
         public void StartSpawn(EnemyWavesConfig enemyWavesConfig)
         {
             Stop();
+            InitPlaceProvider();
             var orderedConfigs = enemyWavesConfig.EnemySpawns.OrderBy(it => it.SpawnTime);
             _waves = new List<EnemyWaveConfig>(orderedConfigs);
             _spawnCoroutine = StartCoroutine(SpawnWaves());
+        }
+
+        private void InitPlaceProvider()
+        {
+            _placeProvider = new CompositeSpawnPlaceProvider(this, _world);
         }
 
         private void OnSessionFinished(SessionEndMessage evn)
@@ -117,7 +122,7 @@ namespace Survivors.Enemy.Spawn
             return _minOutOfViewOffset + rangeTry * GetWaveRadius(waveConfig);
         }
 
-        public float GetWaveRadius(EnemyWaveConfig waveConfig)
+        private float GetWaveRadius(EnemyWaveConfig waveConfig)
         {
             var enemyConfig = _enemyUnitConfigs.Get(waveConfig.EnemyId);
             return Mathf.Sqrt(waveConfig.Count) * enemyConfig.CalculateScale(waveConfig.EnemyLevel);

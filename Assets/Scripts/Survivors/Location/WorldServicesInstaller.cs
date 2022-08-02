@@ -13,7 +13,6 @@ namespace Survivors.Location
         [SerializeField] private WorldObjectFactory _worldObjectFactory;
         [SerializeField] private EnemyWavesSpawner _enemyWavesSpawner;
         [SerializeField] private EnemyHpsSpawner _enemyHpsSpawner;
-        [SerializeField] private WaveGroupsSpawner waveGroupsSpawner;
         
         public void Install(DiContainer container)
         {
@@ -27,7 +26,6 @@ namespace Survivors.Location
             
             container.Bind<EnemyWavesSpawner>().FromInstance(_enemyWavesSpawner);
             container.Bind<EnemyHpsSpawner>().FromInstance(_enemyHpsSpawner).AsSingle();
-            container.BindInterfacesAndSelfTo<WaveGroupsSpawner>().FromInstance(waveGroupsSpawner).AsSingle();
             container.BindInterfacesAndSelfTo<DroppingLootService>().AsSingle();
         }
     }

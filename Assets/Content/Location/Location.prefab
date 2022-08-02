@@ -290,7 +290,7 @@ Camera:
   m_GameObject: {fileID: 8746036833295827785}
   m_Enabled: 1
   serializedVersion: 2
-  m_ClearFlags: 1
+  m_ClearFlags: 2
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
@@ -357,7 +357,6 @@ GameObject:
   - component: {fileID: 8743563882573435223}
   - component: {fileID: 1873516484607207762}
   - component: {fileID: 186752239828696303}
-  - component: {fileID: 1436233892692361897}
   - component: {fileID: 1866441843583567248}
   - component: {fileID: 6484450709119096639}
   m_Layer: 0
@@ -438,18 +437,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79ff066e7a284f8ab029117d16b0ac49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1436233892692361897
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8746036833993048137}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 227cdc29a7bf7924b8a8ed930ba4307c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1866441843583567248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -466,7 +453,6 @@ MonoBehaviour:
   _worldObjectFactory: {fileID: 8743563882573435223}
   _enemyWavesSpawner: {fileID: 1873516484607207762}
   _enemyHpsSpawner: {fileID: 186752239828696303}
-  waveGroupsSpawner: {fileID: 1436233892692361897}
 --- !u!114 &6484450709119096639
 MonoBehaviour:
   m_ObjectHideFlags: 0
