@@ -37,7 +37,7 @@ namespace Survivors.Units.Service
         
         public Unit CreateEnemy(string unitId, int level)
         {
-            var enemy = _worldObjectFactory.CreateObject(unitId, null, true).RequireComponent<Unit>();
+            var enemy = _worldObjectFactory.CreateObject<Unit>(unitId, null, true);
             var config = _enemyUnitConfigs.Get(unitId);
             var model = new EnemyUnitModel(config, level);
             enemy.Init(model);

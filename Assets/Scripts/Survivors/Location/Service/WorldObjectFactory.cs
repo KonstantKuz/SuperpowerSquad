@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using Survivors.Extension;
 using Survivors.Location.Model;
 using UnityEngine;
 using Zenject;
@@ -11,12 +12,16 @@ namespace Survivors.Location.Service
 {
     public class WorldObjectFactory : MonoBehaviour, IWorldScope
     {
+        
         private const string OBJECT_PREFABS_PATH_ROOT = "Content/";
 
         private readonly Dictionary<string, GameObject> _prefabs = new Dictionary<string, GameObject>();
 
         private readonly List<GameObject> _createdObjects = new List<GameObject>();
         private CompositeDisposable _disposable;
+
+        [Inject]
+        private PoolService _poolService;
 
         [Inject]
         private World _world;
@@ -37,13 +42,21 @@ namespace Survivors.Location.Service
             }
         }
 
-        public GameObject CreateObject(string objectId, [CanBeNull] Transform container = null, bool usePool = false)
+        public GameObject CreateObject(string objectId, [CanBeNull] Transform container = null)
         {
             if (!_prefabs.ContainsKey(objectId)) {
                 throw new KeyNotFoundException($"No prefab with objectId {objectId} found");
             }
             var prefab = _prefabs[objectId];
-            return usePool ? CreatePoolingGameObject(prefab) : CreateObject(prefab, container);
+            return CreateObject(prefab, container);
+        }
+        public T CreateObject<T>(string objectId, [CanBeNull] Transform container = null, bool usePool = false)where T: MonoBehaviour
+        {
+            if (!_prefabs.ContainsKey(objectId)) {
+                throw new KeyNotFoundException($"No prefab with objectId {objectId} found");
+            }
+            var prefab = _prefabs[objectId];
+            return usePool ? CreateMyPoolingGameObject<T>(prefab) : CreateObject(prefab, container).RequireComponent<T>();
         }
 
         public GameObject CreateObject(GameObject prefab, [CanBeNull] Transform container = null, bool usePool = false)
@@ -56,7 +69,7 @@ namespace Survivors.Location.Service
             return createdGameObject;
         }
 
-        public GameObject CreatePoolingGameObject(GameObject prefab)
+/*        public GameObject CreatePoolingGameObject(GameObject prefab)
         {
             if (!PoolManager.IsWarmPool(prefab)) {
                 PoolManager.WarmPool(prefab, 500);
@@ -64,11 +77,15 @@ namespace Survivors.Location.Service
             var poolingGameObjet = PoolManager.SpawnObject(prefab);
             _container.InjectGameObject(poolingGameObjet);
             return poolingGameObjet;
+        } */
+        public T CreateMyPoolingGameObject<T>(GameObject prefab) where T: MonoBehaviour
+        {
+            return _poolService.Get<T>(prefab);
         }
 
-        public void ReleaseObject(GameObject gameObject)
+        public void ReleaseObject<T>(T item) where T: MonoBehaviour
         {
-            PoolManager.ReleaseObject(gameObject);
+            _poolService.Release(item);
         }
 
         private void OnDestroyObject(GameObject obj)
@@ -107,6 +124,7 @@ namespace Survivors.Location.Service
         public void OnWorldCleanUp()
         {
             DestroyAllObjects();
+            _poolService.ReleaseAllActive();
         }
     }
 }

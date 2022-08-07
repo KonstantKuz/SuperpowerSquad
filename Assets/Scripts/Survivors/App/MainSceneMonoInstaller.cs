@@ -3,6 +3,7 @@ using SuperMaxim.Messaging;
 using Survivors.Cheats.Installer;
 using Survivors.Analytics;
 using Survivors.Location;
+using Survivors.Location.Service;
 using Survivors.Modifiers;
 using Survivors.Player.Installer;
 using Survivors.Reward.Installer;
@@ -26,6 +27,9 @@ namespace Survivors.App
         private UIInstaller _uiInstaller;     
         [SerializeField]
         private CheatsInstaller _cheatsInstaller;
+        
+        [SerializeField]
+        private PoolService _poolService;
 
         public override void InstallBindings()
         {
@@ -48,7 +52,9 @@ namespace Survivors.App
             _worldServicesInstaller.Install(Container);
             _uiInstaller.Install(Container);
             _cheatsInstaller.Install(Container);
-            Container.Inject(PoolManager.Instance);
+            //Container.Inject(PoolManager.Instance);
+            
+            Container.Bind<PoolService>().FromInstance(_poolService).AsSingle();
             
         }
     }
