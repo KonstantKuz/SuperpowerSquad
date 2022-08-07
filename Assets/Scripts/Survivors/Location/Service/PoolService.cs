@@ -9,7 +9,7 @@ namespace Survivors.Location.Service
     public class PoolService : MonoBehaviour
     {
         
-        private readonly Dictionary<Type, IObjectPoolContainer> _pools = new Dictionary<Type, IObjectPoolContainer>();
+        private readonly Dictionary<Type, IObjectPool> _pools = new Dictionary<Type, IObjectPool>();
 
         [SerializeField]
         private Transform _poolContainer;
@@ -46,9 +46,9 @@ namespace Survivors.Location.Service
             }
         }
 
-        private IObjectPoolContainer BuildPoolContainer<T>(GameObject prefab) where T: MonoBehaviour
+        private IObjectPool BuildPoolContainer<T>(GameObject prefab) where T: MonoBehaviour
         {
-            var poolContainer = new ObjectPoolContainer();
+            var poolContainer = new ObjectPoolProxy();
             poolContainer.Create(() => CreatePooledObject<T>(prefab),OnTakeFromPool,OnReturnToPool, OnDestroyObject, 
                 false, 
                 10, 

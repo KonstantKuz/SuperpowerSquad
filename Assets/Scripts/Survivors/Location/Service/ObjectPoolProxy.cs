@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Survivors.Location.Service
 {
-    public class ObjectPoolContainer: IObjectPoolContainer
+    public class ObjectPoolProxy: IObjectPool
     {
         private Action<object> _release;
         private Func<object> _get;
@@ -48,7 +48,7 @@ namespace Survivors.Location.Service
         }
     }
 
-    public interface IObjectPoolContainer
+    public interface IObjectPool
     {
 
         void Create<T>(Func<T> createFunc, 
