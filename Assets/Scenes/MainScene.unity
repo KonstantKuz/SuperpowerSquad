@@ -206,7 +206,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 205042678}
-  - component: {fileID: 205042677}
+  - component: {fileID: 205042679}
   m_Layer: 0
   m_Name: Pool
   m_TagString: Untagged
@@ -214,20 +214,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &205042677
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 205042676}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 430d968e63581624e84fc43c08982663, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  logStatus: 0
-  root: {fileID: 205042678}
 --- !u!4 &205042678
 Transform:
   m_ObjectHideFlags: 0
@@ -242,6 +228,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &205042679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 205042676}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3dc7338745227eb46a93004d23e8a558, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _poolContainer: {fileID: 205042678}
 --- !u!114 &651895939 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4730046974365000937, guid: 35125c194a51b14489fcf91a7da5dd53, type: 3}
@@ -309,6 +308,7 @@ MonoBehaviour:
   _worldServicesInstaller: {fileID: 8746036833688596025}
   _uiInstaller: {fileID: 876315366}
   _cheatsInstaller: {fileID: 1296089094}
+  _poolService: {fileID: 205042679}
 --- !u!114 &876315364
 MonoBehaviour:
   m_ObjectHideFlags: 0

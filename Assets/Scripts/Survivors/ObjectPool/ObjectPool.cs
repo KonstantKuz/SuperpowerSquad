@@ -2,9 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Survivors.Location.Service
+namespace Survivors.ObjectPool
 {
-    public class ObjectPool<T> : IDisposable where T : class
+    public class ObjectPool<T> : IObjectPool<T>, IDisposable
+            where T : class
     {
         private readonly HashSet<T> _allItems;
         private readonly Stack<T> _inactiveStack;
@@ -26,15 +27,15 @@ namespace Survivors.Location.Service
 
         public int CountInactive => _inactiveStack.Count;
 
-        public ObjectPool(Func<T> onCreate, 
-            Action<T> onGet = null, 
-            Action<T> onRelease = null, 
-            Action<T> onDestroy = null,
-            bool isCollectionCheck = true,
-            int initialCapacity = 10,
-            int maxSize = 10000,
-            ObjectCreateMode objectCreateMode = ObjectCreateMode.Single,
-            bool disposeActive = true)
+        public ObjectPool(Func<T> onCreate,
+                          Action<T> onGet = null,
+                          Action<T> onRelease = null,
+                          Action<T> onDestroy = null,
+                          bool isCollectionCheck = true,
+                          int initialCapacity = 10,
+                          int maxSize = 10000,
+                          ObjectCreateMode objectCreateMode = ObjectCreateMode.Single,
+                          bool disposeActive = true)
         {
             if (onCreate == null) {
                 throw new ArgumentNullException(nameof(onCreate));
@@ -46,7 +47,7 @@ namespace Survivors.Location.Service
 
             _initialCapacity = initialCapacity;
             _inactiveStack = new Stack<T>(initialCapacity);
-            _allItems = new HashSet<T>(initialCapacity);
+            _allItems = new HashSet<T>();
             CreateMode = objectCreateMode;
             _onCreate = onCreate;
             _maxSize = maxSize;
@@ -59,29 +60,26 @@ namespace Survivors.Location.Service
 
         public T Get()
         {
-            T obj;
-            if (_inactiveStack.Count == 0) {
-                obj = Create();
-                if (CreateMode == ObjectCreateMode.Bank)
-                {
-                    for (int i = 0; i < Math.Min(_initialCapacity -1, _maxSize); i++)
-                    {
-                        var element = Create();
-                        Release(element);
-                    }
-                    
-                }
-            }
-            else {
-                obj = _inactiveStack.Pop();
-            }
-            _onGet?.Invoke(obj);
-            return obj;
+            var element = _inactiveStack.Count == 0 ? Create(CreateMode) : _inactiveStack.Pop();
+            _onGet?.Invoke(element);
+            return element;
         }
 
+        private T Create(ObjectCreateMode createMode)
+        {
+            var element = Create();
+            if (createMode != ObjectCreateMode.Group) {
+                return element;
+            }
+            for (int i = 0; i < Math.Min(_initialCapacity - 1, _maxSize); i++) {
+                var groupElement = Create();
+                Release(groupElement);
+            }
+            return element;
+        }
         private T Create()
         {
-            T element = _onCreate();
+            var element = _onCreate();
             _allItems.Add(element);
             return element;
         }
@@ -104,41 +102,32 @@ namespace Survivors.Location.Service
 
             if (CountInactive < _maxSize) {
                 _inactiveStack.Push(element);
-            }
-            else{
+            } else {
                 CallOnDestroy(element);
             }
         }
+
         public void Clear()
         {
-            foreach (T element in _inactiveStack) {
+            foreach (var element in _inactiveStack) {
                 CallOnDestroy(element);
             }
-
             _inactiveStack.Clear();
-            _allItems.Clear();
-
-            if (!_disposeActive) return;
-
-            foreach (T element in _allItems) {
-                _onRelease?.Invoke(element);
-                _onDestroy?.Invoke(element);
+            
+            if (_disposeActive) {
+                foreach (var element in _allItems) {
+                    _onDestroy?.Invoke(element);
+                } 
             }
+            _allItems.Clear();
+         
         }
-
         public void Dispose() => Clear();
-        
+
         private void CallOnDestroy(T element)
         {
             _allItems.Remove(element);
             _onDestroy?.Invoke(element);
         }
-        
-    }
-
-    public enum ObjectCreateMode
-    {
-        Single,
-        Bank
     }
 }

@@ -3,6 +3,7 @@ using System.Linq;
 using JetBrains.Annotations;
 using Survivors.Extension;
 using Survivors.Location.Model;
+using Survivors.ObjectPool;
 using UnityEngine;
 using Zenject;
 using UniRx;
@@ -78,7 +79,7 @@ namespace Survivors.Location.Service
             _container.InjectGameObject(poolingGameObjet);
             return poolingGameObjet;
         } */
-        public T CreateMyPoolingGameObject<T>(GameObject prefab) where T: MonoBehaviour
+        public T CreateMyPoolingGameObject<T>(GameObject prefab) where T : MonoBehaviour
         {
             return _poolService.Get<T>(prefab);
         }

@@ -5,6 +5,7 @@ using Survivors.Analytics;
 using Survivors.Location;
 using Survivors.Location.Service;
 using Survivors.Modifiers;
+using Survivors.ObjectPool;
 using Survivors.Player.Installer;
 using Survivors.Reward.Installer;
 using Survivors.Squad.Installer;
