@@ -28,7 +28,7 @@ namespace Survivors.Units.Service
         public Unit CreatePlayerUnit(string unitId)
         {
             CheckSquad();
-            var unit = _worldObjectFactory.CreateObject(unitId).RequireComponent<Unit>();
+            var unit = _worldObjectFactory.CreateObject<Unit>(unitId);
             var model = _playerUnitModelBuilder.BuildUnit(unitId);
             unit.Init(model);
             _world.Squad.AddUnit(unit);

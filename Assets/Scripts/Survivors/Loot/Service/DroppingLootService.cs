@@ -45,7 +45,7 @@ namespace Survivors.Loot.Service
             }
             
             var lootId = lootConfig.Id;
-            var loot = _worldObjectFactory.CreateObject(lootId, _world.Spawn.transform).GetComponent<DroppingLoot>();
+            var loot = _worldObjectFactory.CreateObject<DroppingLoot>(lootId, _world.Spawn.transform);
             loot.transform.position = unit.GameObject.transform.position;
             loot.Init(lootConfig);
         }

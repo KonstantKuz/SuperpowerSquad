@@ -18,7 +18,7 @@ namespace Survivors.Location.Service
 
         private readonly Dictionary<string, GameObject> _prefabs = new Dictionary<string, GameObject>();
 
-        private readonly List<GameObject> _createdObjects = new List<GameObject>();
+        private readonly HashSet<GameObject> _createdObjects = new HashSet<GameObject>();
         private CompositeDisposable _disposable;
 
         [Inject]
@@ -42,15 +42,7 @@ namespace Survivors.Location.Service
                 _prefabs.Add(worldObject.ObjectId, worldObject.GameObject);
             }
         }
-
-        public GameObject CreateObject(string objectId, [CanBeNull] Transform container = null)
-        {
-            if (!_prefabs.ContainsKey(objectId)) {
-                throw new KeyNotFoundException($"No prefab with objectId {objectId} found");
-            }
-            var prefab = _prefabs[objectId];
-            return CreateObject(prefab, container);
-        }
+        
         public T CreateObject<T>(string objectId, [CanBeNull] Transform container = null, bool usePool = false) where T : MonoBehaviour
         {
             if (!_prefabs.ContainsKey(objectId)) {
@@ -76,15 +68,18 @@ namespace Survivors.Location.Service
                 PoolManager.WarmPool(prefab, 500);
             }
             var poolingGameObjet = PoolManager.SpawnObject(prefab);
-            _container.InjectGameObject(poolingGameObjet);
+            _contaziner.InjectGameObject(poolingGameObjet);
             return poolingGameObjet;
         } */
         public T CreateMyPoolingGameObject<T>(GameObject prefab) where T : MonoBehaviour
         {
-            return _poolService.Get<T>(prefab);
+            var obj = _poolService.Get<T>(prefab);
+            _createdObjects.Add(obj.gameObject);
+            obj.gameObject.OnDisableAsObservable().Subscribe((o) => OnDestroyObject(obj.gameObject)).AddTo(_disposable);
+            return obj;
         }
 
-        public void ReleaseObject<T>(T item) where T: MonoBehaviour
+        public void ReleaseObject<T>(T item) where T : MonoBehaviour
         {
             _poolService.Release(item);
         }

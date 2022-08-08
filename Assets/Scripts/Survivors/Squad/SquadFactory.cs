@@ -32,7 +32,7 @@ namespace Survivors.Squad
 
         public Squad CreateSquad()
         {
-            var squad = _worldObjectFactory.CreateObject(SQUAD_NAME, _world.transform).RequireComponent<Squad>();
+            var squad = _worldObjectFactory.CreateObject<Squad>(SQUAD_NAME, _world.transform);
             squad.transform.SetPositionAndRotation(_world.Spawn.transform.position, _world.Spawn.transform.rotation);
             squad.Init(BuildSquadModel());
             return squad;
