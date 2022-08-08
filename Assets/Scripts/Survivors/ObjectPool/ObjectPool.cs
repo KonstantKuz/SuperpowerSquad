@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using JetBrains.Annotations;
 
 namespace Survivors.ObjectPool
 {
@@ -31,31 +32,29 @@ namespace Survivors.ObjectPool
                           Action<T> onGet = null,
                           Action<T> onRelease = null,
                           Action<T> onDestroy = null,
-                          bool isCollectionCheck = true,
-                          int initialCapacity = 10,
-                          int maxSize = 10000,
-                          ObjectCreateMode objectCreateMode = ObjectCreateMode.Single,
-                          bool disposeActive = true)
+                          [CanBeNull] ObjectPoolParams poolParams = null)
         {
+            poolParams ??= ObjectPoolParams.Default;
+            
             if (onCreate == null) {
                 throw new ArgumentNullException(nameof(onCreate));
             }
 
-            if (maxSize <= 0) {
-                throw new ArgumentException("Max Size must be greater than 0", nameof(maxSize));
+            if (poolParams.MaxSize <= 0) {
+                throw new ArgumentException("Max Size must be greater than 0", nameof(poolParams.MaxSize));
             }
 
-            _initialCapacity = initialCapacity;
-            _inactiveStack = new Stack<T>(initialCapacity);
+            _initialCapacity = poolParams.InitialCapacity;
+            _inactiveStack = new Stack<T>(poolParams.InitialCapacity);
             _allItems = new HashSet<T>();
-            CreateMode = objectCreateMode;
+            CreateMode = poolParams.ObjectCreateMode;
             _onCreate = onCreate;
-            _maxSize = maxSize;
+            _maxSize = poolParams.MaxSize;
             _onGet = onGet;
             _onRelease = onRelease;
             _onDestroy = onDestroy;
-            _isCollectionCheck = isCollectionCheck;
-            _disposeActive = disposeActive;
+            _isCollectionCheck = poolParams.IsCollectionCheck;
+            _disposeActive = poolParams.DisposeActive;
         }
 
         public T Get()
@@ -77,6 +76,7 @@ namespace Survivors.ObjectPool
             }
             return element;
         }
+
         private T Create()
         {
             var element = _onCreate();
@@ -86,7 +86,7 @@ namespace Survivors.ObjectPool
 
         public void ReleaseAllActive()
         {
-            var activeElements = _allItems.Except(_inactiveStack);
+            var activeElements = _allItems.Except(_inactiveStack).ToList();
             foreach (var element in activeElements) {
                 Release(element);
             }
@@ -113,15 +113,15 @@ namespace Survivors.ObjectPool
                 CallOnDestroy(element);
             }
             _inactiveStack.Clear();
-            
+
             if (_disposeActive) {
                 foreach (var element in _allItems) {
                     _onDestroy?.Invoke(element);
-                } 
+                }
             }
             _allItems.Clear();
-         
         }
+
         public void Dispose() => Clear();
 
         private void CallOnDestroy(T element)

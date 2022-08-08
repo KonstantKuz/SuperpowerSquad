@@ -53,6 +53,12 @@ namespace Survivors.Units.Target
             if (!IsAlive) return;
             _targetService.Remove(this);
             OnTargetInvalid?.Invoke();
+        }  
+        private void OnDestroy()
+        {
+            if (!IsAlive) return;
+            _targetService.Remove(this);
+            OnTargetInvalid?.Invoke();
         }
     }
 }

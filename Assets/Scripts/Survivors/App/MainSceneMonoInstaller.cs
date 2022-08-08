@@ -30,7 +30,7 @@ namespace Survivors.App
         private CheatsInstaller _cheatsInstaller;
         
         [SerializeField]
-        private PoolService _poolService;
+        private PoolManager _poolManager;
 
         public override void InstallBindings()
         {
@@ -55,7 +55,7 @@ namespace Survivors.App
             _cheatsInstaller.Install(Container);
             //Container.Inject(PoolManager.Instance);
             
-            Container.Bind<PoolService>().FromInstance(_poolService).AsSingle();
+            Container.Bind<PoolManager>().FromInstance(_poolManager).AsSingle();
             
         }
     }

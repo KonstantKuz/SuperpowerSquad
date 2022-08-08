@@ -240,7 +240,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3dc7338745227eb46a93004d23e8a558, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _poolContainer: {fileID: 205042678}
+  _poolRoot: {fileID: 205042678}
 --- !u!114 &651895939 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 4730046974365000937, guid: 35125c194a51b14489fcf91a7da5dd53, type: 3}
@@ -308,7 +308,7 @@ MonoBehaviour:
   _worldServicesInstaller: {fileID: 8746036833688596025}
   _uiInstaller: {fileID: 876315366}
   _cheatsInstaller: {fileID: 1296089094}
-  _poolService: {fileID: 205042679}
+  _poolManager: {fileID: 205042679}
 --- !u!114 &876315364
 MonoBehaviour:
   m_ObjectHideFlags: 0

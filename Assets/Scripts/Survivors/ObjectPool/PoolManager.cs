@@ -1,13 +1,22 @@
 using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using Survivors.Extension;
 using UnityEngine;
 using Zenject;
 
 namespace Survivors.ObjectPool
 {
-    public class PoolService : MonoBehaviour
+    public class PoolManager : MonoBehaviour
     {
+        private static readonly ObjectPoolParams PoolParams = new ObjectPoolParams {
+                IsCollectionCheck = true,
+                InitialCapacity = 100,
+                MaxSize = 2000,
+                ObjectCreateMode = ObjectCreateMode.Group,
+                DisposeActive = true,
+        };
+
         private readonly Dictionary<Type, IObjectPool> _pools = new Dictionary<Type, IObjectPool>();
 
         [SerializeField]
@@ -15,7 +24,7 @@ namespace Survivors.ObjectPool
 
         [Inject]
         private DiContainer _container;
-
+        
         public T Get<T>(GameObject prefab)
                 where T : MonoBehaviour
         {
@@ -33,7 +42,7 @@ namespace Survivors.ObjectPool
             var type = typeof(T);
 
             if (!_pools.ContainsKey(type)) {
-                throw new NullReferenceException("ObjectPool is null");
+                throw new NullReferenceException($"ObjectPool is null by object type:= {type}");
             }
             _pools[type].Release(element);
         }
@@ -49,9 +58,7 @@ namespace Survivors.ObjectPool
                 where T : MonoBehaviour
         {
             var poolContainer = new ObjectPoolAdapter();
-            poolContainer.Create(new ObjectPool<T>(() => OnCreateObject<T>(prefab), OnGetFromPool, OnReleaseToPool, OnDestroyObject, true, 
-                                                   10,
-                                                   10000, ObjectCreateMode.Group));
+            poolContainer.Create(new ObjectPool<T>(() => OnCreateObject<T>(prefab), OnGetFromPool, OnReleaseToPool, OnDestroyObject, PoolParams));
             return poolContainer;
         }
 
@@ -59,6 +66,7 @@ namespace Survivors.ObjectPool
                 where T : MonoBehaviour
         {
             var createdGameObject = _container.InstantiatePrefab(prefab, _poolRoot);
+            createdGameObject.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
             return createdGameObject.RequireComponent<T>();
         }
 

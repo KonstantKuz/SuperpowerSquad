@@ -41,7 +41,7 @@ namespace Survivors.Squad.Component
         private void Update()
         {
             var squadPos = _squad.Destination.transform.position;
-            _targets = _targetService.AllTargetsOfType(TargetType).Select(it => 
+            _targets = _targetService.AllTargetsOfType(TargetType).Where(it=>it.IsAlive).Select(it => 
                 new TargetRecord
                 {
                     Target = it,

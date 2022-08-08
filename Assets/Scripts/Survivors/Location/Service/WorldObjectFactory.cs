@@ -22,7 +22,7 @@ namespace Survivors.Location.Service
         private CompositeDisposable _disposable;
 
         [Inject]
-        private PoolService _poolService;
+        private PoolManager _poolManager;
 
         [Inject]
         private World _world;
@@ -71,14 +71,15 @@ namespace Survivors.Location.Service
         
         public T GetPoolObject<T>(GameObject prefab) where T : MonoBehaviour
         {
-            var obj = _poolService.Get<T>(prefab);
+            var obj = _poolManager.Get<T>(prefab);
             _createdObjects.Add(obj.gameObject);
-            obj.gameObject.OnDisableAsObservable().Subscribe((o) => RemoveObject(obj.gameObject)).AddTo(_disposable);
+            obj.OnDisableAsObservable().Subscribe((o) => RemoveObject(obj.gameObject)).AddTo(_disposable);
+            obj.OnDestroyAsObservable().Subscribe((o) => RemoveObject(obj.gameObject)).AddTo(_disposable);
             return obj;
         }
         public void ReleasePoolObject<T>(T item) where T : MonoBehaviour
         {
-            _poolService.Release(item);
+            _poolManager.Release(item);
         }
         
         public List<T> GetObjectComponents<T>()
@@ -90,7 +91,7 @@ namespace Survivors.Location.Service
         
         private void DestroyAllObjects()
         {
-            _poolService.ReleaseAllActive();
+            _poolManager.ReleaseAllActive();
             
             foreach (var gameObject in _createdObjects) {
                 Destroy(gameObject);
