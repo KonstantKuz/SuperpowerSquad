@@ -34,6 +34,9 @@ namespace Survivors.Units.Service
         }
         public void Remove(IUnit unit)
         {
+            if (!_units.ContainsKey(unit.UnitType)) { 
+                return;
+            }
             _units[unit.UnitType].Remove(unit);
             unit.OnDeath -= OnDeathUnit;
         }

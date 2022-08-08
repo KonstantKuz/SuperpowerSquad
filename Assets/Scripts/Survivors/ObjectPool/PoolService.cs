@@ -50,7 +50,7 @@ namespace Survivors.ObjectPool
         {
             var poolContainer = new ObjectPoolAdapter();
             poolContainer.Create(new ObjectPool<T>(() => OnCreateObject<T>(prefab), OnGetFromPool, OnReleaseToPool, OnDestroyObject, true, 
-                                                   200,
+                                                   10,
                                                    10000, ObjectCreateMode.Group));
             return poolContainer;
         }
@@ -59,9 +59,6 @@ namespace Survivors.ObjectPool
                 where T : MonoBehaviour
         {
             var createdGameObject = _container.InstantiatePrefab(prefab, _poolRoot);
-            createdGameObject.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
-            createdGameObject.gameObject.SetActive(false);
-
             return createdGameObject.RequireComponent<T>();
         }
 
