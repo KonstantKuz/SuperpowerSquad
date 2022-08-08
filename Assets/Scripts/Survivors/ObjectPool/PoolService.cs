@@ -49,13 +49,13 @@ namespace Survivors.ObjectPool
                 where T : MonoBehaviour
         {
             var poolContainer = new ObjectPoolAdapter();
-            poolContainer.Create(new ObjectPool<T>(() => CreatePooledObject<T>(prefab), OnTakeFromPool, OnReturnToPool, OnDestroyObject, true, 
+            poolContainer.Create(new ObjectPool<T>(() => OnCreateObject<T>(prefab), OnGetFromPool, OnReleaseToPool, OnDestroyObject, true, 
                                                    200,
                                                    10000, ObjectCreateMode.Group));
             return poolContainer;
         }
 
-        private T CreatePooledObject<T>(GameObject prefab)
+        private T OnCreateObject<T>(GameObject prefab)
                 where T : MonoBehaviour
         {
             var createdGameObject = _container.InstantiatePrefab(prefab, _poolRoot);
@@ -65,7 +65,7 @@ namespace Survivors.ObjectPool
             return createdGameObject.RequireComponent<T>();
         }
 
-        private void OnTakeFromPool<T>(T instance)
+        private void OnGetFromPool<T>(T instance)
                 where T : MonoBehaviour
         {
             instance.transform.SetParent(_poolRoot);
@@ -73,7 +73,7 @@ namespace Survivors.ObjectPool
             instance.gameObject.SetActive(true);
         }
 
-        private void OnReturnToPool<T>(T instance)
+        private void OnReleaseToPool<T>(T instance)
                 where T : MonoBehaviour
         {
             instance.gameObject.SetActive(false);

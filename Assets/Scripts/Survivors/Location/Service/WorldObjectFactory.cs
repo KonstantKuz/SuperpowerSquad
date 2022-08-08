@@ -51,7 +51,7 @@ namespace Survivors.Location.Service
             var prefab = _prefabs[objectId];
             return CreateObject(prefab, container);
         }
-        public T CreateObject<T>(string objectId, [CanBeNull] Transform container = null, bool usePool = false)where T: MonoBehaviour
+        public T CreateObject<T>(string objectId, [CanBeNull] Transform container = null, bool usePool = false) where T : MonoBehaviour
         {
             if (!_prefabs.ContainsKey(objectId)) {
                 throw new KeyNotFoundException($"No prefab with objectId {objectId} found");
@@ -60,7 +60,7 @@ namespace Survivors.Location.Service
             return usePool ? CreateMyPoolingGameObject<T>(prefab) : CreateObject(prefab, container).RequireComponent<T>();
         }
 
-        public GameObject CreateObject(GameObject prefab, [CanBeNull] Transform container = null, bool usePool = false)
+        public GameObject CreateObject(GameObject prefab, [CanBeNull] Transform container = null)
         {
             
             var parentContainer = container == null ? _world.Spawn.transform : container.transform;
