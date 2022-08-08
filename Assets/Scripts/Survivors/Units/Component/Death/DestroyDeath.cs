@@ -8,7 +8,7 @@ namespace Survivors.Units.Component.Death
     public class DestroyDeath : MonoBehaviour, IUnitDeath, IInitializable<IUnit>
     {
         [Inject]
-        private WorldObjectFactory _world;
+        private WorldObjectFactory _worldObjectFactory;
 
         private IUnit _owner;
         
@@ -19,8 +19,7 @@ namespace Survivors.Units.Component.Death
         
         public void PlayDeath()
         {
-            //Destroy(gameObject);
-            _world.ReleaseObject((Unit)_owner);
+            _worldObjectFactory.DestroyObject((Unit) _owner);
         }
 
 

@@ -178,6 +178,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objectId: SimpleEnemy
   _objectType: 1
+  _usePool: 1
 --- !u!114 &3006564440288677136
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -1,6 +1,5 @@
 ﻿using Feofun.Config;
 using ModestTree;
-using Survivors.Extension;
 using Survivors.Location;
 using Survivors.Location.Service;
 using Survivors.Units.Enemy.Config;
@@ -37,7 +36,7 @@ namespace Survivors.Units.Service
         
         public Unit CreateEnemy(string unitId, int level)
         {
-            var enemy = _worldObjectFactory.CreateObject<Unit>(unitId, null, true);
+            var enemy = _worldObjectFactory.CreateObject<Unit>(unitId);
             var config = _enemyUnitConfigs.Get(unitId);
             var model = new EnemyUnitModel(config, level);
             enemy.Init(model);

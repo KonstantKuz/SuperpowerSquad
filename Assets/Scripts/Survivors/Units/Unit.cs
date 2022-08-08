@@ -116,7 +116,7 @@ namespace Survivors.Units
                 _updatables[i].OnTick();
             }
         }
-        private void OnDisable()
+        private void OnDestroy()
         {
             OnUnitDestroyed?.Invoke(this);
             OnUnitDestroyed = null;
