@@ -38,6 +38,7 @@ namespace Survivors
         private void RunLoadableChains()
         {
             var initSequence = gameObject.AddComponent<AppInitSequence>();
+            initSequence.AddStep<YsoCorpSDKInitStep>(new [] {this});
 
 #if UNITY_IOS
             initSequence.AddStep<IosATTInitStep>();            

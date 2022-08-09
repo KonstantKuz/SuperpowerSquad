@@ -114,6 +114,8 @@ namespace YsoCorp {
             float _fpsAdsTime;
             int _fpsAdsNb;
 
+            public bool IsInitialized => _appData != null;
+
             void Start() {
                 this._appData = new AppData();
                 this._appData.device_key = this.ycManager.requestManager.GetDeviceKey();

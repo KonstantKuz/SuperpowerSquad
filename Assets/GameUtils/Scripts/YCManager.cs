@@ -33,6 +33,7 @@ namespace YsoCorp {
             public RequestManager requestManager { get; set; }
             public SettingManager settingManager { get; set; }
             public YCDataManager dataManager { get; set; }
+            public bool IsReady => analyticsManager != null && analyticsManager.IsInitialized;
 
             protected override void Awake() {
                 if (instance != null) {
