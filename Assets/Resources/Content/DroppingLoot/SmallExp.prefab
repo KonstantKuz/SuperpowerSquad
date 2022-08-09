@@ -47,7 +47,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objectId: SmallExp
   _objectType: 2
-  _usePool: 1
+  _usePool: 0
+  _objectPoolParams: {fileID: 0}
 --- !u!135 &8464070402915899788
 SphereCollider:
   m_ObjectHideFlags: 0

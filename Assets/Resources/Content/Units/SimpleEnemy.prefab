@@ -178,7 +178,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objectId: SimpleEnemy
   _objectType: 1
-  _usePool: 1
+  _usePool: 0
   _objectPoolParams: {fileID: 0}
 --- !u!114 &3006564440288677136
 MonoBehaviour:
