@@ -99,9 +99,10 @@ namespace Survivors.Units
             _damageable.OnZeroHealth -= DieOnZeroHealth;
             IsActive = false;
             _deathEventReceivers.ForEach(it => it.OnDeath(deathCause));
-            _death.PlayDeath();
             OnDeath?.Invoke(this, deathCause);
             OnDeath = null;
+            _death.PlayDeath();
+   
         }
 
         private void DieOnZeroHealth()

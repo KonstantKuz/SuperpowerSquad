@@ -1,4 +1,5 @@
-﻿namespace Survivors.ObjectPool
+﻿
+namespace Survivors.ObjectPool
 {
     public class ObjectPoolParams
     {

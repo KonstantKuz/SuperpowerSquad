@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEngine;
 using Zenject;
 
-namespace Survivors.ObjectPool
+namespace Survivors.ObjectPool.Service
 {
     public class PoolManager : MonoBehaviour
     {
@@ -23,12 +24,12 @@ namespace Survivors.ObjectPool
         [Inject]
         private DiContainer _container;
         
-        public GameObject Get<T>(GameObject prefab) where T : MonoBehaviour
+        public GameObject Get<T>(GameObject prefab, [CanBeNull] ObjectPoolParams poolParams = null) where T : MonoBehaviour
         {
             var type = typeof(T);
 
             if (!_pools.ContainsKey(type)) {
-                _pools[type] = BuildObjectPool(prefab);
+                _pools[type] = BuildObjectPool(prefab, poolParams);
             }
             return _pools[type].Get();
         }
@@ -50,9 +51,9 @@ namespace Survivors.ObjectPool
             }
         }
 
-        private ObjectPool<GameObject> BuildObjectPool(GameObject prefab)
+        private ObjectPool<GameObject> BuildObjectPool(GameObject prefab, [CanBeNull] ObjectPoolParams poolParams = null)
         { 
-            return new ObjectPool<GameObject>(() => OnCreateObject(prefab), OnGetFromPool, OnReleaseToPool, OnDestroyObject, PoolParams);
+            return new ObjectPool<GameObject>(() => OnCreateObject(prefab), OnGetFromPool, OnReleaseToPool, OnDestroyObject, poolParams ?? PoolParams);
         }
 
         private GameObject OnCreateObject(GameObject prefab)

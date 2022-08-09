@@ -1,4 +1,3 @@
-using Feofun.Components;
 using Survivors.Location.Service;
 using UnityEngine;
 using Zenject;

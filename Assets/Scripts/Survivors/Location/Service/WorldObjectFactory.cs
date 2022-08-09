@@ -4,6 +4,7 @@ using JetBrains.Annotations;
 using Survivors.Extension;
 using Survivors.Location.Model;
 using Survivors.ObjectPool;
+using Survivors.ObjectPool.Service;
 using UnityEngine;
 using Zenject;
 using UniRx;
@@ -48,7 +49,7 @@ namespace Survivors.Location.Service
                 throw new KeyNotFoundException($"No prefab with objectId {objectId} found");
             }
             var prefab = _prefabs[objectId];
-            var instance = prefab.UsePool ? GetPoolObject<T>(prefab.GameObject) : CreateObject(prefab.GameObject, container);
+            var instance = prefab.UsePool ? GetPoolObject<T>(prefab) : CreateObject(prefab.GameObject, container);
             return instance.RequireComponent<T>();
         }
         public void DestroyObject<T>(GameObject item) where T : MonoBehaviour
@@ -69,9 +70,9 @@ namespace Survivors.Location.Service
             return createdGameObject;
         }
         
-        public GameObject GetPoolObject<T>(GameObject prefab) where T : MonoBehaviour
+        public GameObject GetPoolObject<T>(WorldObject prefab) where T : MonoBehaviour
         {
-            var poolObj = _poolManager.Get<T>(prefab);
+            var poolObj = _poolManager.Get<T>(prefab.gameObject, prefab.ObjectPoolParams?.GetPoolParams());
             _createdObjects.Add(poolObj);
             poolObj.OnDisableAsObservable().Subscribe((o) => RemoveObject(poolObj.gameObject)).AddTo(_disposable);
             poolObj.OnDestroyAsObservable().Subscribe((o) => RemoveObject(poolObj.gameObject)).AddTo(_disposable);
