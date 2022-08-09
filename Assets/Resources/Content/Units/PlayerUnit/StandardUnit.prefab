@@ -333,6 +333,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7626905009210850996}
     m_Modifications:
+    - target: {fileID: 3616211657643069071, guid: c534efb71fdd67d45a029e53857760b5, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3908651391404067949, guid: c534efb71fdd67d45a029e53857760b5, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -393,7 +397,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: Medusa
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3616211657643069071, guid: c534efb71fdd67d45a029e53857760b5, type: 3}
+    - {fileID: 5745427529490707534, guid: c534efb71fdd67d45a029e53857760b5, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: c534efb71fdd67d45a029e53857760b5, type: 3}
 --- !u!4 &1770922462209904278 stripped
 Transform:
