@@ -168,15 +168,15 @@ public class AndroidTenjin : BaseTenjin {
 		}
 	}
 
-	public override void GetDeeplink(Tenjin.DeferredDeeplinkDelegate deferredDeeplinkDelegate) {
+	public override void GetDeeplink(Tenjin.Tenjin.DeferredDeeplinkDelegate deferredDeeplinkDelegate) {
 		DeferredDeeplinkListener onDeferredDeeplinkListener = new DeferredDeeplinkListener(deferredDeeplinkDelegate);
 		tenjinJava.Call ("getDeeplink", onDeferredDeeplinkListener);
 	}
 
 	private class DeferredDeeplinkListener : AndroidJavaProxy {
-		private Tenjin.DeferredDeeplinkDelegate callback;
+		private Tenjin.Tenjin.DeferredDeeplinkDelegate callback;
 
-		public DeferredDeeplinkListener(Tenjin.DeferredDeeplinkDelegate deferredDeeplinkCallback) : base("com.tenjin.android.Callback") {
+		public DeferredDeeplinkListener(Tenjin.Tenjin.DeferredDeeplinkDelegate deferredDeeplinkCallback) : base("com.tenjin.android.Callback") {
 			this.callback = deferredDeeplinkCallback;
 		}
 

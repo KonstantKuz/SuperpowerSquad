@@ -9,8 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ea4d495dc6d5ba64b90db7afda6a48a4, type: 3}
+  m_Script: {fileID: 0}
   m_Name: AdjustSettings
-  m_EditorClassIdentifier: 
+  m_EditorClassIdentifier: GameAssembly::AdjustSettings
   isPostProcessingEnabled: 1
   isiOS14ProcessingEnabled: 0

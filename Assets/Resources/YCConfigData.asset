@@ -15,12 +15,15 @@ MonoBehaviour:
   gameYcId: 738542
   InAppRemoveAds: 
   InAppRemoveAdsCanRemoveInBanner: 1
+  InappDebug: 1
   ABVersion: 1
   ABForcedSample: 
   ABSamples: []
+  ABDebugLog: 1
   BannerDisplayOnInit: 1
   BannerDisplayOnInitEditor: 1
   InterstitialInterval: 90
+  activeLogs: 1
   Name: Tentacles Attack
   FbAppId: 462753891979116
   appleId: 
