@@ -28,7 +28,6 @@ namespace Survivors.Units.Player.Attack
         
         private BaseWeapon _weapon;
         private PlayerAttackModel _playerAttackModel;
-        private Animator _animator;
         private ITargetSearcher _targetSearcher;
         private MovementController _movementController;
         private Unit _owner;
@@ -51,7 +50,6 @@ namespace Survivors.Units.Player.Attack
             _owner = (Unit) unit;
             _playerAttackModel = (PlayerAttackModel) unit.Model.AttackModel;
             
-            _playerAttackModel.AttackInterval.Subscribe(UpdateAnimationSpeed).AddTo(_disposable);
             if (HasWeaponAnimationHandler) {
                 _weaponAnimationHandler.OnFireEvent += Fire;
             }
@@ -73,7 +71,6 @@ namespace Survivors.Units.Player.Attack
         private void Awake()
         {
             _weapon = gameObject.RequireComponentInChildren<BaseWeapon>();
-            _animator = gameObject.RequireComponentInChildren<Animator>();
             _targetSearcher = GetComponent<ITargetSearcher>();
             _movementController = GetComponent<MovementController>();
 
@@ -86,16 +83,6 @@ namespace Survivors.Units.Player.Attack
             }
         }
 
-        private void UpdateAnimationSpeed(float attackInterval)
-        {
-            var clips = _animator.runtimeAnimatorController.animationClips;
-            var attackClipLength = clips.First(it => it.name == _attackAnimationName).length;
-            if (attackInterval >= attackClipLength) {
-                return;
-            }
-            _animator.SetFloat(AttackSpeedMultiplierHash, attackClipLength / attackInterval);
-        }
-        
         [CanBeNull]
         private ITarget FindTarget() => _targetSearcher.Find();
 
@@ -110,7 +97,6 @@ namespace Survivors.Units.Player.Attack
 
         private void Attack()
         {
-            _animator.SetTrigger(AttackHash);
             if (!HasWeaponAnimationHandler) {
                 Fire();
             }
