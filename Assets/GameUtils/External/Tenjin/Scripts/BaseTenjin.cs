@@ -58,7 +58,7 @@ public abstract class BaseTenjin : MonoBehaviour {
 	public abstract void SendEvent (string eventName);
 	public abstract void SendEvent (string eventName, string eventValue);
 	public abstract void Transaction(string productId, string currencyCode, int quantity, double unitPrice, string transactionId, string receipt, string signature);
-	public abstract void GetDeeplink(Tenjin.DeferredDeeplinkDelegate deferredDeeplinkDelegate);
+	public abstract void GetDeeplink(Tenjin.Tenjin.DeferredDeeplinkDelegate deferredDeeplinkDelegate);
 	public abstract void RegisterAppForAdNetworkAttribution();
 	public abstract void UpdateConversionValue(int conversionValue);
 	public abstract void RequestTrackingAuthorizationWithCompletionHandler(Action<int> trackingAuthorizationCallback);

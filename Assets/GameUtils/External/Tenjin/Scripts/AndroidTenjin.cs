@@ -442,7 +442,7 @@ public class AndroidTenjin : BaseTenjin {
 		Debug.Log ("Android Transaction " + productId + ", " + currencyCode + ", " + quantity + ", " + unitPrice + ", " + transactionId + ", " + receipt + ", " + signature);
 	}
 
-	public override void GetDeeplink(Tenjin.DeferredDeeplinkDelegate deferredDeeplinkDelegate) {
+	public override void GetDeeplink(Tenjin.Tenjin.DeferredDeeplinkDelegate deferredDeeplinkDelegate) {
 		Debug.Log ("Sending AndroidTenjin::GetDeeplink");
 	}
 

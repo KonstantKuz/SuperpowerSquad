@@ -47,7 +47,7 @@ public class DebugTenjin : BaseTenjin {
 		Debug.Log ("Transaction " + productId + ", " + currencyCode + ", " + quantity + ", " + unitPrice + ", " + transactionId + ", " + receipt + ", " + signature);
 	}
 
-	public override void GetDeeplink(Tenjin.DeferredDeeplinkDelegate deferredDeeplinkDelegate) {
+	public override void GetDeeplink(Tenjin.Tenjin.DeferredDeeplinkDelegate deferredDeeplinkDelegate) {
 		Debug.Log ("Sending DebugTenjin::GetDeeplink");
 	}
 

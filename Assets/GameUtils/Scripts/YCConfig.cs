@@ -12,48 +12,7 @@ using UnityEditor.PackageManager;
 
 namespace YsoCorp {
     namespace GameUtils {
-#if UNITY_EDITOR
-        [CustomEditor(typeof(YCConfig))]
-        public class YCConfigEditor : Editor {
-            public override void OnInspectorGUI() {
-                this.DrawDefaultInspector();
-                GUILayout.Space(10);
-                YCConfig myTarget = (YCConfig)this.target;
-                if (GUILayout.Button("Import Config")) {
-                    myTarget.EditorImportConfig();
-                    EditorUtility.SetDirty(myTarget);
-                }
-                GUILayout.Space(10);
 
-#if IN_APP_PURCHASING
-                if (GUILayout.Button("Deactivate In App Purchases")) {
-                    myTarget.RemoveDefineSymbolsForGroup("IN_APP_PURCHASING");
-                    Client.Remove("com.unity.purchasing");
-                }
-#else
-                if (GUILayout.Button("Activate In App Purchases")) {
-                    myTarget.AddDefineSymbolsForGroup("IN_APP_PURCHASING");
-                    Client.Add("com.unity.purchasing@4.0.3");
-                }
-#endif
-
-#if FIREBASE
-                if (GUILayout.Button("Disactivate Firebase")) {
-                    myTarget.RemoveDefineSymbolsForGroup("FIREBASE");
-                }
-#else
-                if (GUILayout.Button("Activate Firebase")) {
-                    if (Directory.Exists("Assets/Firebase")) {
-                        myTarget.AddDefineSymbolsForGroup("FIREBASE");
-                    } else {
-                        myTarget.DisplayDialog("Error", "This only for validate game.\nPlease import Firebase Analytics before.", "Ok");
-                    }
-                }
-#endif
-
-            }
-        }
-#endif
 
         [CreateAssetMenu(fileName = "YCConfigData", menuName = "YsoCorp/Configuration", order = 1)]
         public class YCConfig : ScriptableObject {
@@ -277,51 +236,7 @@ namespace YsoCorp {
 #endif
             }
 
-            public void EditorImportConfig() {
-                if (this.gameYcId != "") {
-                    string url = RequestManager.GetUrlEmptyStatic("games/setting/" + this.gameYcId + "/" + Application.identifier, true);
-                    HttpWebRequest request = (HttpWebRequest)HttpWebRequest.Create(url);
-                    request.Method = "Get";
-                    request.ContentType = "application/json";
-                    try {
-                        using (HttpWebResponse response = (HttpWebResponse)request.GetResponse()) {
-                            using (var reader = new StreamReader(response.GetResponseStream())) {
-                                InfosData infos = Newtonsoft.Json.JsonConvert.DeserializeObject<DataData>(reader.ReadToEnd()).data;
-                                if (infos.name != "") {
-                                    this.Name = infos.name;
-                                    this.FbAppId = infos.facebook_app_id;
-                                    this.appleId = infos.ios_key;
 
-                                    this.AdMobAndroidAppId = infos.admob_android_app_id;
-                                    this.AdMobIosAppId = infos.admob_ios_app_id;
-
-                                    this.IosInterstitial = infos.applovin.adunits.ios.interstitial;
-                                    this.IosRewarded = infos.applovin.adunits.ios.rewarded;
-                                    this.IosBanner = infos.applovin.adunits.ios.banner;
-                                    this.AndroidInterstitial = infos.applovin.adunits.android.interstitial;
-                                    this.AndroidRewarded = infos.applovin.adunits.android.rewarded;
-                                    this.AndroidBanner = infos.applovin.adunits.android.banner;
-                                    // MMPs
-                                    this.MmpAdjust = infos.mmps.adjust.active;
-                                    this.MmpAdjustAppToken = infos.mmps.adjust.active ? infos.mmps.adjust.app_token : "";
-                                    this.MmpTenjin = infos.mmps.tenjin.active;
-                                    this.DisplayImportConfigDialog(true, infos);
-                                    this.InitFacebook();
-                                    this.InitMax();
-                                    this.InitFirebase(infos);
-                                } else {
-                                    this.DisplayImportConfigDialog(false, "Impossible to import config. Check your Game Yc Id or your connection.");
-                                }
-                            }
-                        }
-                    } catch (Exception) {
-
-                        this.DisplayImportConfigDialog(false, "Impossible to import config. Check your Game Yc Id or your connection.");
-                    }
-                } else {
-                    this.DisplayImportConfigDialog(false, "Please enter Game Yc Id.");
-                }
-            }
 
             public void AddDefineSymbolsForGroup(string def) {
 #if UNITY_EDITOR
@@ -356,14 +271,7 @@ namespace YsoCorp {
 #endif
             }
 
-            public void InitMax() {
-#if UNITY_EDITOR
-                AppLovinSettings.Instance.AdMobIosAppId = this.AdMobIosAppId;
-                AppLovinSettings.Instance.AdMobAndroidAppId = this.AdMobAndroidAppId;
-                EditorUtility.SetDirty(AppLovinSettings.Instance);
-                AssetDatabase.SaveAssets();
-#endif
-            }
+
 
             public void InitFirebase(InfosData infos) {
 #if FIREBASE

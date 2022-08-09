@@ -15,7 +15,7 @@ namespace YsoCorp {
 
             public override void Init() {
                 if (this._tenjin == null) {
-                    this._tenjin = Tenjin.getInstance(API_KEY);
+                    this._tenjin = Tenjin.Tenjin.getInstance(API_KEY);
 #if UNITY_IOS
                     this._tenjin.RegisterAppForAdNetworkAttribution();
                     this._tenjin.Connect();
