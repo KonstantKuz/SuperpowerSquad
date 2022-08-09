@@ -12,31 +12,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfcf417bceeba474b8d12501c906cef3, type: 3}
   m_Name: YCConfigData
   m_EditorClassIdentifier: 
-  gameYcId: 
-  SoundEffect: 0
-  SoundMusic: 0
+  gameYcId: 738542
   InAppRemoveAds: 
   InAppRemoveAdsCanRemoveInBanner: 1
-  InappDebug: 1
   ABVersion: 1
   ABForcedSample: 
   ABSamples: []
-  ABDebugLog: 1
   BannerDisplayOnInit: 1
   BannerDisplayOnInitEditor: 1
-  InterstitialInterval: 20
-  activeLogs: 1
-  Name: 
-  FbAppId: 
+  InterstitialInterval: 90
+  Name: Tentacles Attack
+  FbAppId: 462753891979116
   appleId: 
   MmpAdjust: 0
   MmpAdjustAppToken: 
-  MmpTenjin: 0
+  MmpTenjin: 1
   AdMobAndroidAppId: 
   AdMobIosAppId: 
   IosInterstitial: 
   IosRewarded: 
   IosBanner: 
-  AndroidInterstitial: 
-  AndroidRewarded: 
-  AndroidBanner: 
+  AndroidInterstitial: 0d985d2da4d339b5
+  AndroidRewarded: 4e73c7556b57d5e7
+  AndroidBanner: 9385b1c9b166de1e

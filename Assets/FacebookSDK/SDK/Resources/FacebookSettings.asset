@@ -16,9 +16,9 @@ MonoBehaviour:
   clientTokens:
   - 
   appIds:
-  - 000
+  - 462753891979116
   appLabels:
-  - App Name
+  - survivors
   cookie: 1
   logging: 1
   status: 1

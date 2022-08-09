@@ -821,8 +821,8 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
-    4: APP_METRICA_TRACK_LOCATION_DISABLED;gameanalytics_max_enabled
-    7: APP_METRICA_TRACK_LOCATION_DISABLED;gameanalytics_max_enabled
+    4: APP_METRICA_TRACK_LOCATION_DISABLED;gameanalytics_max_enabled;tenjin_applovin_enabled
+    7: APP_METRICA_TRACK_LOCATION_DISABLED;gameanalytics_max_enabled;tenjin_applovin_enabled
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:
