@@ -36,6 +36,7 @@ namespace Survivors.Units.Target
 
         private void OnEnable()
         {
+            IsAlive = true;
             TargetId = $"{_unitType.ToString()}#{_idCount++}";
             _targetService.Add(this);
         }
