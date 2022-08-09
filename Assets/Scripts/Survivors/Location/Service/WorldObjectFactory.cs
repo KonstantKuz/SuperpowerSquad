@@ -42,20 +42,20 @@ namespace Survivors.Location.Service
                 _prefabs.Add(worldObject.ObjectId, worldObject);
             }
         }
-        
         public T CreateObject<T>(string objectId, [CanBeNull] Transform container = null) where T : MonoBehaviour
         {
             if (!_prefabs.ContainsKey(objectId)) {
                 throw new KeyNotFoundException($"No prefab with objectId {objectId} found");
             }
             var prefab = _prefabs[objectId];
-            return prefab.UsePool ? GetPoolObject<T>(prefab.GameObject) : CreateObject(prefab.GameObject, container).RequireComponent<T>();
+            var instance = prefab.UsePool ? GetPoolObject<T>(prefab.GameObject) : CreateObject(prefab.GameObject, container);
+            return instance.RequireComponent<T>();
         }
-        public void DestroyObject<T>(T item) where T : MonoBehaviour
+        public void DestroyObject<T>(GameObject item) where T : MonoBehaviour
         {
             var worldObject = item.gameObject.RequireComponent<WorldObject>();
             if (worldObject.UsePool) {
-                ReleasePoolObject(item);
+                ReleasePoolObject<T>(item);
                 return;
             }
             Destroy(item.gameObject);
@@ -69,17 +69,17 @@ namespace Survivors.Location.Service
             return createdGameObject;
         }
         
-        public T GetPoolObject<T>(GameObject prefab) where T : MonoBehaviour
+        public GameObject GetPoolObject<T>(GameObject prefab) where T : MonoBehaviour
         {
-            var obj = _poolManager.Get<T>(prefab);
-            _createdObjects.Add(obj.gameObject);
-            obj.OnDisableAsObservable().Subscribe((o) => RemoveObject(obj.gameObject)).AddTo(_disposable);
-            obj.OnDestroyAsObservable().Subscribe((o) => RemoveObject(obj.gameObject)).AddTo(_disposable);
-            return obj;
+            var poolObj = _poolManager.Get<T>(prefab);
+            _createdObjects.Add(poolObj);
+            poolObj.OnDisableAsObservable().Subscribe((o) => RemoveObject(poolObj.gameObject)).AddTo(_disposable);
+            poolObj.OnDestroyAsObservable().Subscribe((o) => RemoveObject(poolObj.gameObject)).AddTo(_disposable);
+            return poolObj;
         }
-        public void ReleasePoolObject<T>(T item) where T : MonoBehaviour
+        public void ReleasePoolObject<T>(GameObject instance) where T : MonoBehaviour
         {
-            _poolManager.Release(item);
+            _poolManager.Release<T>(instance);
         }
         
         public List<T> GetObjectComponents<T>()

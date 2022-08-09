@@ -5,21 +5,14 @@ using Zenject;
 
 namespace Survivors.Units.Component.Death
 {
-    public class DestroyDeath : MonoBehaviour, IUnitDeath, IInitializable<IUnit>
+    public class DestroyDeath : MonoBehaviour, IUnitDeath
     {
         [Inject]
         private WorldObjectFactory _worldObjectFactory;
-
-        private IUnit _owner;
-        
-        public void Init(IUnit owner)
-        {
-            _owner = owner;
-        }
         
         public void PlayDeath()
         {
-            _worldObjectFactory.DestroyObject((Unit) _owner);
+            _worldObjectFactory.DestroyObject<Unit>(gameObject);
         }
 
 

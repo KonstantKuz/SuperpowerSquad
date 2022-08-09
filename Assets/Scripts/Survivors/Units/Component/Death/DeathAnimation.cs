@@ -7,7 +7,7 @@ using Zenject;
 
 namespace Survivors.Units.Component.Death
 {
-    public class DeathAnimation : MonoBehaviour, IUnitDeath, IInitializable<IUnit>
+    public class DeathAnimation : MonoBehaviour, IUnitDeath
     { 
         private readonly int _deathHash = Animator.StringToHash("Death");
         
@@ -20,15 +20,11 @@ namespace Survivors.Units.Component.Death
 
         [Inject]
         private WorldObjectFactory _worldObjectFactory;
-
-        private IUnit _owner;
+        
         private Animator _animator;
         private Tweener _disappearTween;
         private Coroutine _disappear;
-        public void Init(IUnit owner)
-        {
-            _owner = owner;
-        }
+        
         private void Awake()
         {
             _animator = GetComponentInChildren<Animator>();
@@ -47,7 +43,7 @@ namespace Survivors.Units.Component.Death
             yield return new WaitForSeconds(_delayUntilDisappear);
             _disappearTween = gameObject.transform.DOMoveY(transform.position.y - _offsetYDisappear, _disappearTime);
             yield return _disappearTween.WaitForCompletion(); 
-            _worldObjectFactory.DestroyObject((Unit) _owner);
+            _worldObjectFactory.DestroyObject<Unit>(gameObject);
         }
 
         private void EndAnimationIfStarted()
