@@ -1,5 +1,6 @@
 using Feofun.Localization.Service;
 using SuperMaxim.Messaging;
+using Survivors.Advertisement;
 using Survivors.Cheats.Installer;
 using Survivors.Analytics;
 using Survivors.Location;
@@ -35,7 +36,7 @@ namespace Survivors.App
             Container.Bind<UpdateManager>().FromInstance(_updateManager).AsSingle();
             Container.Bind<IMessenger>().FromInstance(Messenger.Default).AsSingle();     
             Container.Bind<LocalizationService>().AsSingle();
-
+            Container.Bind<AdvertisementService>().AsSingle().NonLazy();
 
             ConfigsInstaller.Install(Container);
             ModifiersInstaller.Install(Container);  
