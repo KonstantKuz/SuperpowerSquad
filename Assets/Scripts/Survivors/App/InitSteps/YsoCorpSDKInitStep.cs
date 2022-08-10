@@ -3,7 +3,7 @@ using Feofun.App.Init;
 using UnityEngine;
 using YsoCorp.GameUtils;
 
-namespace Survivors.App
+namespace Survivors.App.InitSteps
 {
     public class YsoCorpSDKInitStep: AppInitStep
     {

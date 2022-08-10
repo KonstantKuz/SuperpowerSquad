@@ -3,6 +3,7 @@ using Feofun.App.Init;
 using JetBrains.Annotations;
 using Survivors.Analytics;
 using Survivors.App;
+using Survivors.App.InitSteps;
 #if UNITY_IOS
 using Survivors.IOSTransparency;
 #endif
