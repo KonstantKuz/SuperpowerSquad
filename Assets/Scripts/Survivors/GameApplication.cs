@@ -3,6 +3,7 @@ using Feofun.App.Init;
 using JetBrains.Annotations;
 using Survivors.Analytics;
 using Survivors.App;
+using Survivors.App.InitSteps;
 #if UNITY_IOS
 using Survivors.IOSTransparency;
 #endif
@@ -38,6 +39,7 @@ namespace Survivors
         private void RunLoadableChains()
         {
             var initSequence = gameObject.AddComponent<AppInitSequence>();
+            initSequence.AddStep<YsoCorpSDKInitStep>(new [] {this});
 
 #if UNITY_IOS
             initSequence.AddStep<IosATTInitStep>();            

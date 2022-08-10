@@ -30,6 +30,7 @@ MonoBehaviour:
     m_Scopes:
     - com.madsbangh.easybuttons
     - com.openupm
+    - com.google.external-dependency-manager
     m_IsDefault: 0
     m_Capabilities: 0
   - m_Id: scoped:npmjs
@@ -57,6 +58,7 @@ MonoBehaviour:
       m_Scopes:
       - com.madsbangh.easybuttons
       - com.openupm
+      - com.google.external-dependency-manager
       m_IsDefault: 0
       m_Capabilities: 0
     m_Modified: 0
@@ -65,4 +67,5 @@ MonoBehaviour:
     m_Scopes:
     - com.madsbangh.easybuttons
     - com.openupm
+    - com.google.external-dependency-manager
     m_SelectedScopeIndex: 0

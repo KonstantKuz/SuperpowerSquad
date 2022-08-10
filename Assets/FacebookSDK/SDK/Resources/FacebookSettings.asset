@@ -16,9 +16,9 @@ MonoBehaviour:
   clientTokens:
   - 
   appIds:
-  - 314787096815812
+  - 462753891979116
   appLabels:
-  - LegionMaster
+  - Medusa
   cookie: 1
   logging: 1
   status: 1
