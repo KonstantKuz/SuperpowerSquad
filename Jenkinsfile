@@ -67,7 +67,7 @@ pipeline {
                                     UNITY_PARAMS=UNITY_PARAMS + '-loggerLevel ' + params.LoggerLevel  
                                 }   
    
-                                withCredentials([string(credentialsId: 'HyperCasualKeyStorePass', variable: 'KEYSTORE_PASS'), 
+                                withCredentials([string(credentialsId: 'SurvivorsAndroidKeystorePass', variable: 'KEYSTORE_PASS'), 
                                         gitUsernamePassword(credentialsId: 'gitlab_inspiritum_smash_master', gitToolName: 'Default')]) {
                                     sh '$UNITY_PATH -nographics -buildTarget Android -quit -batchmode -projectPath . -executeMethod Editor.Scripts.PreProcess.Builder.BuildAndroid ' + UNITY_PARAMS + ' -keyStorePassword $KEYSTORE_PASS -noUnityLogo -outputFileName $OUTPUT_FILE_NAME -logFile -'              
                                 }                                                                                  
