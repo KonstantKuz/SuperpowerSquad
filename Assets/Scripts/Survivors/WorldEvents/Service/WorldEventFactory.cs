@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Survivors.WorldEvents.Config;
 using Survivors.WorldEvents.Events;
+using Survivors.WorldEvents.Events.Lava;
 using Zenject;
 
 namespace Survivors.WorldEvents.Service
@@ -9,7 +10,8 @@ namespace Survivors.WorldEvents.Service
     public class WorldEventFactory
     {
         private readonly Dictionary<WorldEventType, Type> _worldEvents = new Dictionary<WorldEventType, Type>() {
-                {WorldEventType.Test, typeof(TestWorldEvent)}
+                {WorldEventType.Test, typeof(TestWorldEvent)},
+                {WorldEventType.Lava, typeof(LavaWorldEvent)},
 
         };
         [Inject]

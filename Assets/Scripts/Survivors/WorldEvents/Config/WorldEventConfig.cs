@@ -5,7 +5,7 @@ namespace Survivors.WorldEvents.Config
     [DataContract]
     public class WorldEventConfig
     {
-        [DataMember(Name = "WorldEventType")]
+        [DataMember(Name = "EventType")]
         public WorldEventType EventType;
 
         [DataMember(Name = "TimeSincePreviousEvent")]

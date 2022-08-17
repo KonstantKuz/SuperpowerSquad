@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using Survivors.Extension;
 using Survivors.Location.Model;
-using Survivors.Session;
 using UnityEngine;
 using Zenject;
 using UniRx;
@@ -37,7 +37,10 @@ namespace Survivors.Location.Service
                 _prefabs.Add(worldObject.ObjectId, worldObject.GameObject);
             }
         }
-
+        public T CreateObject<T>(string objectId, [CanBeNull] Transform container = null)
+        {
+            return CreateObject(objectId, container).RequireComponent<T>();
+        }
         public GameObject CreateObject(string objectId, [CanBeNull] Transform container = null)
         {
             if (!_prefabs.ContainsKey(objectId)) {
