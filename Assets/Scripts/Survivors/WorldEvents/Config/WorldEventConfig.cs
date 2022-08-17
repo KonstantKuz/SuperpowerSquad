@@ -3,7 +3,7 @@
 namespace Survivors.WorldEvents.Config
 {
     [DataContract]
-    public class EventConfig
+    public class WorldEventConfig
     {
         [DataMember(Name = "WorldEventType")]
         public WorldEventType EventType;

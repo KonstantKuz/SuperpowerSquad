@@ -4,14 +4,14 @@ namespace Survivors.WorldEvents.Config
 {
     public class LevelEventConfig
     {
-        public readonly int Level;
+        public readonly string LevelId;
         
-        private readonly IReadOnlyList<EventConfig> _events;
+        public readonly IReadOnlyList<WorldEventConfig> Events;
 
-        public LevelEventConfig(int level, IReadOnlyList<EventConfig> events)
+        public LevelEventConfig(string levelId, IReadOnlyList<WorldEventConfig> events)
         {
-            Level = level;
-            _events = events;
+            LevelId = levelId;
+            Events = events;
         }
     }
 }

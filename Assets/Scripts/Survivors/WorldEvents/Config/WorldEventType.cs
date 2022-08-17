@@ -2,6 +2,7 @@
 {
     public enum WorldEventType
     {
+        Test,
         Rocks,
         Lava,
         Tornado
