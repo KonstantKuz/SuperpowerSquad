@@ -12,7 +12,7 @@ using UniRx.Triggers;
 
 namespace Survivors.Location.Service
 {
-    public class WorldObjectFactory : MonoBehaviour, IWorldScope
+    public class WorldObjectFactory : MonoBehaviour, IWorldScope, IWorldObjectFactory 
     {
         private const string OBJECT_PREFABS_PATH_ROOT = "Content/";
 
@@ -119,5 +119,11 @@ namespace Survivors.Location.Service
         {
             DestroyAllObjects();
         }
+    }
+
+    public interface IWorldObjectFactory
+    { 
+        T CreateObject<T>(string objectId, [CanBeNull] Transform container = null) where T : MonoBehaviour; 
+        void DestroyObject<T>(GameObject item) where T : MonoBehaviour;
     }
 }

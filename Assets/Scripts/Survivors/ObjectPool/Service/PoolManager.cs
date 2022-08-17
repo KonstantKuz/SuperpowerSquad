@@ -72,6 +72,7 @@ namespace Survivors.ObjectPool.Service
 
         private void OnReleaseToPool(GameObject instance)
         {
+            instance.transform.SetParent(_poolRoot);
             instance.gameObject.SetActive(false);
         }
 

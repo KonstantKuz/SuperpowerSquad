@@ -5,7 +5,7 @@ namespace Survivors.ObjectPool
     {
         public bool IsCollectionCheck { get; set; }
         public int InitialCapacity { get; set; }
-        public int MaxSize { get; set; }
+        public int MaxSize { get; set; } // todo detection Capacit
         public ObjectCreateMode ObjectCreateMode { get; set; }
         public bool DisposeActive { get; set; }
 
