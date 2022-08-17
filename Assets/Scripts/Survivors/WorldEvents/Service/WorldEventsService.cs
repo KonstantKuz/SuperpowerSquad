@@ -1,4 +1,7 @@
 ﻿using System.Collections;
+using SuperMaxim.Messaging;
+using Survivors.Location;
+using Survivors.Session.Messages;
 using Survivors.WorldEvents.Config;
 using Survivors.WorldEvents.WaitConditions;
 using UnityEngine;
@@ -6,19 +9,40 @@ using Zenject;
 
 namespace Survivors.WorldEvents.Service
 {
-    public class WorldEventsService : MonoBehaviour
+    public class WorldEventsService : IWorldScope
     {
         [Inject]
         private WorldEventsConfig _worldEventsConfig;      
         [Inject]
         private WorldEventFactory _worldEventFactory;
-
+        [Inject]
+        private IMessenger _messenger;
+        
         private Coroutine _eventsCoroutine;
         
-        public void StartLevelEvents(string levelId)
+        public void OnWorldSetup()
+        {
+            _messenger.Subscribe<SessionStartMessage>(OnSessionStarted);
+            _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
+        }
+        public void OnWorldCleanUp()
+        {
+            _messenger.Unsubscribe<SessionStartMessage>(OnSessionStarted);
+            _messenger.Unsubscribe<SessionEndMessage>(OnSessionFinished);
+        }
+        private void OnSessionStarted(SessionStartMessage evn)
+        {
+            StartLevelEvents(evn.Level.ToString());
+        }
+        private void OnSessionFinished(SessionEndMessage evn)
         {
             DisposeCoroutine();
-            _eventsCoroutine = StartCoroutine(StartEvents(levelId));
+        }
+
+        private void StartLevelEvents(string levelId)
+        {
+            DisposeCoroutine();
+            _eventsCoroutine = GameApplication.Instance.StartCoroutine(StartEvents(levelId));
         }
         private IEnumerator StartEvents(string levelId)
         {
@@ -47,7 +71,7 @@ namespace Survivors.WorldEvents.Service
             if (_eventsCoroutine == null) {
                 return;
             }
-            StopCoroutine(_eventsCoroutine);
+            GameApplication.Instance.StopCoroutine(_eventsCoroutine);
             _eventsCoroutine = null;
         }
     }

@@ -15,6 +15,7 @@ using Survivors.Squad.Config;
 using Survivors.Squad.Upgrade.Config;
 using Survivors.Squad.UpgradeSelection.Config;
 using Survivors.Units.Player.Config;
+using Survivors.WorldEvents.Config;
 using Zenject;
 
 namespace Survivors.App
@@ -26,18 +27,19 @@ namespace Survivors.App
             new ConfigLoader(container, new CsvConfigDeserializer())
                 .RegisterSingle<LocalizationConfig>(Configs.LOCALIZATION)
                 .RegisterSingle<EnemyWavesConfig>(Configs.ENEMY_WAVES)
+                .RegisterSingle<UpgradesConfig>(Configs.UPGRADES)         
+                .RegisterSingle<WorldEventsConfig>(Configs.WORLD_EVENTS)
+                .RegisterSingleObjectConfig<UpgradeBranchSelectionConfig>(Configs.CONSTANTS)  
+                .RegisterSingleObjectConfig<SquadConfig>(Configs.SQUAD)
+                .RegisterSingleObjectConfig<ConstantsConfig>(Configs.CONSTANTS)
+                .RegisterSingleObjectConfig<HpsSpawnerConfig>(Configs.ENEMY_SPAWNER)
                 .RegisterStringKeyedCollection<PlayerUnitConfig>(Configs.PLAYER_UNIT)
                 .RegisterStringKeyedCollection<EnemyUnitConfig>(Configs.ENEMY_UNIT)
                 .RegisterStringKeyedCollection<DroppingLootConfig>(Configs.DROPPING_LOOT)
                 .RegisterStringKeyedCollection<SquadLevelConfig>(Configs.SQUAD_LEVEL)
-                .RegisterSingleObjectConfig<SquadConfig>(Configs.SQUAD)
                 .RegisterStringKeyedCollection<ParameterUpgradeConfig>(Configs.MODIFIERS, true)            
                 .RegisterStringKeyedCollection<UpgradeProductConfig>(Configs.META_UPGRADES_SHOP)
-                .RegisterSingle<UpgradesConfig>(Configs.UPGRADES)          
-                .RegisterStringKeyedCollection<ParameterUpgradeConfig>(Configs.META_UPGRADES, true)  
-                .RegisterSingleObjectConfig<UpgradeBranchSelectionConfig>(Configs.CONSTANTS)  
-                .RegisterSingleObjectConfig<ConstantsConfig>(Configs.CONSTANTS)
-                .RegisterSingleObjectConfig<HpsSpawnerConfig>(Configs.ENEMY_SPAWNER)
+                .RegisterStringKeyedCollection<ParameterUpgradeConfig>(Configs.META_UPGRADES, true)
                 .RegisterStringKeyedCollection<LevelMissionConfig>(Configs.LEVEL_MISSION)
                 .RegisterCollection<SessionResult, MissionRewardsConfig>(Configs.MISSION_REWARDS);
         }

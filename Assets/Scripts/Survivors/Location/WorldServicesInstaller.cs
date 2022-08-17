@@ -2,6 +2,7 @@
 using Survivors.Location.Service;
 using Survivors.Loot.Service;
 using Survivors.Session.Service;
+using Survivors.WorldEvents.Service;
 using UnityEngine;
 using Zenject;
 
@@ -20,13 +21,17 @@ namespace Survivors.Location
             container.BindInterfacesAndSelfTo<WorldObjectFactory>().FromInstance(_worldObjectFactory).AsSingle();
             container.Bind<World>().FromInstance(_world);
             
-            container.BindInterfacesAndSelfTo<SessionService>().AsSingle();
-            container.BindInterfacesAndSelfTo<ReviveService>().AsSingle();
+            container.BindInterfacesAndSelfTo<SessionService>().AsSingle();     
             container.Bind<SessionRepository>().AsSingle();
+            container.BindInterfacesAndSelfTo<ReviveService>().AsSingle();
             
             container.Bind<EnemyWavesSpawner>().FromInstance(_enemyWavesSpawner);
             container.Bind<EnemyHpsSpawner>().FromInstance(_enemyHpsSpawner).AsSingle();
             container.BindInterfacesAndSelfTo<DroppingLootService>().AsSingle();
+            
+            
+            container.BindInterfacesAndSelfTo<WorldEventsService>().AsSingle();  
+            container.Bind<WorldEventFactory>().AsSingle();  
         }
     }
 }

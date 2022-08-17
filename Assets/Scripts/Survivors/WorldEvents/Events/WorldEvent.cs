@@ -6,5 +6,6 @@ namespace Survivors.WorldEvents.Events
     { 
         public abstract event Action OnFinished;
         public abstract void Start();
+        
     }
 }
