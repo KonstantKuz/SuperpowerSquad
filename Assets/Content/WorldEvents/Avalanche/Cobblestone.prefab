@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 2708310496103401384}
   - component: {fileID: 1298266046}
   - component: {fileID: 4963921157189634245}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cobblestone
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,10 +47,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _disappearTime: 1
   _maxDistance: 30
-  _damagePercent: 20
+  _damagePercent: 5
   _moveSpeed: 5
   _stoneRenderer: {fileID: 9166758609729735932}
-  _trajectoryMaterial: {fileID: 2100000, guid: be8ae1d80955faa4b99bf50c5fa1b78c, type: 2}
+  _trajectoryPrefab: {fileID: 252025213542724086, guid: 1c84c92e425499344b4df813e4a41d79, type: 3}
 --- !u!54 &4963921157189634245
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -79,7 +79,7 @@ GameObject:
   - component: {fileID: 277218834595917709}
   - component: {fileID: 9166758609729735932}
   - component: {fileID: 1631867928898077986}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
