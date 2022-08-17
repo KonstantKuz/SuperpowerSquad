@@ -1,25 +1,13 @@
-﻿using Logger.Extension;
+﻿using System;
+using Logger.Extension;
 using Survivors.Extension;
 using Survivors.Location.Model;
 using Survivors.Units.Component.Health;
+using Survivors.Units.Player.Damageable;
 using UnityEngine;
 
 namespace Survivors.WorldEvents.Events.Lava
 {
-    public class LavaEventConfig
-    {
-        public float EventDuration { get; set; } = 30;
-
-        public float AppearTime { get; set; } = 1;
-
-        public float Radius { get; set; } = 3;
-
-        public float DamagePeriod { get; set; } = 1;
-
-        public float DamagePercent { get; set; } = 30;
-
-    }
-
     public class Lava : WorldObject
     {
         private HittingTargetsInRadius _hittingTargets;
@@ -47,7 +35,7 @@ namespace Survivors.WorldEvents.Events.Lava
         private void DoDamage(GameObject target)
         {
             var damageable = target.RequireComponent<IDamageable>();
-            damageable.TakeDamage(_config.DamagePercent);
+            damageable.TakeDamage(CalculateDamage(damageable));
             this.Logger().Trace($"Lava, damage applied, target:= {target.name}");
         }
 
@@ -56,10 +44,14 @@ namespace Survivors.WorldEvents.Events.Lava
             Destroy(gameObject);
         }
 
-        /*private float CalculateDamage(GameObject target)
+        private float CalculateDamage(IDamageable target)
         {
-            
-        }*/
+            return target switch {
+                    DamageableChild damageableChild => CalculateDamage(damageableChild.ParentDamageable),
+                    Health health => (health.MaxValue.Value * _config.DamagePercent) / 100,
+                    _ => throw new ArgumentException("IDamageable must be health")
+            };
+        }
 
     }
 }
