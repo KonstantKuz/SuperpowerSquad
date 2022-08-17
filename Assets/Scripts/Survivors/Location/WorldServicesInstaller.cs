@@ -30,7 +30,7 @@ namespace Survivors.Location
             container.BindInterfacesAndSelfTo<DroppingLootService>().AsSingle();
             
             
-            container.BindInterfacesAndSelfTo<WorldEventsService>().AsSingle();  
+            container.BindInterfacesAndSelfTo<WorldEventService>().AsSingle();  
             container.Bind<WorldEventFactory>().AsSingle();  
         }
     }

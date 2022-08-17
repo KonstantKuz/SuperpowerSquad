@@ -9,7 +9,7 @@ using Zenject;
 
 namespace Survivors.WorldEvents.Service
 {
-    public class WorldEventsService : IWorldScope
+    public class WorldEventService : IWorldScope
     {
         [Inject]
         private WorldEventsConfig _worldEventsConfig;      
