@@ -1,12 +1,13 @@
-using System.Collections;
 using DG.Tweening;
 using Logger.Extension;
 using Survivors.Extension;
+using Survivors.Location.Service;
 using Survivors.Units;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Weapon.Projectiles;
 using UnityEngine;
 using UnityEngine.Rendering;
+using Zenject;
 
 namespace Survivors.WorldEvents.Avalanche
 {
@@ -17,8 +18,8 @@ namespace Survivors.WorldEvents.Avalanche
         [SerializeField] private float _damagePercent;
         [SerializeField] private float _moveSpeed;
         [SerializeField] private Renderer _stoneRenderer;
-        [SerializeField] private Material _trajectoryMaterial;
-
+        [SerializeField] private GameObject _trajectoryPrefab;
+        
         private bool _isLaunched;
         private float _radius;
         private Vector3 _moveDirection;
@@ -26,23 +27,23 @@ namespace Survivors.WorldEvents.Avalanche
         private LineRenderer _trajectory;
         private Tween _destroyTween;
 
+        [Inject] private WorldObjectFactory _worldObjectFactory;
+        
         private float DistanceToDisappear => _maxDistance - _moveSpeed * _disappearTime;
-
+        public float Radius => _radius;
+        
         private void Awake()
         {
+            _radius = transform.localScale.x / 2;
             _stoneRenderer.material.color = Color.clear;
             _stoneRenderer.shadowCastingMode = ShadowCastingMode.Off;
         }
 
-        private IEnumerator Start()
+        public void Launch(Vector3 direction)
         {
-            yield return new WaitForSeconds(3);
-            Launch();
-        }
-
-        private void Launch()
-        {
-            Init();
+            _moveDirection = direction;
+            transform.forward = direction;
+            
             SpawnTrajectory();
             _stoneRenderer.material.DOColor(Color.white, _disappearTime).onComplete = () =>
             {
@@ -51,21 +52,15 @@ namespace Survivors.WorldEvents.Avalanche
             };
         }
 
-        private void Init()
-        {
-            _radius = transform.localScale.x / 2;
-            _moveDirection = transform.forward;
-        }
-
         private void SpawnTrajectory()
         {
             var groundedPosition = transform.position - Vector3.up * _radius;
             var trajectoryPositions = new [] { groundedPosition, groundedPosition + _maxDistance * _moveDirection };
-            _trajectory = new GameObject().AddComponent<LineRenderer>();
+            _trajectory = _worldObjectFactory.CreateObject(_trajectoryPrefab).GetComponent<LineRenderer>();
             _trajectory.SetPositions(trajectoryPositions);
-            _trajectory.material = _trajectoryMaterial;
+            var initialColor = _trajectory.material.color;
             _trajectory.material.color = Color.clear;
-            _trajectory.material.DOColor(_trajectoryMaterial.color, _disappearTime);
+            _trajectory.material.DOColor(initialColor, _disappearTime);
         }
 
         private void Update()
@@ -87,7 +82,7 @@ namespace Survivors.WorldEvents.Avalanche
             transform.position += _moveDirection * distance;
 
             var angle= (distance * 180) / (_radius * Mathf.PI);
-            transform.rotation *= Quaternion.Euler(Vector3.right * angle);
+            transform.localRotation *= Quaternion.Euler(Vector3.right * angle);
         }
 
         private void OnTriggerEnter(Collider other)

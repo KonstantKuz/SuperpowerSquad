@@ -104,9 +104,10 @@ namespace Survivors.Enemy.Spawn
         {
             for (int rangeTry = 1; rangeTry <= _rangeAttemptCount; rangeTry++)
             {
+                var outOfViewOffset = GetOutOfViewOffset(waveConfig, rangeTry);
                 for (int angleTry = 0; angleTry < _angleAttemptCount; angleTry++)
                 {
-                    var spawnPlace = _placeProvider.GetSpawnPlace(waveConfig, rangeTry);
+                    var spawnPlace = _placeProvider.GetSpawnPlace(waveConfig, outOfViewOffset);
                     if (spawnPlace.IsValid)
                     {
                         return spawnPlace;
@@ -117,7 +118,7 @@ namespace Survivors.Enemy.Spawn
             return SpawnPlace.INVALID;
         }
 
-        public float GetOutOfViewOffset(EnemyWaveConfig waveConfig, int rangeTry)
+        private float GetOutOfViewOffset(EnemyWaveConfig waveConfig, int rangeTry)
         {
             return _minOutOfViewOffset + rangeTry * GetWaveRadius(waveConfig);
         }

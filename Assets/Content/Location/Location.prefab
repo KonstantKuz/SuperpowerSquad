@@ -345,6 +345,7 @@ GameObject:
   - component: {fileID: 186752239828696303}
   - component: {fileID: 1866441843583567248}
   - component: {fileID: 6484450709119096639}
+  - component: {fileID: 8047467586813889951}
   m_Layer: 0
   m_Name: Location
   m_TagString: Untagged
@@ -454,3 +455,25 @@ MonoBehaviour:
   _softLimit: 200
   _hardLimit: 400
   _minRemovalAge: 1
+--- !u!114 &8047467586813889951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8746036833993048137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8814dd4a39d3d6b49aa96c01b77707b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawnCount: 30
+  _spawnPeriod: 2
+  _minDistanceBtwnStones: 50
+  _maxAngleSpread: 30
+  _minDistanceFromPlayer: 5
+  _maxDistanceFromPlayer: 15
+  _cobbleStoneMask:
+    serializedVersion: 2
+    m_Bits: 256
+  _cobblestonePrefab: {fileID: 1298266046, guid: 1eeaf1ff48004c845b3b0ced0fcbafe2, type: 3}
