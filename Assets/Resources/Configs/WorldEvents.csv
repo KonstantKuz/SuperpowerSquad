@@ -1,0 +1,13 @@
+Level,EventType,TimeSincePreviousEvent
+1,Test,10
+,Test,30
+2,Test,10
+,Test,30
+3,Test,10
+,Test,30
+4,Test,10
+,Test,30
+5,Test,10
+,Test,30
+6,Test,10
+,Test,30
