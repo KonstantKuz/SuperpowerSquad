@@ -13,10 +13,9 @@ MonoBehaviour:
   m_Name: LavaEventConfig
   m_EditorClassIdentifier: 
   EventDuration: 30
-  AppearTime: 1
-  Radius: 7
+  _minAppearTime: 3
+  _maxAppearTime: 7
+  DisappearTime: 1
+  LavaRadius: 7
   DamagePeriod: 1
   DamagePercent: 30
-  LavaMask:
-    serializedVersion: 2
-    m_Bits: 256

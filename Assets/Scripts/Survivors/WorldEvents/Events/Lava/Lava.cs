@@ -26,17 +26,14 @@ namespace Survivors.WorldEvents.Events.Lava
         {
             _config = config;
 
-        
-            var radius = Random.Range(config.Radius, config.Radius * 1.5f);
-          
 
-                    
-            transform.DOScale(GetScale(radius), Random.Range(3, 5)).onComplete = () => {
+            var radius = _config.RandomRadius;
+            
+            transform.DOScale(GetScale(radius), _config.RandomAppearTime).onComplete = () => {
                 
-                _hittingTargets.Init(transform.position, config.Radius, config.DamagePeriod, DoDamage);
+                _hittingTargets.Init(transform.position, radius, config.DamagePeriod, DoDamage);
             };
-
-            _hittingTargets.Init(transform.position, radius, config.DamagePeriod, DoDamage); 
+            
         }
 
         private Vector3 GetScale(float radius)
@@ -54,13 +51,11 @@ namespace Survivors.WorldEvents.Events.Lava
 
         public void Dispose()
         {
-            transform.DOScale(Vector3.one, 1f).onComplete = () => {
-                
+            transform.DOScale(Vector3.one, _config.RandomDisappearTime).onComplete = () => {
                 Destroy(gameObject);
             };
             
         }
-
         private float CalculateDamage(IDamageable target)
         {
             return target switch {

@@ -114,11 +114,11 @@ Material:
     - _UVWaveAmplitude2: 0.03
     - _UVWaveFrequency: 0.3
     - _UVWaveFrequency2: 0.1
-    - _UVWaveSpeed: 0.5
+    - _UVWaveSpeed: 2
     - _UVWaveSpeed2: 0.8
     - _WaveFrequency: 4
     - _WaveHeight: 0.05
-    - _WaveSpeed: 1
+    - _WaveSpeed: 5
     - _ZWrite: 1
     - __dummy__: 0
     m_Colors:

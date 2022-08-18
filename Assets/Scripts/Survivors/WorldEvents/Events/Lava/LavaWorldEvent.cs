@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using Logger.Extension;
 using Survivors.Location;
@@ -14,7 +13,7 @@ namespace Survivors.WorldEvents.Events.Lava
     {
         private const int SEARCH_POSITION_ANGLE_MAX = 360;
         
-        private readonly List<Lava> _lava = new List<Lava>();
+        private readonly List<Lava> _createdLava = new List<Lava>();
 
         [Inject]
         private WorldObjectFactory _worldObjectFactory;
@@ -22,41 +21,37 @@ namespace Survivors.WorldEvents.Events.Lava
         private World _world;
 
         private LavaEventConfig _config;
-
-        private Coroutine _spawnCoroutine;
-
-        public override event Action OnFinished;
-
-        public override void Start(EventConfig config)
+        
+        private float MaxSpawnDistance => _world.GetSquad().Model.Speed.Value * _config.EventDuration;
+        
+        public override IEnumerator Start(EventConfig config)
         {
             this.Logger().Trace("LavaWorldEvent started");
             _config = (LavaEventConfig) config;
 
             SpawnLava();
-
-            GameApplication.Instance.StartCoroutine(WaitFinish(_config));
+            yield return WaitFinish(_config);
         }
 
         private void SpawnLava()
         {
-            var spawnDistance = _world.Squad.Model.Speed.Value * _config.EventDuration;
-            var count = 4;
-            var step = 7;
-            for (int outOfViewOffset = (int) _config.Radius * 3; outOfViewOffset < spawnDistance; outOfViewOffset += (int) (_config.Radius * 4)) {
+            var count = 5;
+            var step = 10;
+            for (int spawnDistance = (int) _config.LavaAverageRadius * 2; spawnDistance < MaxSpawnDistance; spawnDistance += (int) (_config.LavaAverageRadius * 4)) {
                 
-                foreach (var place in GetSpawnPlaces(_world.Squad.Position, outOfViewOffset, count)) {
+                foreach (var place in GetSpawnPlaces(_world.Squad.Position, spawnDistance, count)) {
                     SpawnLava(place);
                 }
                 count += step;
             }
         }
+      
         
         private IEnumerator WaitFinish(LavaEventConfig config)
         {
             yield return new WaitForSeconds(config.EventDuration);
             DisposeLava();
             this.Logger().Trace("LavaWorldEvent finished");
-            OnFinished?.Invoke();
         }
 
         private void SpawnLava(Vector3 place)
@@ -64,7 +59,7 @@ namespace Survivors.WorldEvents.Events.Lava
             var lava = _worldObjectFactory.CreateObject<Lava>("Lava");
             lava.transform.SetPositionAndRotation(place, Quaternion.identity);
             lava.Init(_config);
-            _lava.Add(lava);
+            _createdLava.Add(lava);
         }
         private IEnumerable<Vector3> GetSpawnPlaces(Vector3 center, float range, int count)
         {
@@ -72,7 +67,7 @@ namespace Survivors.WorldEvents.Events.Lava
             
             for (int angle = stepAngle; angle <= SEARCH_POSITION_ANGLE_MAX; angle += stepAngle ) {
                 var finalAngle = Random.Range(angle - stepAngle / 2, angle); 
-                var point = center + GetPointOnCircle(finalAngle) * Random.Range(range - _config.Radius, range + _config.Radius);
+                var point = center + GetPointOnCircle(finalAngle) * Random.Range(range - _config.LavaAverageRadius  * 2 , range + _config.LavaAverageRadius  * 2);
                 yield return point;
             }
         }
@@ -86,8 +81,8 @@ namespace Survivors.WorldEvents.Events.Lava
 
         private void DisposeLava()
         {
-            _lava.ForEach(it => { it.Dispose(); });
-            _lava.Clear();
+            _createdLava.ForEach(it => { it.Dispose(); });
+            _createdLava.Clear();
         }
     }
 }

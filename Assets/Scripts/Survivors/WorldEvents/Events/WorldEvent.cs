@@ -1,13 +1,11 @@
-﻿using System;
+﻿using System.Collections;
 using Survivors.WorldEvents.Events.Lava;
 
 namespace Survivors.WorldEvents.Events
 {
     public abstract class WorldEvent
-    { 
-        public abstract event Action OnFinished;
-
-        public abstract void Start(EventConfig eventConfig);
-
+    {
+        public abstract IEnumerator Start(EventConfig config);
+        
     }
 }
