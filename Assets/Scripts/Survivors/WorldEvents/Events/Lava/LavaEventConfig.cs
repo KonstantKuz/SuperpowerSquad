@@ -16,9 +16,9 @@ namespace Survivors.WorldEvents.Events.Lava
         private float _maxDisappearTime = 7;
         
         
-        public float LavaAverageRadius = 7;
+        public float MinLavaRadius = 4;
 
-        public float LavaRadiusDispersion = 4;
+        public float MaxLavaRadius = 7;
         
         
         public float DamagePeriod = 1;
@@ -27,8 +27,8 @@ namespace Survivors.WorldEvents.Events.Lava
 
         public float RandomAppearTime => Random.Range(_minAppearTime, _maxAppearTime); 
         public float RandomDisappearTime => Random.Range(_minDisappearTime, _maxDisappearTime);
-        public float RandomRadius => Random.Range(LavaAverageRadius - LavaRadiusDispersion, LavaAverageRadius + LavaRadiusDispersion);
-        public float LavaAverageDiameter => LavaAverageRadius * 2;
+        public float RandomRadius => Random.Range(MinLavaRadius, MaxLavaRadius);
+        public float MinLavaDiameter => MinLavaRadius * 2;
     }
 
     public class EventConfig : ScriptableObject

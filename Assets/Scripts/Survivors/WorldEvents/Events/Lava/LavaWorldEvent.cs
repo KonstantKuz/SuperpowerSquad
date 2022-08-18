@@ -11,7 +11,7 @@ namespace Survivors.WorldEvents.Events.Lava
 {
     public class LavaWorldEvent : WorldEvent
     {
-        private const int SEARCH_POSITION_ANGLE_MAX = 360;
+        private const int MAX_SPAWN_ANGLE = 360;
         
         private readonly List<Lava> _createdLava = new List<Lava>();
 
@@ -36,8 +36,8 @@ namespace Survivors.WorldEvents.Events.Lava
         private void SpawnLava()
         {
             var count = 5;
-            var step = 10;
-            for (int spawnDistance = (int) _config.LavaAverageRadius * 2; spawnDistance < MaxSpawnDistance; spawnDistance += (int) (_config.LavaAverageRadius * 4)) {
+            var step = 6;
+            for (int spawnDistance = (int) _config.MinLavaDiameter; spawnDistance < MaxSpawnDistance; spawnDistance += (int) (_config.MinLavaRadius * 4)) {
                 
                 foreach (var place in GetSpawnPlaces(_world.Squad.Position, spawnDistance, count)) {
                     SpawnLava(place);
@@ -61,13 +61,13 @@ namespace Survivors.WorldEvents.Events.Lava
             lava.Init(_config);
             _createdLava.Add(lava);
         }
-        private IEnumerable<Vector3> GetSpawnPlaces(Vector3 center, float range, int count)
+        private IEnumerable<Vector3> GetSpawnPlaces(Vector3 center, float spawnDistance, int count)
         {
-            var stepAngle = SEARCH_POSITION_ANGLE_MAX / count;
+            var stepAngle = MAX_SPAWN_ANGLE / count;
             
-            for (int angle = stepAngle; angle <= SEARCH_POSITION_ANGLE_MAX; angle += stepAngle ) {
+            for (int angle = stepAngle; angle <= MAX_SPAWN_ANGLE; angle += stepAngle ) {
                 var finalAngle = Random.Range(angle - stepAngle / 2, angle); 
-                var point = center + GetPointOnCircle(finalAngle) * Random.Range(range - _config.LavaAverageRadius  * 2 , range + _config.LavaAverageRadius  * 2);
+                var point = center + GetPointOnCircle(finalAngle) * Random.Range(spawnDistance - _config.MinLavaDiameter, spawnDistance + _config.MinLavaDiameter);
                 yield return point;
             }
         }

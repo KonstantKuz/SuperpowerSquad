@@ -15,7 +15,9 @@ MonoBehaviour:
   EventDuration: 30
   _minAppearTime: 3
   _maxAppearTime: 7
-  DisappearTime: 1
-  LavaRadius: 7
+  _minDisappearTime: 3
+  _maxDisappearTime: 7
+  MinLavaRadius: 4
+  MaxLavaRadius: 8
   DamagePeriod: 1
   DamagePercent: 30

@@ -28,9 +28,8 @@ namespace Survivors.WorldEvents.Events.Lava
 
 
             var radius = _config.RandomRadius;
-            
+         
             transform.DOScale(GetScale(radius), _config.RandomAppearTime).onComplete = () => {
-                
                 _hittingTargets.Init(transform.position, radius, config.DamagePeriod, DoDamage);
             };
             
