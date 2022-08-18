@@ -1,11 +1,10 @@
-﻿using System;
+﻿using System.Collections;
 
 namespace Survivors.WorldEvents.Events
 {
     public abstract class WorldEvent
-    { 
-        public abstract event Action OnFinished;
-        public abstract void Start();
+    {
+        public abstract IEnumerator Start();
         
     }
 }
