@@ -77,8 +77,6 @@ namespace Survivors.WorldEvents.Events.Lava
             float radAngle = Mathf.Deg2Rad * angle;
             return new Vector3(Mathf.Cos(radAngle), 0, Mathf.Sin(radAngle));
         }
-        
-
         private void DisposeLava()
         {
             _createdLava.ForEach(it => { it.Dispose(); });
