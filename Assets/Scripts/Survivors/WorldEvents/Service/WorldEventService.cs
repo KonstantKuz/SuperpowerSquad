@@ -62,7 +62,7 @@ namespace Survivors.WorldEvents.Service
         {
             var currentEvent = _worldEventFactory.CreateEvent(eventConfig.EventType);
             var finishWaiter = new WaitForWorldEventFinished(currentEvent);
-            currentEvent.Start();
+            currentEvent.Start(_worldEventFactory.GetConfig(eventConfig.EventType));
             yield return finishWaiter;
         }
         

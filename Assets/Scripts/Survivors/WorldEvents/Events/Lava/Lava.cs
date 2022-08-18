@@ -1,10 +1,12 @@
 ﻿using System;
+using DG.Tweening;
 using Logger.Extension;
 using Survivors.Extension;
 using Survivors.Location.Model;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Player.Damageable;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Survivors.WorldEvents.Events.Lava
 {
@@ -17,19 +19,30 @@ namespace Survivors.WorldEvents.Events.Lava
         private void Awake()
         {
             _hittingTargets = gameObject.RequireComponent<HittingTargetsInRadius>();
+            transform.localScale = Vector3.one;
         }
 
         public void Init(LavaEventConfig config)
         {
             _config = config;
-            SetRadius(config.Radius);
-            _hittingTargets.Init(transform.position, config.Radius, config.DamagePeriod, DoDamage); 
+
+        
+            var radius = Random.Range(config.Radius, config.Radius * 1.5f);
+          
+
+                    
+            transform.DOScale(GetScale(radius), Random.Range(3, 5)).onComplete = () => {
+                
+                _hittingTargets.Init(transform.position, config.Radius, config.DamagePeriod, DoDamage);
+            };
+
+            _hittingTargets.Init(transform.position, radius, config.DamagePeriod, DoDamage); 
         }
 
-        private void SetRadius(float radius)
+        private Vector3 GetScale(float radius)
         {
             var scale = radius * 2;
-            transform.localScale = new Vector3(scale, transform.localScale.y, scale);
+            return new Vector3(scale, transform.localScale.y, scale);
         }
 
         private void DoDamage(GameObject target)
@@ -41,7 +54,11 @@ namespace Survivors.WorldEvents.Events.Lava
 
         public void Dispose()
         {
-            Destroy(gameObject);
+            transform.DOScale(Vector3.one, 1f).onComplete = () => {
+                
+                Destroy(gameObject);
+            };
+            
         }
 
         private float CalculateDamage(IDamageable target)

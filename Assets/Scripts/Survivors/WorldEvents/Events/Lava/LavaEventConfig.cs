@@ -1,16 +1,25 @@
-﻿namespace Survivors.WorldEvents.Events.Lava
+﻿using UnityEngine;
+
+namespace Survivors.WorldEvents.Events.Lava
 {
-    public class LavaEventConfig
+    [CreateAssetMenu(fileName = "LavaEventConfig", menuName = "ScriptableObjects/LavaEventConfig")]
+    public class LavaEventConfig : EventConfig
     {
-        public float EventDuration { get; set; } = 30;
+        public float EventDuration = 30;
 
-        public float AppearTime { get; set; } = 1;
+        public float AppearTime = 1;
 
-        public float Radius { get; set; } = 3;
+        public float Radius = 3;
 
-        public float DamagePeriod { get; set; } = 1;
+        public float DamagePeriod = 1;
 
-        public float DamagePercent { get; set; } = 30;
+        public float DamagePercent = 30;
+        
+        public LayerMask LavaMask;
 
+    }
+
+    public class EventConfig : ScriptableObject
+    {
     }
 }

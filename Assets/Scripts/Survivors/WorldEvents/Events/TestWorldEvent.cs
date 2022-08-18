@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Logger.Extension;
+using Survivors.WorldEvents.Events.Lava;
 using UnityEngine;
 
 namespace Survivors.WorldEvents.Events
@@ -10,7 +11,7 @@ namespace Survivors.WorldEvents.Events
         private const float TEST_EVENT_DURATION = 5f;
         public override event Action OnFinished;
         
-        public override void Start()
+        public override void Start(EventConfig eventConfig)
         {
             this.Logger().Trace("TestWorldEvent started");
             GameApplication.Instance.StartCoroutine(WaitFinish());
