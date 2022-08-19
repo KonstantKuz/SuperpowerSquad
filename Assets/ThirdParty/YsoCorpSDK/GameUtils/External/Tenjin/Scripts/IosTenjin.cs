@@ -527,7 +527,7 @@ public class IosTenjin : BaseTenjin
         Debug.Log("iOS Transaction " + productId + ", " + currencyCode + ", " + quantity + ", " + unitPrice + ", " + transactionId + ", " + receipt + ", " + signature);
     }
 
-    public override void GetDeeplink(Tenjin.DeferredDeeplinkDelegate deferredDeeplinkDelegate)
+    public override void GetDeeplink(Tenjin.Tenjin.DeferredDeeplinkDelegate deferredDeeplinkDelegate)
     {
         Debug.Log("Sending IosTenjin::GetDeeplink");
     }

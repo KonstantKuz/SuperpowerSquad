@@ -7,8 +7,10 @@ namespace YsoCorp {
     namespace GameUtils {
 
         [DefaultExecutionOrder(-10)]
-        public class AdsManager : BaseManager {
-
+        public class AdsManager : BaseManager
+        {
+            public const string EDITOR_KEY = "fakeKey";
+            
             public static string DATA_PRIVACY_URL = "https://www.ysocorp.com/privacy-policy";
             private static string SDK_KEY = "Wbl6_lWhN3Hoy5kL_UNgTb6Ed7o69yD8-mFOzFG68AmdgawolWGk0K2W_GHiai_D5N5pE_DA7MSfJoJZ_oOm1G";
 
@@ -409,6 +411,8 @@ namespace YsoCorp {
                 return this.ycManager.ycConfig.AndroidRewarded;
 #elif UNITY_IOS || UNITY_IPHONE
                 return this.ycManager.ycConfig.IosRewarded;
+#elif UNITY_EDITOR
+                return EDITOR_KEY;
 #else
                 return "";
 #endif
@@ -419,6 +423,8 @@ namespace YsoCorp {
                 return this.ycManager.ycConfig.AndroidInterstitial;
 #elif UNITY_IOS || UNITY_IPHONE
                 return this.ycManager.ycConfig.IosInterstitial;
+#elif UNITY_EDITOR
+                return EDITOR_KEY;
 #else
                 return "";
 #endif
@@ -429,6 +435,8 @@ namespace YsoCorp {
                 return this.ycManager.ycConfig.AndroidBanner;
 #elif UNITY_IOS || UNITY_IPHONE
                 return this.ycManager.ycConfig.IosBanner;
+#elif UNITY_EDITOR
+                return EDITOR_KEY;
 #else
                 return "";
 #endif

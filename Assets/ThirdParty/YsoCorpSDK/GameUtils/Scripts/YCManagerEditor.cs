@@ -22,7 +22,7 @@ namespace YsoCorp {
             public static void HierarchyIconCallback (int instanceID, Rect rectangle) {
                 GameObject go = (GameObject)EditorUtility.InstanceIDToObject(instanceID);
                 if (go != null && go.GetComponent<YCManager>() != null) {
-                    Texture2D ycIcon = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/GameUtils/Sprites/YCIcon.png", typeof(Texture2D));
+                    Texture2D ycIcon = (Texture2D)AssetDatabase.LoadAssetAtPath("Assets/ThirdParty/YsoCorpSDK/GameUtils/Sprites/YCIcon.png", typeof(Texture2D));
                     Graphics.DrawTexture(new Rect(GUILayoutUtility.GetLastRect().width - rectangle.height - 5, rectangle.y, rectangle.height, rectangle.height), ycIcon);
                 }
             }
