@@ -46,17 +46,12 @@ namespace Survivors.WorldEvents.Service
         private IEnumerator StartEvents(string levelId)
         {
             foreach (var eventConfig in _worldEventsConfig.GetEventConfigs(levelId)) {
-                yield return WaitTimeoutAndStartEvent(eventConfig);
+                yield return new WaitForSeconds(eventConfig.TimeSincePreviousEvent);
+                yield return StartEvent(eventConfig);
             }
             StartLevelEvents(levelId);
         }
-
-        private IEnumerator WaitTimeoutAndStartEvent(WorldEventConfig eventConfig)
-        {
-            yield return new WaitForSeconds(eventConfig.TimeSincePreviousEvent);
-            yield return StartEvent(eventConfig);
-        }
-
+        
         private IEnumerator StartEvent(WorldEventConfig eventConfig)
         {
             var currentEvent = _worldEventFactory.CreateEvent(eventConfig.EventType);
