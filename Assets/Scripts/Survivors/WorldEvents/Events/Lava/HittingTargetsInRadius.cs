@@ -10,7 +10,9 @@ namespace Survivors.WorldEvents.Events.Lava
     public class HittingTargetsInRadius : MonoBehaviour
     {
         private Coroutine _hitCoroutine;
-        
+
+        public bool Enabled { get; set; } = true;
+
         public void Init(Vector3 hitPosition, float damageRadius, float period, Action<GameObject> hitCallback)
         {
             Dispose();
@@ -35,6 +37,9 @@ namespace Survivors.WorldEvents.Events.Lava
 
         private void HitTargetsInRadius(Vector3 hitPosition, float damageRadius, Action<GameObject> hitCallback)
         {
+            if (!Enabled) {
+                return;
+            }
             var hits = GetHits(hitPosition, damageRadius);
             foreach (var hit in hits) {
                 if (hit.TryGetComponent(out IDamageable damageable)) {

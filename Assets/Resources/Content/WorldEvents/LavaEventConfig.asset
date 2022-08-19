@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: LavaEventConfig
   m_EditorClassIdentifier: 
   _eventDuration: 20
-  SpawnCountOnCircle: 5
-  SpawnCountStepOnCircle: 6
-  MinLavaRadius: 4
-  MaxLavaRadius: 8
-  DamagePeriod: 1
-  DamagePercent: 30
-  LavaPrefabId: Lava
+  _spawnCountOnCircle: 5
+  _spawnCountStepOnCircle: 6
+  _minLavaRadius: 4
+  _maxLavaRadius: 8
+  _damagePeriod: 1
+  _damagePercent: 5
+  _lavaPrefabId: Lava
   _minAppearTime: 3
   _maxAppearTime: 7
   _minDisappearTime: 3

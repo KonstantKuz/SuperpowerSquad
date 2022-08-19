@@ -22,20 +22,16 @@ namespace Survivors.WorldEvents.Events.Lava
         private void Awake()
         {
             _hittingTargets = gameObject.RequireComponent<HittingTargetsInRadius>();
+            _hittingTargets.Enabled = false;
             transform.localScale = Vector3.one;
         }
-
         public void Init(LavaEventConfig config)
         {
             DisposeTween();
             _config = config;
             var lavaRadius = _config.RandomRadius;
-
+            _hittingTargets.Init(transform.position, lavaRadius, config.DamagePeriod, DoDamage);
             _appearTween = transform.DOScale(GetScale(lavaRadius), _config.RandomAppearTime);
-            _appearTween.onComplete = () => {
-                _hittingTargets.Init(transform.position, lavaRadius, config.DamagePeriod, DoDamage);
-                _appearTween = null;
-            };
         }
         public void Dispose()
         {
@@ -45,6 +41,10 @@ namespace Survivors.WorldEvents.Events.Lava
                 Destroy(gameObject);
                 _disappearTween = null;
             };
+        }
+        private void OnTriggerEnter(Collider other)
+        {
+            _hittingTargets.Enabled = true;
         }
         private void DisposeTween()
         {
