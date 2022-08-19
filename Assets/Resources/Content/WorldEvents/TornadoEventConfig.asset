@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0eceb2ec28d14cb49431a167cc752464, type: 3}
+  m_Name: TornadoEventConfig
+  m_EditorClassIdentifier: 
+  _eventDuration: 15
+  _spawnCountOnCircle: 5
+  _spawnCountStepOnCircle: 6
+  _minLavaRadius: 4
+  _maxLavaRadius: 8
+  _prefabId: Tornado
+  _minAppearTime: 3
+  _maxAppearTime: 7
+  _minDisappearTime: 3
+  _maxDisappearTime: 7

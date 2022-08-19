@@ -17,7 +17,7 @@ namespace Survivors.WorldEvents.Events.Tornado.Config
         
         
         [SerializeField]
-        private string _prefabId = "Lava";
+        private string _prefabId = "Tornado";
         
         [SerializeField]
         private float _minAppearTime = 3;
