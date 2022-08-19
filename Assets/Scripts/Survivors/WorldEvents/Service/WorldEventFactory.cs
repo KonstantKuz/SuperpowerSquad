@@ -4,6 +4,7 @@ using Feofun.Util.SerializableDictionary;
 using Survivors.WorldEvents.Config;
 using Survivors.WorldEvents.Events;
 using Survivors.WorldEvents.Events.Lava;
+using Survivors.WorldEvents.Events.Lava.Config;
 using UnityEngine;
 using Zenject;
 

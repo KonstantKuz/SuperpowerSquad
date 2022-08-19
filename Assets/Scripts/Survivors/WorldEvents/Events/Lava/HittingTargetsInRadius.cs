@@ -10,13 +10,21 @@ namespace Survivors.WorldEvents.Events.Lava
     public class HittingTargetsInRadius : MonoBehaviour
     {
         private Coroutine _hitCoroutine;
-
+        
         public void Init(Vector3 hitPosition, float damageRadius, float period, Action<GameObject> hitCallback)
         {
             Dispose();
             _hitCoroutine = StartCoroutine(HitTargetsInRadius(hitPosition, damageRadius, period, hitCallback));
         }
-
+        public void Dispose()
+        {
+            if (_hitCoroutine == null) {
+                return;
+            }
+            StopCoroutine(_hitCoroutine);
+            _hitCoroutine = null;
+        }
+        
         private IEnumerator HitTargetsInRadius(Vector3 hitPosition, float damageRadius, float period, Action<GameObject> hitCallback)
         {
             while (true) {
@@ -44,16 +52,7 @@ namespace Survivors.WorldEvents.Events.Lava
                        })
                        .ToArray();
         }
-
-        private void Dispose()
-        {
-            if (_hitCoroutine == null) {
-                return;
-            }
-            StopCoroutine(_hitCoroutine);
-            _hitCoroutine = null;
-        }
-
+     
         private void OnDisable()
         {
             Dispose();
