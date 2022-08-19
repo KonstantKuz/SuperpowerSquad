@@ -1,7 +1,5 @@
 ﻿using System.Collections;
 using Logger.Extension;
-using Survivors.WorldEvents.Events.Lava;
-using Survivors.WorldEvents.Events.Lava.Config;
 using UnityEngine;
 
 namespace Survivors.WorldEvents.Events

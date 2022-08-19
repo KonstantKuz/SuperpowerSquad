@@ -35,9 +35,4 @@ namespace Survivors.WorldEvents.Events.Lava.Config
         public float RandomRadius => Random.Range(MinLavaRadius, MaxLavaRadius);
         public float MinLavaDiameter => MinLavaRadius * 2;
     }
-
-    public class EventConfig : ScriptableObject
-    {
-        public float EventDuration = 30;
-    }
 }
