@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using System.Collections;
+using DG.Tweening;
 using Survivors.Location.Model;
 using Survivors.WorldEvents.Events.Tornado.Config;
 using UnityEngine;
@@ -11,22 +12,38 @@ namespace Survivors.WorldEvents.Events.Tornado
         
         private Tween _appearTween;
         private Tween _disappearTween;
-
-        private Vector3 _initialScale;
-
-        private void Awake()
-        {
-            _initialScale = transform.localScale;
-            transform.localScale = Vector3.zero;
-        }
+        
+        private Coroutine _directionCoroutine;
+        
 
         public void Init(TornadoEventConfig config)
         {
-            DisposeTween();
+            Dispose();
             _config = config;
-            _appearTween = transform.DOScale(_initialScale, _config.RandomAppearTime);
+            transform.localScale = Vector3.zero;
+            _appearTween = transform.DOScale(Vector3.one, _config.RandomAppearTime);
+            _appearTween.onComplete = () => {
+                _directionCoroutine = StartCoroutine(StartDirectionChangeTimer());
+                _appearTween = null;
+            };
         }
-        public void Dispose()
+        private IEnumerator StartDirectionChangeTimer()
+        {
+            while (true) {
+                yield return new WaitForSeconds(_config.DirectionChangeTimeout);
+                ChangeDirection();
+            }
+        }
+        private void ChangeDirection()
+        {
+            transform.localRotation *= Quaternion.Euler(0, Random.Range(-_config.MaxRandomAngle, _config.MaxRandomAngle), 0);
+        }
+        private void Update()
+        {
+            transform.position += transform.forward * _config.Speed * Time.deltaTime;
+        }
+
+        public void Term()
         {
             _disappearTween = transform.DOScale(Vector3.zero, _config.RandomDisappearTime);
             _disappearTween.onComplete = () => {
@@ -34,14 +51,29 @@ namespace Survivors.WorldEvents.Events.Tornado
                 _disappearTween = null;
             };
         }
+        private void DisposeCoroutine()
+        {
+            if (_directionCoroutine == null) {
+                return;
+            }
+            StopCoroutine(_directionCoroutine);
+            _directionCoroutine = null;
+        }
         private void DisposeTween()
         {
             _appearTween?.Kill(true); 
             _disappearTween?.Kill(true);
         }
-        private void OnDisable()
+
+        private void Dispose()
         {
             DisposeTween();
+            DisposeCoroutine();
+        }
+
+        private void OnDisable()
+        {
+            Dispose();
         }
     }
 }

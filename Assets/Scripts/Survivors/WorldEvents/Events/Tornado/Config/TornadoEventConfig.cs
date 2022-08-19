@@ -18,12 +18,22 @@ namespace Survivors.WorldEvents.Events.Tornado.Config
         [SerializeField]
         private float _minDisappearTime = 3;
         [SerializeField]
-        private float _maxDisappearTime = 7;
+        private float _maxDisappearTime = 7; 
+        
+        [SerializeField]
+        private float _speed = 1.5f;
+        [SerializeField]
+        private float _directionChangeTimeout = 1;  
+        [SerializeField]
+        private float _maxRandomAngle = 90;
         
         public string PrefabId => _prefabId;     
         public CircleSpawnParams SpawnParams => _spawnParams;
         public float RandomAppearTime => Random.Range(_minAppearTime, _maxAppearTime); 
         public float RandomDisappearTime => Random.Range(_minDisappearTime, _maxDisappearTime);
         
+        public float Speed => _speed;
+        public float DirectionChangeTimeout => _directionChangeTimeout;
+        public float MaxRandomAngle => _maxRandomAngle;
     }
 }

@@ -11,11 +11,11 @@ namespace Survivors.WorldEvents.Events
         protected IEnumerator WaitFinish(EventConfig config)
         {
             yield return new WaitForSeconds(config.EventDuration);
-            Dispose();
+            Term();
             this.Logger().Trace("WorldEvent finished");
         }
 
-        protected abstract void Dispose();
+        protected abstract void Term();
 
 
     }

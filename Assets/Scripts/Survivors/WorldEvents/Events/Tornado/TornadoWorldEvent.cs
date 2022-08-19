@@ -23,7 +23,7 @@ namespace Survivors.WorldEvents.Events.Tornado
 
         public override IEnumerator Start(EventConfig config)
         {
-            this.Logger().Trace("LavaWorldEvent started");
+            this.Logger().Trace("TornadoWorldEvent started");
             _config = (TornadoEventConfig) config;
        
             var spawnParams = _config.SpawnParams;
@@ -31,7 +31,7 @@ namespace Survivors.WorldEvents.Events.Tornado
             
             var spawner = new CircleSpawner(spawnParams);
             spawner.Spawn(_world.GetSquad().Position, CreateTornado);
-            
+          //  CreateTornado(Vector3.zero);
             yield return WaitFinish(_config);
         }
 
@@ -43,9 +43,9 @@ namespace Survivors.WorldEvents.Events.Tornado
             _createdTornado.Add(tornado);
         }
 
-        protected override void Dispose()
+        protected override void Term()
         {
-            _createdTornado.ForEach(it => { it.Dispose(); });
+            _createdTornado.ForEach(it => { it.Term(); });
             _createdTornado.Clear();
         }
     }

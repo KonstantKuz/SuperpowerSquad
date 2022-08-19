@@ -23,3 +23,5 @@ MonoBehaviour:
   _maxAppearTime: 7
   _minDisappearTime: 3
   _maxDisappearTime: 7
+  _speed: 1.5
+  _directionChangeTimeout: 1

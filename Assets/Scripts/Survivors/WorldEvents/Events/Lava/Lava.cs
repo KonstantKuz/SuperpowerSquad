@@ -33,7 +33,7 @@ namespace Survivors.WorldEvents.Events.Lava
             _hittingTargets.Init(transform.position, lavaRadius, config.DamagePeriod, DoDamage);
             _appearTween = transform.DOScale(GetScale(lavaRadius), _config.RandomAppearTime);
         }
-        public void Dispose()
+        public void Term()
         {
             _hittingTargets.Dispose();
             _disappearTween = transform.DOScale(Vector3.one, _config.RandomDisappearTime);

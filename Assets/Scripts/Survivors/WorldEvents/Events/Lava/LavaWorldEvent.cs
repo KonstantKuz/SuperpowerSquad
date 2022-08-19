@@ -41,9 +41,9 @@ namespace Survivors.WorldEvents.Events.Lava
             _createdLava.Add(lava);
         }
 
-        protected override void Dispose()
+        protected override void Term()
         {
-            _createdLava.ForEach(it => { it.Dispose(); });
+            _createdLava.ForEach(it => { it.Term(); });
             _createdLava.Clear();
         }
     }
