@@ -43,7 +43,7 @@ namespace Survivors
 #if UNITY_IOS
             initSequence.AddStep<IosATTInitStep>();            
 #endif
-            initSequence.AddStep<YsoCorpSDKInitStep>();
+            initSequence.AddStep<YsoCorpSDKInitStep>(new []{this});
             initSequence.AddStep<AnalyticsInitStep>();
             initSequence.AddStep<StartGameInitStep>();
             initSequence.Next();
