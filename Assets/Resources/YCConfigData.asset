@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfcf417bceeba474b8d12501c906cef3, type: 3}
   m_Name: YCConfigData
   m_EditorClassIdentifier: 
-  gameYcId: 738542
+  gameYcId: ae6d48
   InAppRemoveAds: 
   InAppRemoveAdsCanRemoveInBanner: 1
   InappDebug: 1
