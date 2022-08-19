@@ -13,10 +13,11 @@ MonoBehaviour:
   m_Name: TornadoEventConfig
   m_EditorClassIdentifier: 
   _eventDuration: 15
-  _spawnCountOnCircle: 5
-  _spawnCountStepOnCircle: 6
-  _minLavaRadius: 4
-  _maxLavaRadius: 8
+  _spawnParams:
+    _initialSpawnCountOnCircle: 5
+    _spawnCountIncrementStepOnCircle: 6
+    _initialSpawnDistance: 8
+    _spawnDistanceStep: 16
   _prefabId: Tornado
   _minAppearTime: 3
   _maxAppearTime: 7

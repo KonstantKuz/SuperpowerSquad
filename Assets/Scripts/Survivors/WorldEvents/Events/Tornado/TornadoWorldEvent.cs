@@ -4,6 +4,7 @@ using Logger.Extension;
 using Survivors.Location;
 using Survivors.Location.Service;
 using Survivors.WorldEvents.Events.Tornado.Config;
+using Survivors.WorldEvents.Spawner;
 using UnityEngine;
 using Zenject;
 
@@ -24,7 +25,13 @@ namespace Survivors.WorldEvents.Events.Tornado
         {
             this.Logger().Trace("LavaWorldEvent started");
             _config = (TornadoEventConfig) config;
-            CreateTornado(Vector3.zero);
+       
+            var spawnParams = _config.SpawnParams;
+            spawnParams.MaxSpawnDistance = _world.GetSquad().Model.Speed.Value * _config.EventDuration;
+            
+            var spawner = new CircleSpawner(spawnParams);
+            spawner.Spawn(_world.GetSquad().Position, CreateTornado);
+            
             yield return WaitFinish(_config);
         }
 

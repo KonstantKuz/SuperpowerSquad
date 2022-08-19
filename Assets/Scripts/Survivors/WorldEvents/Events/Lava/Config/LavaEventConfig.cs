@@ -1,14 +1,16 @@
-﻿using UnityEngine;
+﻿using Survivors.WorldEvents.Spawner;
+using UnityEngine;
+using Random = UnityEngine.Random;
 
 namespace Survivors.WorldEvents.Events.Lava.Config
 {
     [CreateAssetMenu(fileName = "LavaEventConfig", menuName = "ScriptableObjects/EventConfig/LavaEventConfig")]
-    public class LavaEventConfig : EventConfig
+    public class LavaEventConfig : EventConfig, ICircleSpawnParams
     {
         [SerializeField]
-        private int _spawnCountOnCircle = 5;
+        private int _initialSpawnCountOnCircle = 5;
         [SerializeField]
-        public int _spawnCountStepOnCircle = 6;
+        public int _spawnCountIncrementStepOnCircle = 6;
         [SerializeField]
         public float _minLavaRadius = 4;
         [SerializeField]
@@ -29,8 +31,6 @@ namespace Survivors.WorldEvents.Events.Lava.Config
         [SerializeField]
         private float _maxDisappearTime = 7;
         
-        public int SpawnCountOnCircle => _spawnCountOnCircle;
-        public int SpawnCountStepOnCircle => _spawnCountStepOnCircle;
         public float DamagePeriod => _damagePeriod;
         public float DamagePercent => _damagePercent;
         public string LavaPrefabId => _lavaPrefabId;
@@ -38,6 +38,12 @@ namespace Survivors.WorldEvents.Events.Lava.Config
         public float RandomAppearTime => Random.Range(_minAppearTime, _maxAppearTime); 
         public float RandomDisappearTime => Random.Range(_minDisappearTime, _maxDisappearTime);
         public float RandomRadius => Random.Range(_minLavaRadius, _maxLavaRadius);
-        public float MinLavaDiameter => _minLavaRadius * 2;
+        
+        public int InitialSpawnCountOnCircle => _initialSpawnCountOnCircle;
+        public int SpawnCountIncrementStepOnCircle => _spawnCountIncrementStepOnCircle;
+        public float InitialSpawnDistance => _minLavaRadius * 2;
+        public float SpawnDistanceStep => InitialSpawnDistance * 2;
+        
+        public float MaxSpawnDistance { get; set; }
     }
 }

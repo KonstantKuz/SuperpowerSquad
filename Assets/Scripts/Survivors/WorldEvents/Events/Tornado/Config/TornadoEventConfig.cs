@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using Survivors.WorldEvents.Spawner;
+using UnityEngine;
 
 namespace Survivors.WorldEvents.Events.Tornado.Config
 {
@@ -6,16 +7,7 @@ namespace Survivors.WorldEvents.Events.Tornado.Config
     public class TornadoEventConfig : EventConfig
     {
         [SerializeField]
-        private int _spawnCountOnCircle = 5;
-        [SerializeField]
-        public int _spawnCountStepOnCircle = 6;
-    
-        [SerializeField]
-        public float _minLavaRadius = 4;
-        [SerializeField]
-        public float _maxLavaRadius = 8;
-        
-        
+        private CircleSpawnParams _spawnParams;
         [SerializeField]
         private string _prefabId = "Tornado";
         
@@ -28,13 +20,8 @@ namespace Survivors.WorldEvents.Events.Tornado.Config
         [SerializeField]
         private float _maxDisappearTime = 7;
         
-        public int SpawnCountOnCircle => _spawnCountOnCircle;
-        
-        public int SpawnCountStepOnCircle => _spawnCountStepOnCircle;
-        
-        public string PrefabId => _prefabId;
-        
-        
+        public string PrefabId => _prefabId;     
+        public CircleSpawnParams SpawnParams => _spawnParams;
         public float RandomAppearTime => Random.Range(_minAppearTime, _maxAppearTime); 
         public float RandomDisappearTime => Random.Range(_minDisappearTime, _maxDisappearTime);
         

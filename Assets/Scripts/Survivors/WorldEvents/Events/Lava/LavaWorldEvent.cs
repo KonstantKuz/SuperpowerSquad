@@ -4,6 +4,7 @@ using Logger.Extension;
 using Survivors.Location;
 using Survivors.Location.Service;
 using Survivors.WorldEvents.Events.Lava.Config;
+using Survivors.WorldEvents.Spawner;
 using UnityEngine;
 using Zenject;
 
@@ -23,9 +24,12 @@ namespace Survivors.WorldEvents.Events.Lava
         public override IEnumerator Start(EventConfig config)
         {
             this.Logger().Trace("LavaWorldEvent started");
+            
             _config = (LavaEventConfig) config;
-            var spawner = new CircleLavaSpawner(_config, _world);
-            spawner.SpawnLava(CreateLava);
+            _config.MaxSpawnDistance = _world.GetSquad().Model.Speed.Value * _config.EventDuration;
+            
+            var spawner = new CircleSpawner(_config);
+            spawner.Spawn(_world.GetSquad().Position, CreateLava);
             yield return WaitFinish(_config);
         }
 
