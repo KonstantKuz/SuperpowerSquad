@@ -2,11 +2,10 @@ using Feofun.App.Init;
 using Feofun.UI.Screen;
 using JetBrains.Annotations;
 using Survivors.UI.Screen.Main;
-using Survivors.UI.Screen.World;
 using Survivors.Units.Enemy;
 using Zenject;
 
-namespace Survivors.App
+namespace Survivors.App.InitSteps
 {
     [PublicAPI]
     public class StartGameInitStep : AppInitStep

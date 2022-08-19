@@ -81,6 +81,10 @@ namespace Survivors.Session.Service
             var newSession = Model.Session.Build(levelConfig);
             _repository.Set(newSession);
             _playerProgressService.OnSessionStarted(levelConfig.Level);
+            _messenger.Publish(new SessionStartMessage
+            {
+                Level = levelConfig.Level
+            });
             this.Logger().Debug($"Kill enemies:= {levelConfig.KillCount}");
         }
     
