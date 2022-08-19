@@ -16,9 +16,9 @@ MonoBehaviour:
   clientTokens:
   - 
   appIds:
-  - 314787096815812
+  - 000
   appLabels:
-  - LegionMaster
+  - App Name
   cookie: 1
   logging: 1
   status: 1
