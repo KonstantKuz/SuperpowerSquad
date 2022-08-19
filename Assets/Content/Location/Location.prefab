@@ -345,6 +345,7 @@ GameObject:
   - component: {fileID: 186752239828696303}
   - component: {fileID: 1866441843583567248}
   - component: {fileID: 6484450709119096639}
+  - component: {fileID: 1913784875}
   m_Layer: 0
   m_Name: Location
   m_TagString: Untagged
@@ -439,6 +440,7 @@ MonoBehaviour:
   _worldObjectFactory: {fileID: 8743563882573435223}
   _enemyWavesSpawner: {fileID: 1873516484607207762}
   _enemyHpsSpawner: {fileID: 186752239828696303}
+  _worldEventFactory: {fileID: 1913784875}
 --- !u!114 &6484450709119096639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -454,3 +456,21 @@ MonoBehaviour:
   _softLimit: 200
   _hardLimit: 400
   _minRemovalAge: 1
+--- !u!114 &1913784875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8746036833993048137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 084a1d71f68540aa8a483bcec638db22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _configs:
+    _map:
+    - _key: 2
+      _value: {fileID: 11400000, guid: 06541d2feab935046bbf5c86298a3d5d, type: 2}
+    - _key: 0
+      _value: {fileID: 11400000, guid: 06541d2feab935046bbf5c86298a3d5d, type: 2}

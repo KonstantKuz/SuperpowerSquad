@@ -12,12 +12,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1c0c10579dc4899a3e6d7fc033f3cf8, type: 3}
   m_Name: LavaEventConfig
   m_EditorClassIdentifier: 
-  EventDuration: 30
-  _minAppearTime: 3
-  _maxAppearTime: 7
-  _minDisappearTime: 3
-  _maxDisappearTime: 7
+  EventDuration: 20
+  SpawnCountOnCircle: 5
+  SpawnCountStepOnCircle: 6
   MinLavaRadius: 4
   MaxLavaRadius: 8
   DamagePeriod: 1
   DamagePercent: 30
+  LavaPrefabId: Lava
+  _minAppearTime: 3
+  _maxAppearTime: 7
+  _minDisappearTime: 3
+  _maxDisappearTime: 7

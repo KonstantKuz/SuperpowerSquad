@@ -436,27 +436,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 63e3d2943bfe49929d8fded38089e833, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1913784869 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8746036833993048137, guid: d6eb7c9c829425d47a84bcef4eeb0c9e, type: 3}
-  m_PrefabInstance: {fileID: 8746036833688596024}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1913784875
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1913784869}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 084a1d71f68540aa8a483bcec638db22, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _configs:
-    _map:
-    - _key: 2
-      _value: {fileID: 11400000, guid: 06541d2feab935046bbf5c86298a3d5d, type: 2}
 --- !u!1 &1930334232
 GameObject:
   m_ObjectHideFlags: 0
@@ -665,10 +644,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1866441843583567248, guid: d6eb7c9c829425d47a84bcef4eeb0c9e, type: 3}
-      propertyPath: _worldEventFactory
-      value: 
-      objectReference: {fileID: 1913784875}
     - target: {fileID: 8746036833993048137, guid: d6eb7c9c829425d47a84bcef4eeb0c9e, type: 3}
       propertyPath: m_Name
       value: Location
@@ -724,7 +699,7 @@ MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 1866441843583567248, guid: d6eb7c9c829425d47a84bcef4eeb0c9e, type: 3}
   m_PrefabInstance: {fileID: 8746036833688596024}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1913784869}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 8aac26ad0ca244c2a4dc536a25095bd6, type: 3}
