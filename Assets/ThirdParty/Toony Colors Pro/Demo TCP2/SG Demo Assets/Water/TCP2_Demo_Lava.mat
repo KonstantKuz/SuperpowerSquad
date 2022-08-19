@@ -75,7 +75,7 @@ Material:
     - _BumpScale: 1
     - _Cutoff: 0.5
     - _DepthAlpha: 1.54
-    - _DepthDistance: 1.61
+    - _DepthDistance: 0.46
     - _DepthMinAlpha: 0.4
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
