@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1c0c10579dc4899a3e6d7fc033f3cf8, type: 3}
   m_Name: LavaEventConfig
   m_EditorClassIdentifier: 
-  EventDuration: 20
+  _eventDuration: 20
   SpawnCountOnCircle: 5
   SpawnCountStepOnCircle: 6
   MinLavaRadius: 4
