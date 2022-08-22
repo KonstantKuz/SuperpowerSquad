@@ -59,6 +59,7 @@ namespace Survivors.WorldEvents.Events.Tornado
                 Destroy(gameObject);
                 _disappearTween = null;
             };
+            
         }
         private void DisposeCoroutine()
         {
