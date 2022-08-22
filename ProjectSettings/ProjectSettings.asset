@@ -161,7 +161,7 @@ PlayerSettings:
     tvOS: 0
   overrideDefaultApplicationIdentifier: 1
   AndroidBundleVersionCode: 38
-  AndroidMinSdkVersion: 19
+  AndroidMinSdkVersion: 22
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
   aotOptions: 
@@ -821,8 +821,8 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
-    4: APP_METRICA_TRACK_LOCATION_DISABLED
-    7: APP_METRICA_TRACK_LOCATION_DISABLED
+    4: APP_METRICA_TRACK_LOCATION_DISABLED;gameanalytics_max_enabled;tenjin_applovin_enabled
+    7: APP_METRICA_TRACK_LOCATION_DISABLED;gameanalytics_max_enabled;tenjin_applovin_enabled
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:
