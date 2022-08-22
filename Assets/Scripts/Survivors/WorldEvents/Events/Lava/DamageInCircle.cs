@@ -7,7 +7,7 @@ using Survivors.Units.Target;
 
 namespace Survivors.WorldEvents.Events.Lava
 {
-    public class HittingTargetsInRadius : MonoBehaviour
+    public class DamageInCircle : MonoBehaviour
     {
         private Coroutine _hitCoroutine;
 
