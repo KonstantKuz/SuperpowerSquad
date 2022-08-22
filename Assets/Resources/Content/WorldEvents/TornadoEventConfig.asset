@@ -14,8 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _eventDuration: 15
   _spawnParams:
-    _initialSpawnCountOnCircle: 5
-    _spawnCountIncrementStepOnCircle: 6
+    _spawnStepOnPerimeter: 15
     _initialSpawnDistance: 8
     _spawnDistanceStep: 16
   _prefabId: Tornado
@@ -25,3 +24,4 @@ MonoBehaviour:
   _maxDisappearTime: 7
   _speed: 1.5
   _directionChangeTimeout: 1
+  _maxRandomAngle: 90

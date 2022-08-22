@@ -8,19 +8,18 @@ namespace Survivors.WorldEvents.Events.Lava.Config
     public class LavaEventConfig : EventConfig, ICircleSpawnParams
     {
         [SerializeField]
-        private int _initialSpawnCount = 5;
+        private float _spawnStepOnPerimeter = 10;
+        
         [SerializeField]
-        public int _spawnCountIncrementStep = 6;
+        private float _minLavaRadius = 4;
         [SerializeField]
-        public float _minLavaRadius = 4;
+        private float _maxLavaRadius = 8;
         [SerializeField]
-        public float _maxLavaRadius = 8;
+        private float _damagePeriod = 1;
         [SerializeField]
-        public float _damagePeriod = 1;
+        private float _damagePercent = 30;
         [SerializeField]
-        public float _damagePercent = 30;
-        [SerializeField]
-        public string _lavaPrefabId = "Lava";
+        private string _lavaPrefabId = "Lava";
         
         [SerializeField]
         private float _minAppearTime = 3;
@@ -38,12 +37,14 @@ namespace Survivors.WorldEvents.Events.Lava.Config
         public float RandomAppearTime => Random.Range(_minAppearTime, _maxAppearTime); 
         public float RandomDisappearTime => Random.Range(_minDisappearTime, _maxDisappearTime);
         public float RandomRadius => Random.Range(_minLavaRadius, _maxLavaRadius);
-        
-        public int InitialSpawnCount => _initialSpawnCount;
-        public int SpawnCountIncrementStep => _spawnCountIncrementStep;
+
         public float InitialSpawnDistance => _minLavaRadius * 2;
+        
         public float SpawnDistanceStep => InitialSpawnDistance * 2;
         
         public float MaxSpawnDistance { get; set; }
+
+        public float SpawnStepOnPerimeter => _spawnStepOnPerimeter;
+        
     }
 }
