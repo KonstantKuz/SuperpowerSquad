@@ -18,7 +18,8 @@ namespace Survivors.WorldEvents.Events.Avalanche
         [SerializeField] private float _moveSpeed;
         [SerializeField] private Renderer _stoneRenderer;
         [SerializeField] private GameObject _trajectoryPrefab;
-
+        [SerializeField] private ExplosionReactionParams _explosionReactionParams;
+        
         private float _damagePercent;
         private bool _isAppeared;
         private float _radius;
@@ -122,6 +123,7 @@ namespace Survivors.WorldEvents.Events.Avalanche
             }
 
             DoDamage(other.gameObject);
+            ExplosionReaction.TryExecuteOn(other.gameObject, transform.position, _explosionReactionParams);
         }
         
         private void DoDamage(GameObject target)

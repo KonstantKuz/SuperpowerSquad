@@ -50,6 +50,11 @@ MonoBehaviour:
   _moveSpeed: 5
   _stoneRenderer: {fileID: 9166758609729735932}
   _trajectoryPrefab: {fileID: 252025213542724086, guid: 1c84c92e425499344b4df813e4a41d79, type: 3}
+  _explosionReactionParams:
+    JumpDistance: 3
+    JumpHeight: 2
+    JumpDuration: 0.8
+    ExplosionPosition: {x: 0, y: 0, z: 0}
 --- !u!54 &4963921157189634245
 Rigidbody:
   m_ObjectHideFlags: 0
