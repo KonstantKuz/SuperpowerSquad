@@ -44,8 +44,8 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 5c03bc4b80b50384a9904843f3769487, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 1fc92a2000f8a754fa0106fb7eb22a1d, type: 3}
+        m_Scale: {x: 3, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Mask:
         m_Texture: {fileID: 0}
@@ -91,7 +91,7 @@ Material:
     - _NoiseUspeed: 0
     - _NoiseVspeed: 0
     - _OcclusionStrength: 1
-    - _Opacity: 1
+    - _Opacity: 0.3
     - _Parallax: 0.02
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
@@ -100,7 +100,7 @@ Material:
     - _Usecenterglow: 0
     - _Usedepth: 1
     m_Colors:
-    - _Color: {r: 1, g: 0.29622638, b: 0.29622638, a: 1}
+    - _Color: {r: 1, g: 0.17125538, b: 0.07075471, a: 1}
     - _DistortionSpeedXYPowerZ: {r: 0, g: 0, b: 0, a: 0}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpeedMainTexUVNoiseUV: {r: 0, g: 0, b: -4, a: 0}
