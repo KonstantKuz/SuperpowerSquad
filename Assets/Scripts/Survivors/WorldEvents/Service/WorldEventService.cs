@@ -3,6 +3,7 @@ using SuperMaxim.Messaging;
 using Survivors.Location;
 using Survivors.Session.Messages;
 using Survivors.WorldEvents.Config;
+using Survivors.WorldEvents.Messages;
 using UnityEngine;
 using Zenject;
 
@@ -53,9 +54,11 @@ namespace Survivors.WorldEvents.Service
         }
         
         private IEnumerator StartEvent(WorldEventConfig eventConfig)
-        {
-            var currentEvent = _worldEventFactory.CreateEvent(eventConfig.EventType);
-            yield return currentEvent.Start(_worldEventFactory.GetConfig(eventConfig.EventType));
+        { 
+            var eventType = eventConfig.EventType;
+            var currentEvent = _worldEventFactory.CreateEvent(eventType);
+            _messenger.Publish(new WorldEventStartMessage(eventType));
+            yield return currentEvent.Start(_worldEventFactory.GetConfig(eventType));
         }
         
         private void DisposeCoroutine()
