@@ -165,6 +165,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animationTime: 0.3
+  _isIndependentUpdate: 1
 --- !u!1 &9219068781108686712
 GameObject:
   m_ObjectHideFlags: 0
