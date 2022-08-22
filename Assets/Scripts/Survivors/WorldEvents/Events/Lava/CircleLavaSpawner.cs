@@ -32,8 +32,8 @@ namespace Survivors.WorldEvents.Events.Lava
 
         private int CalculateSpawnCount(float spawnRadius)
         {
-            var perimeter = (2 * Mathf.PI * spawnRadius);
-            return (int) (perimeter / _config.SpawnStepOnPerimeter);
+            var circlePerimeter = (2 * Mathf.PI * spawnRadius);
+            return (int) (circlePerimeter / _config.SpawnStepOnPerimeter);
         }
 
         private IEnumerable<Vector3> GetSpawnPlacesOnCircle(Vector3 circleCenter, float spawnDistance, int spawnObjectCount)
