@@ -1,4 +1,5 @@
 ﻿using Survivors.Enemy.Spawn;
+using Survivors.Location.Model;
 using Survivors.Location.Service;
 using Survivors.Loot.Service;
 using Survivors.Session.Service;
@@ -13,7 +14,8 @@ namespace Survivors.Location
         [SerializeField] private World _world;
         [SerializeField] private WorldObjectFactory _worldObjectFactory;
         [SerializeField] private EnemyWavesSpawner _enemyWavesSpawner;
-        [SerializeField] private EnemyHpsSpawner _enemyHpsSpawner;
+        [SerializeField] private EnemyHpsSpawner _enemyHpsSpawner;     
+        [SerializeField] private WorldEventFactory _worldEventFactory;
         
         public void Install(DiContainer container)
         {
@@ -31,7 +33,7 @@ namespace Survivors.Location
             
             
             container.BindInterfacesAndSelfTo<WorldEventService>().AsSingle();  
-            container.Bind<WorldEventFactory>().AsSingle();  
+            container.Bind<WorldEventFactory>().FromInstance(_worldEventFactory);
         }
     }
 }
