@@ -1,9 +1,11 @@
+using System;
 using DG.Tweening;
 using Logger.Extension;
 using Survivors.Extension;
 using Survivors.Location.Service;
 using Survivors.Units;
 using Survivors.Units.Component.Health;
+using Survivors.Units.Player.Damageable;
 using Survivors.Units.Weapon.Projectiles;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -15,61 +17,90 @@ namespace Survivors.WorldEvents.Avalanche
     {
         [SerializeField] private float _disappearTime;
         [SerializeField] private float _maxDistance;
-        [SerializeField] private float _damagePercent;
         [SerializeField] private float _moveSpeed;
         [SerializeField] private Renderer _stoneRenderer;
         [SerializeField] private GameObject _trajectoryPrefab;
-        
-        private bool _isLaunched;
+
+        private float _damagePercent;
+        private bool _isAppeared;
         private float _radius;
         private Vector3 _moveDirection;
         private float _distanceTraveled;
         private LineRenderer _trajectory;
+        private Sequence _appearTween;
         private Tween _destroyTween;
 
         [Inject] private WorldObjectFactory _worldObjectFactory;
         
         private float DistanceToDisappear => _maxDistance - _moveSpeed * _disappearTime;
         public float Radius => _radius;
+        private bool IsTimeToDestroy => _distanceTraveled >= DistanceToDisappear && _destroyTween == null;
+        private Color Transparent => new Color(1,1,1,0);
         
         private void Awake()
         {
-            _radius = transform.localScale.x / 2;
-            _stoneRenderer.material.color = Color.clear;
+            _radius = _stoneRenderer.bounds.size.x / 2;
+            _stoneRenderer.material.color = Transparent;
             _stoneRenderer.shadowCastingMode = ShadowCastingMode.Off;
         }
 
-        public void Launch(Vector3 direction)
+        public void Launch(Vector3 direction, float damagePercent)
         {
+            Dispose();
+            
+            _damagePercent = damagePercent;
             _moveDirection = direction;
             transform.forward = direction;
-            
+
             SpawnTrajectory();
-            _stoneRenderer.material.DOColor(Color.white, _disappearTime).onComplete = () =>
-            {
-                _stoneRenderer.shadowCastingMode = ShadowCastingMode.On;
-                _isLaunched = true;
-            };
+            SetTrajectoryPosition();
+            PlayAppear();
         }
 
         private void SpawnTrajectory()
         {
+            _trajectory = _worldObjectFactory.CreateObject(_trajectoryPrefab).GetComponent<LineRenderer>();
+        }
+
+        private void SetTrajectoryPosition()
+        {
             var groundedPosition = transform.position - Vector3.up * _radius;
             var trajectoryPositions = new [] { groundedPosition, groundedPosition + _maxDistance * _moveDirection };
-            _trajectory = _worldObjectFactory.CreateObject(_trajectoryPrefab).GetComponent<LineRenderer>();
             _trajectory.SetPositions(trajectoryPositions);
+        }
+
+        private void PlayAppear()
+        {
+            _appearTween = DOTween.Sequence();
+            _appearTween.Insert(0, PlayStoneAppear());
+            _appearTween.Insert(0, PlayTrajectoryAppear());
+            _appearTween.onComplete = () => { _isAppeared = true; };
+        }
+
+        private Tween PlayStoneAppear()
+        {
+            var stoneAppear = _stoneRenderer.material.DOColor(Color.white, _disappearTime);
+            stoneAppear.onComplete = () =>
+            {
+                _stoneRenderer.shadowCastingMode = ShadowCastingMode.On;
+            };
+            return stoneAppear;
+        }
+
+        private Tween PlayTrajectoryAppear()
+        {
             var initialColor = _trajectory.material.color;
-            _trajectory.material.color = Color.clear;
-            _trajectory.material.DOColor(initialColor, _disappearTime);
+            _trajectory.material.color = Transparent;
+            return _trajectory.material.DOColor(initialColor, _disappearTime);
         }
 
         private void Update()
         {
-            if (!_isLaunched)  return;
+            if (!_isAppeared)  return;
          
             Move();
 
-            if (_distanceTraveled >= DistanceToDisappear && _destroyTween == null)
+            if (IsTimeToDestroy)
             {
                 Destroy();
             }
@@ -94,16 +125,22 @@ namespace Survivors.WorldEvents.Avalanche
 
             DoDamage(other.gameObject);
         }
-
+        
         private void DoDamage(GameObject target)
         {
-            var health = target.GetComponent<Health>() ?? target.GetComponentInParent<Health>();
             var damageable = target.RequireComponent<IDamageable>();
-            var damage = health.MaxValue.Value * (_damagePercent / 100);
-            damageable.TakeDamage(damage);
-            this.Logger().Trace($"Damage applied, target:= {target.name}");
+            damageable.TakeDamage(CalculateDamage(damageable));
+            this.Logger().Trace($"Lava, damage applied, target:= {target.name}");
         }
-        
+        private float CalculateDamage(IDamageable target)
+        {
+            return target switch {
+                    DamageableChild damageableChild => CalculateDamage(damageableChild.ParentDamageable),
+                    Health health => (health.MaxValue.Value * _damagePercent) / 100,
+                    _ => throw new ArgumentException("IDamageable must be health")
+            };
+        }
+
         private bool CanDamageTarget(Collider other)
         {
             return Projectile.CanDamageTarget(other, UnitType.ENEMY, out var enemy) ||
@@ -112,23 +149,32 @@ namespace Survivors.WorldEvents.Avalanche
 
         private void Destroy()
         {
-            _stoneRenderer.shadowCastingMode = ShadowCastingMode.Off;
-
-            var sequence = DOTween.Sequence();
-            sequence.Insert(0,_stoneRenderer.material.DOColor(Color.clear, _disappearTime));
-            sequence.Insert(0,_trajectory.material.DOColor(Color.clear, _disappearTime));
-            sequence.onComplete = () =>
+            _destroyTween = PlayDisappear();
+            _destroyTween.onComplete = () =>
             {
-                _isLaunched = false;
                 Destroy(_trajectory.gameObject);
                 Destroy(gameObject);
             };
+        }
 
-            _destroyTween = sequence;
+        private Tween PlayDisappear()
+        {
+            _stoneRenderer.shadowCastingMode = ShadowCastingMode.Off;
+            var disappear = DOTween.Sequence();
+            disappear.Insert(0,_stoneRenderer.material.DOFade(0, _disappearTime));
+            disappear.Insert(0,_trajectory.material.DOFade(0, _disappearTime));
+            return disappear;
         }
 
         private void OnDestroy()
         {
+            Dispose();
+        }
+
+        private void Dispose()
+        {
+            _appearTween.Kill();
+            _appearTween = null;
             _destroyTween.Kill();
             _destroyTween = null;
         }

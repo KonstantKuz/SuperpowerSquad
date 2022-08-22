@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _eventDuration: 15
   _spawnPeriod: 2
+  _stoneDamagePercent: 10
   _moveDirectionDrivenChance: 0.5
-  _minDistanceBtwnStones: 30
+  _minDistanceBtwnStones: 20
   _maxAngleSpread: 30
   _minDistanceFromPlayer: 10
   _maxDistanceFromPlayer: 20

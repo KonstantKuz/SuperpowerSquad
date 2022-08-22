@@ -6,6 +6,7 @@ namespace Survivors.WorldEvents.Events
     public class AvalancheEventConfig : EventConfig
     {
         [SerializeField] private float _spawnPeriod;
+        [SerializeField] private float _stoneDamagePercent;
         [Range(0f, 1f)]
         [SerializeField] private float _moveDirectionDrivenChance;
         [SerializeField] private float _minDistanceBtwnStones;
@@ -16,6 +17,7 @@ namespace Survivors.WorldEvents.Events
         [SerializeField] private GameObject _cobblestonePrefab;
 
         public float SpawnPeriod => _spawnPeriod;
+        public float StoneDamagePercent => _stoneDamagePercent;
         public float MoveDirectionDrivenChance => _moveDirectionDrivenChance;
         public float MinDistanceBtwnStones => _minDistanceBtwnStones;
         public float MaxAngleSpread => _maxAngleSpread;

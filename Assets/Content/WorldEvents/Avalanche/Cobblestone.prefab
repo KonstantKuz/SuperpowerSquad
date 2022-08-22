@@ -47,7 +47,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _disappearTime: 1
   _maxDistance: 30
-  _damagePercent: 5
   _moveSpeed: 5
   _stoneRenderer: {fileID: 9166758609729735932}
   _trajectoryPrefab: {fileID: 252025213542724086, guid: 1c84c92e425499344b4df813e4a41d79, type: 3}
