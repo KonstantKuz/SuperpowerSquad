@@ -31,7 +31,6 @@ namespace Survivors.WorldEvents.Events.Tornado
             
             var spawner = new CircleSpawner(spawnParams);
             spawner.Spawn(_world.GetSquad().Position, CreateTornado);
-          //  CreateTornado(Vector3.zero);
             yield return WaitFinish(_config);
         }
 

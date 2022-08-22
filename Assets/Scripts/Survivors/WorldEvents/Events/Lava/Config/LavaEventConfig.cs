@@ -8,9 +8,9 @@ namespace Survivors.WorldEvents.Events.Lava.Config
     public class LavaEventConfig : EventConfig, ICircleSpawnParams
     {
         [SerializeField]
-        private int _initialSpawnCountOnCircle = 5;
+        private int _initialSpawnCount = 5;
         [SerializeField]
-        public int _spawnCountIncrementStepOnCircle = 6;
+        public int _spawnCountIncrementStep = 6;
         [SerializeField]
         public float _minLavaRadius = 4;
         [SerializeField]
@@ -39,8 +39,8 @@ namespace Survivors.WorldEvents.Events.Lava.Config
         public float RandomDisappearTime => Random.Range(_minDisappearTime, _maxDisappearTime);
         public float RandomRadius => Random.Range(_minLavaRadius, _maxLavaRadius);
         
-        public int InitialSpawnCountOnCircle => _initialSpawnCountOnCircle;
-        public int SpawnCountIncrementStepOnCircle => _spawnCountIncrementStepOnCircle;
+        public int InitialSpawnCount => _initialSpawnCount;
+        public int SpawnCountIncrementStep => _spawnCountIncrementStep;
         public float InitialSpawnDistance => _minLavaRadius * 2;
         public float SpawnDistanceStep => InitialSpawnDistance * 2;
         

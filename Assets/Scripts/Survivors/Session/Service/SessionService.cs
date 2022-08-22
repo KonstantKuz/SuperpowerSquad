@@ -105,8 +105,8 @@ namespace Survivors.Session.Service
         {
             CheckSquad();
             CreatePlayerUnits(_world.Squad.Model.StartingUnitCount.Value); 
-         //   _enemyWavesSpawner.StartSpawn(_enemyWavesConfig);
-        //    _enemyHpsSpawner.StartSpawn();
+            _enemyWavesSpawner.StartSpawn(_enemyWavesConfig); 
+            _enemyHpsSpawner.StartSpawn();
         }
 
         private void ResetKills() => _kills.Value = 0;

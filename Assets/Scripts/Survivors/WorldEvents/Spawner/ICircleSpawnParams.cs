@@ -2,8 +2,8 @@
 {
     public interface ICircleSpawnParams
     {
-        int InitialSpawnCountOnCircle { get; }
-        int SpawnCountIncrementStepOnCircle { get; }
+        int InitialSpawnCount { get; }
+        int SpawnCountIncrementStep { get; }
         float InitialSpawnDistance { get; }
         float SpawnDistanceStep { get; }
         float MaxSpawnDistance { get; set; }

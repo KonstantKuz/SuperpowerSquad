@@ -17,13 +17,13 @@ namespace Survivors.WorldEvents.Spawner
         }
         public void Spawn(Vector3 spawnCircleCenter, Action<Vector3> onCreateLava)
         {
-            var spawnCountOnCircle = _config.InitialSpawnCountOnCircle;
+            var spawnCountOnCircle = _config.InitialSpawnCount;
             
             for (float spawnDistance = _config.InitialSpawnDistance; spawnDistance < _config.MaxSpawnDistance; spawnDistance += _config.SpawnDistanceStep) {
                 foreach (var place in GetSpawnPlacesOnCircle(spawnCircleCenter, spawnDistance, spawnCountOnCircle)) {
                     onCreateLava(place);
                 }
-                spawnCountOnCircle += _config.SpawnCountIncrementStepOnCircle;
+                spawnCountOnCircle += _config.SpawnCountIncrementStep;
             }
         }
         private IEnumerable<Vector3> GetSpawnPlacesOnCircle(Vector3 circleCenter, float spawnDistance, int spawnObjectCount)
