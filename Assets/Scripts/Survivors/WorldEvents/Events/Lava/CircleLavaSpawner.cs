@@ -20,12 +20,12 @@ namespace Survivors.WorldEvents.Events.Lava
             _world = world;
         }
 
-        public void SpawnLava(Action<Vector3> onCreateLava)
+        public void SpawnLava(Action<Vector3> lavaCreateFunc)
         {
             for (int spawnDistance = (int) _config.MinLavaDiameter; spawnDistance < MaxSpawnDistance; spawnDistance += (int) (_config.MinLavaDiameter * 2)) {
                 var spawnCount = CalculateSpawnCount(spawnDistance);
                 foreach (var place in GetSpawnPlacesOnCircle(_world.GetSquad().Position, spawnDistance, spawnCount)) {
-                    onCreateLava(place);
+                    lavaCreateFunc(place);
                 }
             }
         }
