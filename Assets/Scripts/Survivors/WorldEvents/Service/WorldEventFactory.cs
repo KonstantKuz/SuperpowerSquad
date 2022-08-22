@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using Feofun.Util.SerializableDictionary;
-using Survivors.WorldEvents.Avalanche;
 using Survivors.WorldEvents.Config;
 using Survivors.WorldEvents.Events;
+using Survivors.WorldEvents.Events.Avalanche;
 using Survivors.WorldEvents.Events.Lava;
 using UnityEngine;
 using Zenject;

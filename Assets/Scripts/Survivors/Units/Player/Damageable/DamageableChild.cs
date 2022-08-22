@@ -27,12 +27,12 @@ namespace Survivors.Units.Player.Damageable
             OnZeroHealth?.Invoke();
         }
 
-        public void TakeDamage(float damage)
+        public void TakeDamage(float damage, DamageUnits units)
         {
             if (!DamageEnabled) {
                 return;
             }
-            ParentDamageable.TakeDamage(damage);
+            ParentDamageable.TakeDamage(damage, units);
             OnDamageTaken?.Invoke();
         }
 

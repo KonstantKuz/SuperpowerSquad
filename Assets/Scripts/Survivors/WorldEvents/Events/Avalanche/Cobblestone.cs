@@ -1,17 +1,15 @@
-using System;
 using DG.Tweening;
 using Logger.Extension;
 using Survivors.Extension;
 using Survivors.Location.Service;
 using Survivors.Units;
 using Survivors.Units.Component.Health;
-using Survivors.Units.Player.Damageable;
 using Survivors.Units.Weapon.Projectiles;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Zenject;
 
-namespace Survivors.WorldEvents.Avalanche
+namespace Survivors.WorldEvents.Events.Avalanche
 {
     public class Cobblestone : MonoBehaviour
     {
@@ -72,8 +70,8 @@ namespace Survivors.WorldEvents.Avalanche
         private void PlayAppear()
         {
             _appearTween = DOTween.Sequence();
-            _appearTween.Insert(0, PlayStoneAppear());
-            _appearTween.Insert(0, PlayTrajectoryAppear());
+            _appearTween.Join(PlayStoneAppear());
+            _appearTween.Join(PlayTrajectoryAppear());
             _appearTween.onComplete = () => { _isAppeared = true; };
         }
 
@@ -129,16 +127,9 @@ namespace Survivors.WorldEvents.Avalanche
         private void DoDamage(GameObject target)
         {
             var damageable = target.RequireComponent<IDamageable>();
-            damageable.TakeDamage(CalculateDamage(damageable));
-            this.Logger().Trace($"Lava, damage applied, target:= {target.name}");
-        }
-        private float CalculateDamage(IDamageable target)
-        {
-            return target switch {
-                    DamageableChild damageableChild => CalculateDamage(damageableChild.ParentDamageable),
-                    Health health => (health.MaxValue.Value * _damagePercent) / 100,
-                    _ => throw new ArgumentException("IDamageable must be health")
-            };
+            damageable.TakeDamage(_damagePercent, DamageUnits.PercentFromMax);
+            if (target.name.Contains("Simple")) return;
+            this.Logger().Trace($"Cobblestone, damage applied, target:= {target.name}");
         }
 
         private bool CanDamageTarget(Collider other)

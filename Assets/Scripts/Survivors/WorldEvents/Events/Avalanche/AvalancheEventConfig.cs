@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Survivors.WorldEvents.Events
+namespace Survivors.WorldEvents.Events.Avalanche
 {
     [CreateAssetMenu(fileName = "AvalancheEventConfig", menuName = "ScriptableObjects/EventConfig/AvalancheEventConfig")]
     public class AvalancheEventConfig : EventConfig

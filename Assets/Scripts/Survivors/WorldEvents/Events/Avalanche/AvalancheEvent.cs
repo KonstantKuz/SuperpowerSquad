@@ -2,11 +2,10 @@ using System.Collections;
 using Survivors.Extension;
 using Survivors.Location;
 using Survivors.Location.Service;
-using Survivors.WorldEvents.Events;
 using UnityEngine;
 using Zenject;
 
-namespace Survivors.WorldEvents.Avalanche
+namespace Survivors.WorldEvents.Events.Avalanche
 {
     public class AvalancheEvent : WorldEvent
     {
