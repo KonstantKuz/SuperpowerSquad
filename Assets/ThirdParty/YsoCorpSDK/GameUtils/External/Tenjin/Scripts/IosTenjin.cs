@@ -213,7 +213,7 @@ public class IosTenjin : BaseTenjin
 		if (Debug.isDebugBuild) {
 			Debug.Log ("iOS RequestTrackingAuthorizationWithCompletionHandler");
 		}
-		Tenjin.authorizationStatusDelegate = trackingAuthorizationCallback;
+		Tenjin.Tenjin.authorizationStatusDelegate = trackingAuthorizationCallback;
 		iosTenjinRequestTrackingAuthorizationWithCompletionHandler();
 	}
 
@@ -222,7 +222,7 @@ public class IosTenjin : BaseTenjin
 		if (Debug.isDebugBuild) {
 			Debug.Log ("iOS SetTrackingAuthorizationStatus " + status);
 		}
-		Tenjin.authorizationStatusDelegate(Int16.Parse(status));
+		Tenjin.Tenjin.authorizationStatusDelegate(Int16.Parse(status));
 	}
 
 	public override void AppendAppSubversion(int appSubversion)
