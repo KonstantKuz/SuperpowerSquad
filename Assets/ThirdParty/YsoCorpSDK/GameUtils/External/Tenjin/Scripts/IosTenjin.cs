@@ -91,7 +91,7 @@ public class IosTenjin : BaseTenjin
 	private delegate void DeepLinkHandlerNativeDelegate(IntPtr deepLinkDataPairArray, int deepLinkDataPairCount);
 	
 	private static readonly Stack<Dictionary<string, string>> deferredDeeplinkEvents = new Stack<Dictionary<string, string>>();
-	private static Tenjin.DeferredDeeplinkDelegate registeredDeferredDeeplinkDelegate;
+	private static Tenjin.Tenjin.DeferredDeeplinkDelegate registeredDeferredDeeplinkDelegate;
 
 	public override void Init(string apiKey)
 	{
@@ -382,7 +382,7 @@ public class IosTenjin : BaseTenjin
         }
     }
 
-	public override void GetDeeplink(Tenjin.DeferredDeeplinkDelegate deferredDeeplinkDelegate)
+	public override void GetDeeplink(Tenjin.Tenjin.DeferredDeeplinkDelegate deferredDeeplinkDelegate)
 	{
 		if (Debug.isDebugBuild) {
 			Debug.Log ("Sending IosTenjin::GetDeeplink");
