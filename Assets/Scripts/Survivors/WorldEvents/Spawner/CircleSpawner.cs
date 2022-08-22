@@ -13,12 +13,12 @@ namespace Survivors.WorldEvents.Spawner
         {
             _config = config;
         }
-        public void Spawn(Vector3 spawnCircleCenter, Action<Vector3> onCreate)
+        public void Spawn(Vector3 spawnCircleCenter, Action<Vector3> createFunc)
         {
             for (float spawnDistance = _config.InitialSpawnDistance; spawnDistance < _config.MaxSpawnDistance; spawnDistance += _config.SpawnDistanceStep) {
                 var spawnCount = CalculateSpawnCount(spawnDistance);
                 foreach (var place in GetSpawnPlacesOnCircle(spawnCircleCenter, spawnDistance, spawnCount)) {
-                    onCreate(place);
+                    createFunc(place);
                 }
             }
         }
