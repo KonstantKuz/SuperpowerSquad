@@ -11,7 +11,7 @@ namespace Survivors.Units.Player.Damageable
         public event Action OnZeroHealth;
         public event Action OnDamageTaken;
         public bool DamageEnabled { get; set; } = true;
-        private IDamageable ParentDamageable
+        public IDamageable ParentDamageable
         {
             get
             {
