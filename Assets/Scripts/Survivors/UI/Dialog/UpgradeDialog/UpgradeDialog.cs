@@ -4,10 +4,10 @@ using Feofun.UI.Dialog;
 using Survivors.Advertisment.Service;
 using Survivors.Config;
 using Survivors.Modifiers.Config;
-using Survivors.Squad.Upgrade;
-using Survivors.Squad.Upgrade.Config;
 using Survivors.UI.Dialog.UpgradeDialog.Model;
 using Survivors.UI.Dialog.UpgradeDialog.View;
+using Survivors.Upgrade;
+using Survivors.Upgrade.Config;
 using UnityEngine;
 using Zenject;
 
