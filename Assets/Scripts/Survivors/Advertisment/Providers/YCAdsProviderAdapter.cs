@@ -7,7 +7,6 @@ namespace Survivors.Advertisment.Providers
     {
         private AdsManager AdManager => YCManager.instance.adsManager;
         
-        
         public bool IsRewardAdsReady()
         { 
             return AdManager.IsRewardBasedVideo();

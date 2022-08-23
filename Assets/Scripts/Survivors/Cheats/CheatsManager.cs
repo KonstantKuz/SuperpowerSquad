@@ -1,6 +1,8 @@
 using System;
 using Feofun.Localization.Service;
 using Logger.Extension;
+using Survivors.Advertisment.Providers;
+using Survivors.Advertisment.Service;
 using Survivors.Cheats.Data;
 using Survivors.Cheats.Repository;
 using Survivors.Squad.Service;
@@ -14,12 +16,15 @@ namespace Survivors.Cheats
     public class CheatsManager : MonoBehaviour
     {
         private const string TEST_LOG_MESSAGE = "Test log message";
+        
         private readonly CheatRepository _repository = new CheatRepository();
         
         [Inject] private LocalizationService _localizationService;     
         [Inject] private SquadProgressService _squadProgressService;
         [Inject] private UpgradeService _upgradeService;
         [Inject] private MetaUpgradeService _metaUpgradeService;
+        [Inject] private AdsManager _adsManager;
+        [Inject] private DiContainer _diContainer;
 
         [SerializeField] private GameObject _fpsMonitor;
         [SerializeField] private GameObject _debugConsole;
@@ -66,6 +71,12 @@ namespace Survivors.Cheats
             updateFunc?.Invoke(settings);
             _repository.Set(settings);
         }
+
+        public bool IsCheatAdsEnabled  {
+            get => _adsManager.AdsProvider is CheatAdsProvider;
+            set => _adsManager.AdsProvider = value ? new CheatAdsProvider() : _diContainer.Resolve<IAdsProvider>();
+        } 
+        
         public bool IsConsoleEnabled
         {
             get => Settings.ConsoleEnabled;
