@@ -1024,7 +1024,7 @@ MonoBehaviour:
   _adsButtons: {fileID: 6969265206499968170}
   _rewardText: {fileID: 2654186076842935619}
   _arrowContainer: {fileID: 6103043998777979739}
-  _moveSpeed: 50
+  _moveSpeed: 100
 --- !u!114 &6969265206499968170
 MonoBehaviour:
   m_ObjectHideFlags: 0
