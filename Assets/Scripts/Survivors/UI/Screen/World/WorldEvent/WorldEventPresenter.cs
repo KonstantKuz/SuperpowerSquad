@@ -22,14 +22,14 @@ namespace Survivors.UI.Screen.World.WorldEvent
         public void OnEnable()
         {
             Dispose();
-            _messenger.Subscribe<WorldEventStartTimerMessage>(OnEventTimerStarted);
+            _messenger.Subscribe<WorldEventTimerStartMessage>(OnEventTimerStarted);
         }
 
-        private void OnEventTimerStarted(WorldEventStartTimerMessage evn)
+        private void OnEventTimerStarted(WorldEventTimerStartMessage evn)
         {
             Dispose();
-            var timeout = Mathf.Max(0, evn.TimeBeforeShowEvent - _showDuration);
-            _timerCoroutine = StartCoroutine(StartTimerBeforeShowView(timeout, evn.EventType));
+            var timeoutBeforeShowView = Mathf.Max(0, evn.TimeBeforeShowEvent - _showDuration);
+            _timerCoroutine = StartCoroutine(StartTimerBeforeShowView(timeoutBeforeShowView, evn.EventType));
         }
         private IEnumerator StartTimerBeforeShowView(float timeout, WorldEventType eventType)
         {
@@ -39,7 +39,7 @@ namespace Survivors.UI.Screen.World.WorldEvent
         public void OnDisable()
         {
             Dispose();
-            _messenger.Unsubscribe<WorldEventStartTimerMessage>(OnEventTimerStarted);
+            _messenger.Unsubscribe<WorldEventTimerStartMessage>(OnEventTimerStarted);
         }
 
         private void Dispose()

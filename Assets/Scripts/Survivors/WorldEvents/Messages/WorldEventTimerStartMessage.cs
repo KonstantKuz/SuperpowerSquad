@@ -2,12 +2,12 @@
 
 namespace Survivors.WorldEvents.Messages
 {
-    public readonly struct WorldEventStartTimerMessage
+    public readonly struct WorldEventTimerStartMessage
     {
         public readonly WorldEventType EventType;  
         public readonly float TimeBeforeShowEvent;
 
-        public WorldEventStartTimerMessage(WorldEventType eventType, float timeBeforeShowEvent)
+        public WorldEventTimerStartMessage(WorldEventType eventType, float timeBeforeShowEvent)
         {
             EventType = eventType;
             TimeBeforeShowEvent = timeBeforeShowEvent;

@@ -47,7 +47,7 @@ namespace Survivors.WorldEvents.Service
         private IEnumerator StartEvents(string levelId)
         {
             foreach (var eventConfig in _worldEventsConfig.GetEventConfigs(levelId)) {
-                _messenger.Publish(new WorldEventStartTimerMessage(eventConfig.EventType, eventConfig.TimeSincePreviousEvent));
+                _messenger.Publish(new WorldEventTimerStartMessage(eventConfig.EventType, eventConfig.TimeSincePreviousEvent));
                 yield return new WaitForSeconds(eventConfig.TimeSincePreviousEvent);
                 yield return StartEvent(eventConfig);
             }
