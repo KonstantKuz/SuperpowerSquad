@@ -1,6 +1,7 @@
 ﻿using Feofun.Config;
 using Feofun.UI.Components;
 using Feofun.UI.Dialog;
+using Survivors.Advertisment.Service;
 using Survivors.Config;
 using Survivors.Modifiers.Config;
 using Survivors.Squad.Upgrade;
@@ -22,7 +23,8 @@ namespace Survivors.UI.Dialog.UpgradeDialog
         [Inject] private UpgradesConfig _upgradesConfig;
         [Inject(Id = Configs.MODIFIERS)]
         private StringKeyedConfigCollection<ParameterUpgradeConfig> _modifierConfigs;
-        
+        [Inject] private AdsManager _adsManager;
+
         private UpgradeDialogModel _model;
 
         public void Init(UpgradeDialogInitModel initModel)
@@ -34,7 +36,7 @@ namespace Survivors.UI.Dialog.UpgradeDialog
         private void OnUpgrade(string upgradeBranchId)
         {
             _model.InitModel.OnUpgrade?.Invoke(upgradeBranchId);
-            _dialogManager.Hide<UpgradeDialog>();
+            _adsManager.ShowInterstitialAds(() => _dialogManager.Hide<UpgradeDialog>());
         }
 
         private void OnDisable()
