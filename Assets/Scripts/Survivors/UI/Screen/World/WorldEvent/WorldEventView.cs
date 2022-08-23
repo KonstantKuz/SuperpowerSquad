@@ -1,4 +1,5 @@
 ﻿using DG.Tweening;
+using Feofun.UI.Components;
 using TMPro;
 using UnityEngine;
 
@@ -8,26 +9,54 @@ namespace Survivors.UI.Screen.World.WorldEvent
     {
         [SerializeField]
         private float _showDuration;
-
         [SerializeField]
         private int _showCount;
         [SerializeField]
-        private TextMeshProUGUI _text;
+        private TextMeshProLocalization _textLocalization;
         
-        private Sequence _showTween;
+        private Sequence _textShowTween;
+        
+        private float FadeDuration => _showDuration / _showCount / 2;
+        private TMP_Text Text => _textLocalization.TextComponent;
         public void Init(EventViewModel model)
         {
+            Dispose();
+
+            _textLocalization.SetTextFormatted(model.Text);
+            DisableText();
             gameObject.SetActive(true);
-            _showTween = DOTween.Sequence();
-            var duration = _showDuration / _showCount / 2;
+            
+            PlayShowText();
+        }
+
+        private void DisableText()
+        {
+            var color = Text.color;
+            color.a = 0;
+            Text.color = color;
+        }
+
+        private void PlayShowText()
+        {
+            _textShowTween = DOTween.Sequence();
             for (int i = 0; i < _showCount; i++) {
-                _showTween.Append(_text.DOFade(1, duration));
-                _showTween.Append(_text.DOFade(0, duration));
+                _textShowTween.Append(Text.DOFade(1, FadeDuration));
+                _textShowTween.Append(Text.DOFade(0, FadeDuration));
             }
-            _showTween.Play();
-            _showTween.onComplete = () => {
+            _textShowTween.Play();
+            _textShowTween.onComplete = () => {
                 gameObject.SetActive(false);
             };
+        }
+
+        private void OnDisable()
+        {
+            Dispose();
+        }
+        private void Dispose()
+        {
+            _textShowTween?.Kill();
+            _textShowTween = null;
         }
     }
 }

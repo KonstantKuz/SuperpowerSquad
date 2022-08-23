@@ -1,6 +1,4 @@
-﻿using Feofun.Localization;
-using SuperMaxim.Messaging;
-using Survivors.WorldEvents.Config;
+﻿using SuperMaxim.Messaging;
 using Survivors.WorldEvents.Messages;
 using UnityEngine;
 using Zenject;
@@ -31,14 +29,5 @@ namespace Survivors.UI.Screen.World.WorldEvent
             _messenger.Unsubscribe<WorldEventStartMessage>(OnEventStarted);
         }
 
-    }
-
-    public class EventViewModel
-    {
-        public LocalizableText Text { get; }
-        public EventViewModel(WorldEventType eventType)
-        {
-            Text = LocalizableText.Create(eventType.ToString());
-        }
     }
 }
