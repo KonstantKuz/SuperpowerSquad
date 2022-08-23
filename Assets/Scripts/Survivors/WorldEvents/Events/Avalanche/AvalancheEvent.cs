@@ -11,7 +11,6 @@ namespace Survivors.WorldEvents.Events.Avalanche
     {
         private const int EMPTY_PLACE_SEARCH_ATTEMPT_COUNT = 5;
         private AvalancheEventConfig _config;
-        private bool _isLive;
         
         [Inject] private World _world;
         [Inject] private WorldObjectFactory _worldObjectFactory;
@@ -19,11 +18,15 @@ namespace Survivors.WorldEvents.Events.Avalanche
         public override IEnumerator Start(EventConfig eventConfig)
         {
             _config = (AvalancheEventConfig) eventConfig;
-            _isLive = true;
-            while (_isLive)
+
+            var lifeTime = 0f;
+            while (true)
             {
                 SpawnCobblestone();
                 yield return new WaitForSeconds(_config.SpawnPeriod);
+                
+                lifeTime += _config.SpawnPeriod;
+                if (lifeTime >= _config.EventDuration) yield break;
             }
         }
 
@@ -75,7 +78,6 @@ namespace Survivors.WorldEvents.Events.Avalanche
         
         protected override void Dispose()
         {
-            _isLive = false;
         }
     }
 }
