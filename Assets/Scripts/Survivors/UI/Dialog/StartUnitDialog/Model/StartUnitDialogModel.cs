@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using Feofun.Extension;
 using Feofun.Localization;
-using Survivors.Squad.Upgrade.Config;
-using Survivors.Squad.UpgradeSelection;
+using Survivors.Upgrade.Config;
+using Survivors.Upgrade.UpgradeSelection;
 
 namespace Survivors.UI.Dialog.StartUnitDialog.Model
 {

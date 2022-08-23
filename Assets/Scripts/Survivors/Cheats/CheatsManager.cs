@@ -3,9 +3,9 @@ using Feofun.Localization.Service;
 using Logger.Extension;
 using Survivors.Cheats.Data;
 using Survivors.Cheats.Repository;
-using Survivors.Player.Inventory.Service;
 using Survivors.Squad.Service;
-using Survivors.Squad.Upgrade;
+using Survivors.Upgrade;
+using Survivors.Upgrade.MetaUpgrade;
 using UnityEngine;
 using Zenject;
 

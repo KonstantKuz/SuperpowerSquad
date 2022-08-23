@@ -1,9 +1,9 @@
 ﻿using System;
 using Feofun.UI.Components;
 using Feofun.UI.Dialog;
-using Survivors.Squad.Upgrade.Config;
 using Survivors.UI.Dialog.StartUnitDialog.Model;
 using Survivors.UI.Dialog.StartUnitDialog.View;
+using Survivors.Upgrade.Config;
 using UnityEngine;
 using Zenject;
 

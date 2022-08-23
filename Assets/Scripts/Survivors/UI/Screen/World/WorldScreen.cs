@@ -7,12 +7,12 @@ using SuperMaxim.Messaging;
 using Survivors.Session.Messages;
 using Survivors.Session.Model;
 using Survivors.Session.Service;
-using Survivors.Squad.Upgrade;
 using Survivors.UI.Dialog.PauseDialog;
 using Survivors.UI.Dialog.StartUnitDialog;
 using Survivors.UI.Dialog.StartUnitDialog.Model;
 using Survivors.UI.Screen.Debriefing;
 using Survivors.UI.Screen.Debriefing.Model;
+using Survivors.Upgrade;
 using UnityEngine;
 using Zenject;
 
