@@ -2,6 +2,7 @@
 using DG.Tweening;
 using Survivors.Location.Model;
 using Survivors.WorldEvents.Events.Tornado.Config;
+using Survivors.WorldEvents.Events.Tornado.Swirler;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -31,9 +32,9 @@ namespace Survivors.WorldEvents.Events.Tornado
 
         private void OnTriggerEnter(Collider other)
         {
-            var swirler = other.GetComponentInParent<Swirler.SwirlController>();
+            var swirler = other.GetComponentInParent<SwirlController>();
             if (swirler != null) {
-                swirler.RunSwirl(gameObject);
+                swirler.AttachToTornado(gameObject);
             }
         }
         private IEnumerator StartDirectionChangeTimer()
@@ -80,7 +81,7 @@ namespace Survivors.WorldEvents.Events.Tornado
             DisposeTween();
             DisposeCoroutine();
         }
-
+        
         private void OnDisable()
         {
             Dispose();

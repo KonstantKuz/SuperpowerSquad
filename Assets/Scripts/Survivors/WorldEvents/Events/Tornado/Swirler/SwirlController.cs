@@ -1,9 +1,14 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
+using Survivors.Extension;
+using Survivors.Units.Component;
+using UniRx;
+using UniRx.Triggers;
 using UnityEngine;
 
 namespace Survivors.WorldEvents.Events.Tornado.Swirler
 {
-    public abstract class SwirlController : MonoBehaviour
+    public class SwirlController : MonoBehaviour
     {
         [SerializeField] private float _moveSpeed = 9;
 
@@ -13,67 +18,80 @@ namespace Survivors.WorldEvents.Events.Tornado.Swirler
         
         [SerializeField] private float _distanceForSwirl = 1.5f;
      
-        [SerializeField] private float _timeoutAfterStop = 1.5f; 
+        [SerializeField] private float _timeoutAfterRelease = 1.5f; 
         
-
-        private GameObject _swirlCenter;
+        private ILockable _owner;
+        
+        private GameObject _tornado;
+        private IDisposable _disposable;
         
         private float _passedTime;
 
-        private bool Running { get; set; }
+        private bool _timeoutCompleted = true;
+        private bool IsAttached => _tornado != null;
 
-        protected abstract void Capture();  
-        
-        protected abstract void Release();
-
-        public void RunSwirl(GameObject swirlCenter)
+        private void Awake()
         {
-            if (_swirlCenter != null || Running) {
+            _owner = gameObject.RequireComponentInParent<ILockable>();
+        }
+        public void AttachToTornado(GameObject tornado)
+        {
+            if (IsAttached || !_timeoutCompleted) {
                 return;
             }
-            _swirlCenter = swirlCenter;
+            _tornado = tornado;
+            _disposable = _tornado.OnDestroyAsObservable().Subscribe((o) => ReleaseFromTornado());
             _passedTime = 0;
-            Capture();
-            Running = true;
-        }
-        private void StopSwirl()
+            _owner.Lock();
+            _timeoutCompleted = false;
+        } 
+        private void ReleaseFromTornado()
         {
-            Release();
-            _swirlCenter = null;
+            if (!IsAttached) {
+                return;
+            }
+            _owner.UnLock();
+            _tornado = null;
+            Dispose();
             _passedTime = 0;
-            StartCoroutine(StartTimeoutAfterStop());
-        }
-        private IEnumerator StartTimeoutAfterStop()
-        {
-            yield return new WaitForSeconds(_timeoutAfterStop);
-            Running = false;
+            StartCoroutine(StartTimeoutAfterRelease());
         }
 
+        private void Dispose()
+        {
+            _disposable?.Dispose();
+            _disposable = null;
+        }
+
+        private IEnumerator StartTimeoutAfterRelease()
+        {
+            yield return new WaitForSeconds(_timeoutAfterRelease);
+            _timeoutCompleted = true;
+        }
         private void Update()
         {
-            if (_swirlCenter == null) {
-                Release();
+            if (!IsAttached) {
                 return;
             }
             _passedTime += Time.deltaTime;
             UpdateMove();
-            if (CanStop()) {
-                StopSwirl();
+            if (CanRelease()) {
+                ReleaseFromTornado();
             }
         }
 
         private void UpdateMove()
         {
-            var moveDirection = (_swirlCenter.transform.position - transform.position).normalized;
+            var moveDirection = (_tornado.transform.position - transform.position).normalized;
             if (CanSwirl()) {
                 moveDirection = Quaternion.Euler(0, _moveAngle, 0) * moveDirection;
             }
             transform.position += moveDirection * _moveSpeed * Time.deltaTime;
         }
 
-        private bool CanStop() => _passedTime > _swirlDuration;
+        private bool CanRelease() => _passedTime > _swirlDuration;
         
-        private bool CanSwirl() => Vector3.Distance(transform.position, _swirlCenter.transform.position) < _distanceForSwirl;
+        private bool CanSwirl() => Vector3.Distance(transform.position, _tornado.transform.position) < _distanceForSwirl;
     }
     
 }
