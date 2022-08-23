@@ -30,7 +30,7 @@ namespace Survivors.Units.Component.Health
             _disposable = _healthModel.MaxHealth.Diff().Subscribe(OnMaxHealthChanged);
         }
         
-        public void TakeDamage(float damage, DamageUnits units)
+        public virtual void TakeDamage(float damage, DamageUnits units)
         {
             if (!DamageEnabled) {
                 return;
