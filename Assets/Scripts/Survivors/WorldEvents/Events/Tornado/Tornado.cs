@@ -31,7 +31,7 @@ namespace Survivors.WorldEvents.Events.Tornado
 
         private void OnTriggerEnter(Collider other)
         {
-            var swirler = other.GetComponentInParent<Swirler.Swirler>();
+            var swirler = other.GetComponentInParent<Swirler.SwirlController>();
             if (swirler != null) {
                 swirler.RunSwirl(gameObject);
             }

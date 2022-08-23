@@ -7,9 +7,9 @@ namespace Survivors.WorldEvents.Spawner
 {
     public class CircleSpawner
     {
-        private readonly ICircleSpawnParams _config;
+        private readonly CircleSpawnParams _config;
 
-        public CircleSpawner(ICircleSpawnParams config)
+        public CircleSpawner(CircleSpawnParams config)
         {
             _config = config;
         }

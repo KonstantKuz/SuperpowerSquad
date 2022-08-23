@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Survivors.WorldEvents.Spawner
 {
     [Serializable]
-    public class CircleSpawnParams : ICircleSpawnParams
+    public class CircleSpawnParams
     {
         [SerializeField]
         private float _spawnStepOnPerimeter = 10;
@@ -12,7 +12,6 @@ namespace Survivors.WorldEvents.Spawner
         private float _initialSpawnDistance = 8;
         [SerializeField]
         private float _spawnDistanceStep = 16;
-        
         public float SpawnStepOnPerimeter => _spawnStepOnPerimeter;
         public float InitialSpawnDistance => _initialSpawnDistance;
         public float SpawnDistanceStep => _spawnDistanceStep;

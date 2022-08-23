@@ -3,7 +3,7 @@ using Survivors.Units;
 
 namespace Survivors.WorldEvents.Events.Tornado.Swirler
 {
-    public class UnitSwirler : Swirler, IInitializable<IUnit>
+    public class UnitSwirlController : SwirlController, IInitializable<IUnit>
     {
         private IUnit _unit;
 

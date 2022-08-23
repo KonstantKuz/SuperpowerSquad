@@ -2,7 +2,7 @@
 
 namespace Survivors.WorldEvents.Events.Tornado.Swirler
 {
-    public class SquadSwirler : Swirler, IInitializable<Squad.Squad>
+    public class SquadSwirlController : SwirlController, IInitializable<Squad.Squad>
     {
         private Squad.Squad _squad;
         

@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Survivors.WorldEvents.Events.Tornado.Swirler
 {
-    public abstract class Swirler : MonoBehaviour
+    public abstract class SwirlController : MonoBehaviour
     {
         [SerializeField] private float _moveSpeed = 9;
 

@@ -26,9 +26,10 @@ namespace Survivors.WorldEvents.Events.Lava
             this.Logger().Trace("LavaWorldEvent started");
             
             _config = (LavaEventConfig) config;
-            _config.MaxSpawnDistance = _world.GetSquad().Model.Speed.Value * _config.EventDuration;
+            var spawnParams = _config.SpawnParams;
+            spawnParams.MaxSpawnDistance = _world.GetSquad().Model.Speed.Value * _config.EventDuration;
             
-            var spawner = new CircleSpawner(_config);
+            var spawner = new CircleSpawner(spawnParams);
             spawner.Spawn(_world.GetSquad().Position, CreateLava);
             yield return WaitFinish(_config);
         }
