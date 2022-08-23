@@ -8,15 +8,11 @@ namespace Survivors.UI.Screen.World.WorldEvent
     public class WorldEventView : MonoBehaviour
     {
         [SerializeField]
-        private float _showDuration;
-        [SerializeField]
         private int _showCount;
         [SerializeField]
         private TextMeshProLocalization _textLocalization;
         
         private Sequence _textShowTween;
-        
-        private float FadeDuration => _showDuration / _showCount / 2;
         private TMP_Text Text => _textLocalization.TextComponent;
         public void Init(EventViewModel model)
         {
@@ -26,7 +22,7 @@ namespace Survivors.UI.Screen.World.WorldEvent
             DisableText();
             gameObject.SetActive(true);
             
-            PlayShowText();
+            PlayShowText(model);
         }
 
         private void DisableText()
@@ -36,19 +32,21 @@ namespace Survivors.UI.Screen.World.WorldEvent
             Text.color = color;
         }
 
-        private void PlayShowText()
+        private void PlayShowText(EventViewModel model)
         {
+            var fadeDuration = model.ShowDuration / _showCount / 2;
+            
             _textShowTween = DOTween.Sequence();
             for (int i = 0; i < _showCount; i++) {
-                _textShowTween.Append(Text.DOFade(1, FadeDuration));
-                _textShowTween.Append(Text.DOFade(0, FadeDuration));
+                _textShowTween.Append(Text.DOFade(1, fadeDuration));
+                _textShowTween.Append(Text.DOFade(0, fadeDuration));
             }
-            _textShowTween.Play();
             _textShowTween.onComplete = () => {
                 gameObject.SetActive(false);
             };
+            _textShowTween.Play();
+        
         }
-
         private void OnDisable()
         {
             Dispose();

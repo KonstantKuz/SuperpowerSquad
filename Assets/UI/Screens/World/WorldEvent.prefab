@@ -49,7 +49,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 13669185a62c448cbe29de8ff2353b3f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _showDuration: 5
   _showCount: 3
   _textLocalization: {fileID: 2455141814601315372}
 --- !u!1 &7595574091857187859
@@ -102,6 +101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _worldEventView: {fileID: 2995935222635592569}
+  _showDuration: 5
 --- !u!1 &9061795377854027845
 GameObject:
   m_ObjectHideFlags: 0
