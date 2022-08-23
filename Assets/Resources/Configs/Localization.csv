@@ -37,6 +37,7 @@ revive,revive,revive
 restart,restart,restart
 MetaAttackDamage,Upgrade Damage,Upgrade Damage
 MetaShotCount,Upgrade Shot Count,Upgrade Shot Count
+MetaDamageRadius,Upgrade Damage Radius,Upgrade Damage Radius
 MetaHealth,Upgrade Health,Upgrade Health
 Tap to play,Tap to play,Tap to play
 Max,Max,Max
@@ -51,3 +52,6 @@ BallLightningUnitWeapon,Ball Lightning Weapon,Ball Lightning Weapon
 MeteorUnitWeapon,Meteor Weapon,Meteor Weapon
 IceWaveUnitWeapon,Ice Wave Weapon,Ice Wave Weapon
 CHOOSE STARTING SKILL,CHOOSE STARTING SKILL,CHOOSE STARTING SKILL
+Lava,HOT LAVA,HOT LAVA
+Avalanche,AVALANCHE,AVALANCHE
+Tornado,TORNADO,TORNADO
