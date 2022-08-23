@@ -30,11 +30,15 @@ namespace Survivors.Units.Component.Health
             _disposable = _healthModel.MaxHealth.Diff().Subscribe(OnMaxHealthChanged);
         }
         
-        public void TakeDamage(float damage)
+        public void TakeDamage(float damage, DamageUnits units)
         {
             if (!DamageEnabled) {
                 return;
             }
+            if (units == DamageUnits.PercentFromMax) {
+                damage = MaxValue.Value * damage / 100f;
+            }
+            
             ChangeHealth(-damage);
             LogDamage(damage);
             

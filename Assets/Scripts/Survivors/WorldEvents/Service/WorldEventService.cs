@@ -55,7 +55,7 @@ namespace Survivors.WorldEvents.Service
         private IEnumerator StartEvent(WorldEventConfig eventConfig)
         {
             var currentEvent = _worldEventFactory.CreateEvent(eventConfig.EventType);
-            yield return currentEvent.Start();
+            yield return currentEvent.Start(_worldEventFactory.GetConfig(eventConfig.EventType));
         }
         
         private void DisposeCoroutine()

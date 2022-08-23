@@ -5,7 +5,7 @@ namespace Survivors.Units.Component.Health
 {
     public class DummyDamageable : MonoBehaviour, IDamageable
     {
-        public void TakeDamage(float damage)
+        public void TakeDamage(float damage, DamageUnits units)
         {
         }
 
