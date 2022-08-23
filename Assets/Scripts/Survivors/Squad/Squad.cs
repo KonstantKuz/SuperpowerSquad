@@ -134,6 +134,7 @@ namespace Survivors.Squad
                 return;
             }
             unit.GetComponent<NavMeshAgent>().enabled = false;
+            unit.GetComponent<Collider>().enabled = false;
             var renderers = unit.GetComponentsInChildren<Renderer>();
             renderers.ForEach(it => it.enabled = false);
         }

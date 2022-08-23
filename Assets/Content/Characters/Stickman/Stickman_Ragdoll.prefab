@@ -42,7 +42,7 @@ SphereCollider:
   m_GameObject: {fileID: 5974065568409977543}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.3
   m_Center: {x: 0, y: 0.28, z: 0}
@@ -70,6 +70,7 @@ CharacterJoint:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5974065568409977543}
   m_ConnectedBody: {fileID: 5974065568989118619}
+  m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
@@ -180,7 +181,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 5974065568482590154}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.09359647
   m_Height: 0.31198823
   m_Direction: 1
@@ -209,6 +210,7 @@ CharacterJoint:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5974065568482590154}
   m_ConnectedBody: {fileID: 5974065569869040108}
+  m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
@@ -289,7 +291,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 5974065568535080763}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.06317192
   m_Height: 0.31585962
   m_Direction: 1
@@ -318,6 +320,7 @@ CharacterJoint:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5974065568535080763}
   m_ConnectedBody: {fileID: 5974065570168851687}
+  m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: -1, z: 0}
   m_AutoConfigureConnectedAnchor: 1
@@ -495,6 +498,7 @@ SkinnedMeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
@@ -603,7 +607,7 @@ BoxCollider:
   m_GameObject: {fileID: 5974065568989118616}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.28531942, y: 0.4214052, z: 0.29679763}
   m_Center: {x: -0.01256685, y: 0.21070258, z: -0.00035476685}
@@ -631,6 +635,7 @@ CharacterJoint:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5974065568989118616}
   m_ConnectedBody: {fileID: 5974065569869040108}
+  m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
@@ -803,7 +808,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 5974065569158633293}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.07307126
   m_Height: 0.29228503
   m_Direction: 1
@@ -832,6 +837,7 @@ CharacterJoint:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5974065569158633293}
   m_ConnectedBody: {fileID: 5974065568482590149}
+  m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: -1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
@@ -975,7 +981,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 5974065569438993336}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.09359646
   m_Height: 0.31198817
   m_Direction: 1
@@ -1004,6 +1010,7 @@ CharacterJoint:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5974065569438993336}
   m_ConnectedBody: {fileID: 5974065569869040108}
+  m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1
@@ -1114,7 +1121,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 5974065569637992300}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.065969385
   m_Height: 0.26387754
   m_Direction: 1
@@ -1143,6 +1150,7 @@ CharacterJoint:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5974065569637992300}
   m_ConnectedBody: {fileID: 5974065568989118619}
+  m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: 0, z: -1}
   m_AutoConfigureConnectedAnchor: 1
@@ -1317,7 +1325,7 @@ BoxCollider:
   m_GameObject: {fileID: 5974065569869040109}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Size: {x: 0.31442505, y: 0.2102046, z: 0.29679763}
   m_Center: {x: -0.027638257, y: 0.1051023, z: -0.00035455823}
@@ -1410,7 +1418,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 5974065570054010844}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.06317195
   m_Height: 0.31585976
   m_Direction: 1
@@ -1439,6 +1447,7 @@ CharacterJoint:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5974065570054010844}
   m_ConnectedBody: {fileID: 5974065569637992303}
+  m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: 1, z: 0}
   m_AutoConfigureConnectedAnchor: 1
@@ -1550,7 +1559,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 5974065570168851684}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.0659694
   m_Height: 0.2638776
   m_Direction: 1
@@ -1579,6 +1588,7 @@ CharacterJoint:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5974065570168851684}
   m_ConnectedBody: {fileID: 5974065568989118619}
+  m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 0, y: 0, z: -1}
   m_AutoConfigureConnectedAnchor: 1
@@ -1689,7 +1699,7 @@ CapsuleCollider:
   m_GameObject: {fileID: 5974065570234361872}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 1
+  m_Enabled: 0
   m_Radius: 0.07307132
   m_Height: 0.2922853
   m_Direction: 1
@@ -1718,6 +1728,7 @@ CharacterJoint:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5974065570234361872}
   m_ConnectedBody: {fileID: 5974065569438993339}
+  m_ConnectedArticulationBody: {fileID: 0}
   m_Anchor: {x: 0, y: 0, z: 0}
   m_Axis: {x: 1, y: 0, z: 0}
   m_AutoConfigureConnectedAnchor: 1

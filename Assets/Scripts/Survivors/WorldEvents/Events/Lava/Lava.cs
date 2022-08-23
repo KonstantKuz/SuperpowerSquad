@@ -63,17 +63,8 @@ namespace Survivors.WorldEvents.Events.Lava
         private void DoDamage(GameObject target)
         {
             var damageable = target.RequireComponent<IDamageable>();
-            damageable.TakeDamage(CalculateDamage(damageable));
+            damageable.TakeDamage(_config.DamagePercent, DamageUnits.PercentFromMax);
             this.Logger().Trace($"Lava, damage applied, target:= {target.name}");
         }
-        private float CalculateDamage(IDamageable target)
-        {
-            return target switch {
-                    DamageableChild damageableChild => CalculateDamage(damageableChild.ParentDamageable),
-                    Health health => (health.MaxValue.Value * _config.DamagePercent) / 100,
-                    _ => throw new ArgumentException("IDamageable must be health")
-            };
-        }
-
     }
 }
