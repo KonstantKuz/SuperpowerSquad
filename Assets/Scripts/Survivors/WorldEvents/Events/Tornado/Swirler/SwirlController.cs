@@ -20,7 +20,7 @@ namespace Survivors.WorldEvents.Events.Tornado.Swirler
      
         [SerializeField] private float _timeoutAfterRelease = 1.5f; 
         
-        private ILockable _owner;
+        private IMovementLockable _owner;
         
         private GameObject _tornado;
         private IDisposable _disposable;
@@ -32,7 +32,7 @@ namespace Survivors.WorldEvents.Events.Tornado.Swirler
 
         private void Awake()
         {
-            _owner = gameObject.RequireComponentInParent<ILockable>();
+            _owner = gameObject.RequireComponentInParent<IMovementLockable>();
         }
         public void AttachToTornado(GameObject tornado)
         {

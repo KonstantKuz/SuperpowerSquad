@@ -24,7 +24,7 @@ namespace Survivors.WorldEvents.Events.Tornado
             transform.localScale = Vector3.zero;
 
             _appearTween = transform.DOScale(Vector3.one, _config.RandomAppearTime);
-            _directionCoroutine = StartCoroutine(StartDirectionChangeCoroutine());
+            _directionCoroutine = StartCoroutine(ChangeDirectionPeriodically());
             _appearTween.onComplete = () => {
                 _appearTween = null;
             };
@@ -37,7 +37,7 @@ namespace Survivors.WorldEvents.Events.Tornado
                 swirler.AttachToTornado(gameObject);
             }
         }
-        private IEnumerator StartDirectionChangeCoroutine()
+        private IEnumerator ChangeDirectionPeriodically()
         {
             while (true) {
                 yield return new WaitForSeconds(_config.DirectionChangeTimeout);

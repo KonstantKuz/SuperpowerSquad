@@ -1,6 +1,6 @@
 ﻿namespace Survivors.Units.Component
 {
-    public interface ILockable
+    public interface IMovementLockable
     {
         public void Lock();   
         public void UnLock();

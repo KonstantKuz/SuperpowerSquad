@@ -21,7 +21,7 @@ using UnityEngine;
 
 namespace Survivors.Units
 {
-    public class Unit : WorldObject, IUnit, ILockable
+    public class Unit : WorldObject, IUnit, IMovementLockable
     {
         private IUpdatableComponent[] _updatables;
         private IDamageable _damageable;

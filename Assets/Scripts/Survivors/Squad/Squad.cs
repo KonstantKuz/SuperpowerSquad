@@ -28,7 +28,7 @@ using Unit = Survivors.Units.Unit;
 
 namespace Survivors.Squad
 {
-    public class Squad : MonoBehaviour, IWorldScope, ILockable
+    public class Squad : MonoBehaviour, IWorldScope, IMovementLockable
     {
         [SerializeField] private float _unitSize;   
         [SerializeField] private float _destinationLimit = 1000;
