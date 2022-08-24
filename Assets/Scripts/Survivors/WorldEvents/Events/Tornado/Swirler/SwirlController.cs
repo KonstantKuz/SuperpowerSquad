@@ -23,7 +23,8 @@ namespace Survivors.WorldEvents.Events.Tornado.Swirler
         private IMovementLockable _owner;
         
         private GameObject _tornado;
-        private IDisposable _disposable;
+        private IDisposable _disposable; 
+        private Coroutine _timeoutCoroutine;
         
         private float _passedTime;
 
@@ -39,8 +40,13 @@ namespace Survivors.WorldEvents.Events.Tornado.Swirler
             if (IsAttached || !_timeoutCompleted) {
                 return;
             }
+            Dispose();
             _tornado = tornado;
-            _disposable = _tornado.OnDestroyAsObservable().Subscribe((o) => ReleaseFromTornado());
+            _disposable = _tornado.OnDestroyAsObservable().Subscribe((o) => {
+                if (gameObject != null && gameObject.activeInHierarchy) {
+                    ReleaseFromTornado();
+                }
+            });
             _passedTime = 0;
             _owner.Lock();
             _timeoutCompleted = false;
@@ -50,11 +56,11 @@ namespace Survivors.WorldEvents.Events.Tornado.Swirler
             if (!IsAttached) {
                 return;
             }
-            _owner.UnLock();
             _tornado = null;
             Dispose();
             _passedTime = 0;
-            StartCoroutine(StartTimeoutAfterRelease());
+            _owner.UnLock();
+            _timeoutCoroutine = StartCoroutine(StartTimeoutAfterRelease());
         }
         
         private IEnumerator StartTimeoutAfterRelease()
@@ -87,7 +93,7 @@ namespace Survivors.WorldEvents.Events.Tornado.Swirler
         
         private bool CanSwirl() => Vector3.Distance(transform.position, _tornado.transform.position) < _distanceForSwirl;
         
-        private void OnDisable()
+        private void OnDestroy()
         {
             Dispose();
         }
@@ -95,6 +101,11 @@ namespace Survivors.WorldEvents.Events.Tornado.Swirler
         {
             _disposable?.Dispose();
             _disposable = null;
+            if (_timeoutCoroutine == null) {
+                return;
+            }
+            StopCoroutine(_timeoutCoroutine);
+            _timeoutCoroutine = null;
         }
     }
     
