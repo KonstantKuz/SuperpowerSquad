@@ -16,9 +16,9 @@ MonoBehaviour:
   clientTokens:
   - 
   appIds:
-  - 462753891979116
+  - 2148152355339705
   appLabels:
-  - Tentacles Attack
+  - Survivors
   cookie: 1
   logging: 1
   status: 1
