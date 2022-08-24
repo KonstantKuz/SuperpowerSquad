@@ -20,7 +20,8 @@ namespace Survivors.Loot.Service
         [Inject] private UnitService _unitService;
         [Inject] private WorldObjectFactory _worldObjectFactory;
         [Inject] private StringKeyedConfigCollection<DroppingLootConfig> _droppingLoots;
-        
+        [Inject] private VibrationManager _vibrationManager;
+
         public void OnWorldSetup()
         {
             _unitService.OnEnemyUnitDeath += TrySpawnLoot;
@@ -52,6 +53,8 @@ namespace Survivors.Loot.Service
 
         public void OnLootCollected(DroppingLootConfig collectedLoot)
         {
+            _vibrationManager.VibrateLow();
+
             switch (collectedLoot.Type)
             {
                 case DroppingLootType.Exp:
