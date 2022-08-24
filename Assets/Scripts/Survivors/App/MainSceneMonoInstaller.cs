@@ -35,7 +35,7 @@ namespace Survivors.App
             Container.Bind<UpdateManager>().FromInstance(_updateManager).AsSingle();
             Container.Bind<IMessenger>().FromInstance(Messenger.Default).AsSingle();     
             Container.Bind<LocalizationService>().AsSingle();
-
+            Container.Bind<VibrationManager>().AsSingle();
 
             ConfigsInstaller.Install(Container);
             ModifiersInstaller.Install(Container);  
