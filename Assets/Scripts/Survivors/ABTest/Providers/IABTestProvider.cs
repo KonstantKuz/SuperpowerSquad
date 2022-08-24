@@ -1,4 +1,4 @@
-﻿namespace Survivors.ABTest
+﻿namespace Survivors.ABTest.Providers
 {
     public interface IABTestProvider
     {

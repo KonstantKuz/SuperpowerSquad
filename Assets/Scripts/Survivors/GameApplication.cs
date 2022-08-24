@@ -2,6 +2,7 @@
 using Feofun.App.Init;
 using JetBrains.Annotations;
 using Survivors.ABTest;
+using Survivors.ABTest.InitStep;
 using Survivors.Analytics;
 using Survivors.App;
 using Survivors.App.InitSteps;

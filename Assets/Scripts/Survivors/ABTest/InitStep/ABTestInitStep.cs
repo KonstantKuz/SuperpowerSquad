@@ -1,7 +1,8 @@
 ﻿using Feofun.App.Init;
+using Survivors.ABTest.Providers;
 using Zenject;
 
-namespace Survivors.ABTest
+namespace Survivors.ABTest.InitStep
 {
     public class ABTestInitStep : AppInitStep
     {

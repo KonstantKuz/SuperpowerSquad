@@ -1,5 +1,6 @@
 ﻿using System;
 using JetBrains.Annotations;
+using Survivors.ABTest.Providers;
 
 namespace Survivors.ABTest
 {
