@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using SuperMaxim.Core.Extensions;
 using SuperMaxim.Messaging;
 using Survivors.Units.Messages;
-using Survivors.Vibration;
 using UnityEngine;
 using Zenject;
 

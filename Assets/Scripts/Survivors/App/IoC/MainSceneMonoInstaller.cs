@@ -11,7 +11,6 @@ using Survivors.Reward.Installer;
 using Survivors.Squad.Installer;
 using Survivors.UI;
 using Survivors.Units.Installer;
-using Survivors.Vibration;
 using UnityEngine;
 using Zenject;
 

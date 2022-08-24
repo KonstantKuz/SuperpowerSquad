@@ -1,6 +1,5 @@
 ﻿using Feofun.Components;
 using Survivors.Units.Component.Health;
-using Survivors.Vibration;
 using Zenject;
 
 namespace Survivors.Squad.Component
