@@ -18,16 +18,15 @@ namespace Survivors.Enemy.Spawn.PlaceProviders
             _world = world;
         }
 
-        public SpawnPlace GetSpawnPlace(EnemyWaveConfig waveConfig, int rangeTry)
+        public SpawnPlace GetSpawnPlace(EnemyWaveConfig waveConfig, float outOfViewOffset)
         {
-            var position = GetRandomSpawnPosition(waveConfig, rangeTry);
+            var position = GetRandomSpawnPosition(outOfViewOffset);
             var isValid = _wavesSpawner.IsPlaceValid(position, waveConfig);
             return new SpawnPlace {IsValid = isValid, Position = position};
         }
 
-        private Vector3 GetRandomSpawnPosition(EnemyWaveConfig waveConfig, int rangeTry)
+        private Vector3 GetRandomSpawnPosition(float outOfViewOffset)
         {
-            var outOfViewOffset = _wavesSpawner.GetOutOfViewOffset(waveConfig, rangeTry);
             var spawnSide = EnumExt.GetRandom<SpawnSide>();
             var randomPosition = GetRandomPositionOnGround(spawnSide);
             return GetPositionWithOffset(randomPosition, spawnSide, outOfViewOffset);

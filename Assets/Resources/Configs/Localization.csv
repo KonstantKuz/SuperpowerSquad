@@ -37,6 +37,7 @@ revive,revive,revive
 restart,restart,restart
 MetaAttackDamage,Upgrade Damage,Upgrade Damage
 MetaShotCount,Upgrade Shot Count,Upgrade Shot Count
+MetaDamageRadius,Upgrade Damage Radius,Upgrade Damage Radius
 MetaHealth,Upgrade Health,Upgrade Health
 Tap to play,Tap to play,Tap to play
 Max,Max,Max
