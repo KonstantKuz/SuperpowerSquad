@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using SuperMaxim.Messaging;
+using Survivors.App.Config;
 using Survivors.Location;
 using Survivors.Session.Messages;
 using Survivors.WorldEvents.Config;
+using Survivors.WorldEvents.Messages;
 using UnityEngine;
 using Zenject;
 
@@ -13,7 +15,9 @@ namespace Survivors.WorldEvents.Service
         [Inject]
         private WorldEventsConfig _worldEventsConfig;      
         [Inject]
-        private WorldEventFactory _worldEventFactory;
+        private WorldEventFactory _worldEventFactory;      
+        [Inject]
+        private ConstantsConfig _constantsConfig;
         [Inject]
         private IMessenger _messenger;
         
@@ -46,16 +50,21 @@ namespace Survivors.WorldEvents.Service
         private IEnumerator StartEvents(string levelId)
         {
             foreach (var eventConfig in _worldEventsConfig.GetEventConfigs(levelId)) {
-                yield return new WaitForSeconds(eventConfig.TimeSincePreviousEvent);
+                
+                var timeoutBeforeShowWarning = Mathf.Max(0, eventConfig.TimeoutBeforeEvent - _constantsConfig.EventWarningShowDuration);
+                yield return new WaitForSeconds(timeoutBeforeShowWarning);
+                _messenger.Publish(new WorldEventWarningShowMessage(eventConfig.EventType, _constantsConfig.EventWarningShowDuration));
+                yield return new WaitForSeconds(eventConfig.TimeoutBeforeEvent - timeoutBeforeShowWarning);
                 yield return StartEvent(eventConfig);
             }
             StartLevelEvents(levelId);
         }
         
         private IEnumerator StartEvent(WorldEventConfig eventConfig)
-        {
-            var currentEvent = _worldEventFactory.CreateEvent(eventConfig.EventType);
-            yield return currentEvent.Start(_worldEventFactory.GetConfig(eventConfig.EventType));
+        { 
+            var eventType = eventConfig.EventType;
+            var currentEvent = _worldEventFactory.CreateEvent(eventType);
+            yield return currentEvent.Start(_worldEventFactory.GetConfig(eventType));
         }
         
         private void DisposeCoroutine()

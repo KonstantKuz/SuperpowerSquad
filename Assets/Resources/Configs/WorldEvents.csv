@@ -1,4 +1,4 @@
-Level,EventType,TimeSincePreviousEvent
+Level,EventType,TimeoutBeforeEvent
 1,Tornado,40
 ,Avalanche,40
 ,Lava,40
