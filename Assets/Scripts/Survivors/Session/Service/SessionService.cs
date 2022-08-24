@@ -109,7 +109,7 @@ namespace Survivors.Session.Service
         {
             CheckSquad();
             CreatePlayerUnits(_world.Squad.Model.StartingUnitCount.Value); 
-            _enemyWavesSpawner.StartSpawn(_enemyWavesConfig);
+            _enemyWavesSpawner.StartSpawn(_enemyWavesConfig); 
             _enemyHpsSpawner.StartSpawn();
         }
 

@@ -11,7 +11,7 @@ namespace Survivors.WorldEvents.Events
             yield return WaitFinish(config);
         }
 
-        protected override void Dispose()
+        protected override void Term()
         {
            
         }
