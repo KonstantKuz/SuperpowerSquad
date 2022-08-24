@@ -29,7 +29,8 @@ namespace Survivors.UI.Components
             while (true)
             {
                 Button.interactable = OverrideInteractable ? Interactable : _adsManager.IsRewardAdsReady();
-                yield return new WaitForSeconds(_checkAdsPeriod);
+                Debug.Log($"update state. interactable = {Button.interactable} ad ready = {_adsManager.IsRewardAdsReady()}");
+                yield return new WaitForSecondsRealtime(_checkAdsPeriod);
             }
         }
 

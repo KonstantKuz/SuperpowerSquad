@@ -1,5 +1,6 @@
-﻿using Feofun.UI.Components;
-using Feofun.UI.Components.Button;
+﻿using System;
+using Feofun.UI.Components;
+using Survivors.UI.Components;
 using Survivors.UI.Components.PriceView;
 using Survivors.UI.Screen.Main.MetaUpgrade.Model;
 using Survivors.Util;
@@ -19,13 +20,11 @@ namespace Survivors.UI.Screen.Main.MetaUpgrade.View
         [SerializeField]
         private PriceView _priceView;
         [SerializeField]
-        private ActionButton _actionButton;
+        private ButtonWithAds _button;
         [SerializeField]
         private GameObject _maxLevelContainer;
         [SerializeField]
         private GameObject _rewardedAdsContainer;
-
-        private ActionButton Button => _actionButton;
 
         public void Init(MetaUpgradeItemModel model)
         {
@@ -38,9 +37,28 @@ namespace Survivors.UI.Screen.Main.MetaUpgrade.View
 
             _priceView.Init(model.PriceModel);
             
-            _actionButton.Init(() => model.OnClick?.Invoke(model));
-            
-            Button.Button.interactable = model.State != UpgradeViewState.MaxLevel;
+            InitButtonWithAds(model);
+        }
+
+        private void InitButtonWithAds(MetaUpgradeItemModel model)
+        {
+            _button.Init(() => model.OnClick?.Invoke(model));
+            switch (model.State)
+            {
+                case UpgradeViewState.CanBuyForCurrency:
+                    _button.OverrideInteractable = true;
+                    _button.Interactable = model.PriceModel.Enabled;
+                    break;
+                case UpgradeViewState.CanBuyForAds:
+                    _button.OverrideInteractable = false;
+                    break;
+                case UpgradeViewState.MaxLevel:
+                    _button.OverrideInteractable = true;
+                    _button.Interactable = false;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
     }
 }
