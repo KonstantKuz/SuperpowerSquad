@@ -8,6 +8,7 @@ using Survivors.Loot.Config;
 using Survivors.Squad.Service;
 using Survivors.Units;
 using Survivors.Units.Service;
+using Survivors.Vibration;
 using Zenject;
 using Random = UnityEngine.Random;
 

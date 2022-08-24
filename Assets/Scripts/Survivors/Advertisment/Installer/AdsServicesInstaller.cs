@@ -8,7 +8,7 @@ namespace Survivors.Advertisment.Installer
     {
         public static void Install(DiContainer container)
         {
-            
+            container.Bind<AdsEventHandler>().AsSingle().NonLazy();
             container.Bind<IAdsProvider>().To<YCAdsProviderAdapter>().AsSingle();
             container.Bind<AdsManager>().AsSingle();
         }

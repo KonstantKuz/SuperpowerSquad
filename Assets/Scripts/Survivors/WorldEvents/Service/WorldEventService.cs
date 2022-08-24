@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using Logger.Extension;
 using SuperMaxim.Messaging;
 using Survivors.App.Config;
 using Survivors.Location;
@@ -19,7 +20,9 @@ namespace Survivors.WorldEvents.Service
         [Inject]
         private ConstantsConfig _constantsConfig;
         [Inject]
-        private IMessenger _messenger;
+        private IMessenger _messenger;      
+        [Inject]
+        private ABTest.ABTest _abTest;
         
         private Coroutine _eventsCoroutine;
         
@@ -35,7 +38,13 @@ namespace Survivors.WorldEvents.Service
         }
         private void OnSessionStarted(SessionStartMessage evn)
         {
-            StartLevelEvents(evn.Level.ToString());
+            if (_abTest.WithDisasters) {
+                StartLevelEvents(evn.Level.ToString());
+                this.Logger().Info("Disasters enabled");
+            } else {
+                this.Logger().Info("Disasters disabled");
+            }
+     
         }
         private void OnSessionFinished(SessionEndMessage evn)
         {
