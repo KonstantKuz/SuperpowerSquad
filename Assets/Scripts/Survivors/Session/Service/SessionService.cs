@@ -61,13 +61,15 @@ namespace Survivors.Session.Service
             _unitService.OnEnemyUnitDeath += OnEnemyUnitDeath;
             ResetKills();
             _disposable = new CompositeDisposable();
+            Create();
         }
-        
+
         public void Start()
         {
-            CreateSession();
-            CreateSquad();
-            SpawnUnits();
+            _playerProgressService.OnSessionStarted(LevelConfig.Level);
+            _messenger.Publish(new SessionStartMessage(LevelConfig.Level));
+            _analytics.ReportLevelStart();
+            this.Logger().Debug($"Kill enemies in mission:= {LevelConfig.KillCount}");
         }
         public void ChangeStartUnit(string unitId)
         {
@@ -75,16 +77,18 @@ namespace Survivors.Session.Service
             _world.Squad.RemoveUnits();
             _unitFactory.CreatePlayerUnits(unitId, _world.Squad.Model.StartingUnitCount.Value);
         }
+        private void Create()
+        {
+            CreateSession();
+            CreateSquad();
+            SpawnUnits();
+        }
         private void CreateSession()
         {
             var levelConfig = LevelConfig;
             var newSession = Model.Session.Build(levelConfig);
             _repository.Set(newSession);
-            _playerProgressService.OnSessionStarted(levelConfig.Level);
-            _messenger.Publish(new SessionStartMessage(levelConfig.Level));
-            this.Logger().Debug($"Kill enemies:= {levelConfig.KillCount}");
         }
-    
         private void CreateSquad()
         {
             var squad = _squadFactory.CreateSquad();
@@ -105,7 +109,7 @@ namespace Survivors.Session.Service
         {
             CheckSquad();
             CreatePlayerUnits(_world.Squad.Model.StartingUnitCount.Value); 
-            _enemyWavesSpawner.StartSpawn(_enemyWavesConfig);
+            _enemyWavesSpawner.StartSpawn(_enemyWavesConfig); 
             _enemyHpsSpawner.StartSpawn();
         }
 
@@ -165,7 +169,5 @@ namespace Survivors.Session.Service
         {
             Session.AddRevive();
         }
-
-    
     }
 }

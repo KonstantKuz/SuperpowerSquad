@@ -1,35 +1,27 @@
 ﻿using System;
 using System.Collections.Generic;
-using Survivors.Location;
-using Survivors.WorldEvents.Events.Lava.Config;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-namespace Survivors.WorldEvents.Events.Lava
+namespace Survivors.WorldEvents.Spawner
 {
-    public class CircleLavaSpawner
+    public class CircleSpawner
     {
-        private readonly LavaEventConfig _config;
-        private readonly World _world;
+        private readonly CircleSpawnParams _config;
 
-        private float MaxSpawnDistance => _world.GetSquad().Model.Speed.Value * _config.EventDuration;
-
-        public CircleLavaSpawner(LavaEventConfig config, World world)
+        public CircleSpawner(CircleSpawnParams config)
         {
             _config = config;
-            _world = world;
         }
-
-        public void SpawnLava(Action<Vector3> lavaCreateFunc)
+        public void Spawn(Vector3 spawnCircleCenter, Action<Vector3> createFunc)
         {
-            for (int spawnDistance = (int) _config.MinLavaDiameter; spawnDistance < MaxSpawnDistance; spawnDistance += (int) (_config.MinLavaDiameter * 2)) {
+            for (float spawnDistance = _config.InitialSpawnDistance; spawnDistance < _config.MaxSpawnDistance; spawnDistance += _config.SpawnDistanceStep) {
                 var spawnCount = CalculateSpawnCount(spawnDistance);
-                foreach (var place in GetSpawnPlacesOnCircle(_world.GetSquad().Position, spawnDistance, spawnCount)) {
-                    lavaCreateFunc(place);
+                foreach (var place in GetSpawnPlacesOnCircle(spawnCircleCenter, spawnDistance, spawnCount)) {
+                    createFunc(place);
                 }
             }
         }
-
         private int CalculateSpawnCount(float spawnRadius)
         {
             var circlePerimeter = (2 * Mathf.PI * spawnRadius);
@@ -44,11 +36,10 @@ namespace Survivors.WorldEvents.Events.Lava
                 yield return CalculateRandomPointOnSection(circleCenter, angle, stepAngle, spawnDistance);
             }
         }
-
         private Vector3 CalculateRandomPointOnSection(Vector3 circleCenter, float angle, float stepAngle, float spawnDistance)
         {
             var randomAngle = Random.Range(angle - stepAngle / 2, angle);
-            var randomSpawnDistance = Random.Range(spawnDistance - _config.MinLavaDiameter, spawnDistance + _config.MinLavaDiameter);
+            var randomSpawnDistance = Random.Range(spawnDistance - _config.SpawnDistanceStep / 2, spawnDistance + _config.SpawnDistanceStep / 2);
             return circleCenter + Quaternion.Euler(0, randomAngle, 0) * Vector3.forward * randomSpawnDistance;
         }
     }

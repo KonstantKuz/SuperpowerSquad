@@ -24,12 +24,10 @@ namespace Survivors.WorldEvents.Events.Avalanche
             {
                 SpawnCobblestone();
                 yield return new WaitForSeconds(_config.SpawnPeriod);
-                
                 lifeTime += _config.SpawnPeriod;
                 if (lifeTime >= _config.EventDuration) yield break;
             }
         }
-
         private void SpawnCobblestone()
         {
             var stone = _worldObjectFactory.CreateObject(_config.CobblestonePrefab).RequireComponent<Cobblestone>();
@@ -75,9 +73,9 @@ namespace Survivors.WorldEvents.Events.Avalanche
         {
             return Physics.CheckSphere(place, _config.MinDistanceBtwnStones, _config.CobbleStoneMask);
         }
-        
-        protected override void Dispose()
+        protected override void Term()
         {
         }
+
     }
 }
