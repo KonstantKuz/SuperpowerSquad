@@ -8,7 +8,7 @@ namespace Survivors.WorldEvents.Config
         [DataMember(Name = "EventType")]
         public WorldEventType EventType;
 
-        [DataMember(Name = "TimeSincePreviousEvent")]
-        public float TimeSincePreviousEvent;
+        [DataMember(Name = "TimeoutBeforeEvent")]
+        public float TimeoutBeforeEvent;
     }
 }

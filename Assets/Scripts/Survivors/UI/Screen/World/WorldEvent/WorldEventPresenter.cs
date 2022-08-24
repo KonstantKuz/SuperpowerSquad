@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using SuperMaxim.Messaging;
-using Survivors.WorldEvents.Config;
+﻿using SuperMaxim.Messaging;
 using Survivors.WorldEvents.Messages;
 using UnityEngine;
 using Zenject;
@@ -11,45 +9,24 @@ namespace Survivors.UI.Screen.World.WorldEvent
     {
         [SerializeField]
         private WorldEventView _worldEventView;
-        [SerializeField]
-        private float _showDuration;
-        
+
         [Inject]
         public IMessenger _messenger;
-        
-        private Coroutine _timerCoroutine;
-        
+
         public void OnEnable()
         {
-            Dispose();
-            _messenger.Subscribe<WorldEventTimerStartMessage>(OnEventTimerStarted);
+            _messenger.Subscribe<WorldEventWarningShowMessage>(OnEventWarningShow);
         }
 
-        private void OnEventTimerStarted(WorldEventTimerStartMessage evn)
+        private void OnEventWarningShow(WorldEventWarningShowMessage evn)
         {
-            Dispose();
-            var timeoutBeforeShowView = Mathf.Max(0, evn.TimeBeforeShowEvent - _showDuration);
-            _timerCoroutine = StartCoroutine(StartTimerBeforeShowView(timeoutBeforeShowView, evn.EventType));
-        }
-        private IEnumerator StartTimerBeforeShowView(float timeout, WorldEventType eventType)
-        {
-            yield return new WaitForSeconds(timeout);
-            _worldEventView.Init(new EventViewModel(eventType, _showDuration));
+            _worldEventView.Init(new EventViewModel(evn.EventType, evn.EventWarningShowDuration));
         }
         public void OnDisable()
         {
-            Dispose();
-            _messenger.Unsubscribe<WorldEventTimerStartMessage>(OnEventTimerStarted);
+            _messenger.Unsubscribe<WorldEventWarningShowMessage>(OnEventWarningShow);
         }
-
-        private void Dispose()
-        {
-            if (_timerCoroutine == null) {
-                return;
-            }
-            StopCoroutine(_timerCoroutine);
-            _timerCoroutine = null;
-        }
+        
 
     }
 }

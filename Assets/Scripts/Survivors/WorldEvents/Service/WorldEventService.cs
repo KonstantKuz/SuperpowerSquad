@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using SuperMaxim.Messaging;
+using Survivors.App.Config;
 using Survivors.Location;
 using Survivors.Session.Messages;
 using Survivors.WorldEvents.Config;
@@ -14,7 +15,9 @@ namespace Survivors.WorldEvents.Service
         [Inject]
         private WorldEventsConfig _worldEventsConfig;      
         [Inject]
-        private WorldEventFactory _worldEventFactory;
+        private WorldEventFactory _worldEventFactory;      
+        [Inject]
+        private ConstantsConfig _constantsConfig;
         [Inject]
         private IMessenger _messenger;
         
@@ -47,8 +50,11 @@ namespace Survivors.WorldEvents.Service
         private IEnumerator StartEvents(string levelId)
         {
             foreach (var eventConfig in _worldEventsConfig.GetEventConfigs(levelId)) {
-                _messenger.Publish(new WorldEventTimerStartMessage(eventConfig.EventType, eventConfig.TimeSincePreviousEvent));
-                yield return new WaitForSeconds(eventConfig.TimeSincePreviousEvent);
+                
+                var timeoutBeforeShowWarning = Mathf.Max(0, eventConfig.TimeoutBeforeEvent - _constantsConfig.EventWarningShowDuration);
+                yield return new WaitForSeconds(timeoutBeforeShowWarning);
+                _messenger.Publish(new WorldEventWarningShowMessage(eventConfig.EventType, _constantsConfig.EventWarningShowDuration));
+                yield return new WaitForSeconds(eventConfig.TimeoutBeforeEvent - timeoutBeforeShowWarning);
                 yield return StartEvent(eventConfig);
             }
             StartLevelEvents(levelId);
