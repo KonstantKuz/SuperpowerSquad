@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Survivors.UI.Screen.World.WorldEvent
 {
-    public class WorldEventView : MonoBehaviour
+    public class WorldEventWarningView : MonoBehaviour
     {
         [SerializeField]
         private int _showCount;

@@ -8,7 +8,7 @@ namespace Survivors.UI.Screen.World.WorldEvent
     public class WorldEventPresenter : MonoBehaviour
     {
         [SerializeField]
-        private WorldEventView _worldEventView;
+        private WorldEventWarningView worldEventView;
 
         [Inject]
         public IMessenger _messenger;
@@ -20,7 +20,7 @@ namespace Survivors.UI.Screen.World.WorldEvent
 
         private void OnEventWarningShow(WorldEventWarningShowMessage evn)
         {
-            _worldEventView.Init(new EventViewModel(evn.EventType, evn.EventWarningShowDuration));
+            worldEventView.Init(new EventViewModel(evn.EventType, evn.EventWarningShowDuration));
         }
         public void OnDisable()
         {
