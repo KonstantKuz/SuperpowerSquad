@@ -38,6 +38,7 @@ namespace Survivors.App
             Container.Bind<IMessenger>().FromInstance(Messenger.Default).AsSingle();     
             Container.Bind<LocalizationService>().AsSingle();
             Container.Bind<AdsEventHandler>().AsSingle().NonLazy();
+            Container.Bind<VibrationManager>().AsSingle();
 
             ConfigsInstaller.Install(Container);
             ModifiersInstaller.Install(Container);  

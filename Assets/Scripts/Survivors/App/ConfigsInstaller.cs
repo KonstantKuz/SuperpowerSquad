@@ -12,9 +12,9 @@ using Survivors.Session.Model;
 using Survivors.Shop.Config;
 using Survivors.Units.Enemy.Config;
 using Survivors.Squad.Config;
-using Survivors.Squad.Upgrade.Config;
-using Survivors.Squad.UpgradeSelection.Config;
 using Survivors.Units.Player.Config;
+using Survivors.Upgrade.Config;
+using Survivors.Upgrade.UpgradeSelection.Config;
 using Survivors.WorldEvents.Config;
 using Zenject;
 

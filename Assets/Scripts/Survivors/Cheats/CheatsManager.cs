@@ -6,7 +6,8 @@ using Survivors.Advertisment.Service;
 using Survivors.Cheats.Data;
 using Survivors.Cheats.Repository;
 using Survivors.Squad.Service;
-using Survivors.Squad.Upgrade;
+using Survivors.Upgrade;
+using Survivors.Upgrade.MetaUpgrade;
 using UnityEngine;
 using Zenject;
 
