@@ -59,7 +59,8 @@ GameObject:
   - component: {fileID: 2747964323612514369}
   - component: {fileID: 1172089039349224172}
   - component: {fileID: 2678132323682739517}
-  m_Layer: 0
+  - component: {fileID: 2731381721065287126}
+  m_Layer: 9
   m_Name: SquadDestination
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -201,6 +202,23 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 3
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2731381721065287126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6055223781889748532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 021f799e7de844959061334b5c6ac98b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _moveSpeed: 9
+  _swirlDuration: 0.7
+  _moveAngle: 90
+  _distanceForSwirl: 1.5
+  _timeoutAfterRelease: 1.5
 --- !u!1 &6750970296098963895
 GameObject:
   m_ObjectHideFlags: 0

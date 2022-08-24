@@ -13,7 +13,10 @@ MonoBehaviour:
   m_Name: LavaEventConfig
   m_EditorClassIdentifier: 
   _eventDuration: 15
-  _spawnStepOnPerimeter: 15
+  _spawnParams:
+    _spawnStepOnPerimeter: 15
+    _initialSpawnDistance: 8
+    _spawnDistanceStep: 16
   _minLavaRadius: 4
   _maxLavaRadius: 8
   _damagePeriod: 1

@@ -36,8 +36,7 @@ namespace Survivors.UI.Screen.Main
             _disposable = new CompositeDisposable();
             
             _world.Setup();
-            _sessionService.Start();
-        
+            
             _joystick.Attach(transform); // todo: can be replaced by adding to the parent screen
             _levelProgressBar.Init(_sessionService.LevelConfig.Level);
             

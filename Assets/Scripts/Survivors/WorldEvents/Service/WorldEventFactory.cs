@@ -5,6 +5,7 @@ using Survivors.WorldEvents.Config;
 using Survivors.WorldEvents.Events;
 using Survivors.WorldEvents.Events.Avalanche;
 using Survivors.WorldEvents.Events.Lava;
+using Survivors.WorldEvents.Events.Tornado;
 using UnityEngine;
 using Zenject;
 
@@ -15,7 +16,8 @@ namespace Survivors.WorldEvents.Service
         private readonly Dictionary<WorldEventType, Type> _worldEvents = new Dictionary<WorldEventType, Type>() {
                 {WorldEventType.Test, typeof(TestWorldEvent)},
                 {WorldEventType.Avalanche, typeof(AvalancheEvent)},
-                {WorldEventType.Lava, typeof(LavaWorldEvent)},
+                {WorldEventType.Lava, typeof(LavaWorldEvent)},       
+                {WorldEventType.Tornado, typeof(TornadoWorldEvent)},
         };
         [Inject]
         private DiContainer _diContainer;
