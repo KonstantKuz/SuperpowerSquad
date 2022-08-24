@@ -24,8 +24,8 @@ MonoBehaviour:
   BannerDisplayOnInitEditor: 1
   InterstitialInterval: 20
   activeLogs: 1
-  Name: Tentacles Attack
-  FbAppId: 462753891979116
+  Name: Survivors
+  FbAppId: 2148152355339705
   appleId: 
   MmpAdjust: 0
   MmpAdjustAppToken: 
@@ -35,6 +35,6 @@ MonoBehaviour:
   IosInterstitial: 
   IosRewarded: 
   IosBanner: 
-  AndroidInterstitial: 0d985d2da4d339b5
-  AndroidRewarded: 4e73c7556b57d5e7
-  AndroidBanner: 9385b1c9b166de1e
+  AndroidInterstitial: 14724f903baf67aa
+  AndroidRewarded: 709a452cfe60e252
+  AndroidBanner: d6e87eeff0ae8de1
