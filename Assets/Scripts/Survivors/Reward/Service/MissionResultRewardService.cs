@@ -15,11 +15,11 @@ namespace Survivors.Reward.Service
         [Inject]
         private readonly ConfigCollection<SessionResult, MissionRewardsConfig> _missionRewards;
 
-        public List<RewardItem> CalculateRewards(SessionResult result, Session.Model.Session session)
+        public List<RewardItem> CalculateRewards(SessionResult result, Session.Model.Session session, int multiplier = 1)
         {
             var missionConfig = _missionRewards.Get(result);
             var rewardCount = (int) (session.Kills * missionConfig.KilledFactor);
-            var reward = new RewardItem(Currency.Soft.ToString(), RewardType.Currency, rewardCount);
+            var reward = new RewardItem(Currency.Soft.ToString(), RewardType.Currency, rewardCount * multiplier);
             return new List<RewardItem>() {
                     reward
             };

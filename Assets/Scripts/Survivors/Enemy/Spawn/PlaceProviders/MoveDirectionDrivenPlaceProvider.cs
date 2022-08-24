@@ -21,14 +21,14 @@ namespace Survivors.Enemy.Spawn.PlaceProviders
             _squad = squad;
         }
 
-        public SpawnPlace GetSpawnPlace(EnemyWaveConfig waveConfig, int rangeTry)
+        public SpawnPlace GetSpawnPlace(EnemyWaveConfig waveConfig, float outOfViewOffset)
         {
             var moveDirection = _squad.MoveDirection.XZ();
             if (moveDirection.magnitude < Mathf.Epsilon)
             {
                 return SpawnPlace.INVALID;
             }
-            var position = GetSpawnPlaceByDestination(waveConfig, rangeTry, moveDirection);
+            var position = GetSpawnPlaceByDestination(outOfViewOffset, moveDirection);
             if (position == null)
             {
                 return SpawnPlace.INVALID;
@@ -37,7 +37,7 @@ namespace Survivors.Enemy.Spawn.PlaceProviders
             return new SpawnPlace {IsValid = isValid, Position = position.Value};
         }
         
-        private Vector3? GetSpawnPlaceByDestination(EnemyWaveConfig waveConfig, int rangeTry, Vector3 moveDirection)
+        private Vector3? GetSpawnPlaceByDestination(float outOfViewOffset, Vector3 moveDirection)
         {
             var ray = new Ray(_squad.Destination.transform.position, moveDirection);
             var frustumIntersectionPoint = GetFrustumIntersectionPoint(ray);
@@ -47,7 +47,6 @@ namespace Survivors.Enemy.Spawn.PlaceProviders
                 return null;
             }
             
-            var outOfViewOffset = _wavesSpawner.GetOutOfViewOffset(waveConfig, rangeTry);
             return frustumIntersectionPoint + moveDirection * outOfViewOffset;
         }
 

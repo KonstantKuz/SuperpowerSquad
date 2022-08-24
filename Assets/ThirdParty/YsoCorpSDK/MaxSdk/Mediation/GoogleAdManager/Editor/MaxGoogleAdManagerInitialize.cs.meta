@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ce3b79ea53b1469ea31c32ab0ed25ccc
+labels:
+- al_max
+- al_max_export_path-MaxSdk/Mediation/GoogleAdManager/Editor/MaxGoogleAdManagerInitialize.cs
+- al_max_export_path-MaxSdk\Mediation\GoogleAdManager\Editor\MaxGoogleAdManagerInitialize.cs
+MonoImporter:
+  externalObjects: {}
+  serializedVersion: 2
+  defaultReferences: []
+  executionOrder: 0
+  icon: {instanceID: 0}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

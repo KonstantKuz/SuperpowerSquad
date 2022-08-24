@@ -18,7 +18,7 @@ namespace Survivors.Units.Component.Health
 
         private NavMeshAgent _agent;
         private Sequence _explosionJump;
-
+        
         private void Awake()
         {
             _owner = GetComponent<Unit>();
@@ -43,7 +43,7 @@ namespace Survivors.Units.Component.Health
             _explosionJump = DOTween.Sequence();
             _explosionJump.Append(move).Insert(0, rotate).Play();
             
-            _owner.IsActive = false;
+            _owner.Lock();
             _agent.enabled = false;
             
             _explosionJump.onComplete = () => {
@@ -55,7 +55,7 @@ namespace Survivors.Units.Component.Health
         {
             _agent.enabled = true;
             _agent.Warp(jumpPosition);
-            _owner.IsActive = true;
+            _owner.UnLock();
         }
 
         private Tween CreateJumpMove(ExplosionReactionParams reactionParams, out Vector3 jumpPosition)

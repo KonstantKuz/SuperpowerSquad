@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1c0c10579dc4899a3e6d7fc033f3cf8, type: 3}
+  m_Name: LavaEventConfig
+  m_EditorClassIdentifier: 
+  _eventDuration: 15
+  _spawnParams:
+    _spawnStepOnPerimeter: 15
+    _initialSpawnDistance: 8
+    _spawnDistanceStep: 16
+  _minLavaRadius: 4
+  _maxLavaRadius: 8
+  _damagePeriod: 1
+  _damagePercent: 5
+  _lavaPrefabId: Lava
+  _minAppearTime: 3
+  _maxAppearTime: 7
+  _minDisappearTime: 3
+  _maxDisappearTime: 7

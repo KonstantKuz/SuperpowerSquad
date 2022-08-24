@@ -1,9 +1,11 @@
 ﻿using Feofun.UI.Components.Button;
 using Feofun.UI.Dialog;
+using Logger.Extension;
 using Survivors.Location;
 using Survivors.Session.Service;
 using UnityEngine;
 using Zenject;
+using AdsManager = Survivors.Advertisment.Service.AdsManager;
 
 namespace Survivors.UI.Dialog.ReviveDialog
 {
@@ -13,7 +15,8 @@ namespace Survivors.UI.Dialog.ReviveDialog
         [SerializeField] private ActionButton _restartButton;
         
         [Inject] private World _world;
-        [Inject] private ReviveService _reviveService;
+        [Inject] private ReviveService _reviveService;     
+        [Inject] private AdsManager _adsManager;
 
         private void Awake()
         {
@@ -23,6 +26,7 @@ namespace Survivors.UI.Dialog.ReviveDialog
 
         private void OnEnable()
         {
+            _reviveButton.Button.interactable = true;
             _world.Pause();
         }
 
@@ -33,8 +37,24 @@ namespace Survivors.UI.Dialog.ReviveDialog
 
         private void Revive()
         {
-            _reviveService.Revive();
-            Hide();
+            if (_adsManager.IsRewardAdsReady()) {
+                _reviveButton.Button.interactable = false;
+                _adsManager.ShowRewardedAds(OnShownRewarded);
+            } else {
+                this.Logger().Warn($"Reward not ready, place:= {nameof(ReviveDialog)}");
+            }
+        }
+
+        private void OnShownRewarded(bool success)
+        {
+            _reviveButton.Button.interactable = true;
+            if (success) {
+                this.Logger().Info($"Rewarded ad is successful, place:= {nameof(ReviveDialog)}");
+                _reviveService.Revive();
+                Hide();
+            } else {
+                this.Logger().Warn($"Rewarded ad failed, place:= {nameof(ReviveDialog)}");
+            }
         }
 
         private void Restart()

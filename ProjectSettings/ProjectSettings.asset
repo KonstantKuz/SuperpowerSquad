@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: FeoFun
-  productName: survivors
+  productName: Survivors
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
@@ -133,7 +133,7 @@ PlayerSettings:
     16:10: 1
     16:9: 1
     Others: 1
-  bundleVersion: 0.8.0
+  bundleVersion: 0.9.0
   preloadedAssets: []
   metroInputSource: 0
   wsaTransparentSwapchain: 0
@@ -157,11 +157,11 @@ PlayerSettings:
     iPhone: com.feofunlimited.survivors
   buildNumber:
     Standalone: 0
-    iPhone: 38
+    iPhone: 39
     tvOS: 0
   overrideDefaultApplicationIdentifier: 1
-  AndroidBundleVersionCode: 38
-  AndroidMinSdkVersion: 19
+  AndroidBundleVersionCode: 39
+  AndroidMinSdkVersion: 22
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
   aotOptions: 
@@ -821,8 +821,8 @@ PlayerSettings:
   webGLThreadsSupport: 0
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
-    4: APP_METRICA_TRACK_LOCATION_DISABLED
-    7: APP_METRICA_TRACK_LOCATION_DISABLED
+    4: APP_METRICA_TRACK_LOCATION_DISABLED;gameanalytics_max_enabled;tenjin_applovin_enabled
+    7: APP_METRICA_TRACK_LOCATION_DISABLED;gameanalytics_max_enabled;tenjin_applovin_enabled
   additionalCompilerArguments: {}
   platformArchitecture: {}
   scriptingBackend:
