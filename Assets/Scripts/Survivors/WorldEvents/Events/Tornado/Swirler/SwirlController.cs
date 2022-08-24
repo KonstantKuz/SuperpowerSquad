@@ -56,13 +56,7 @@ namespace Survivors.WorldEvents.Events.Tornado.Swirler
             _passedTime = 0;
             StartCoroutine(StartTimeoutAfterRelease());
         }
-
-        private void Dispose()
-        {
-            _disposable?.Dispose();
-            _disposable = null;
-        }
-
+        
         private IEnumerator StartTimeoutAfterRelease()
         {
             yield return new WaitForSeconds(_timeoutAfterRelease);
@@ -92,6 +86,16 @@ namespace Survivors.WorldEvents.Events.Tornado.Swirler
         private bool CanRelease() => _passedTime > _swirlDuration;
         
         private bool CanSwirl() => Vector3.Distance(transform.position, _tornado.transform.position) < _distanceForSwirl;
+        
+        private void OnDisable()
+        {
+            Dispose();
+        }
+        private void Dispose()
+        {
+            _disposable?.Dispose();
+            _disposable = null;
+        }
     }
     
 }
