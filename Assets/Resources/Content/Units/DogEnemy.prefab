@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8200632565177598753}
   - component: {fileID: 6320879860712907822}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Humanoid.059
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -419,7 +419,7 @@ GameObject:
   m_Component:
   - component: {fileID: 9174834685097270984}
   - component: {fileID: 3004924998954124466}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Body Type 6-New
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -451,7 +451,7 @@ Animator:
   m_GameObject: {fileID: 8365540923523171442}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 75b1ec1ff91519a4499e704e1cdbdd27, type: 3}
-  m_Controller: {fileID: 9100000, guid: 8e6aafd4fffe33e458c98e5e90d921d3, type: 2}
+  m_Controller: {fileID: 9100000, guid: ef489619222a82c448c87c4854dba49f, type: 2}
   m_CullingMode: 2
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
