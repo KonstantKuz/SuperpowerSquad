@@ -160,7 +160,7 @@ GameObject:
   - component: {fileID: 6984366653718238170}
   - component: {fileID: 7276371001092765597}
   - component: {fileID: 5979733970110454587}
-  - component: {fileID: 121732035402607411}
+  - component: {fileID: 1540733186796612074}
   m_Layer: 5
   m_Name: ReviveButton
   m_TagString: Untagged
@@ -271,7 +271,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &121732035402607411
+--- !u!114 &1540733186796612074
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -280,9 +280,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4021134417200537150}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9722a2dae98b46709e7c4c7075ab11fe, type: 3}
+  m_Script: {fileID: 11500000, guid: f849c915e1113454cb4e3cc4b20f8525, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _checkAdsPeriod: 0.2
 --- !u!1 &4838027146479973563
 GameObject:
   m_ObjectHideFlags: 0
@@ -730,5 +731,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fee312e487624a0ebb8d2a757ce81d84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _reviveButton: {fileID: 121732035402607411}
+  _reviveButton: {fileID: 1540733186796612074}
   _restartButton: {fileID: 4167405067994053883}

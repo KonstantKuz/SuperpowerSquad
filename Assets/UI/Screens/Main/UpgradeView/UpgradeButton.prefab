@@ -80,7 +80,7 @@ MonoBehaviour:
   _level: {fileID: 3215497326196023917}
   _icon: {fileID: 7234923298611955297}
   _priceView: {fileID: 6095917252822185715}
-  _actionButton: {fileID: 3086145928263172409}
+  _button: {fileID: 1602897543149378834}
   _maxLevelContainer: {fileID: 3616384990145754648}
   _rewardedAdsContainer: {fileID: 2201099807888484037}
 --- !u!1 &2197910801993570454
@@ -612,7 +612,7 @@ GameObject:
   - component: {fileID: 3673390583657249979}
   - component: {fileID: 5704384227676813399}
   - component: {fileID: 509519852765027238}
-  - component: {fileID: 3086145928263172409}
+  - component: {fileID: 1602897543149378834}
   m_Layer: 0
   m_Name: Button
   m_TagString: Untagged
@@ -721,7 +721,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &3086145928263172409
+--- !u!114 &1602897543149378834
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -730,9 +730,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4067708874547224713}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9722a2dae98b46709e7c4c7075ab11fe, type: 3}
+  m_Script: {fileID: 11500000, guid: f849c915e1113454cb4e3cc4b20f8525, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _checkAdsPeriod: 0.2
 --- !u!1 &4897265939174307812
 GameObject:
   m_ObjectHideFlags: 0

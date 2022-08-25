@@ -607,7 +607,7 @@ GameObject:
   - component: {fileID: 3316809175685370718}
   - component: {fileID: 4971113575694681547}
   - component: {fileID: 1301932732303864979}
-  - component: {fileID: 1412413630242205834}
+  - component: {fileID: 384609218930067462}
   m_Layer: 5
   m_Name: GetRewardButton
   m_TagString: Untagged
@@ -731,7 +731,7 @@ CanvasGroup:
   m_Interactable: 1
   m_BlocksRaycasts: 1
   m_IgnoreParentGroups: 0
---- !u!114 &1412413630242205834
+--- !u!114 &384609218930067462
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -740,9 +740,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 4104534540438186246}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9722a2dae98b46709e7c4c7075ab11fe, type: 3}
+  m_Script: {fileID: 11500000, guid: f849c915e1113454cb4e3cc4b20f8525, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _checkAdsPeriod: 0.2
 --- !u!1 &4828912204242405354
 GameObject:
   m_ObjectHideFlags: 0
@@ -1023,7 +1024,7 @@ MonoBehaviour:
   _adsButtons: {fileID: 6969265206499968170}
   _rewardText: {fileID: 2654186076842935619}
   _arrowContainer: {fileID: 6103043998777979739}
-  _moveSpeed: 50
+  _moveSpeed: 100
 --- !u!114 &6969265206499968170
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1036,7 +1037,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1393b10b170f4f269a1cf578e1e41a50, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _acceptButton: {fileID: 1412413630242205834}
+  _acceptButton: {fileID: 384609218930067462}
   _declineButton: {fileID: 3480066108871876102}
   _declineButtonShowDelay: 2
 --- !u!1 &6103043998704996991
