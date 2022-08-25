@@ -20,7 +20,6 @@ namespace Survivors.Units.Service
         public IEnumerable<IUnit> AllUnits => _units.SelectMany(it => it.Value);
 
         [Inject] private IMessenger _messenger;
-        [Inject] private VibrationManager _vibrationManager;
 
         public void Add(IUnit unit)
         {
@@ -47,7 +46,6 @@ namespace Survivors.Units.Service
             if (unit.UnitType == UnitType.PLAYER) {
                 OnPlayerUnitDeath?.Invoke(unit);
             } else {
-                _vibrationManager.VibrateLow();
                 OnEnemyUnitDeath?.Invoke(unit, deathCause);
             }
         }
