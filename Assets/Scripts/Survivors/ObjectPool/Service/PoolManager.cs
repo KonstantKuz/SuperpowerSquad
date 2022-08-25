@@ -9,9 +9,8 @@ namespace Survivors.ObjectPool.Service
     public class PoolManager
     {
         private static readonly ObjectPoolParams DefaultPoolParams = new ObjectPoolParams {
-                IsCollectionCheck = true,
                 InitialCapacity = 100,
-                MaxSize = 2000,
+                DetectionCapacity = 2000,
                 ObjectCreateMode = ObjectCreateMode.Group,
                 DisposeActive = true,
         };

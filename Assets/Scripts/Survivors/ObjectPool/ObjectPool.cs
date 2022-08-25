@@ -39,8 +39,8 @@ namespace Survivors.ObjectPool
                 throw new ArgumentNullException(nameof(onCreate));
             }
 
-            if (poolParams.MaxSize <= 0) {
-                throw new ArgumentException("Max Size must be greater than 0", nameof(poolParams.MaxSize));
+            if (poolParams.DetectionCapacity <= 0) {
+                throw new ArgumentException("Max Size must be greater than 0", nameof(poolParams.DetectionCapacity));
             }
 
             _initialCapacity = poolParams.InitialCapacity;
@@ -48,7 +48,7 @@ namespace Survivors.ObjectPool
             _allItems = new HashSet<T>();
             CreateMode = poolParams.ObjectCreateMode;
             _onCreate = onCreate;
-            _maxSize = poolParams.MaxSize;
+            _maxSize = poolParams.DetectionCapacity;
             _onGet = onGet;
             _onRelease = onRelease;
             _onDestroy = onDestroy;
