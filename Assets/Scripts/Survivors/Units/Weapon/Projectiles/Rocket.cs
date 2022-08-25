@@ -1,5 +1,5 @@
 ﻿using System;
-using Survivors.Location.Service;
+using Survivors.Location.ObjectFactory;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
@@ -24,7 +24,7 @@ namespace Survivors.Units.Weapon.Projectiles
 
         private Vector3 _lastTargetPos;
 
-        [Inject] private WorldObjectFactory _objectFactory;
+        [Inject] private ObjectInstancingFactory objectInstancingFactory;
 
         private ITarget _target;
 
@@ -88,7 +88,7 @@ namespace Survivors.Units.Weapon.Projectiles
 
         private void Explode(Vector3 pos)
         {
-            Explosion.Create(_objectFactory, _explosion, pos, Params.DamageRadius, TargetType, HitCallback);
+            Explosion.Create(objectInstancingFactory, _explosion, pos, Params.DamageRadius, TargetType, HitCallback);
             Destroy();
         }
 

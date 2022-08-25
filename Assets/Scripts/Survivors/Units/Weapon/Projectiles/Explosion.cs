@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-using Survivors.Location.Service;
+using Survivors.Location.ObjectFactory;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Target;
 using UnityEngine;
@@ -49,14 +49,14 @@ namespace Survivors.Units.Weapon.Projectiles
             }
         }
 
-        public static GameObject Create(WorldObjectFactory objectFactory, 
+        public static GameObject Create(ObjectInstancingFactory objectInstancingFactory, 
             Explosion prefab, 
             Vector3 pos,
             float radius, 
             UnitType targetType,
             Action<GameObject> hitCallback)
         {
-            var explosion = objectFactory.CreateObject(prefab.gameObject).GetComponent<Explosion>();
+            var explosion = objectInstancingFactory.CreateObject(prefab.gameObject).GetComponent<Explosion>();
             explosion.transform.position = pos;
             explosion.Create(radius, targetType, hitCallback);
             return explosion.gameObject;

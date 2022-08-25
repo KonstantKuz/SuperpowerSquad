@@ -2,7 +2,7 @@
 using System.Linq;
 using Feofun.Components;
 using Survivors.Location;
-using Survivors.Location.Service;
+using Survivors.Location.ObjectFactory;
 using Survivors.Loot.Service;
 using Survivors.Session.Service;
 using UniRx;
@@ -23,7 +23,7 @@ namespace Survivors.Loot
         [Inject]
         private DroppingLootService _lootService;       
         [Inject]
-        private WorldObjectFactory _worldObjectFactory;
+        private ObjectInstancingFactory objectInstancingFactory;
         [Inject]
         private SessionService _sessionService;
         [Inject] 
@@ -76,7 +76,7 @@ namespace Survivors.Loot
             
             _lootService.OnLootCollected(loot.Config);
             _movingLoots.Remove(loot);
-            _worldObjectFactory.DestroyObject<DroppingLoot>(loot.gameObject);
+            objectInstancingFactory.Destroy<DroppingLoot>(loot.gameObject);
         }
 
         public void OnDestroy()

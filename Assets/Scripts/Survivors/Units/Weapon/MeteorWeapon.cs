@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using Survivors.Extension;
-using Survivors.Location.Service;
+using Survivors.Location.ObjectFactory;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles;
 using Survivors.Units.Weapon.Projectiles.Params;
@@ -19,7 +19,7 @@ namespace Survivors.Units.Weapon
         [SerializeField] private float _randomDelay;
         
         [Inject]
-        private WorldObjectFactory _objectFactory;
+        private ObjectInstancingFactory objectInstancingFactory;
 
             
         public override void Fire(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
@@ -51,7 +51,7 @@ namespace Survivors.Units.Weapon
         private void ShootAtPosition(Vector3 position, UnitType targetUnitType, IProjectileParams projectileParams,
             Action<GameObject> hitCallback)
         {
-            var projectile = _objectFactory.CreateObject(_meteor.gameObject).RequireComponent<Meteor>();
+            var projectile = objectInstancingFactory.Create<Meteor>(_meteor.gameObject);
             projectile.transform.position = position + _startHeight * Vector3.up;
             
             projectile.Launch(targetUnitType,

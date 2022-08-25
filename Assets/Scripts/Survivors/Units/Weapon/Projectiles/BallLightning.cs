@@ -1,6 +1,6 @@
 ﻿using System;
 using Survivors.Extension;
-using Survivors.Location.Service;
+using Survivors.Location.ObjectFactory;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles.Params;
 using UniRx;
@@ -25,7 +25,7 @@ namespace Survivors.Units.Weapon.Projectiles
         [SerializeField] private float _hitTimeout;
 
         [Inject]
-        private WorldObjectFactory _objectFactory;
+        private ObjectInstancingFactory objectInstancingFactory;
         
         private Vector3 _targetPosition;
         private float _curveTime; 
@@ -62,7 +62,7 @@ namespace Survivors.Units.Weapon.Projectiles
                 if (!CanDamageTarget(hit, TargetType, out var target)) {
                     continue;
                 }
-                _lightningBoltGenerator.Hit(_objectFactory, _rootContainer, target.Center, _lightningDuration);
+                _lightningBoltGenerator.Hit(objectInstancingFactory, _rootContainer, target.Center, _lightningDuration);
                 HitCallback?.Invoke(hit.gameObject);
             }
         }

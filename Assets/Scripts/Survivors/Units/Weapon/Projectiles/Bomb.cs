@@ -1,7 +1,7 @@
 using System;
 using DG.Tweening;
 using Survivors.Extension;
-using Survivors.Location.Service;
+using Survivors.Location.ObjectFactory;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles.Params;
@@ -22,7 +22,7 @@ namespace Survivors.Units.Weapon.Projectiles
         private Tween _throwMove;
         
         [Inject]
-        private WorldObjectFactory _objectFactory;
+        private ObjectInstancingFactory objectInstancingFactory;
         
         public void Launch(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback, Vector3 targetPos)
         {
@@ -53,7 +53,7 @@ namespace Survivors.Units.Weapon.Projectiles
 
         private void Explode(Vector3 pos)
         {
-            var explosion = Explosion.Create(_objectFactory, _explosion, pos, Params.DamageRadius, TargetType, OnHit);
+            var explosion = Explosion.Create(objectInstancingFactory, _explosion, pos, Params.DamageRadius, TargetType, OnHit);
             explosion.transform.localScale *= Params.DamageRadius * _explosionScaleMultiplier;
             Destroy();
         }

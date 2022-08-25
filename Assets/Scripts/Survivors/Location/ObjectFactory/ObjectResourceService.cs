@@ -2,7 +2,7 @@
 using Survivors.Location.Model;
 using UnityEngine;
 
-namespace Survivors.Location.Service
+namespace Survivors.Location.ObjectFactory
 {
     public class ObjectResourceService
     {

@@ -1,4 +1,4 @@
-using Survivors.Location.Service;
+using Survivors.Location.ObjectFactory;
 using UnityEngine;
 using Zenject;
 
@@ -7,11 +7,11 @@ namespace Survivors.Units.Component.Death
     public class DestroyDeath : MonoBehaviour, IUnitDeath
     {
         [Inject]
-        private WorldObjectFactory _worldObjectFactory;
+        private ObjectInstancingFactory objectInstancingFactory;
         
         public void PlayDeath()
         {
-            _worldObjectFactory.DestroyObject<Unit>(gameObject);
+            objectInstancingFactory.Destroy<Unit>(gameObject);
         }
 
 

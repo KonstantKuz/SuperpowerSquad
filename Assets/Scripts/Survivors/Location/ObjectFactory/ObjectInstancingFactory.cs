@@ -2,14 +2,14 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using SuperMaxim.Core.Extensions;
 using Survivors.Extension;
-using UnityEngine;
-using Zenject;
 using UniRx;
 using UniRx.Triggers;
+using UnityEngine;
+using Zenject;
 
-namespace Survivors.Location.Service
+namespace Survivors.Location.ObjectFactory
 {
-    public class WorldObjectFactory : MonoBehaviour, IWorldObjectFactory 
+    public class ObjectInstancingFactory : MonoBehaviour, IObjectFactory 
     {
         private readonly HashSet<GameObject> _createdObjects = new HashSet<GameObject>();
         
@@ -22,13 +22,17 @@ namespace Survivors.Location.Service
         [Inject]
         private DiContainer _container;
         
-        public T CreateObject<T>(string objectId, Transform container = null) where T : MonoBehaviour
+        public T Create<T>(string objectId, Transform container = null) where T : MonoBehaviour
         {
             TryCreateDisposable();
             var prefab = _objectResourceService.GetPrefab(objectId);
-            return CreateObject(prefab.GameObject, container).RequireComponent<T>();
+            return Create<T>(prefab.GameObject, container);
         }
-        public void DestroyObject<T>(GameObject item) where T : MonoBehaviour
+        public T Create<T>(GameObject prefab, [CanBeNull] Transform container = null) where T : MonoBehaviour
+        {
+            return CreateObject(prefab, container).RequireComponent<T>();
+        }
+        public void Destroy<T>(GameObject item) where T : MonoBehaviour
         {
             Destroy(item.gameObject);
         }

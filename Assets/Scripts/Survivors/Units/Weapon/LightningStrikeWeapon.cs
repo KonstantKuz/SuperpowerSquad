@@ -1,6 +1,6 @@
 using System;
 using Survivors.Extension;
-using Survivors.Location.Service;
+using Survivors.Location.ObjectFactory;
 using Survivors.Units.Component.TargetSearcher;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles;
@@ -15,8 +15,8 @@ namespace Survivors.Units.Weapon
         [SerializeField] private LightningStrike _lightningStrike;
 
         private HealthiestEnemySearcher _healthiestEnemySearcher;
-        
-        [Inject] private WorldObjectFactory _worldObjectFactory;
+
+        [Inject] private IObjectFactory _objectFactory;
         
         private void Awake()
         {
@@ -34,7 +34,7 @@ namespace Survivors.Units.Weapon
 
         private Projectile CreateLightning()
         {
-            return _worldObjectFactory.CreateObject(_lightningStrike.gameObject).GetComponent<Projectile>();
+            return _objectFactory.Create<Projectile>(_lightningStrike.gameObject);
         }
     }
 }

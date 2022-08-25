@@ -47,7 +47,7 @@ namespace Survivors.Units.Weapon
 
         private Boomerang CreateBoomerang()
         {
-            return ObjectFactory.CreateObject(Ammo.gameObject).GetComponent<Boomerang>();
+            return ObjectInstancingFactory.CreateObject(Ammo.gameObject).GetComponent<Boomerang>();
         }
     }
 }
