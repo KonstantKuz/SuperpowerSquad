@@ -15,7 +15,7 @@ namespace Survivors.ObjectPool
         private readonly Action<T> _onDestroy;
 
         private readonly int _maxSize;
-        private readonly bool _isCollectionCheck;
+        
         private readonly bool _disposeActive;
 
         private readonly int _initialCapacity;
@@ -52,7 +52,6 @@ namespace Survivors.ObjectPool
             _onGet = onGet;
             _onRelease = onRelease;
             _onDestroy = onDestroy;
-            _isCollectionCheck = poolParams.IsCollectionCheck;
             _disposeActive = poolParams.DisposeActive;
         }
 
@@ -93,7 +92,7 @@ namespace Survivors.ObjectPool
 
         public void Release(T element)
         {
-            if (_isCollectionCheck && _inactiveStack.Count > 0 && _inactiveStack.Contains(element)) {
+            if (_inactiveStack.Count > 0 && _inactiveStack.Contains(element)) {
                 throw new InvalidOperationException("Trying to release an object that has already been released to the pool.");
             }
 

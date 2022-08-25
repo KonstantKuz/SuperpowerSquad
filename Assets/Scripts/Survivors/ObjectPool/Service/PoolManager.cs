@@ -24,7 +24,6 @@ namespace Survivors.ObjectPool.Service
         {
             _objectPoolWrapper = objectPoolWrapper;
         }
-
         public GameObject Get<T>(GameObject prefab, [CanBeNull] ObjectPoolParams poolParams = null) where T : MonoBehaviour
         {
             var type = typeof(T);
