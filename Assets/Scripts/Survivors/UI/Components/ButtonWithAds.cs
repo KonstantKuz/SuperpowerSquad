@@ -24,7 +24,7 @@ namespace Survivors.UI.Components
             _interactable = interactable;
         }
 
-        public void DeleteOverride()
+        public void ClearOverride()
         {
             _overrideInteractable = false;
             _interactable = _adsManager.IsRewardAdsReady();

@@ -49,7 +49,7 @@ namespace Survivors.UI.Screen.Main.MetaUpgrade.View
                     _button.SetOverride(model.PriceModel.Enabled);
                     break;
                 case UpgradeViewState.CanBuyForAds:
-                    _button.DeleteOverride();
+                    _button.ClearOverride();
                     break;
                 case UpgradeViewState.MaxLevel:
                     _button.SetOverride(false);
