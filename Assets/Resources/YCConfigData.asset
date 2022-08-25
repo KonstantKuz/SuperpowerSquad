@@ -17,7 +17,7 @@ MonoBehaviour:
   InAppRemoveAdsCanRemoveInBanner: 1
   InappDebug: 1
   ABVersion: 1
-  ABForcedSample: 
+  ABForcedSample: withDisasters
   ABSamples: []
   ABDebugLog: 1
   BannerDisplayOnInit: 1
