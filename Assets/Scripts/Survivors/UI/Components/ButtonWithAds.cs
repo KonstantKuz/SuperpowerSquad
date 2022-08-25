@@ -13,11 +13,22 @@ namespace Survivors.UI.Components
         [SerializeField] private float _checkAdsPeriod = 0.2f;
         
         private Coroutine _updateCoroutine;
+        private bool _overrideInteractable;
+        private bool _interactable;
         
         [Inject] private AdsManager _adsManager;
 
-        public bool OverrideInteractable { get; set; }
-        public bool Interactable { get; set; }
+        public void SetOverride(bool interactable)
+        {
+            _overrideInteractable = true;
+            _interactable = interactable;
+        }
+
+        public void DeleteOverride()
+        {
+            _overrideInteractable = false;
+            _interactable = _adsManager.IsRewardAdsReady();
+        }
 
         private void OnEnable()
         {
@@ -28,8 +39,7 @@ namespace Survivors.UI.Components
         {
             while (true)
             {
-                Button.interactable = OverrideInteractable ? Interactable : _adsManager.IsRewardAdsReady();
-                Debug.Log($"update state. interactable = {Button.interactable} ad ready = {_adsManager.IsRewardAdsReady()}");
+                Button.interactable = _overrideInteractable ? _interactable : _adsManager.IsRewardAdsReady();
                 yield return new WaitForSecondsRealtime(_checkAdsPeriod);
             }
         }

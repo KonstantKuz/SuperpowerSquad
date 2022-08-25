@@ -46,15 +46,13 @@ namespace Survivors.UI.Screen.Main.MetaUpgrade.View
             switch (model.State)
             {
                 case UpgradeViewState.CanBuyForCurrency:
-                    _button.OverrideInteractable = true;
-                    _button.Interactable = model.PriceModel.Enabled;
+                    _button.SetOverride(model.PriceModel.Enabled);
                     break;
                 case UpgradeViewState.CanBuyForAds:
-                    _button.OverrideInteractable = false;
+                    _button.DeleteOverride();
                     break;
                 case UpgradeViewState.MaxLevel:
-                    _button.OverrideInteractable = true;
-                    _button.Interactable = false;
+                    _button.SetOverride(false);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
