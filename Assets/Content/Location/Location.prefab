@@ -9,7 +9,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 205042678}
-  - component: {fileID: 205042679}
   m_Layer: 0
   m_Name: Pool
   m_TagString: Untagged
@@ -31,19 +30,6 @@ Transform:
   m_Father: {fileID: 8746036833993048138}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &205042679
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 205042676}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3dc7338745227eb46a93004d23e8a558, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _poolRoot: {fileID: 205042678}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -383,12 +369,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8746036833993048138}
+  - component: {fileID: 1866441843583567248}
   - component: {fileID: 3088611838475355998}
   - component: {fileID: 8743563882573435223}
   - component: {fileID: 1873516484607207762}
   - component: {fileID: 186752239828696303}
-  - component: {fileID: 1866441843583567248}
   - component: {fileID: 6484450709119096639}
+  - component: {fileID: 8707857358246845491}
   m_Layer: 0
   m_Name: Location
   m_TagString: Untagged
@@ -415,6 +402,23 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1866441843583567248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8746036833993048137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8aac26ad0ca244c2a4dc536a25095bd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _world: {fileID: 3088611838475355998}
+  _objectInstancingFactory: {fileID: 8743563882573435223}
+  _enemyWavesSpawner: {fileID: 1873516484607207762}
+  _enemyHpsSpawner: {fileID: 186752239828696303}
+  _diObjectPoolWrapper: {fileID: 8707857358246845491}
 --- !u!114 &3088611838475355998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -468,23 +472,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79ff066e7a284f8ab029117d16b0ac49, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &1866441843583567248
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8746036833993048137}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8aac26ad0ca244c2a4dc536a25095bd6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _world: {fileID: 3088611838475355998}
-  _objectInstancingFactory: {fileID: 8743563882573435223}
-  _enemyWavesSpawner: {fileID: 1873516484607207762}
-  _enemyHpsSpawner: {fileID: 186752239828696303}
-  _poolManager: {fileID: 205042679}
 --- !u!114 &6484450709119096639
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -500,3 +487,16 @@ MonoBehaviour:
   _softLimit: 200
   _hardLimit: 400
   _minRemovalAge: 1
+--- !u!114 &8707857358246845491
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8746036833993048137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 82909d5aa2694c04b89670014c4db6f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _poolRoot: {fileID: 205042678}

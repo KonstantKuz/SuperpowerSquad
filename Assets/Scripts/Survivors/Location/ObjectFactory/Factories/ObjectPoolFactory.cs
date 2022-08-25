@@ -4,7 +4,7 @@ using Survivors.ObjectPool.Service;
 using UnityEngine;
 using Zenject;
 
-namespace Survivors.Location.ObjectFactory
+namespace Survivors.Location.ObjectFactory.Factories
 {
     public class ObjectPoolFactory : IObjectFactory
     {
@@ -22,9 +22,9 @@ namespace Survivors.Location.ObjectFactory
             return GetPoolObject<T>(prefab, container).RequireComponent<T>();
         }
 
-        public void Destroy<T>(GameObject item) where T : MonoBehaviour
+        public void Destroy<T>(GameObject instance) where T : MonoBehaviour
         {
-            _poolManager.Release<T>(item);
+            _poolManager.Release<T>(instance);
         }
 
         public void DestroyAllObjects()
@@ -32,8 +32,8 @@ namespace Survivors.Location.ObjectFactory
             _poolManager.ReleaseAllActive();
         }
 
-        private GameObject GetPoolObject<T>(GameObject prefab, [CanBeNull] Transform container = null)
-            where T : MonoBehaviour
+        private GameObject GetPoolObject<T>(GameObject prefab, [CanBeNull] Transform container = null) 
+                where T : MonoBehaviour
         {
             var poolObject = _poolManager.Get<T>(prefab);
             if (container != null)

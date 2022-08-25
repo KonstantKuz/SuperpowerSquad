@@ -1,5 +1,6 @@
 ﻿using System;
 using Survivors.Location.ObjectFactory;
+using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;

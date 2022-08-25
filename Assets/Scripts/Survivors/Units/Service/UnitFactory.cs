@@ -2,6 +2,7 @@
 using ModestTree;
 using Survivors.Location;
 using Survivors.Location.ObjectFactory;
+using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Units.Enemy.Config;
 using Survivors.Units.Enemy.Model;
 using Zenject;
@@ -12,7 +13,11 @@ namespace Survivors.Units.Service
     {
         [Inject] private World _world;
         [Inject(Id = ObjectFactoryType.Instancing)] 
-        protected IObjectFactory _objectFactory;  
+        protected IObjectFactory _objectFactory;
+        
+        [Inject(Id = ObjectFactoryType.Pool)] 
+        protected IObjectFactory _poolObjectFactory;  
+        
         [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
         [Inject] private PlayerUnitModelBuilder _playerUnitModelBuilder;
         
@@ -37,7 +42,7 @@ namespace Survivors.Units.Service
         
         public Unit CreateEnemy(string unitId, int level)
         {
-            var enemy = _objectFactory.Create<Unit>(unitId);
+            var enemy = _poolObjectFactory.Create<Unit>(unitId);
             var config = _enemyUnitConfigs.Get(unitId);
             var model = new EnemyUnitModel(config, level);
             enemy.Init(model);

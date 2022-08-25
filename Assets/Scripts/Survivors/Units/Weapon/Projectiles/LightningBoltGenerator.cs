@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using DigitalRuby.ThunderAndLightning;
 using Survivors.Location.ObjectFactory;
+using Survivors.Location.ObjectFactory.Factories;
 using UnityEngine;
 
 namespace Survivors.Units.Weapon.Projectiles

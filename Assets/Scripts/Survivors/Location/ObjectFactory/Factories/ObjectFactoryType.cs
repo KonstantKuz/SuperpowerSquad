@@ -1,4 +1,4 @@
-namespace Survivors.Location.ObjectFactory
+namespace Survivors.Location.ObjectFactory.Factories
 {
     public enum ObjectFactoryType
     {

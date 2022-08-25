@@ -4,6 +4,7 @@ using Feofun.Extension;
 using Survivors.Extension;
 using Survivors.Location;
 using Survivors.Location.ObjectFactory;
+using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Session;
 using Survivors.Squad.Formation;
 using Survivors.Units.Weapon.Projectiles;

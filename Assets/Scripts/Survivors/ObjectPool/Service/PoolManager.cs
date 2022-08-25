@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using Survivors.ObjectPool.Wrapper;
 using UnityEngine;
-using Zenject;
 
 namespace Survivors.ObjectPool.Service
 {
-    public class PoolManager : MonoBehaviour
+    public class PoolManager
     {
-        private static readonly ObjectPoolParams PoolParams = new ObjectPoolParams {
+        private static readonly ObjectPoolParams DefaultPoolParams = new ObjectPoolParams {
                 IsCollectionCheck = true,
                 InitialCapacity = 100,
                 MaxSize = 2000,
@@ -17,19 +17,20 @@ namespace Survivors.ObjectPool.Service
         };
 
         private readonly Dictionary<Type, IObjectPool<GameObject>> _pools = new Dictionary<Type, IObjectPool<GameObject>>();
-
-        [SerializeField]
-        private Transform _poolRoot;
-
-        [Inject]
-        private DiContainer _container;
         
+        private readonly IObjectPoolWrapper _objectPoolWrapper;
+        
+        public PoolManager(IObjectPoolWrapper objectPoolWrapper)
+        {
+            _objectPoolWrapper = objectPoolWrapper;
+        }
+
         public GameObject Get<T>(GameObject prefab, [CanBeNull] ObjectPoolParams poolParams = null) where T : MonoBehaviour
         {
             var type = typeof(T);
 
             if (!_pools.ContainsKey(type)) {
-                _pools[type] = BuildObjectPool(prefab, poolParams);
+                _pools[type] = _objectPoolWrapper.BuildObjectPool(prefab, poolParams ?? DefaultPoolParams);
             }
             return _pools[type].Get();
         }
@@ -49,36 +50,6 @@ namespace Survivors.ObjectPool.Service
             foreach (var pool in _pools.Values) {
                 pool.ReleaseAllActive();
             }
-        }
-
-        private ObjectPool<GameObject> BuildObjectPool(GameObject prefab, [CanBeNull] ObjectPoolParams poolParams = null)
-        { 
-            return new ObjectPool<GameObject>(() => OnCreateObject(prefab), OnGetFromPool, OnReleaseToPool, OnDestroyObject, poolParams ?? PoolParams);
-        }
-
-        private GameObject OnCreateObject(GameObject prefab)
-        {
-            var createdGameObject = _container.InstantiatePrefab(prefab, _poolRoot);
-            createdGameObject.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
-            return createdGameObject;
-        }
-
-        private void OnGetFromPool(GameObject instance)
-        {
-            instance.transform.SetParent(_poolRoot);
-            instance.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
-            instance.gameObject.SetActive(true);
-        }
-
-        private void OnReleaseToPool(GameObject instance)
-        {
-            instance.transform.SetParent(_poolRoot);
-            instance.gameObject.SetActive(false);
-        }
-
-        private void OnDestroyObject(GameObject instance)
-        {
-            Destroy(instance.gameObject);
         }
     }
 }

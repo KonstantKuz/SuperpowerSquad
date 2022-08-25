@@ -7,7 +7,7 @@ using UniRx.Triggers;
 using UnityEngine;
 using Zenject;
 
-namespace Survivors.Location.ObjectFactory
+namespace Survivors.Location.ObjectFactory.Factories
 {
     public class ObjectInstancingFactory : MonoBehaviour, IObjectFactory 
     {
@@ -32,9 +32,9 @@ namespace Survivors.Location.ObjectFactory
         {
             return CreateObject(prefab, container).RequireComponent<T>();
         }
-        public void Destroy<T>(GameObject item) where T : MonoBehaviour
+        public void Destroy<T>(GameObject instance) where T : MonoBehaviour
         {
-            Destroy(item.gameObject);
+            Destroy(instance);
         }
         private GameObject CreateObject(GameObject prefab, [CanBeNull] Transform container = null)
         {

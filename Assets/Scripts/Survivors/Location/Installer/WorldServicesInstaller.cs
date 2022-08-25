@@ -1,7 +1,9 @@
 ﻿using Survivors.Enemy.Spawn;
 using Survivors.Location.ObjectFactory;
+using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Loot.Service;
 using Survivors.ObjectPool.Service;
+using Survivors.ObjectPool.Wrapper;
 using Survivors.Session.Service;
 using UnityEngine;
 using Zenject;
@@ -14,7 +16,7 @@ namespace Survivors.Location.Installer
         [SerializeField] private ObjectInstancingFactory _objectInstancingFactory;
         [SerializeField] private EnemyWavesSpawner _enemyWavesSpawner;
         [SerializeField] private EnemyHpsSpawner _enemyHpsSpawner;
-        [SerializeField] private PoolManager _poolManager;
+        [SerializeField] private DiObjectPoolWrapper _diObjectPoolWrapper;
 
         public void Install(DiContainer container)
         {
@@ -24,11 +26,11 @@ namespace Survivors.Location.Installer
                      .FromInstance(_objectInstancingFactory).AsSingle();
             container.Bind<IObjectFactory>().WithId(ObjectFactoryType.Pool).To<ObjectPoolFactory>().AsSingle();
             container.BindInterfacesAndSelfTo<WorldObjectRemover>().AsSingle();
-            container.Bind<PoolManager>().FromInstance(_poolManager).AsSingle();
+
+            container.Bind<PoolManager>().FromNew().AsSingle().WithArguments(_diObjectPoolWrapper);
 
 
             container.Bind<World>().FromInstance(_world);
-
             container.BindInterfacesAndSelfTo<SessionService>().AsSingle();
             container.Bind<SessionRepository>().AsSingle();
             container.BindInterfacesAndSelfTo<ReviveService>().AsSingle();

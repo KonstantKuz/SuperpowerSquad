@@ -3,6 +3,7 @@ using System.Linq;
 using Feofun.Components;
 using Survivors.Location;
 using Survivors.Location.ObjectFactory;
+using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Loot.Service;
 using Survivors.Session.Service;
 using UniRx;

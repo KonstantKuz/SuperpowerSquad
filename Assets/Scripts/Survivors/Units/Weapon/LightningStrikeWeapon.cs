@@ -1,6 +1,7 @@
 using System;
 using Survivors.Extension;
 using Survivors.Location.ObjectFactory;
+using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Units.Component.TargetSearcher;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles;

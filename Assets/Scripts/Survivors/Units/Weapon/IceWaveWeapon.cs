@@ -2,6 +2,7 @@ using System;
 using Feofun.Modifiers.Modifiers;
 using Survivors.Extension;
 using Survivors.Location.ObjectFactory;
+using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Modifiers;
 using Survivors.Units.Weapon.Projectiles;
 using Survivors.Units.Weapon.Projectiles.Params;

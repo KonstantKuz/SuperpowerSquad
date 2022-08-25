@@ -2,6 +2,7 @@
 using DG.Tweening;
 using Feofun.Components;
 using Survivors.Location.ObjectFactory;
+using Survivors.Location.ObjectFactory.Factories;
 using UnityEngine;
 using Zenject;
 

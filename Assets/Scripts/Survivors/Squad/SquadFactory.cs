@@ -5,6 +5,7 @@ using Survivors.Config;
 using Survivors.Extension;
 using Survivors.Location;
 using Survivors.Location.ObjectFactory;
+using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Modifiers.Config;
 using Survivors.Player.Inventory.Service;
 using Survivors.Squad.Config;

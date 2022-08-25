@@ -1,4 +1,5 @@
-﻿using Zenject;
+﻿using Survivors.Location.ObjectFactory.Factories;
+using Zenject;
 
 namespace Survivors.Location.ObjectFactory
 {

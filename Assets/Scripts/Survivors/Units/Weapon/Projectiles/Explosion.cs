@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Survivors.Location.ObjectFactory;
+using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Target;
 using UnityEngine;

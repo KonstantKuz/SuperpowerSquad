@@ -6,7 +6,6 @@ using JetBrains.Annotations;
 namespace Survivors.ObjectPool
 {
     public class ObjectPool<T> : IObjectPool<T>, IDisposable
-            where T : class
     {
         private readonly HashSet<T> _allItems;
         private readonly Stack<T> _inactiveStack;
