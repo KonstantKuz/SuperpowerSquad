@@ -42,23 +42,29 @@ namespace Survivors.WorldEvents.Events.Tornado.Swirler
             }
             Dispose();
             _tornado = tornado;
-            _disposable = _tornado.OnDestroyAsObservable().Subscribe((o) => {
-                if (gameObject != null && gameObject.activeInHierarchy) {
-                    ReleaseFromTornado();
-                }
-            });
-            _passedTime = 0;
+            _disposable = _tornado.OnDestroyAsObservable().Subscribe((o) => OnTornadoDestroyed());
             _owner.Lock();
             _timeoutCompleted = false;
-        } 
+        }
+
+        private void OnTornadoDestroyed()
+        {
+            if (IsSelfAlive()) {
+                ReleaseFromTornado();
+            }
+            else {
+                Dispose(); 
+            }
+        }
+
+        private bool IsSelfAlive() => gameObject != null && gameObject.activeInHierarchy;
+        
         private void ReleaseFromTornado()
         {
             if (!IsAttached) {
                 return;
             }
-            _tornado = null;
             Dispose();
-            _passedTime = 0;
             _owner.UnLock();
             _timeoutCoroutine = StartCoroutine(StartTimeoutAfterRelease());
         }
@@ -99,8 +105,12 @@ namespace Survivors.WorldEvents.Events.Tornado.Swirler
         }
         private void Dispose()
         {
+            _tornado = null;
+            _passedTime = 0;
+            
             _disposable?.Dispose();
             _disposable = null;
+            
             if (_timeoutCoroutine == null) {
                 return;
             }
