@@ -19,6 +19,9 @@ namespace AppLovinMax.Mediation.GoogleAdManager.Editor
 
         static MaxGoogleAdManagerInitialize()
         {
+#if UNITY_IOS
+            return;
+#endif
             // Check if the MaxMediationGoogleAdManager directory exists and append .androidlib to it.
             if (Directory.Exists(LegacyMaxMediationGoogleAdManagerDir))
             {
