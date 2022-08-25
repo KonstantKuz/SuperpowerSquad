@@ -55,7 +55,7 @@ namespace Survivors.UI.Screen.Main.MetaUpgrade.View
                     _button.SetOverride(false);
                     break;
                 default:
-                    throw new ArgumentOutOfRangeException();
+                    throw new ArgumentOutOfRangeException($"Unexpected MetaUpgradeItemView state := {model.State}");
             }
         }
     }
