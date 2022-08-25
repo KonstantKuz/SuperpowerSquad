@@ -100,7 +100,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7156d502262b479cab8c8088b184750d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  worldEventView: {fileID: 2995935222635592569}
+  _worldEventView: {fileID: 2995935222635592569}
 --- !u!1 &9061795377854027845
 GameObject:
   m_ObjectHideFlags: 0
