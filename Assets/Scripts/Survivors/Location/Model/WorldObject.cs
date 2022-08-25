@@ -29,9 +29,8 @@ namespace Survivors.Location.Model
             private set { _objectId = value; }
         }
         public GameObject GameObject => gameObject;
-        public ObjectType ObjectType => _objectType;     
-        public bool UsePool => _usePool;
-        
+        public ObjectType ObjectType => _objectType;
+
         [CanBeNull]
         public ObjectPoolParamsComponent ObjectPoolParams => _objectPoolParams;
 
