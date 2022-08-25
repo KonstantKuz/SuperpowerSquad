@@ -18,7 +18,8 @@ MonoBehaviour:
   InappDebug: 1
   ABVersion: 1
   ABForcedSample: withDisasters
-  ABSamples: []
+  ABSamples:
+  - withDisasters
   ABDebugLog: 1
   BannerDisplayOnInit: 1
   BannerDisplayOnInitEditor: 1
