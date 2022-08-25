@@ -217,7 +217,7 @@ MonoBehaviour:
   _moveSpeed: 9
   _swirlDuration: 0.7
   _moveAngle: 90
-  _distanceForSwirl: 1.5
+  _distanceForSwirl: 1.7
   _timeoutAfterRelease: 1.5
 --- !u!1 &6750970296098963895
 GameObject:

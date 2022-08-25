@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _eventDuration: 15
   _spawnParams:
-    _spawnStepOnPerimeter: 15
+    _spawnStepOnPerimeter: 20
     _initialSpawnDistance: 8
     _spawnDistanceStep: 16
   _minLavaRadius: 4
