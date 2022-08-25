@@ -1,7 +1,6 @@
 ﻿using Feofun.Config;
 using Feofun.Config.Serializers;
 using Feofun.Localization.Config;
-using Survivors.App.Config;
 using Survivors.Config;
 using Survivors.Enemy.Spawn.Config;
 using Survivors.Loot.Config;
@@ -10,15 +9,15 @@ using Survivors.Reward.Config;
 using Survivors.Session.Config;
 using Survivors.Session.Model;
 using Survivors.Shop.Config;
-using Survivors.Units.Enemy.Config;
 using Survivors.Squad.Config;
+using Survivors.Units.Enemy.Config;
 using Survivors.Units.Player.Config;
 using Survivors.Upgrade.Config;
 using Survivors.Upgrade.UpgradeSelection.Config;
 using Survivors.WorldEvents.Config;
 using Zenject;
 
-namespace Survivors.App
+namespace Survivors.App.Config
 {
     public class ConfigsInstaller
     {

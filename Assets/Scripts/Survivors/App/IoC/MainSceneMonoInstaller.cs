@@ -1,9 +1,9 @@
 using Feofun.Localization.Service;
 using SuperMaxim.Messaging;
 using Survivors.Advertisment.Installer;
-using Survivors.Advertisment.Service;
-using Survivors.Cheats.Installer;
 using Survivors.Analytics;
+using Survivors.App.Config;
+using Survivors.Cheats.Installer;
 using Survivors.Location;
 using Survivors.Modifiers;
 using Survivors.Player.Installer;
@@ -14,7 +14,7 @@ using Survivors.Units.Installer;
 using UnityEngine;
 using Zenject;
 
-namespace Survivors.App
+namespace Survivors.App.IoC
 {
     public class MainSceneMonoInstaller : MonoInstaller
     {
@@ -32,13 +32,15 @@ namespace Survivors.App
         public override void InstallBindings()
         {
             AnalyticsInstaller.Install(Container);
+            
             Container.BindInterfacesTo<MainSceneMonoInstaller>().FromInstance(this).AsSingle();
             Container.Bind<GameApplication>().FromInstance(_gameApplication).AsSingle();
             Container.Bind<UpdateManager>().FromInstance(_updateManager).AsSingle();
             Container.Bind<IMessenger>().FromInstance(Messenger.Default).AsSingle();     
             Container.Bind<LocalizationService>().AsSingle();
-            Container.Bind<AdsEventHandler>().AsSingle().NonLazy();
-            Container.Bind<VibrationManager>().AsSingle();
+            Container.Bind<VibrationManager>().AsSingle();   
+            Container.Bind<ABTest.ABTest>().AsSingle();
+            
 
             ConfigsInstaller.Install(Container);
             ModifiersInstaller.Install(Container);  
