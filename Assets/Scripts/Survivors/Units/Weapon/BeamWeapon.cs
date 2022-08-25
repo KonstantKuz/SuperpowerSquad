@@ -14,8 +14,9 @@ namespace Survivors.Units.Weapon
         private Transform _barrel;
         [SerializeField]
         private Beam _beam;
-        [Inject]
-        private ObjectInstancingFactory objectInstancingFactory;
+        
+        [Inject(Id = ObjectFactoryType.Instancing)] 
+        private IObjectFactory _objectFactory;
 
         public Vector3 BarrelPos { get; private set; }
 
@@ -29,7 +30,7 @@ namespace Survivors.Units.Weapon
 
         private Beam CreateBeam()
         {
-            return objectInstancingFactory.CreateObject(_beam.gameObject, _barrel).GetComponent<Beam>();
+            return _objectFactory.Create<Beam>(_beam.gameObject, _barrel);
         }
 
         private void LateUpdate()

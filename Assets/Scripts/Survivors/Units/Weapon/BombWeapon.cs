@@ -52,7 +52,7 @@ namespace Survivors.Units.Weapon
 
         private Bomb CreateBomb()
         {
-            return ObjectInstancingFactory.CreateObject(Ammo.gameObject).RequireComponent<Bomb>();
+            return ObjectFactory.Create<Bomb>(Ammo.gameObject);
         }
     }
 }

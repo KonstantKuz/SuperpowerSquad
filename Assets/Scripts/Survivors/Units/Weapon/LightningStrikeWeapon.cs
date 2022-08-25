@@ -16,7 +16,8 @@ namespace Survivors.Units.Weapon
 
         private HealthiestEnemySearcher _healthiestEnemySearcher;
 
-        [Inject] private IObjectFactory _objectFactory;
+        [Inject(Id = ObjectFactoryType.Instancing)] 
+        private IObjectFactory _objectFactory;
         
         private void Awake()
         {

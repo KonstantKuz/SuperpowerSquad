@@ -20,7 +20,8 @@ namespace Survivors.Squad
         private const string SQUAD_NAME = "Squad";
 
         [Inject] private World _world;
-        [Inject] private ObjectInstancingFactory objectInstancingFactory;
+        [Inject(Id = ObjectFactoryType.Instancing)] 
+        protected IObjectFactory _objectFactory;  
         [Inject] private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
         [Inject] private SquadConfig _squadConfig;
         [Inject] private ConstantsConfig _constantsConfig;
@@ -32,7 +33,7 @@ namespace Survivors.Squad
 
         public Squad CreateSquad()
         {
-            var squad = objectInstancingFactory.Create<Squad>(SQUAD_NAME, _world.transform);
+            var squad = _objectFactory.Create<Squad>(SQUAD_NAME, _world.transform);
             squad.transform.SetPositionAndRotation(_world.Spawn.transform.position, _world.Spawn.transform.rotation);
             squad.Init(BuildSquadModel());
             return squad;

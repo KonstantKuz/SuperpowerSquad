@@ -13,7 +13,9 @@ namespace Survivors.Units.Weapon
     public class IceWaveWeapon : MonoBehaviour
     {
         [SerializeField] private IceWave _iceWave;
-        [Inject] private ObjectInstancingFactory objectInstancingFactory;
+        
+        [Inject(Id = ObjectFactoryType.Instancing)] 
+        private IObjectFactory _objectFactory;
         
         public void Fire(Transform parent, UnitType targetType, IProjectileParams projectileParams,
             Action<GameObject> hitCallback)
@@ -24,7 +26,7 @@ namespace Survivors.Units.Weapon
 
         private IceWave CreateWave()
         {
-            return objectInstancingFactory.CreateObject(_iceWave.gameObject).RequireComponent<IceWave>();
+            return _objectFactory.Create<IceWave>(_iceWave.gameObject);
         }
     }
 }

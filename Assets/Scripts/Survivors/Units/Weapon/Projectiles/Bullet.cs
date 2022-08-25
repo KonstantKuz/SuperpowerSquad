@@ -15,8 +15,8 @@ namespace Survivors.Units.Weapon.Projectiles
         [SerializeField]
         private GameObject _hitVfx;
 
-        [Inject]
-        private ObjectInstancingFactory objectInstancingFactory;
+        [Inject(Id = ObjectFactoryType.Instancing)] 
+        private IObjectFactory _objectFactory;
         
         private float _timeLeft;
 
@@ -61,7 +61,7 @@ namespace Survivors.Units.Weapon.Projectiles
         protected void PlayVfx(Vector3 pos, Vector3 up)
         {
             if (_hitVfx == null) return;
-            var vfx = objectInstancingFactory.CreateObject(_hitVfx);
+            var vfx = _objectFactory.Create<MonoBehaviour>(_hitVfx);
             vfx.transform.SetPositionAndRotation(pos, Quaternion.LookRotation(up));
         }
     }

@@ -22,8 +22,8 @@ namespace Survivors.Units.Weapon.Projectiles
         private float _timeLeft;
         private float _speed;
         
-        [Inject]
-        private ObjectInstancingFactory objectInstancingFactory;        
+        [Inject(Id = ObjectFactoryType.Instancing)] 
+        protected IObjectFactory _objectFactory;     
 
         public void Launch(UnitType targetType, IProjectileParams projectileParams, float lifeTime, float speed, Action<GameObject> hitCallback)
         {
@@ -61,7 +61,7 @@ namespace Survivors.Units.Weapon.Projectiles
         private void PlayVfx(Vector3 pos, Vector3 up)
         {
             if (_hitVfx == null) return;
-            var vfx = objectInstancingFactory.CreateObject(_hitVfx);
+            var vfx = _objectFactory.Create<MonoBehaviour>(_hitVfx);
             vfx.transform.SetPositionAndRotation(pos, Quaternion.LookRotation(up));
             vfx.transform.localScale *= _params.DamageRadius * _explosionScaleMultiplier;
         }

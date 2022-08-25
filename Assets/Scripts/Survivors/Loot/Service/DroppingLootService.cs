@@ -18,7 +18,8 @@ namespace Survivors.Loot.Service
         [Inject] private World _world;
         [Inject] private SquadProgressService _squadProgressService;
         [Inject] private UnitService _unitService;
-        [Inject] private ObjectInstancingFactory objectInstancingFactory;
+        [Inject(Id = ObjectFactoryType.Instancing)] 
+        protected IObjectFactory _objectFactory; 
         [Inject] private StringKeyedConfigCollection<DroppingLootConfig> _droppingLoots;
         
         public void OnWorldSetup()
@@ -45,7 +46,7 @@ namespace Survivors.Loot.Service
             }
             
             var lootId = lootConfig.Id;
-            var loot = objectInstancingFactory.Create<DroppingLoot>(lootId, _world.Spawn.transform);
+            var loot = _objectFactory.Create<DroppingLoot>(lootId, _world.Spawn.transform);
             loot.transform.position = unit.GameObject.transform.position;
             loot.Init(lootConfig);
         }

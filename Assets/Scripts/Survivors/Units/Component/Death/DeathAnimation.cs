@@ -17,9 +17,9 @@ namespace Survivors.Units.Component.Death
         private float _delayUntilDisappear;     
         [SerializeField]
         private float _offsetYDisappear;
-
-        [Inject]
-        private ObjectInstancingFactory objectInstancingFactory;
+        
+        [Inject(Id = ObjectFactoryType.Instancing)] 
+        protected IObjectFactory _objectFactory;  
         
         private Animator _animator;
         private Tweener _disappearTween;
@@ -43,7 +43,7 @@ namespace Survivors.Units.Component.Death
             yield return new WaitForSeconds(_delayUntilDisappear);
             _disappearTween = gameObject.transform.DOMoveY(transform.position.y - _offsetYDisappear, _disappearTime);
             yield return _disappearTween.WaitForCompletion(); 
-            objectInstancingFactory.Destroy<Unit>(gameObject);
+            _objectFactory.Destroy<Unit>(gameObject);
         }
 
         private void EndAnimationIfStarted()

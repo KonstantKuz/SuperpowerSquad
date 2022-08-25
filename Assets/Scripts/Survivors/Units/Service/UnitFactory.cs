@@ -11,7 +11,8 @@ namespace Survivors.Units.Service
     public class UnitFactory
     {
         [Inject] private World _world;
-        [Inject] private ObjectInstancingFactory objectInstancingFactory;
+        [Inject(Id = ObjectFactoryType.Instancing)] 
+        protected IObjectFactory _objectFactory;  
         [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
         [Inject] private PlayerUnitModelBuilder _playerUnitModelBuilder;
         
@@ -27,7 +28,7 @@ namespace Survivors.Units.Service
         public Unit CreatePlayerUnit(string unitId)
         {
             CheckSquad();
-            var unit = objectInstancingFactory.Create<Unit>(unitId);
+            var unit = _objectFactory.Create<Unit>(unitId);
             var model = _playerUnitModelBuilder.BuildUnit(unitId);
             unit.Init(model);
             _world.Squad.AddUnit(unit);
@@ -36,7 +37,7 @@ namespace Survivors.Units.Service
         
         public Unit CreateEnemy(string unitId, int level)
         {
-            var enemy = objectInstancingFactory.Create<Unit>(unitId);
+            var enemy = _objectFactory.Create<Unit>(unitId);
             var config = _enemyUnitConfigs.Get(unitId);
             var model = new EnemyUnitModel(config, level);
             enemy.Init(model);

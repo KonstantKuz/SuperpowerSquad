@@ -49,14 +49,14 @@ namespace Survivors.Units.Weapon.Projectiles
             }
         }
 
-        public static GameObject Create(ObjectInstancingFactory objectInstancingFactory, 
+        public static GameObject Create(IObjectFactory objectFactory, 
             Explosion prefab, 
             Vector3 pos,
             float radius, 
             UnitType targetType,
             Action<GameObject> hitCallback)
         {
-            var explosion = objectInstancingFactory.CreateObject(prefab.gameObject).GetComponent<Explosion>();
+            var explosion = objectFactory.Create<Explosion>(prefab.gameObject);
             explosion.transform.position = pos;
             explosion.Create(radius, targetType, hitCallback);
             return explosion.gameObject;

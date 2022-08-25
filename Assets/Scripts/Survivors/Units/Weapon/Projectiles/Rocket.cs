@@ -23,8 +23,9 @@ namespace Survivors.Units.Weapon.Projectiles
         [SerializeField] private float _initialCourseTime;
 
         private Vector3 _lastTargetPos;
-
-        [Inject] private ObjectInstancingFactory objectInstancingFactory;
+        
+        [Inject(Id = ObjectFactoryType.Instancing)] 
+        protected IObjectFactory _objectFactory;  
 
         private ITarget _target;
 
@@ -88,7 +89,7 @@ namespace Survivors.Units.Weapon.Projectiles
 
         private void Explode(Vector3 pos)
         {
-            Explosion.Create(objectInstancingFactory, _explosion, pos, Params.DamageRadius, TargetType, HitCallback);
+            Explosion.Create(_objectFactory, _explosion, pos, Params.DamageRadius, TargetType, HitCallback);
             Destroy();
         }
 

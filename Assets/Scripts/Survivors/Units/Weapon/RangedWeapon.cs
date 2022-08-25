@@ -24,8 +24,9 @@ namespace Survivors.Units.Weapon
         private Projectile _ammo;
         [SerializeField]
         private float _angleBetweenShots;
-        [Inject]
-        protected ObjectInstancingFactory ObjectInstancingFactory;
+        
+        [Inject(Id = ObjectFactoryType.Instancing)] 
+        protected IObjectFactory ObjectFactory;
 
         protected Transform Barrel => _barrel;
         protected Vector3 BarrelPos; //Seems that in some cases unity cannot correctly take position inside animation event
@@ -88,7 +89,7 @@ namespace Survivors.Units.Weapon
 
         private Projectile CreateProjectile()
         {
-            return ObjectInstancingFactory.CreateObject(_ammo.gameObject).GetComponent<Projectile>();
+            return ObjectFactory.Create<Projectile>(_ammo.gameObject);
         }
 
         private void LateUpdate()

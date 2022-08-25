@@ -21,7 +21,9 @@ namespace Survivors.Units.Weapon
         private readonly List<CircularSaw> _ownedSaws = new List<CircularSaw>();
 
         [Inject] private World _world;
-        [Inject] private ObjectInstancingFactory objectInstancingFactory;
+        
+        [Inject(Id = ObjectFactoryType.Instancing)] 
+        protected IObjectFactory _objectFactory;
 
         private CircularSawsRoot SawsRoot => _sawsRoot ??= _world.Squad.GetComponentInChildren<CircularSawsRoot>();
         public IReadOnlyList<CircularSaw> OwnedSaws => _ownedSaws;
@@ -62,7 +64,7 @@ namespace Survivors.Units.Weapon
 
         private CircularSaw CreateSaw()
         {
-            return objectInstancingFactory.CreateObject(_circularSawPrefab.gameObject).RequireComponent<CircularSaw>();
+            return _objectFactory.Create<CircularSaw>(_circularSawPrefab.gameObject);
         }
 
         private void CleanUpSaws()

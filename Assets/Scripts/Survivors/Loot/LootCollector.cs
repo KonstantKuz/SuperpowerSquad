@@ -22,8 +22,8 @@ namespace Survivors.Loot
 
         [Inject]
         private DroppingLootService _lootService;       
-        [Inject]
-        private ObjectInstancingFactory objectInstancingFactory;
+        [Inject(Id = ObjectFactoryType.Instancing)] 
+        protected IObjectFactory _objectFactory;  
         [Inject]
         private SessionService _sessionService;
         [Inject] 
@@ -76,7 +76,7 @@ namespace Survivors.Loot
             
             _lootService.OnLootCollected(loot.Config);
             _movingLoots.Remove(loot);
-            objectInstancingFactory.Destroy<DroppingLoot>(loot.gameObject);
+            _objectFactory.Destroy<DroppingLoot>(loot.gameObject);
         }
 
         public void OnDestroy()
