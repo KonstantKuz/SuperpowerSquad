@@ -48,11 +48,14 @@ namespace Survivors.Location.ObjectFactory
         {
             _createdObjects.ForEach(Destroy);
             Dispose();
+            _createdObjects.Clear();
         }
 
         private void TryCreateDisposable()
         {
-            _disposable ??= new CompositeDisposable();
+            if (_disposable == null) {
+                _disposable = new CompositeDisposable();
+            }
         }
 
         private void RemoveObject(GameObject obj) => _createdObjects.Remove(obj);

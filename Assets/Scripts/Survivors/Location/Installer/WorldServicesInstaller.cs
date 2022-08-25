@@ -6,7 +6,7 @@ using Survivors.Session.Service;
 using UnityEngine;
 using Zenject;
 
-namespace Survivors.Location
+namespace Survivors.Location.Installer
 {
     public class WorldServicesInstaller : MonoBehaviour
     {
@@ -18,10 +18,12 @@ namespace Survivors.Location
 
         public void Install(DiContainer container)
         {
-            container.Bind<ObjectResourceService>().NonLazy();
+            container.Bind<ObjectResourceService>().AsSingle();
+            
             container.Bind<IObjectFactory>().WithId(ObjectFactoryType.Instancing).To<ObjectInstancingFactory>()
-                .FromInstance(_objectInstancingFactory).AsSingle();
+                     .FromInstance(_objectInstancingFactory).AsSingle();
             container.Bind<IObjectFactory>().WithId(ObjectFactoryType.Pool).To<ObjectPoolFactory>().AsSingle();
+            container.BindInterfacesAndSelfTo<WorldObjectRemover>().AsSingle();
             container.Bind<PoolManager>().FromInstance(_poolManager).AsSingle();
 
 

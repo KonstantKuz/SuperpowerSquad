@@ -3,6 +3,7 @@ using SuperMaxim.Messaging;
 using Survivors.Cheats.Installer;
 using Survivors.Analytics;
 using Survivors.Location;
+using Survivors.Location.Installer;
 using Survivors.Modifiers;
 using Survivors.ObjectPool;
 using Survivors.ObjectPool.Service;

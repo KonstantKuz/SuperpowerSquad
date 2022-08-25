@@ -8,8 +8,8 @@ namespace Survivors.Location.ObjectFactory
         T Create<T>(string objectId, [CanBeNull] Transform container = null)
                 where T : MonoBehaviour;
 
-        T Create<T>(GameObject prefab, [CanBeNull] Transform container = null)
-            where T : MonoBehaviour;
+        T Create<T>(GameObject prefab, [CanBeNull] Transform container = null) 
+                where T : MonoBehaviour;
 
         void Destroy<T>(GameObject item)
                 where T : MonoBehaviour;
