@@ -6,11 +6,11 @@ using UnityEngine;
 
 namespace Survivors.ObjectPool.Service
 {
-    public class PoolManager
+    public class PoolManager : IDisposable
     {
         private static readonly ObjectPoolParams DefaultPoolParams = new ObjectPoolParams {
                 InitialCapacity = 100,
-                DetectionCapacity = 2000,
+                MaxCapacity = 2000,
                 ObjectCreateMode = ObjectCreateMode.Group,
                 DisposeActive = true,
         };
@@ -49,5 +49,12 @@ namespace Survivors.ObjectPool.Service
                 pool.ReleaseAllActive();
             }
         }
+        public void Dispose()
+        {
+            foreach (var pool in _pools.Values) {
+                pool.Dispose();
+            }
+        }
+
     }
 }

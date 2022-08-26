@@ -3,17 +3,20 @@ namespace Survivors.ObjectPool
 {
     public class ObjectPoolParams
     {
-        public int InitialCapacity { get; set; }
+        public int InitialCapacity { get; set; }   
         
-        public int Capacity { get; set; }
-        public int DetectionCapacity { get; set; } 
+        public bool DetectInitialCapacityShortage { get; set; }
         
-        public int CreationStep { get; set; }
+        public int MaxCapacity { get; set; } 
+        
+        public int SizeIncrementStep { get; set; }
 
         public static ObjectPoolParams Default =>
                 new ObjectPoolParams() {
-                        InitialCapacity = 10,
-                        DetectionCapacity = 1000,
+                        InitialCapacity = 200,
+                        DetectInitialCapacityShortage = false,
+                        MaxCapacity = 2000,
+                        SizeIncrementStep = 1,
                 };
     }
 }

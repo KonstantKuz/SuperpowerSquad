@@ -21,7 +21,7 @@ namespace Survivors.ObjectPool.Component
             return new ObjectPoolParams() {
                     IsCollectionCheck = _isCollectionCheck,
                     InitialCapacity = _initialCapacity,
-                    DetectionCapacity = _maxSize,
+                    MaxCapacity = _maxSize,
                     ObjectCreateMode = _objectCreateMode,
                     DisposeActive = _disposeActive,
             };

@@ -2,92 +2,70 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using Logger.Extension;
 
 namespace Survivors.ObjectPool
 {
-    public class ObjectPool<T> : IObjectPool<T>, IDisposable
+    public class ObjectPool<T> : IObjectPool<T>
     {
         private readonly HashSet<T> _allItems;
         private readonly Stack<T> _inactiveStack;
-        private readonly Func<T> _onCreate;
+        private readonly Func<T> _createFunc;
         private readonly Action<T> _onGet;
         private readonly Action<T> _onRelease;
         private readonly Action<T> _onDestroy;
-
-        private readonly int _maxSize;
+        private readonly ObjectPoolParams _poolParams;
         
-        private readonly bool _disposeActive;
-
-        private readonly int _initialCapacity;
-        private ObjectCreateMode CreateMode { get; set; }
+        private bool _initialCapacityShortageDetected;
 
         public int CountAll => _allItems.Count;
-
         public int CountActive => CountAll - CountInactive;
-
         public int CountInactive => _inactiveStack.Count;
 
-        public ObjectPool(Func<T> onCreate,
+        public ObjectPool(Func<T> createFunc,
                           Action<T> onGet = null,
                           Action<T> onRelease = null,
                           Action<T> onDestroy = null,
                           [CanBeNull] ObjectPoolParams poolParams = null)
         {
-            poolParams ??= ObjectPoolParams.Default;
-            
-            if (onCreate == null) {
-                throw new ArgumentNullException(nameof(onCreate));
+            _poolParams = poolParams ?? ObjectPoolParams.Default;
+
+            if (createFunc == null) {
+                throw new ArgumentNullException(nameof(createFunc));
+            }
+            if (_poolParams.MaxCapacity <= 0) {
+                throw new ArgumentException("Max capacity must be greater than 0", nameof(_poolParams.MaxCapacity));
+            }
+            if (_poolParams.SizeIncrementStep <= 0) {
+                throw new ArgumentException("Size increment step must be greater than 0", nameof(_poolParams.SizeIncrementStep));
+            }
+            if (_poolParams.InitialCapacity < 0) {
+                throw new ArgumentException("Initial capacity must be non-negative", nameof(_poolParams.InitialCapacity));
             }
 
-            if (poolParams.DetectionCapacity <= 0) {
-                throw new ArgumentException("Max Size must be greater than 0", nameof(poolParams.DetectionCapacity));
-            }
-
-            _initialCapacity = poolParams.InitialCapacity;
-            _inactiveStack = new Stack<T>(poolParams.InitialCapacity);
+            _inactiveStack = new Stack<T>(_poolParams.InitialCapacity);
             _allItems = new HashSet<T>();
-            CreateMode = poolParams.ObjectCreateMode;
-            _onCreate = onCreate;
-            _maxSize = poolParams.DetectionCapacity;
+            _createFunc = createFunc;
             _onGet = onGet;
             _onRelease = onRelease;
             _onDestroy = onDestroy;
-            _disposeActive = poolParams.DisposeActive;
+            Init(_poolParams.InitialCapacity);
+        }
+
+        private void Init(int initialCapacity)
+        {
+            if (initialCapacity <= 0) {
+                return;
+            }
+            CreateInactiveItems(initialCapacity);
         }
 
         public T Get()
         {
-            var element = _inactiveStack.Count == 0 ? Create(CreateMode) : _inactiveStack.Pop();
-            _onGet?.Invoke(element);
-            return element;
-        }
-
-        private T Create(ObjectCreateMode createMode)
-        {
-            var element = Create();
-            if (createMode != ObjectCreateMode.Group) {
-                return element;
-            }
-            for (int i = 0; i < Math.Min(_initialCapacity - 1, _maxSize); i++) {
-                var groupElement = Create();
-                Release(groupElement);
-            }
-            return element;
-        }
-
-        private T Create()
-        {
-            var element = _onCreate();
-            _allItems.Add(element);
-            return element;
-        }
-
-        public void ReleaseAllActive()
-        {
-            var activeElements = _allItems.Except(_inactiveStack).ToList();
-            foreach (var element in activeElements) {
-                Release(element);
-            }
+            DetectInitialCapacityShortage();
+            var item = _inactiveStack.Count == 0 ? Create(_poolParams.SizeIncrementStep) : _inactiveStack.Pop();
+            _onGet?.Invoke(item);
+            return item;
         }
 
         public void Release(T element)
@@ -98,11 +76,55 @@ namespace Survivors.ObjectPool
 
             _onRelease?.Invoke(element);
 
-            if (CountInactive < _maxSize) {
+            if (CountInactive < _poolParams.MaxCapacity) {
                 _inactiveStack.Push(element);
             } else {
+                this.Logger().Warn($"Object count in the pool has reached the maximum count, max capacity:= {_poolParams.MaxCapacity}, the last element will be destroyed.");
                 CallOnDestroy(element);
             }
+        }
+
+        public void ReleaseAllActive()
+        {
+            var activeItems = _allItems.Except(_inactiveStack).ToList();
+            foreach (var element in activeItems) {
+                Release(element);
+            }
+        }
+
+        private void DetectInitialCapacityShortage()
+        {
+            if (_initialCapacityShortageDetected) {
+                return;
+            }
+            if (_inactiveStack.Count == 0 && _poolParams.DetectInitialCapacityShortage) {
+                this.Logger().Warn($"Shortage of initial capacity, objects will be created, should increase the initial capacity, capacity:= {_poolParams.InitialCapacity}");
+                _initialCapacityShortageDetected = true;
+            }
+        }
+        private T Create(int sizeIncrementStep)
+        {
+            var item = Create();
+            if (sizeIncrementStep <= 1) {
+                return item;
+            }
+            CreateInactiveItems(sizeIncrementStep - 1);
+            return item;
+        }
+
+        private void CreateInactiveItems(int count)
+        {
+            for (int i = 0; i < count; i++) {
+                var item = Create();
+                Release(item);
+            }
+        }
+
+        private T Create()
+        {
+            var element = _createFunc();
+            _allItems.Add(element);
+            return element;
         }
 
         public void Clear()
@@ -111,11 +133,8 @@ namespace Survivors.ObjectPool
                 CallOnDestroy(element);
             }
             _inactiveStack.Clear();
-
-            if (_disposeActive) {
-                foreach (var element in _allItems) {
-                    _onDestroy?.Invoke(element);
-                }
+            foreach (var element in _allItems) {
+                _onDestroy?.Invoke(element);
             }
             _allItems.Clear();
         }
