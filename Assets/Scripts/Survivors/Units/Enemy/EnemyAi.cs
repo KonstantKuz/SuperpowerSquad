@@ -14,7 +14,6 @@ namespace Survivors.Units.Enemy
     [RequireComponent(typeof(NavMeshAgent))]
     public class EnemyAi : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent, IUnitActiveStateReceiver
     {
-        public static int Count;
         private const float ACCURATE_FOLLOW_DISTANCE = 1f;
         
         [SerializeField] private float _targetSelectionDistance = 10f;
@@ -89,8 +88,6 @@ namespace Survivors.Units.Enemy
         private void Awake()
         {
             
-            name = gameObject.name + $"-{Count}";
-            Count++;
             _agent = gameObject.RequireComponent<NavMeshAgent>();
             _selfTarget = gameObject.RequireComponent<ITarget>();
             _targetSearcher = gameObject.RequireComponent<ITargetSearcher>();
