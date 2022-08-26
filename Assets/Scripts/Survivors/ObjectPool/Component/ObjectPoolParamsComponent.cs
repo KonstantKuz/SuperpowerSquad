@@ -1,29 +1,34 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Survivors.ObjectPool.Component
 {
     public class ObjectPoolParamsComponent : MonoBehaviour
     {
         [SerializeField]
-        private bool _isCollectionCheck = true;
+        private int _initialCapacity = 300;
         [SerializeField]
-        private int _initialCapacity = 100;
+        private bool _detectInitialCapacityShortage = true;
         [SerializeField]
-        private int _maxSize = 2000;
+        private int _maxCapacity = 2000;
         [SerializeField]
-        private ObjectCreateMode _objectCreateMode = ObjectCreateMode.Group;
+        private int _sizeIncrementStep = 1;
+        
         [SerializeField]
-        private bool _disposeActive = true;
-
+        private bool _preparePoolOnInitScene;
+        [SerializeField]
+        private MonoBehaviour _poolType;
+        
+        public bool PreparePoolOnInitScene => _preparePoolOnInitScene;
+        public Type PoolType => _poolType.GetType();
         
         public ObjectPoolParams GetPoolParams()
         {
             return new ObjectPoolParams() {
-                    IsCollectionCheck = _isCollectionCheck,
                     InitialCapacity = _initialCapacity,
-                    MaxCapacity = _maxSize,
-                    ObjectCreateMode = _objectCreateMode,
-                    DisposeActive = _disposeActive,
+                    DetectInitialCapacityShortage = _detectInitialCapacityShortage,
+                    MaxCapacity = _maxCapacity,
+                    SizeIncrementStep = _sizeIncrementStep,
             };
         }
     }

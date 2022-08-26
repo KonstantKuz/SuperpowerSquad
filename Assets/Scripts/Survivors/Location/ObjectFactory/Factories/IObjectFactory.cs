@@ -4,7 +4,8 @@ using UnityEngine;
 namespace Survivors.Location.ObjectFactory.Factories
 {
     public interface IObjectFactory
-    {
+    { 
+        void Prepare();
         T Create<T>(string objectId, [CanBeNull] Transform container = null)
                 where T : MonoBehaviour;
 

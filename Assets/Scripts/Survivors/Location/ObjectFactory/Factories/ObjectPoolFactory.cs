@@ -1,5 +1,8 @@
-﻿using JetBrains.Annotations;
+﻿using System.Linq;
+using JetBrains.Annotations;
+using SuperMaxim.Core.Extensions;
 using Survivors.Extension;
+using Survivors.ObjectPool.Component;
 using Survivors.ObjectPool.Service;
 using UnityEngine;
 using Zenject;
@@ -10,6 +13,15 @@ namespace Survivors.Location.ObjectFactory.Factories
     {
         [Inject] private PoolManager _poolManager;
         [Inject] private ObjectResourceService _objectResourceService;
+
+        public void Prepare()
+        {
+            _objectResourceService.GetAllPrefabs()
+                                  .Select(it => it.GetComponent<ObjectPoolParamsComponent>())
+                                  .Where(it => it != null && it.PreparePoolOnInitScene)
+                                  .ForEach(it => _poolManager.Prepare(it.PoolType, it.gameObject, it.GetPoolParams()));
+        
+        }
 
         public T Create<T>(string objectId, Transform container = null) where T : MonoBehaviour
         {
@@ -36,8 +48,7 @@ namespace Survivors.Location.ObjectFactory.Factories
                 where T : MonoBehaviour
         {
             var poolObject = _poolManager.Get<T>(prefab);
-            if (container != null)
-            {
+            if (container != null) {
                 poolObject.transform.SetParent(container);
             }
 

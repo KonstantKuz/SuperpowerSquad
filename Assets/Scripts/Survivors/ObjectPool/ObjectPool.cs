@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
 using Logger.Extension;
+using UnityEngine;
 
 namespace Survivors.ObjectPool
 {
@@ -79,7 +80,7 @@ namespace Survivors.ObjectPool
             if (CountInactive < _poolParams.MaxCapacity) {
                 _inactiveStack.Push(element);
             } else {
-                this.Logger().Warn($"Object count in the pool has reached the maximum count, max capacity:= {_poolParams.MaxCapacity}, the last element will be destroyed.");
+                Debug.LogWarning($"Object count in the pool has reached the maximum count, max capacity:= {_poolParams.MaxCapacity}, the last element will be destroyed.");
                 CallOnDestroy(element);
             }
         }
@@ -98,7 +99,7 @@ namespace Survivors.ObjectPool
                 return;
             }
             if (_inactiveStack.Count == 0 && _poolParams.DetectInitialCapacityShortage) {
-                this.Logger().Warn($"Shortage of initial capacity, objects will be created, should increase the initial capacity, capacity:= {_poolParams.InitialCapacity}");
+                Debug.LogWarning($"Shortage of initial capacity, objects will be created, should increase the initial capacity, initial capacity:= {_poolParams.InitialCapacity}");
                 _initialCapacityShortageDetected = true;
             }
         }

@@ -21,6 +21,7 @@ namespace Survivors.Location.ObjectFactory
                 _prefabs.Add(worldObject.ObjectId, worldObject);
             }
         }
+        public IEnumerable<WorldObject> GetAllPrefabs() => _prefabs.Values;
         public WorldObject GetPrefab(string objectId)
         {
             if (!_prefabs.ContainsKey(objectId)) {

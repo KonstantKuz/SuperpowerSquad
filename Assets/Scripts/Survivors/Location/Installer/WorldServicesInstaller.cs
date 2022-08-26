@@ -21,12 +21,8 @@ namespace Survivors.Location.Installer
         public void Install(DiContainer container)
         {
             container.Bind<ObjectResourceService>().AsSingle();
-            
-            container.Bind<IObjectFactory>().WithId(ObjectFactoryType.Instancing).To<ObjectInstancingFactory>()
-                     .FromInstance(_objectInstancingFactory).AsSingle();
-            container.Bind<IObjectFactory>().WithId(ObjectFactoryType.Pool).To<ObjectPoolFactory>().AsSingle();
+            InstallObjectFactory(container);
             container.BindInterfacesAndSelfTo<WorldObjectRemover>().AsSingle();
-
             container.Bind<PoolManager>().FromNew().AsSingle().WithArguments(_diObjectPoolWrapper);
 
 
@@ -39,6 +35,22 @@ namespace Survivors.Location.Installer
             container.Bind<EnemyWavesSpawner>().FromInstance(_enemyWavesSpawner);
             container.Bind<EnemyHpsSpawner>().FromInstance(_enemyHpsSpawner).AsSingle();
             container.BindInterfacesAndSelfTo<DroppingLootService>().AsSingle();
+        }
+
+        private void InstallObjectFactory(DiContainer container)
+        {
+            container.Bind<IObjectFactory>()
+                     .WithId(ObjectFactoryType.Instancing)
+                     .To<ObjectInstancingFactory>()
+                     .FromInstance(_objectInstancingFactory)
+                     .AsSingle();
+            
+            container.Bind<IObjectFactory>()
+                     .WithId(ObjectFactoryType.Pool)
+                     .To<ObjectPoolFactory>()
+                     .AsSingle();
+            
+        
         }
     }
 }

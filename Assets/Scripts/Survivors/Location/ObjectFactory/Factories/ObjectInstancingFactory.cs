@@ -21,7 +21,12 @@ namespace Survivors.Location.ObjectFactory.Factories
         private ObjectResourceService _objectResourceService;
         [Inject]
         private DiContainer _container;
-        
+
+        public void Prepare()
+        {
+            
+        }
+
         public T Create<T>(string objectId, Transform container = null) where T : MonoBehaviour
         {
             TryCreateDisposable();

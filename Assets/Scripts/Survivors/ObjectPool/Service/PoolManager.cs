@@ -8,13 +8,7 @@ namespace Survivors.ObjectPool.Service
 {
     public class PoolManager : IDisposable
     {
-        private static readonly ObjectPoolParams DefaultPoolParams = new ObjectPoolParams {
-                InitialCapacity = 100,
-                MaxCapacity = 2000,
-                ObjectCreateMode = ObjectCreateMode.Group,
-                DisposeActive = true,
-        };
-
+        
         private readonly Dictionary<Type, IObjectPool<GameObject>> _pools = new Dictionary<Type, IObjectPool<GameObject>>();
         
         private readonly IObjectPoolWrapper _objectPoolWrapper;
@@ -23,12 +17,26 @@ namespace Survivors.ObjectPool.Service
         {
             _objectPoolWrapper = objectPoolWrapper;
         }
+        public void Prepare<T>(GameObject prefab, [CanBeNull] ObjectPoolParams poolParams = null)
+        {
+            var typePool = typeof(T);
+            Prepare(typePool, prefab, poolParams);
+        }   
+        public void Prepare(Type typePool, GameObject prefab, [CanBeNull] ObjectPoolParams poolParams = null)
+        {
+            if (_pools.ContainsKey(typePool)) {
+                throw new ArgumentException($"Object pool already prepared by object type, type:= {typePool}");
+            }
+            _pools[typePool] = _objectPoolWrapper.BuildObjectPool(prefab, poolParams);
+        }
+        public bool HasPool<T>() => _pools.ContainsKey(typeof(T));
+
         public GameObject Get<T>(GameObject prefab, [CanBeNull] ObjectPoolParams poolParams = null) where T : MonoBehaviour
         {
             var type = typeof(T);
 
             if (!_pools.ContainsKey(type)) {
-                _pools[type] = _objectPoolWrapper.BuildObjectPool(prefab, poolParams ?? DefaultPoolParams);
+                _pools[type] = _objectPoolWrapper.BuildObjectPool(prefab, poolParams);
             }
             return _pools[type].Get();
         }
@@ -55,6 +63,5 @@ namespace Survivors.ObjectPool.Service
                 pool.Dispose();
             }
         }
-
     }
 }

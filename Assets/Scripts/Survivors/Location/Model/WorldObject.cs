@@ -1,7 +1,4 @@
-﻿using JetBrains.Annotations;
-using Survivors.ObjectPool;
-using Survivors.ObjectPool.Component;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Survivors.Location.Model
 {
@@ -12,12 +9,6 @@ namespace Survivors.Location.Model
         
         [SerializeField]
         private ObjectType _objectType;      
-       
-        [SerializeField]
-        private bool _usePool;
-
-        [SerializeField]
-        private ObjectPoolParamsComponent _objectPoolParams;
         
         public void Reset()
         {
@@ -26,13 +17,11 @@ namespace Survivors.Location.Model
         public string ObjectId
         {
             get => _objectId;
-            private set { _objectId = value; }
+            private set => _objectId = value;
         }
         public GameObject GameObject => gameObject;
         public ObjectType ObjectType => _objectType;
-
-        [CanBeNull]
-        public ObjectPoolParamsComponent ObjectPoolParams => _objectPoolParams;
+        
 
     }
 }

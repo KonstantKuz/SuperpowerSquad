@@ -179,8 +179,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objectId: SimpleEnemy
   _objectType: 1
-  _usePool: 1
-  _objectPoolParams: {fileID: 3115400728044159593}
 --- !u!114 &3006564440288677136
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -316,11 +314,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e82e6f051d748b4b639f27452a4ae87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _isCollectionCheck: 1
-  _initialCapacity: 200
-  _maxSize: 2000
-  _objectCreateMode: 1
-  _disposeActive: 1
+  _initialCapacity: 500
+  _detectInitialCapacityShortage: 1
+  _maxCapacity: 3000
+  _sizeIncrementStep: 1
+  _preparePoolOnInitScene: 1
+  _poolType: {fileID: 6629324333623088289}
 --- !u!1 &3753810788131279791
 GameObject:
   m_ObjectHideFlags: 0
