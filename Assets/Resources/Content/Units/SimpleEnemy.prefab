@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8200632565177598753}
   - component: {fileID: 6320879860712907822}
+  - component: {fileID: 7356971098661409725}
   m_Layer: 0
   m_Name: Humanoid.059
   m_TagString: Untagged
@@ -83,6 +84,18 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.000323385, y: 0.17102423, z: 0.030349761}
     m_Extent: {x: 0.7264259, y: 0.78414357, z: 0.41905478}
   m_DirtyAABB: 0
+--- !u!114 &7356971098661409725
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 628175333818672673}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5ed660e230304382a17ae66ec0729804, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2047533565645016285
 GameObject:
   m_ObjectHideFlags: 0
