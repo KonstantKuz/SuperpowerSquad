@@ -3,6 +3,7 @@ using JetBrains.Annotations;
 using SuperMaxim.Core.Extensions;
 using Survivors.Extension;
 using Survivors.Location.Service;
+using Survivors.ObjectPool;
 using Survivors.ObjectPool.Component;
 using Survivors.ObjectPool.Service;
 using UnityEngine;
@@ -47,12 +48,22 @@ namespace Survivors.Location.ObjectFactory.Factories
 
         private GameObject GetPoolObject<T>(GameObject prefab, [CanBeNull] Transform container = null)
         {
-            var poolObject = _poolManager.Get<T>(prefab);
+            var poolObject = _poolManager.Get<T>(prefab, TryGetPoolParams<T>(prefab));
             if (container != null) {
                 poolObject.transform.SetParent(container);
             }
 
             return poolObject;
+        }
+
+        [CanBeNull]
+        private ObjectPoolParams TryGetPoolParams<T>(GameObject prefab)
+        {
+            if (_poolManager.HasPool<T>()) {
+                return null;
+            }
+            var poolParamsComponent = prefab.GetComponent<ObjectPoolParamsComponent>();
+            return poolParamsComponent == null ? null : poolParamsComponent.GetPoolParams();
         }
     }
 }
