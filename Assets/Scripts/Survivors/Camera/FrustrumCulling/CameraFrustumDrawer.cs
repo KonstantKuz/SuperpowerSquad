@@ -3,7 +3,7 @@ using Survivors.Location;
 using UnityEngine;
 using Zenject;
 
-namespace Survivors.Camera
+namespace Survivors.Camera.FrustrumCulling
 {
     [RequireComponent(typeof(UnityEngine.Camera))]
     public class CameraFrustumDrawer : MonoBehaviour

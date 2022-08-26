@@ -3,6 +3,7 @@ using Survivors.Location.Model;
 using Survivors.Location.Service;
 using Survivors.Loot.Service;
 using Survivors.Session.Service;
+using Survivors.Units.Component.FrustrumCulling;
 using Survivors.WorldEvents.Service;
 using UnityEngine;
 using Zenject;
@@ -16,6 +17,7 @@ namespace Survivors.Location
         [SerializeField] private EnemyWavesSpawner _enemyWavesSpawner;
         [SerializeField] private EnemyHpsSpawner _enemyHpsSpawner;     
         [SerializeField] private WorldEventFactory _worldEventFactory;
+        [SerializeField] private FrustrumCullingSystem _frustrumCullingSystem;
         
         public void Install(DiContainer container)
         {
@@ -34,6 +36,7 @@ namespace Survivors.Location
             
             container.BindInterfacesAndSelfTo<WorldEventService>().AsSingle();  
             container.Bind<WorldEventFactory>().FromInstance(_worldEventFactory);
+            container.Bind<FrustrumCullingSystem>().FromInstance(_frustrumCullingSystem);
         }
     }
 }
