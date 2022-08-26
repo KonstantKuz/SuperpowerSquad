@@ -19,7 +19,7 @@ namespace Survivors.Loot.Service
         [Inject] private World _world;
         [Inject] private SquadProgressService _squadProgressService;
         [Inject] private UnitService _unitService;
-        [Inject(Id = ObjectFactoryType.Instancing)] 
+        [Inject(Id = ObjectFactoryType.Pool)] 
         protected IObjectFactory _objectFactory; 
         [Inject] private StringKeyedConfigCollection<DroppingLootConfig> _droppingLoots;
         

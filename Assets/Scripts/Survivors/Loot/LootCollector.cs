@@ -23,7 +23,7 @@ namespace Survivors.Loot
 
         [Inject]
         private DroppingLootService _lootService;       
-        [Inject(Id = ObjectFactoryType.Instancing)] 
+        [Inject(Id = ObjectFactoryType.Pool)] 
         protected IObjectFactory _objectFactory;  
         [Inject]
         private SessionService _sessionService;

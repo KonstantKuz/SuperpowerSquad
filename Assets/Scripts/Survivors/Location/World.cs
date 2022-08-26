@@ -1,10 +1,8 @@
 using System.Collections.Generic;
 using System.Linq;
-using EasyButtons;
 using JetBrains.Annotations;
 using SuperMaxim.Core.Extensions;
 using UnityEngine;
-using UnityEngine.AI;
 using AppContext = Feofun.App.AppContext;
 
 namespace Survivors.Location
