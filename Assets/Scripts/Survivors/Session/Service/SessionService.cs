@@ -52,6 +52,8 @@ namespace Survivors.Session.Service
         public Model.Session Session => _repository.Require();
         
         public IReadOnlyReactiveProperty<int> Kills => _kills;
+        public IReadOnlyReactiveProperty<float> PlayTime => Session.PlayTime;
+        
         public LevelMissionConfig LevelConfig => _levelsConfig.Values[LevelId];
         public int LevelId => Mathf.Min(PlayerProgress.LevelNumber, _levelsConfig.Count() - 1);
         public float SessionTime => Session.SessionTime;

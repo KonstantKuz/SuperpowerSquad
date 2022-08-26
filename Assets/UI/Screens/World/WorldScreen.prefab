@@ -417,7 +417,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7595574091857187859, guid: cc36bfeeb16efc040b4639efc7fce56e, type: 3}
       propertyPath: m_Name
-      value: EnemiesLeftView
+      value: LevelMissionProgressView
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cc36bfeeb16efc040b4639efc7fce56e, type: 3}

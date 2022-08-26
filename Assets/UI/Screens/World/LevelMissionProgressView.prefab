@@ -176,7 +176,7 @@ GameObject:
   - component: {fileID: 5135331769656174514}
   - component: {fileID: 4701344432512475274}
   m_Layer: 0
-  m_Name: EnemiesLeftView
+  m_Name: LevelMissionProgressView
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
