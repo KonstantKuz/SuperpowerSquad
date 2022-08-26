@@ -7,12 +7,12 @@ using SuperMaxim.Messaging;
 using Survivors.Session.Messages;
 using Survivors.Session.Model;
 using Survivors.Session.Service;
-using Survivors.Squad.Upgrade;
 using Survivors.UI.Dialog.PauseDialog;
 using Survivors.UI.Dialog.StartUnitDialog;
 using Survivors.UI.Dialog.StartUnitDialog.Model;
 using Survivors.UI.Screen.Debriefing;
 using Survivors.UI.Screen.Debriefing.Model;
+using Survivors.Upgrade;
 using UnityEngine;
 using Zenject;
 
@@ -32,14 +32,13 @@ namespace Survivors.UI.Screen.World
         [Inject] private ScreenSwitcher _screenSwitcher;     
         [Inject] private Location.World _world;
         [Inject] private Joystick _joystick;
-        [Inject] private Analytics.Analytics _analytics;
         [Inject] private DialogManager _dialogManager;
         [Inject] private UpgradeService _upgradeService;
         
         [PublicAPI]
         public void Init()
         {
-            _analytics.ReportLevelStart();
+            _sessionService.Start();
             _dialogManager.Show<StartUnitDialog, Action<StartUnitSelection>>(OnChangeStartUnit);
             _joystick.Attach(transform);
             _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);

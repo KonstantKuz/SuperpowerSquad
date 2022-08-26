@@ -1,8 +1,10 @@
 ﻿using System;
 using DG.Tweening;
 using Feofun.Components;
+using Survivors.Squad.Service;
 using UniRx;
 using UnityEngine;
+using Zenject;
 
 namespace Survivors.Camera
 {
@@ -11,7 +13,7 @@ namespace Survivors.Camera
         [SerializeField] 
         private float _initialDistance;
         [SerializeField] 
-        private float _distanceMultiplier;
+        private float _distanceIncreaseStep;
 
         [SerializeField] 
         private float _shiftDownCoeff = 1;
@@ -23,15 +25,15 @@ namespace Survivors.Camera
         private float _distanceToTarget;
         private IDisposable _disposable;
         private Tweener _animation;
-        private float _initialTargetRadius;
 
+        [Inject] private SquadProgressService _squadProgressService;
+        
         public void Init(Squad.Squad owner)
         {
             _disposable?.Dispose();
             _target = owner;
-            _initialTargetRadius = _target.SquadRadius;
             _distanceToTarget = _initialDistance;
-            _disposable = _target.UnitsCount.Subscribe(it => OnTargetRadiusChanged());
+            _disposable = _squadProgressService.Level.Subscribe(it => OnTargetRadiusChanged());
         }
 
         private void Update()
@@ -64,6 +66,6 @@ namespace Survivors.Camera
             _animation.OnComplete(() => _animation = null);
         }
 
-        private float GetDistanceToTarget() => _initialDistance + (_target.SquadRadius - _initialTargetRadius) * _distanceMultiplier;
+        private float GetDistanceToTarget() => _initialDistance + _squadProgressService.Level.Value * _distanceIncreaseStep;
     }
 }

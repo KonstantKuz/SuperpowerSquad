@@ -1,10 +1,12 @@
 ﻿using Survivors.Enemy.Spawn;
 using Survivors.Location.ObjectFactory;
 using Survivors.Location.ObjectFactory.Factories;
+using Survivors.Location.Service;
 using Survivors.Loot.Service;
 using Survivors.ObjectPool.Service;
 using Survivors.ObjectPool.Wrapper;
 using Survivors.Session.Service;
+using Survivors.WorldEvents.Service;
 using UnityEngine;
 using Zenject;
 
@@ -17,7 +19,8 @@ namespace Survivors.Location.Installer
         [SerializeField] private EnemyWavesSpawner _enemyWavesSpawner;
         [SerializeField] private EnemyHpsSpawner _enemyHpsSpawner;
         [SerializeField] private DiObjectPoolWrapper _diObjectPoolWrapper;
-
+        [SerializeField] private WorldEventFactory _worldEventFactory;
+        
         public void Install(DiContainer container)
         {
             container.Bind<ObjectResourceService>().AsSingle();
@@ -27,14 +30,18 @@ namespace Survivors.Location.Installer
 
 
             container.Bind<World>().FromInstance(_world);
-            container.BindInterfacesAndSelfTo<SessionService>().AsSingle();
+            
+            container.BindInterfacesAndSelfTo<SessionService>().AsSingle();     
             container.Bind<SessionRepository>().AsSingle();
             container.BindInterfacesAndSelfTo<ReviveService>().AsSingle();
-
-
+            
             container.Bind<EnemyWavesSpawner>().FromInstance(_enemyWavesSpawner);
             container.Bind<EnemyHpsSpawner>().FromInstance(_enemyHpsSpawner).AsSingle();
             container.BindInterfacesAndSelfTo<DroppingLootService>().AsSingle();
+            
+            
+            container.BindInterfacesAndSelfTo<WorldEventService>().AsSingle();  
+            container.Bind<WorldEventFactory>().FromInstance(_worldEventFactory);
         }
 
         private void InstallObjectFactory(DiContainer container)

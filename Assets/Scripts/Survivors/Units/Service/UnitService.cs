@@ -21,7 +21,7 @@ namespace Survivors.Units.Service
         public IEnumerable<IUnit> AllUnits => _units.SelectMany(it => it.Value);
 
         [Inject] private IMessenger _messenger;
-        
+
         public void Add(IUnit unit)
         {
             if (!_units.ContainsKey(unit.UnitType)) {

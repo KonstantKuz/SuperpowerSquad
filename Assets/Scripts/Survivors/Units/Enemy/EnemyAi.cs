@@ -1,5 +1,6 @@
 ﻿using Feofun.Components;
 using JetBrains.Annotations;
+using Logger.Extension;
 using Survivors.Extension;
 using Survivors.Location;
 using Survivors.Units.Component.TargetSearcher;
@@ -121,11 +122,20 @@ namespace Survivors.Units.Enemy
         {
             Stopped = false;
             if (Vector3.Distance(transform.position, destination) > ACCURATE_FOLLOW_DISTANCE) {
-                _agent.destination = transform.position + (destination - transform.position).normalized;
+                SetDestination(transform.position + (destination - transform.position).normalized);
             }
             else {
-                _agent.destination = destination;
+                SetDestination(destination); 
             }
+        }
+
+        private void SetDestination(Vector3 destination)
+        {
+            if (!_agent.isOnNavMesh) {
+                this.Logger().Warn("SetDestination can only be called on an active agent that has been placed on a NavMesh.");
+                return;
+            }
+            _agent.destination = destination;
         }
 
         private void UpdateAgentRadius()

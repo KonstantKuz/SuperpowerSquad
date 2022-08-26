@@ -1,8 +1,11 @@
 ﻿using Feofun.App;
 using Feofun.App.Init;
 using JetBrains.Annotations;
+using Survivors.ABTest;
+using Survivors.ABTest.InitStep;
 using Survivors.Analytics;
 using Survivors.App;
+using Survivors.App.InitSteps;
 #if UNITY_IOS
 using Survivors.IOSTransparency;
 #endif
@@ -42,6 +45,8 @@ namespace Survivors
 #if UNITY_IOS
             initSequence.AddStep<IosATTInitStep>();            
 #endif
+            initSequence.AddStep<YsoCorpSDKInitStep>(new []{this});
+            initSequence.AddStep<ABTestInitStep>();
             initSequence.AddStep<AnalyticsInitStep>();
             initSequence.AddStep<StartGameInitStep>();
             initSequence.Next();

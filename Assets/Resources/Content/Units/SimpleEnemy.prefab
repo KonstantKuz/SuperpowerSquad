@@ -104,7 +104,9 @@ GameObject:
   - component: {fileID: 7094039851140565474}
   - component: {fileID: 5316809173621734762}
   - component: {fileID: 8473987040358760045}
-  - component: {fileID: 3115400728044159593}
+  - component: {fileID: 442751807213895732}
+  - component: {fileID: 1265837359138098205}
+  - component: {fileID: 9209009204405098603}
   m_Layer: 6
   m_Name: SimpleEnemy
   m_TagString: Untagged
@@ -302,7 +304,40 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _jumpRotationAngle: 50
   _jumpRotationTimeRatio: 0.9
---- !u!114 &3115400728044159593
+--- !u!54 &442751807213895732
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047533565645016285}
+  serializedVersion: 2
+  m_Mass: 0.0000001
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &1265837359138098205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047533565645016285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 021f799e7de844959061334b5c6ac98b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _moveSpeed: 9
+  _swirlDuration: 1.5
+  _moveAngle: 90
+  _distanceForSwirl: 1.7
+  _timeoutAfterRelease: 1.5
+--- !u!114 &9209009204405098603
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -314,7 +349,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e82e6f051d748b4b639f27452a4ae87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _initialCapacity: 500
+  _initialCapacity: 300
   _detectInitialCapacityShortage: 1
   _maxCapacity: 3000
   _sizeIncrementStep: 1

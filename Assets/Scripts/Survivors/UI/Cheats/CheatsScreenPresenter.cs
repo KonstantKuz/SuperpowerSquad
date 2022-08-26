@@ -17,8 +17,9 @@ namespace Survivors.UI.Cheats
         [SerializeField] private ActionButton _hideButton;
 
         [SerializeField] private ActionToggle _toggleConsoleButton;
-        [SerializeField] private ActionToggle _toggleFPSButton;
-
+        [SerializeField] private ActionToggle _toggleFPSButton;   
+        [SerializeField] private ActionToggle _toggleAdsButton; 
+        
         [SerializeField] private ActionButton _increaseSquadLevelButton; 
         [SerializeField] private ActionButton _applyAllUpgradesButton;
         [SerializeField] private ActionButton _addRandomSquadUpgrade; 
@@ -45,15 +46,15 @@ namespace Survivors.UI.Cheats
 
         private void OnEnable()
         {
-            _addUnitsView.Init(_playerUnitConfigs.Keys, _cheatsManager.AddUnit);   
-            _addMetaUpgradeView.Init(_modifierConfigs.Keys, _cheatsManager.AddMetaUpgrade);
-            
+            InitButtons();
+            InitToggles();
+            InitDropdowns();
+        }
+        private void InitButtons()
+        {
             _closeButton.Init(HideCheatsScreen);
             _hideButton.Init(DisableCheats);
-
-            _toggleConsoleButton.Init(_cheatsManager.IsConsoleEnabled, value => { _cheatsManager.IsConsoleEnabled = value; });
-            _toggleFPSButton.Init(_cheatsManager.IsFPSMonitorEnabled, value => { _cheatsManager.IsFPSMonitorEnabled = value; });
-          
+            
             _increaseSquadLevelButton.Init(_cheatsManager.IncreaseSquadLevel);     
             _addRandomSquadUpgrade.Init(_cheatsManager.AddRandomSquadUpgrade);
             _applyAllUpgradesButton.Init(_cheatsManager.ApplyAllSquadUpgrades);
@@ -62,8 +63,21 @@ namespace Survivors.UI.Cheats
             _setLanguage.Init(() => _cheatsManager.SetLanguage(_inputField.text));
             _setEnglishLanguage.Init(() => _cheatsManager.SetLanguage(SystemLanguage.English.ToString()));
             _setRussianLanguage.Init(() => _cheatsManager.SetLanguage(SystemLanguage.Russian.ToString()));
-            _testLogButton.Init(() => _cheatsManager.LogTestMessage());
+            _testLogButton.Init(() => _cheatsManager.LogTestMessage()); 
         }
+
+        private void InitToggles()
+        {
+            _toggleConsoleButton.Init(_cheatsManager.IsConsoleEnabled, value => _cheatsManager.IsConsoleEnabled = value);
+            _toggleFPSButton.Init(_cheatsManager.IsFPSMonitorEnabled, value => _cheatsManager.IsFPSMonitorEnabled = value);
+            _toggleAdsButton.Init(_cheatsManager.IsCheatAdsEnabled, value => _cheatsManager.IsCheatAdsEnabled = value);
+        }     
+        private void InitDropdowns()
+        {
+            _addUnitsView.Init(_playerUnitConfigs.Keys, _cheatsManager.AddUnit);   
+            _addMetaUpgradeView.Init(_modifierConfigs.Keys, _cheatsManager.AddMetaUpgrade);
+        }
+
         private void DisableCheats()
         {
             _cheatsActivator.ShowOpenCheatButton(false);

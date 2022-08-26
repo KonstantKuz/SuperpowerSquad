@@ -8,6 +8,7 @@ using Logger.Extension;
 using SuperMaxim.Core.Extensions;
 using Survivors.App;
 using Survivors.Location.Model;
+using Survivors.Units.Component;
 using Survivors.Units.Component.Death;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Service;
@@ -20,7 +21,7 @@ using UnityEngine;
 
 namespace Survivors.Units
 {
-    public class Unit : WorldObject, IUnit
+    public class Unit : WorldObject, IUnit, IMovementLockable
     {
         private IUpdatableComponent[] _updatables;
         private IDamageable _damageable;
@@ -30,6 +31,7 @@ namespace Survivors.Units
         private IUnitActiveStateReceiver[] _activeStateReceiver;
         private MovementController _movementController;
         private bool _isActive;
+        private int _lockCount;
         private float _spawnTime;
         private Collider _collider;
 
@@ -41,8 +43,10 @@ namespace Survivors.Units
         public bool IsActive
         {
             get => _isActive;
-            set
-            {
+            set {
+                if (_isActive == value) {
+                    return;
+                }
                 _isActive = value;
                 _activeStateReceiver.ForEach(it => it.OnActiveStateChanged(_isActive));
             }
@@ -91,7 +95,21 @@ namespace Survivors.Units
             _unitService.Add(this);
             _updateManager.StartUpdate(UpdateComponents);
         }
+        public void Lock()
+        {
+            _lockCount++;
+            IsActive = false;
+        }
 
+        public void UnLock()
+        {
+            if (_lockCount > 0) {
+                _lockCount--;
+            }
+            if (_lockCount <= 0) {
+                IsActive = true;
+            }
+        }
         [Button]
         public void Kill(DeathCause deathCause)
         {
@@ -126,7 +144,6 @@ namespace Survivors.Units
             _unitService.Remove(this);
             _updateManager.StopUpdate(UpdateComponents);
         }
-
         public void AddModifier(IModifier modifier)
         {
             if (!(Model is PlayerUnitModel playerUnitModel)) {

@@ -14,6 +14,7 @@ using Survivors.Squad.Component;
 using Survivors.Squad.Formation;
 using Survivors.Squad.Model;
 using Survivors.Units;
+using Survivors.Units.Component;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Player.Attack;
 using Survivors.Units.Player.Config;
@@ -27,7 +28,7 @@ using Unit = Survivors.Units.Unit;
 
 namespace Survivors.Squad
 {
-    public class Squad : MonoBehaviour, IWorldScope
+    public class Squad : MonoBehaviour, IWorldScope, IMovementLockable
     {
         [SerializeField] private float _unitSize;   
         [SerializeField] private float _destinationLimit = 1000;
@@ -43,7 +44,6 @@ namespace Survivors.Squad
         [Inject] private UnitFactory _unitFactory;
         
         public bool IsActive { get; set; }
-        
         public SquadModel Model { get; private set; }
         public SquadDestination Destination { get; private set; }
         public SquadTargetProvider TargetProvider { get; private set; }
@@ -75,6 +75,15 @@ namespace Survivors.Squad
             UpdateSquadRadius();
         }
 
+        public void Lock()
+        {
+            IsActive = false;
+        }
+
+        public void UnLock()
+        {
+            IsActive = true;
+        }
         private void Update()
         {
             if (!IsActive) return;
@@ -134,6 +143,7 @@ namespace Survivors.Squad
                 return;
             }
             unit.GetComponent<NavMeshAgent>().enabled = false;
+            unit.GetComponent<Collider>().enabled = false;
             var renderers = unit.GetComponentsInChildren<Renderer>();
             renderers.ForEach(it => it.enabled = false);
         }
@@ -234,5 +244,6 @@ namespace Survivors.Squad
         {
             GetComponent<Health>().Restore();
         }
+
     }
 }

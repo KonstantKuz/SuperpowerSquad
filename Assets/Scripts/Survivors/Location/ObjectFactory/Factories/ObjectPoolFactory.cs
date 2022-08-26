@@ -2,6 +2,7 @@
 using JetBrains.Annotations;
 using SuperMaxim.Core.Extensions;
 using Survivors.Extension;
+using Survivors.Location.Service;
 using Survivors.ObjectPool.Component;
 using Survivors.ObjectPool.Service;
 using UnityEngine;
@@ -23,18 +24,18 @@ namespace Survivors.Location.ObjectFactory.Factories
         
         }
 
-        public T Create<T>(string objectId, Transform container = null) where T : MonoBehaviour
+        public T Create<T>(string objectId, Transform container = null)
         {
             var prefab = _objectResourceService.GetPrefab(objectId);
             return Create<T>(prefab.GameObject, container);
         }
 
-        public T Create<T>(GameObject prefab, Transform container = null) where T : MonoBehaviour
+        public T Create<T>(GameObject prefab, Transform container = null)
         {
             return GetPoolObject<T>(prefab, container).RequireComponent<T>();
         }
 
-        public void Destroy<T>(GameObject instance) where T : MonoBehaviour
+        public void Destroy<T>(GameObject instance)
         {
             _poolManager.Release<T>(instance);
         }
@@ -44,8 +45,7 @@ namespace Survivors.Location.ObjectFactory.Factories
             _poolManager.ReleaseAllActive();
         }
 
-        private GameObject GetPoolObject<T>(GameObject prefab, [CanBeNull] Transform container = null) 
-                where T : MonoBehaviour
+        private GameObject GetPoolObject<T>(GameObject prefab, [CanBeNull] Transform container = null)
         {
             var poolObject = _poolManager.Get<T>(prefab);
             if (container != null) {

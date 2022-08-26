@@ -31,7 +31,7 @@ namespace Survivors.ObjectPool.Service
         }
         public bool HasPool<T>() => _pools.ContainsKey(typeof(T));
 
-        public GameObject Get<T>(GameObject prefab, [CanBeNull] ObjectPoolParams poolParams = null) where T : MonoBehaviour
+        public GameObject Get<T>(GameObject prefab, [CanBeNull] ObjectPoolParams poolParams = null)
         {
             var type = typeof(T);
 
@@ -41,7 +41,7 @@ namespace Survivors.ObjectPool.Service
             return _pools[type].Get();
         }
 
-        public void Release<T>(GameObject instance) where T : MonoBehaviour
+        public void Release<T>(GameObject instance)
         {
             var type = typeof(T);
 

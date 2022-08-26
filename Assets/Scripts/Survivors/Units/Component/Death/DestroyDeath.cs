@@ -1,3 +1,4 @@
+using Survivors.Location.ObjectFactory;
 using Survivors.Location.ObjectFactory.Factories;
 using UnityEngine;
 using Zenject;

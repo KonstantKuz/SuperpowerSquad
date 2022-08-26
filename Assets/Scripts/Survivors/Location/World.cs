@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
+using ModestTree;
 using SuperMaxim.Core.Extensions;
 using UnityEngine;
 using AppContext = Feofun.App.AppContext;
@@ -19,6 +20,13 @@ namespace Survivors.Location
 
         [CanBeNull]
         public Squad.Squad Squad { get; set; }
+
+
+        public Squad.Squad GetSquad()
+        {
+            Assert.IsNotNull(Squad, "Squad is null, should call this method only inside game session");
+            return Squad;
+        }
 
         public bool IsPaused => Time.timeScale == 0;
 

@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using JetBrains.Annotations;
 using SuperMaxim.Core.Extensions;
 using Survivors.Extension;
+using Survivors.Location.Service;
 using UniRx;
 using UniRx.Triggers;
 using UnityEngine;
@@ -27,17 +28,17 @@ namespace Survivors.Location.ObjectFactory.Factories
             
         }
 
-        public T Create<T>(string objectId, Transform container = null) where T : MonoBehaviour
+        public T Create<T>(string objectId, Transform container = null)
         {
             TryCreateDisposable();
             var prefab = _objectResourceService.GetPrefab(objectId);
             return Create<T>(prefab.GameObject, container);
         }
-        public T Create<T>(GameObject prefab, [CanBeNull] Transform container = null) where T : MonoBehaviour
+        public T Create<T>(GameObject prefab, Transform container = null)
         {
             return CreateObject(prefab, container).RequireComponent<T>();
         }
-        public void Destroy<T>(GameObject instance) where T : MonoBehaviour
+        public void Destroy<T>(GameObject instance)
         {
             Destroy(instance);
         }
