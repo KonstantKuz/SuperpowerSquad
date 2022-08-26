@@ -1,5 +1,6 @@
 ﻿using System;
 using Feofun.Components;
+using Logger.Extension;
 using Survivors.Session.Config;
 using Survivors.Units;
 using UniRx;
@@ -11,17 +12,17 @@ namespace Survivors.Session.Model
     {
         private readonly LevelMissionConfig _levelMissionConfig;
         private readonly float _startTime;
-        private readonly PlayTimer _playTimer;
+        private readonly IReadOnlyReactiveProperty<float> _playTime;
         
-        private Session(LevelMissionConfig levelMissionConfig, ICoroutineRunner coroutineRunner)
+        private Session(LevelMissionConfig levelMissionConfig)
         {
             _levelMissionConfig = levelMissionConfig;
             _startTime = Time.time;
-            _playTimer = new PlayTimer(coroutineRunner);
+            _playTime = Observable.Interval(TimeSpan.FromSeconds(1)).Select(it => (float) it).ToReactiveProperty();
         }
         
         private bool IsMaxKills => Kills >= _levelMissionConfig.KillCount;
-        private bool IsMaxTime => _playTimer.PlayTime.Value >= _levelMissionConfig.Time;
+        private bool IsMaxTime => _playTime.Value >= _levelMissionConfig.Time;
         
         public int Kills { get; private set; }
         public SessionResult? Result { get; private set; }
@@ -32,10 +33,9 @@ namespace Survivors.Session.Model
         public LevelMissionConfig LevelMissionConfig => _levelMissionConfig;
         
         public float SessionTime => Time.time - _startTime;
-        public IReadOnlyReactiveProperty<float> PlayTime => _playTimer.PlayTime;
+        public IReadOnlyReactiveProperty<float> PlayTime => _playTime;
         
-        public static Session Build(LevelMissionConfig levelMissionConfig, ICoroutineRunner coroutineRunner) => 
-            new Session(levelMissionConfig, coroutineRunner);
+        public static Session Build(LevelMissionConfig levelMissionConfig) => new Session(levelMissionConfig);
 
         public void AddKill() => Kills++;
         public void AddRevive() => Revives++;
@@ -56,11 +56,6 @@ namespace Survivors.Session.Model
                 default:
                     throw new ArgumentOutOfRangeException($"Unexpected level mission type := {_levelMissionConfig.MissionType}");
             }
-        }
-
-        public void StopTimer()
-        {
-            _playTimer.Stop();
         }
     }
 }
