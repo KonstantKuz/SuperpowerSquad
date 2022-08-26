@@ -3,6 +3,7 @@ using Logger.Extension;
 using Survivors.Extension;
 using Survivors.Location.Service;
 using Survivors.Units;
+using Survivors.Units.Component.DamageReaction;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Weapon.Projectiles;
 using UnityEngine;

@@ -1,5 +1,6 @@
 ﻿using System;
 using Survivors.Location.Service;
+using Survivors.Units.Component.DamageReaction;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
