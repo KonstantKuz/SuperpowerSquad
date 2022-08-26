@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Feofun.Components;
 using Feofun.Config;
 using Feofun.Extension;
 using Feofun.UI.Dialog;
@@ -43,6 +44,7 @@ namespace Survivors.Session.Service
         [Inject] private Analytics.Analytics _analytics;
         [Inject] private ConstantsConfig _constantsConfig;
         [Inject] private DialogManager _dialogManager;
+        [Inject] private ICoroutineRunner _coroutineRunner;
         
         private CompositeDisposable _disposable;
         
@@ -69,7 +71,7 @@ namespace Survivors.Session.Service
             _playerProgressService.OnSessionStarted(LevelConfig.Level);
             _messenger.Publish(new SessionStartMessage(LevelConfig.Level));
             _analytics.ReportLevelStart();
-            this.Logger().Debug($"Kill enemies in mission:= {LevelConfig.KillCount}");
+            this.Logger().Debug($"Mission type := {LevelConfig.MissionType}. Kill enemies := {LevelConfig.KillCount}. Time := {LevelConfig.Time}");
         }
         public void ChangeStartUnit(string unitId)
         {
@@ -86,8 +88,9 @@ namespace Survivors.Session.Service
         private void CreateSession()
         {
             var levelConfig = LevelConfig;
-            var newSession = Model.Session.Build(levelConfig);
+            var newSession = Model.Session.Build(levelConfig, _coroutineRunner);
             _repository.Set(newSession);
+            newSession.PlayTime.Subscribe(it => OnTick()).AddTo(_disposable);
         }
         private void CreateSquad()
         {
@@ -122,7 +125,11 @@ namespace Survivors.Session.Service
             _playerProgressService.AddKill();
             _kills.Value = Session.Kills;
             this.Logger().Trace($"Killed enemies:= {Session.Kills}");
-            if (Session.IsMaxKills) {
+        }
+
+        private void OnTick()
+        {
+            if (Session.IsMissionGoalReached()) {
                 EndSession(UnitType.PLAYER);
             }
         }
@@ -140,8 +147,10 @@ namespace Survivors.Session.Service
         private void EndSession(UnitType winner)
         {
             Dispose();
-            Session.SetResultByUnitType(winner);
             
+            Session.StopTimer();
+            Session.SetResultByUnitType(winner);
+
             _unitService.DeactivateAll();
             _world.Squad.IsActive = false;
 
