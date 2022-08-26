@@ -72,7 +72,7 @@ namespace Survivors.ObjectPool
         public void Release(T element)
         {
             if (_inactiveStack.Count > 0 && _inactiveStack.Contains(element)) {
-                throw new InvalidOperationException("Trying to release an object that has already been released to the pool.");
+                throw new InvalidOperationException($"Trying to release an object that has already been released to the pool. Pool type:= {typeof(T)}");
             }
 
             _onRelease?.Invoke(element);
@@ -80,7 +80,7 @@ namespace Survivors.ObjectPool
             if (CountInactive < _poolParams.MaxCapacity) {
                 _inactiveStack.Push(element);
             } else {
-                Debug.LogWarning($"Object count in the pool has reached the maximum count, max capacity:= {_poolParams.MaxCapacity}, the last element will be destroyed.");
+                Debug.LogWarning($"Object count in the pool has reached the maximum count, max capacity:= {_poolParams.MaxCapacity}, the last element will be destroyed. Pool type:= {typeof(T)}");
                 CallOnDestroy(element);
             }
         }
@@ -99,7 +99,7 @@ namespace Survivors.ObjectPool
                 return;
             }
             if (_inactiveStack.Count == 0 && _poolParams.DetectInitialCapacityShortage) {
-                Debug.LogWarning($"Shortage of initial capacity, objects will be created, should increase the initial capacity, initial capacity:= {_poolParams.InitialCapacity}");
+                Debug.LogWarning($"Shortage of initial capacity, objects will be created, should increase the initial capacity, initial capacity:= {_poolParams.InitialCapacity}. Pool type:= {typeof(T)}");
                 _initialCapacityShortageDetected = true;
             }
         }
