@@ -1,5 +1,4 @@
 ﻿using System.Linq;
-using Feofun.Components;
 using Feofun.Config;
 using Feofun.Extension;
 using Feofun.UI.Dialog;
@@ -44,7 +43,6 @@ namespace Survivors.Session.Service
         [Inject] private Analytics.Analytics _analytics;
         [Inject] private ConstantsConfig _constantsConfig;
         [Inject] private DialogManager _dialogManager;
-        [Inject] private ICoroutineRunner _coroutineRunner;
         
         private CompositeDisposable _disposable;
         
@@ -90,7 +88,7 @@ namespace Survivors.Session.Service
         private void CreateSession()
         {
             var levelConfig = LevelConfig;
-            var newSession = Model.Session.Build(levelConfig, _coroutineRunner);
+            var newSession = Model.Session.Build(levelConfig);
             _repository.Set(newSession);
             newSession.PlayTime.Subscribe(it => OnTick()).AddTo(_disposable);
         }
@@ -150,7 +148,6 @@ namespace Survivors.Session.Service
         {
             Dispose();
             
-            Session.StopTimer();
             Session.SetResultByUnitType(winner);
 
             _unitService.DeactivateAll();
