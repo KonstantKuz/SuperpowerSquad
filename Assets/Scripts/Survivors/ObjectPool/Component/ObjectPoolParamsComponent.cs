@@ -10,7 +10,7 @@ namespace Survivors.ObjectPool.Component
         [SerializeField]
         private bool _detectInitialCapacityShortage = true;
         [SerializeField]
-        private int _maxCapacity = 2000;
+        private int _maxCapacity = 3000;
         [SerializeField]
         private int _sizeIncrementStep = 1;
         
