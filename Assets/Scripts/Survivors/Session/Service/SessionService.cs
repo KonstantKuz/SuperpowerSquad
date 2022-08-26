@@ -66,6 +66,9 @@ namespace Survivors.Session.Service
 
         public void Start()
         {
+            Session.Start();
+            Session.PlayTime.Subscribe(it => OnTick()).AddTo(_disposable);
+            
             _playerProgressService.OnSessionStarted(LevelConfig.Level);
             _messenger.Publish(new SessionStartMessage(LevelConfig.Level));
             _analytics.ReportLevelStart();
@@ -88,7 +91,6 @@ namespace Survivors.Session.Service
             var levelConfig = LevelConfig;
             var newSession = Model.Session.Build(levelConfig);
             _repository.Set(newSession);
-            newSession.PlayTime.Subscribe(it => OnTick()).AddTo(_disposable);
         }
         private void CreateSquad()
         {
