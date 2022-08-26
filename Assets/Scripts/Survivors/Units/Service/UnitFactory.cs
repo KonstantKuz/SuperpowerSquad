@@ -42,7 +42,7 @@ namespace Survivors.Units.Service
         
         public Unit CreateEnemy(string unitId, int level)
         {
-            var enemy = _poolObjectFactory.Create<Unit>(unitId);
+            var enemy = _poolObjectFactory.Create<Unit>(unitId, _world.Spawn.transform);
             var config = _enemyUnitConfigs.Get(unitId);
             var model = new EnemyUnitModel(config, level);
             enemy.Init(model);
