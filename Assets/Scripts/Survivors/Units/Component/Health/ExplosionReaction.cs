@@ -79,7 +79,7 @@ namespace Survivors.Units.Component.Health
 
         private void Dispose()
         {
-            _explosionJump?.Kill(); 
+            _explosionJump?.Kill(true); 
         }
     }
 }

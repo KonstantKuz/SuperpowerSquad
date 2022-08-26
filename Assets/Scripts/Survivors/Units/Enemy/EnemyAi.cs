@@ -83,12 +83,12 @@ namespace Survivors.Units.Enemy
 
         public void Init(IUnit unit)
         {
+            _agent.enabled = true;
             var model = (EnemyUnitModel) unit.Model;
             _agent.speed = model.MoveSpeed;
         }
         private void Awake()
         {
-            
             _agent = gameObject.RequireComponent<NavMeshAgent>();
             _selfTarget = gameObject.RequireComponent<ITarget>();
             _targetSearcher = gameObject.RequireComponent<ITargetSearcher>();
