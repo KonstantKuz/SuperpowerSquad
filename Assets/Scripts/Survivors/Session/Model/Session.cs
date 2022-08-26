@@ -11,15 +11,14 @@ namespace Survivors.Session.Model
     public class Session
     {
         private readonly LevelMissionConfig _levelMissionConfig;
-        private readonly float _startTime;
-        private readonly IReadOnlyReactiveProperty<float> _playTime;
+        private float _startTime;
+        private IReadOnlyReactiveProperty<float> _playTime;
         
         private Session(LevelMissionConfig levelMissionConfig)
         {
             _levelMissionConfig = levelMissionConfig;
-            _startTime = Time.time;
-            _playTime = Observable.Interval(TimeSpan.FromSeconds(1)).Select(it => (float) it).ToReactiveProperty();
         }
+        public static Session Build(LevelMissionConfig levelMissionConfig) => new Session(levelMissionConfig);
         
         private bool IsMaxKills => Kills >= _levelMissionConfig.KillCount;
         private bool IsMaxTime => _playTime.Value >= _levelMissionConfig.Time;
@@ -34,9 +33,13 @@ namespace Survivors.Session.Model
         
         public float SessionTime => Time.time - _startTime;
         public IReadOnlyReactiveProperty<float> PlayTime => _playTime;
-        
-        public static Session Build(LevelMissionConfig levelMissionConfig) => new Session(levelMissionConfig);
 
+        public void Start()
+        {
+            _startTime = Time.time;
+            _playTime = Observable.Interval(TimeSpan.FromSeconds(1)).Select(it => (float) it).ToReactiveProperty();
+        }
+        
         public void AddKill() => Kills++;
         public void AddRevive() => Revives++;
 
