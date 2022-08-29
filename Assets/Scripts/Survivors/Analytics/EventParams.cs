@@ -19,6 +19,5 @@
         public const string WINS = "wins";
         public const string DEFEATS = "defeats";
         public const string REVIVE_COUNT = "revive";
-        public const string AB_TEST_ID = "ab_test_id";
     }
 }

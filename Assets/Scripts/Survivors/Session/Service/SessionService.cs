@@ -28,7 +28,6 @@ namespace Survivors.Session.Service
     {
         
         private readonly IntReactiveProperty _kills = new IntReactiveProperty(0);
-        private readonly FloatReactiveProperty _playTime = new FloatReactiveProperty(0);
         
         [Inject] private EnemyWavesSpawner _enemyWavesSpawner;
         [Inject] private EnemyHpsSpawner _enemyHpsSpawner;
@@ -51,8 +50,6 @@ namespace Survivors.Session.Service
         public Model.Session Session => _repository.Require();
         
         public IReadOnlyReactiveProperty<int> Kills => _kills;
-        public IReadOnlyReactiveProperty<float> PlayTime => _playTime;
-        
         public LevelMissionConfig LevelConfig => _levelsConfig.Values[LevelId];
         public int LevelId => Mathf.Min(PlayerProgress.LevelNumber, _levelsConfig.Count() - 1);
         public float SessionTime => Session.SessionTime;
@@ -63,20 +60,16 @@ namespace Survivors.Session.Service
             Dispose();
             _unitService.OnEnemyUnitDeath += OnEnemyUnitDeath;
             ResetKills();
-            ResetPlayTime();
             _disposable = new CompositeDisposable();
             Create();
         }
 
         public void Start()
         {
-            Session.Start();
-            Session.PlayTime.Subscribe(it => OnTick()).AddTo(_disposable);
-            
             _playerProgressService.OnSessionStarted(LevelConfig.Level);
             _messenger.Publish(new SessionStartMessage(LevelConfig.Level));
             _analytics.ReportLevelStart();
-            this.Logger().Debug($"Mission type := {LevelConfig.MissionType}. Kill enemies := {LevelConfig.KillCount}. Time := {LevelConfig.Time}");
+            this.Logger().Debug($"Kill enemies in mission:= {LevelConfig.KillCount}");
         }
         public void ChangeStartUnit(string unitId)
         {
@@ -121,7 +114,6 @@ namespace Survivors.Session.Service
         }
 
         private void ResetKills() => _kills.Value = 0;
-        private void ResetPlayTime() => _playTime.Value = 0;
         private void OnEnemyUnitDeath(IUnit unit, DeathCause deathCause)
         {
             if (deathCause != DeathCause.Killed) return;
@@ -130,12 +122,7 @@ namespace Survivors.Session.Service
             _playerProgressService.AddKill();
             _kills.Value = Session.Kills;
             this.Logger().Trace($"Killed enemies:= {Session.Kills}");
-        }
-
-        private void OnTick()
-        {
-            _playTime.Value = Session.PlayTime.Value;
-            if (Session.IsMissionGoalReached()) {
+            if (Session.IsMaxKills) {
                 EndSession(UnitType.PLAYER);
             }
         }
@@ -153,9 +140,8 @@ namespace Survivors.Session.Service
         private void EndSession(UnitType winner)
         {
             Dispose();
-            
             Session.SetResultByUnitType(winner);
-
+            
             _unitService.DeactivateAll();
             _world.Squad.IsActive = false;
 

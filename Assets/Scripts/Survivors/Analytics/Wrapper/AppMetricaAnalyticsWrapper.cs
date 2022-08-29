@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace Survivors.Analytics.Wrapper
 {
@@ -39,7 +38,6 @@ namespace Survivors.Analytics.Wrapper
             var updates = new List<YandexAppMetricaUserProfileUpdate>
             {
                 BuildStringAttribute("last_event", BuildLastEventName(eventName, eventParams)), 
-                BuildStringAttribute("ab_test_id", (string) additionalParams[EventParams.AB_TEST_ID]),
                 BuildFloatAttribute("kills", eventParams[EventParams.TOTAL_KILLS]), 
                 BuildFloatAttribute("level_id", eventParams[EventParams.LEVEL_ID]),
                 BuildFloatAttribute("wins", additionalParams[EventParams.WINS]),
@@ -68,8 +66,7 @@ namespace Survivors.Analytics.Wrapper
             {
                 EventParams.WINS,
                 EventParams.DEFEATS,
-                EventParams.PASS_NUMBER,
-                EventParams.AB_TEST_ID
+                EventParams.PASS_NUMBER
             });
             if (eventName == Events.LEVEL_FINISHED)
             {
