@@ -37,7 +37,7 @@ namespace Survivors.Session.Model
         public void Start()
         {
             _startTime = Time.time;
-            _playTime = Observable.Interval(TimeSpan.FromSeconds(1)).Select(it => (float) it).ToReactiveProperty();
+            _playTime = Observable.Interval(TimeSpan.FromSeconds(1)).Select(it => (float) it + 1).ToReactiveProperty();
         }
         
         public void AddKill() => Kills++;
