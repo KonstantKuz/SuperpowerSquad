@@ -24,7 +24,6 @@ namespace Survivors.ABTest
             set => _provider = value;
         }
 
-        public string CurrentVariantId => Provider.CurrentVariantId;
         public bool Control => Provider.IsVariantId(CONTROL_VARIANT_ID);
         public bool WithDisasters => Provider.IsVariantId(WITH_DISASTERS_VARIANT_ID);
     }

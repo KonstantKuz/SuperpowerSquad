@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using Feofun.Components;
 using Logger.Extension;
 using SuperMaxim.Messaging;
 using Survivors.App.Config;
@@ -7,7 +6,6 @@ using Survivors.Location;
 using Survivors.Session.Messages;
 using Survivors.WorldEvents.Config;
 using Survivors.WorldEvents.Messages;
-using UniRx;
 using UnityEngine;
 using Zenject;
 
@@ -25,8 +23,6 @@ namespace Survivors.WorldEvents.Service
         private IMessenger _messenger;      
         [Inject]
         private ABTest.ABTest _abTest;
-        [Inject]
-        private ICoroutineRunner _coroutineRunner;
         
         private Coroutine _eventsCoroutine;
         
@@ -58,7 +54,7 @@ namespace Survivors.WorldEvents.Service
         private void StartLevelEvents(string levelId)
         {
             DisposeCoroutine();
-            _eventsCoroutine = _coroutineRunner.StartCoroutine(StartEvents(levelId));
+            _eventsCoroutine = GameApplication.Instance.StartCoroutine(StartEvents(levelId));
         }
         private IEnumerator StartEvents(string levelId)
         {
@@ -85,7 +81,7 @@ namespace Survivors.WorldEvents.Service
             if (_eventsCoroutine == null) {
                 return;
             }
-            _coroutineRunner.StopCoroutine(_eventsCoroutine);
+            GameApplication.Instance.StopCoroutine(_eventsCoroutine);
             _eventsCoroutine = null;
         }
     }

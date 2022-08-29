@@ -1,9 +1,10 @@
 ﻿using Feofun.App;
 using Feofun.App.Init;
-using Feofun.Components;
 using JetBrains.Annotations;
+using Survivors.ABTest;
 using Survivors.ABTest.InitStep;
 using Survivors.Analytics;
+using Survivors.App;
 using Survivors.App.InitSteps;
 #if UNITY_IOS
 using Survivors.IOSTransparency;
@@ -14,7 +15,7 @@ using Zenject;
 
 namespace Survivors
 {
-    public class GameApplication : MonoBehaviour, ICoroutineRunner
+    public class GameApplication : MonoBehaviour
     {
         [PublicAPI]
         public static GameApplication Instance { get; private set; }
