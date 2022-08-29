@@ -10,6 +10,8 @@ namespace Survivors.Units.Enemy
 {
     public class EnemySizeChanger : MonoBehaviour, IInitializable<IUnit>
     {
+        [SerializeField] private bool _updateSizeOnHealthChanged;
+        
         private Health _health;
         private EnemyUnitModel _enemyModel;
         
@@ -24,7 +26,11 @@ namespace Survivors.Units.Enemy
             _enemyModel = enemyModel;
             UpdateScale(_enemyModel.Level);
             _health = gameObject.RequireComponent<Health>();
-            _health.CurrentValue.Subscribe(it => OnHealthChanged()).AddTo(_disposable);
+
+            if (_updateSizeOnHealthChanged)
+            {
+                _health.CurrentValue.Subscribe(it => OnHealthChanged()).AddTo(_disposable);
+            }
         }
         
         private void OnHealthChanged()
@@ -41,7 +47,6 @@ namespace Survivors.Units.Enemy
         private void OnDestroy()
         {
             _disposable?.Dispose();
-            _health.OnDamageTaken -= OnHealthChanged;
         }
     }
 }
