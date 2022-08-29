@@ -17,8 +17,8 @@ namespace Survivors.ABTest.Providers
         public void LoadAbTest()
         {
             var variantId = GetVariantId();
-            this.Logger().Info($"CheatABTestProvider, experiment {ABTest.TEST_ID} value is {variantId}");
-            ABTest.SetExperiment(ABTest.TEST_ID, variantId);
+            this.Logger().Info($"CheatABTestProvider, experiment {ABTest.EXPERIMENT_ID} value is {variantId}");
+            ABTest.SetVariantId(variantId);
             _abTest.Reload();
         }
         public static void SetVariantId(string variantId) => PlayerPrefs.SetString(CHEAT_KEY, variantId);

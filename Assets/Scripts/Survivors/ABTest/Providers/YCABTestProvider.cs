@@ -20,12 +20,12 @@ namespace Survivors.ABTest.Providers
                 if (!IsVariantId(variantId)) {
                     continue;
                 }
-                this.Logger().Info($"YCABTestProvider, experiment {ABTest.TEST_ID} value is {variantId}");
-                ABTest.SetExperiment(ABTest.TEST_ID, variantId);
+                this.Logger().Info($"YCABTestProvider, experiment {ABTest.EXPERIMENT_ID} value is {variantId}");
+                ABTest.SetVariantId(variantId);
                 _abTest.Reload();
                 return;
             }
-            this.Logger().Error($"YCABTestProvider hasn't set ab-test, defaul ab-test variantId: = {_abTest.CurrentVariantId}");
+            this.Logger().Error($"YCABTestProvider hasn't set ab-test, default ab-test variantId:= {_abTest.CurrentVariantId}, YCManager ab-test id:= {YCManager.instance.abTestingManager.GetPlayerSample()}");
         }
         private bool IsVariantId(string variantId) => YCManager.instance.abTestingManager.IsPlayerSample(variantId);
     }

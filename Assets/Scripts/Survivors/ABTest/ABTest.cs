@@ -7,7 +7,7 @@ namespace Survivors.ABTest
     [PublicAPI]
     public class ABTest
     {
-        public const string TEST_ID = "version_1";
+        public const string EXPERIMENT_ID = "version_1";
         
         private string _variantId;   
         
@@ -19,12 +19,12 @@ namespace Survivors.ABTest
         }
         public void Reload()
         {
-            _variantId = PlayerPrefs.GetString(GetKey(TEST_ID), ABTestVariantId.Control.ToCamelCase());
-            this.Logger().Info($"ABTest, setting ab test {TEST_ID} to {_variantId}");
+            _variantId = PlayerPrefs.GetString(GetKey(EXPERIMENT_ID), ABTestVariantId.Control.ToCamelCase());
+            this.Logger().Info($"ABTest, setting ab test {EXPERIMENT_ID} to {_variantId}");
         }
-        public static void SetExperiment(string experimentId, string variantId)
+        public static void SetVariantId(string variantId)
         {
-            PlayerPrefs.SetString(GetKey(experimentId), variantId);
+            PlayerPrefs.SetString(GetKey(EXPERIMENT_ID), variantId);
         }
         private static string GetKey(string experimentId)
         {
