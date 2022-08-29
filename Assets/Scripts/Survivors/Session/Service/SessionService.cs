@@ -66,10 +66,13 @@ namespace Survivors.Session.Service
 
         public void Start()
         {
+            Session.Start();
+            Session.PlayTime.Subscribe(it => OnTick()).AddTo(_disposable);
+            
             _playerProgressService.OnSessionStarted(LevelConfig.Level);
             _messenger.Publish(new SessionStartMessage(LevelConfig.Level));
             _analytics.ReportLevelStart();
-            this.Logger().Debug($"Kill enemies in mission:= {LevelConfig.KillCount}");
+            this.Logger().Debug($"Mission type := {LevelConfig.MissionType}. Kill enemies := {LevelConfig.KillCount}. Time := {LevelConfig.Time}");
         }
         public void ChangeStartUnit(string unitId)
         {
@@ -122,7 +125,11 @@ namespace Survivors.Session.Service
             _playerProgressService.AddKill();
             _kills.Value = Session.Kills;
             this.Logger().Trace($"Killed enemies:= {Session.Kills}");
-            if (Session.IsMaxKills) {
+        }
+
+        private void OnTick()
+        {
+            if (Session.IsMissionGoalReached()) {
                 EndSession(UnitType.PLAYER);
             }
         }
@@ -140,8 +147,9 @@ namespace Survivors.Session.Service
         private void EndSession(UnitType winner)
         {
             Dispose();
-            Session.SetResultByUnitType(winner);
             
+            Session.SetResultByUnitType(winner);
+
             _unitService.DeactivateAll();
             _world.Squad.IsActive = false;
 

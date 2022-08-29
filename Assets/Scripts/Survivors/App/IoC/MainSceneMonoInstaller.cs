@@ -1,3 +1,4 @@
+using Feofun.Components;
 using Feofun.Localization.Service;
 using SuperMaxim.Messaging;
 using Survivors.Advertisment.Installer;
@@ -34,7 +35,7 @@ namespace Survivors.App.IoC
             AnalyticsInstaller.Install(Container);
             
             Container.BindInterfacesTo<MainSceneMonoInstaller>().FromInstance(this).AsSingle();
-            Container.Bind<GameApplication>().FromInstance(_gameApplication).AsSingle();
+            Container.BindInterfacesAndSelfTo<GameApplication>().FromInstance(_gameApplication).AsSingle();
             Container.Bind<UpdateManager>().FromInstance(_updateManager).AsSingle();
             Container.Bind<IMessenger>().FromInstance(Messenger.Default).AsSingle();     
             Container.Bind<LocalizationService>().AsSingle();
