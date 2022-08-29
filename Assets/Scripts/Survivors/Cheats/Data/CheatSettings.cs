@@ -8,7 +8,9 @@ namespace Survivors.Cheats.Data
         [DataMember]
         public bool ConsoleEnabled; 
         [DataMember]
-        public bool FPSMonitorEnabled;
+        public bool FPSMonitorEnabled;        
+        [DataMember]
+        public bool ABTestCheatEnabled;
         
     }
 }

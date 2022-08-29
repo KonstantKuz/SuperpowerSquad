@@ -1,30 +1,34 @@
-﻿using System;
-using JetBrains.Annotations;
-using Survivors.ABTest.Providers;
+﻿using JetBrains.Annotations;
+using Logger.Extension;
+using UnityEngine;
 
 namespace Survivors.ABTest
 {
     [PublicAPI]
     public class ABTest
     {
-        private const string CONTROL_VARIANT_ID = "control";
-        private const string WITH_DISASTERS_VARIANT_ID = "withDisasters";
-
-        private IABTestProvider _provider;
+        public const string TEST_ID = "version_1";
         
-        public IABTestProvider Provider
+        private string _abTestId;   
+        
+        public string CurrentVariantId => _abTestId;
+        public bool WithDisasters => CurrentVariantId.Equals(ABTestId.WithDisasters.ToCamelCase());
+        public ABTest()
         {
-            get
-            {
-                if (_provider == null) {
-                    throw new NullReferenceException("ABTestProvider is null, ABTest is not ready yet");
-                }
-                return _provider;
-            }
-            set => _provider = value;
+            Reload();
         }
-
-        public bool Control => Provider.IsVariantId(CONTROL_VARIANT_ID);
-        public bool WithDisasters => Provider.IsVariantId(WITH_DISASTERS_VARIANT_ID);
+        public void Reload()
+        {
+            _abTestId = PlayerPrefs.GetString(GetKey(TEST_ID), ABTestId.Control.ToCamelCase());
+            this.Logger().Info($"ABTest, setting ab test {TEST_ID} to {_abTestId}");
+        }
+        public static void SetExperiment(string experimentId, string variantId)
+        {
+            PlayerPrefs.SetString(GetKey(experimentId), variantId);
+        }
+        private static string GetKey(string experimentId)
+        {
+            return $"ABTest_{experimentId}";
+        }
     }
 }

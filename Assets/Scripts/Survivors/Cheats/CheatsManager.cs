@@ -1,6 +1,7 @@
 using System;
 using Feofun.Localization.Service;
 using Logger.Extension;
+using Survivors.ABTest.Providers;
 using Survivors.Advertisment.Providers;
 using Survivors.Advertisment.Service;
 using Survivors.Cheats.Data;
@@ -50,6 +51,7 @@ namespace Survivors.Cheats
         public void ApplyAllSquadUpgrades() => _upgradeService.ApplyAllUpgrades();  
         public void AddUnit(string unitId) => _upgradeService.AddUnit(unitId);
         public void AddMetaUpgrade(string upgradeId) => _metaUpgradeService.Upgrade(upgradeId);
+        public void SetCheatAbTest(string abTestId) => CheatABTestProvider.SetCheatAbTestId(abTestId);
 
         public void LogTestMessage()
         {
@@ -72,7 +74,7 @@ namespace Survivors.Cheats
             _repository.Set(settings);
         }
 
-        public bool IsCheatAdsEnabled  {
+        public bool IsAdsCheatEnabled  {
             get => _adsManager.AdsProvider is CheatAdsProvider;
             set => _adsManager.AdsProvider = value ? new CheatAdsProvider() : _diContainer.Resolve<IAdsProvider>();
         } 
@@ -84,6 +86,14 @@ namespace Survivors.Cheats
             {
                 UpdateSettings(settings => { settings.ConsoleEnabled = value; });
                 _debugConsole.SetActive(value);
+            }
+        }    
+        public bool IsABTestCheatEnabled
+        {
+            get => Settings.ABTestCheatEnabled;
+            set
+            {
+                UpdateSettings(settings => { settings.ABTestCheatEnabled = value; });
             }
         }    
         public bool IsFPSMonitorEnabled
