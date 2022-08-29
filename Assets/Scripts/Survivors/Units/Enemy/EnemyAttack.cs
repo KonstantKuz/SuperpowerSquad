@@ -57,6 +57,9 @@ namespace Survivors.Units.Enemy
         
         private void Attack()
         {
+            if (!CanAttack()) {
+                return;
+            }
             _animator.SetTrigger(AttackHash);
             if (!HasWeaponAnimationHandler) {
                 Fire();
