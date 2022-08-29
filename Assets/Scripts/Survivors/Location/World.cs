@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
@@ -14,8 +15,12 @@ namespace Survivors.Location
         private Transform _ground;
         [SerializeField]
         private GameObject _spawn;
+        
+        private Bounds? _groundBounds;
 
         public Transform Ground => _ground;
+        private Bounds GroundBounds => _groundBounds ??= _ground.GetComponent<Collider>().bounds;
+
         public GameObject Spawn => _spawn;
 
         [CanBeNull]
@@ -35,6 +40,13 @@ namespace Survivors.Location
             var plane = new Plane(Ground.up, Ground.position);
             plane.Raycast(withRay, out var intersectionDist);
             return withRay.GetPoint(intersectionDist);
+        }
+
+        public Vector3 ClampByWorldBBox(Vector3 position)
+        {
+            position.x = Mathf.Clamp(position.x, GroundBounds.min.x, GroundBounds.max.x);
+            position.z = Mathf.Clamp(position.z, GroundBounds.min.z, GroundBounds.max.z);
+            return position;
         }
         
         public void Pause()

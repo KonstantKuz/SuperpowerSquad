@@ -24,8 +24,8 @@ namespace Survivors.UI.Screen.World
         public override ScreenId ScreenId => ID;
         public override string Url => ScreenName;
 
-        [SerializeField]
-        private float _afterSessionDelay = 2;
+        [SerializeField] private MissionProgressView _missionProgressView;
+        [SerializeField] private float _afterSessionDelay = 2;
 
         [Inject] private SessionService _sessionService;
         [Inject] private IMessenger _messenger;
@@ -38,10 +38,20 @@ namespace Survivors.UI.Screen.World
         [PublicAPI]
         public void Init()
         {
+            Dispose();
+            
             _sessionService.Start();
+            InitProgressView();
+
             _dialogManager.Show<StartUnitDialog, Action<StartUnitSelection>>(OnChangeStartUnit);
             _joystick.Attach(transform);
             _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
+        }
+
+        private void InitProgressView()
+        {
+            var model = new MissionProgressModel(_sessionService.LevelConfig, _sessionService.Kills, _sessionService.PlayTime);
+            _missionProgressView.Init(model);
         }
 
         private void OnChangeStartUnit(StartUnitSelection startUnitSelection)
@@ -63,6 +73,11 @@ namespace Survivors.UI.Screen.World
             _world.CleanUp();
             var debriefingModel = new DebriefingScreenModel(result, _sessionService.Session);
             _screenSwitcher.SwitchTo(DebriefingScreen.URL, debriefingModel);
+        }
+
+        private void Dispose()
+        {
+            _messenger.Unsubscribe<SessionEndMessage>(OnSessionFinished);
         }
     }
 }
