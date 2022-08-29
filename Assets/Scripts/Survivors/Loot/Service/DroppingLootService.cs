@@ -19,7 +19,7 @@ namespace Survivors.Loot.Service
         [Inject] private SquadProgressService _squadProgressService;
         [Inject] private UnitService _unitService;
         [Inject] private WorldObjectFactory _worldObjectFactory;
-        [Inject] private StringKeyedConfigCollection<DroppingLootConfig> _droppingLoots;
+        [Inject] private StringKeyedConfigCollection<LootEmitterConfig> _lootEmitters;
 
         public void OnWorldSetup()
         {
@@ -30,13 +30,14 @@ namespace Survivors.Loot.Service
         {
             if (deathCause != DeathCause.Killed) return;
             
-            var lootConfig = _droppingLoots.Values.FirstOrDefault(it => it.EnemyId == unit.Model.Id);
-            if (lootConfig == null)
+            var emitterConfig = _lootEmitters.Values.FirstOrDefault(it => it.EmitterId == unit.Model.Id);
+            if (emitterConfig == null)
             {
                 this.Logger().Warn($"There is no loot config for enemy with id {unit.Model.Id}.");
                 return;
             }
-            
+
+            var lootConfig = emitterConfig.LootConfig;
             var dropChance = lootConfig.DropChance;
 
             if (Random.value > dropChance)
@@ -44,15 +45,14 @@ namespace Survivors.Loot.Service
                 return;
             }
             
-            var lootId = lootConfig.Id;
-            var loot = _worldObjectFactory.CreateObject(lootId, _world.Spawn.transform).GetComponent<DroppingLoot>();
+            var loot = _worldObjectFactory.CreateObject(lootConfig.LootId, _world.Spawn.transform).GetComponent<DroppingLoot>();
             loot.transform.position = unit.GameObject.transform.position;
             loot.Init(lootConfig);
         }
 
-        public void OnLootCollected(DroppingLootConfig collectedLoot)
+        public void OnLootCollected(DroppingLootType lootType, DroppingLootConfig collectedLoot)
         {
-            switch (collectedLoot.Type)
+            switch (lootType)
             {
                 case DroppingLootType.Exp:
                     _squadProgressService.AddExp(collectedLoot.Amount);

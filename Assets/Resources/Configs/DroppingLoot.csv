@@ -1,2 +1,3 @@
-Id,Type,EnemyId,Amount,DropChance
-SmallExp,Exp,SimpleEnemy,1,1
+EmitterId,LootId,Amount,DropChance
+SimpleEnemy,SmallExp,1,1
+DogEnemy,SmallExp,1,1
