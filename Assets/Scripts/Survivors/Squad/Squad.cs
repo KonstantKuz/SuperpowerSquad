@@ -38,7 +38,6 @@ namespace Survivors.Squad
         
         private IDamageable _damageable;
         private IReadOnlyReactiveProperty<int> _unitCount;
-        private Bounds _groundBounds;
         
         [Inject] private Joystick _joystick;
         [Inject] private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
@@ -74,7 +73,6 @@ namespace Survivors.Squad
             TargetProvider = gameObject.RequireComponent<SquadTargetProvider>();   
             WeaponTimerManager = gameObject.RequireComponent<WeaponTimerManager>();
             _damageable = gameObject.RequireComponent<IDamageable>();
-            _groundBounds = _world.Ground.GetComponent<Collider>().bounds;
             UpdateSquadRadius();
         }
 
@@ -214,14 +212,7 @@ namespace Survivors.Squad
         private void Move(Vector3 joystickDirection)
         {
             var delta = Model.Speed.Value * joystickDirection * Time.deltaTime;
-            Destination.transform.position = ClampByWorldBBox(Destination.transform.position + delta);
-        }
-
-        private Vector3 ClampByWorldBBox(Vector3 position)
-        {
-            position.x = Mathf.Clamp(position.x, _groundBounds.min.x, _groundBounds.max.x);
-            position.z = Mathf.Clamp(position.z, _groundBounds.min.z, _groundBounds.max.z);
-            return position;
+            Destination.transform.position = _world.ClampByWorldBBox(Destination.transform.position + delta);
         }
 
         private void UpdateUnitsAnimations()
