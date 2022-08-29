@@ -9,10 +9,4 @@ namespace Survivors.Units.Component.Health
         event Action OnDamageTaken;
         bool DamageEnabled { get; set; } 
     }
-
-    public enum DamageUnits
-    {
-        Value,
-        PercentFromMax,
-    }
 }
