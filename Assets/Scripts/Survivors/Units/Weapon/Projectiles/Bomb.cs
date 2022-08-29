@@ -2,6 +2,7 @@ using System;
 using DG.Tweening;
 using Survivors.Extension;
 using Survivors.Location.Service;
+using Survivors.Units.Component.DamageReaction;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles.Params;

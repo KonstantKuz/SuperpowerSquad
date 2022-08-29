@@ -23,7 +23,7 @@ MonoBehaviour:
   ABDebugLog: 1
   BannerDisplayOnInit: 1
   BannerDisplayOnInitEditor: 1
-  InterstitialInterval: 20
+  InterstitialInterval: 300
   activeLogs: 1
   Name: Survivors
   FbAppId: 2148152355339705
