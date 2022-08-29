@@ -37,11 +37,12 @@ namespace Survivors.Squad
         private readonly IReactiveCollection<Unit> _units = new List<Unit>().ToReactiveCollection();
         
         private IDamageable _damageable;
-        private IReadOnlyReactiveProperty<int> _unitCount;        
-
+        private IReadOnlyReactiveProperty<int> _unitCount;
+        
         [Inject] private Joystick _joystick;
         [Inject] private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
         [Inject] private UnitFactory _unitFactory;
+        [Inject] private World _world;
         
         public bool IsActive { get; set; }
         public SquadModel Model { get; private set; }
@@ -211,13 +212,7 @@ namespace Survivors.Squad
         private void Move(Vector3 joystickDirection)
         {
             var delta = Model.Speed.Value * joystickDirection * Time.deltaTime;
-        
-            var position = Destination.transform.position;
-            position += delta;
-            if (Math.Abs(position.x) > _destinationLimit || Math.Abs(position.z) > _destinationLimit) {
-                return;
-            }
-            Destination.transform.position = position;
+            Destination.transform.position = _world.ClampByWorldBBox(Destination.transform.position + delta);
         }
 
         private void UpdateUnitsAnimations()
