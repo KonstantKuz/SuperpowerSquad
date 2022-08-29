@@ -9,18 +9,18 @@ namespace Survivors.ABTest
     {
         public const string TEST_ID = "version_1";
         
-        private string _abTestId;   
+        private string _variantId;   
         
-        public string CurrentVariantId => _abTestId;
-        public bool WithDisasters => CurrentVariantId.Equals(ABTestId.WithDisasters.ToCamelCase());
+        public string CurrentVariantId => _variantId;
+        public bool WithDisasters => CurrentVariantId.Equals(ABTestVariantId.WithDisasters.ToCamelCase());
         public ABTest()
         {
             Reload();
         }
         public void Reload()
         {
-            _abTestId = PlayerPrefs.GetString(GetKey(TEST_ID), ABTestId.Control.ToCamelCase());
-            this.Logger().Info($"ABTest, setting ab test {TEST_ID} to {_abTestId}");
+            _variantId = PlayerPrefs.GetString(GetKey(TEST_ID), ABTestVariantId.Control.ToCamelCase());
+            this.Logger().Info($"ABTest, setting ab test {TEST_ID} to {_variantId}");
         }
         public static void SetExperiment(string experimentId, string variantId)
         {

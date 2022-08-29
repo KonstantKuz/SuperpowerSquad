@@ -39,7 +39,7 @@ namespace Survivors.UI.Cheats
         
         [SerializeField] private DropdownWithButtonView _addUnitsView;
         [SerializeField] private DropdownWithButtonView _addMetaUpgradeView;  
-        [SerializeField] private DropdownWithButtonView _abTestIdDropdown;
+        [SerializeField] private DropdownWithButtonView _abTestDropdown;
 
         [Inject] private CheatsManager _cheatsManager;
         [Inject] private CheatsActivator _cheatsActivator;
@@ -82,7 +82,7 @@ namespace Survivors.UI.Cheats
         {
             _addUnitsView.Init(_playerUnitConfigs.Keys, _cheatsManager.AddUnit);
             _addMetaUpgradeView.Init(_modifierConfigs.Keys, _cheatsManager.AddMetaUpgrade);
-            _abTestIdDropdown.Init(EnumExt.Values<ABTestId>().Select(it => it.ToString()).ToList(), _cheatsManager.SetCheatAbTest);
+            _abTestDropdown.Init(EnumExt.Values<ABTestVariantId>().Select(it => it.ToString()).ToList(), _cheatsManager.SetCheatAbTest);
             
         }
 

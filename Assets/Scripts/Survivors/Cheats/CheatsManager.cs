@@ -51,7 +51,7 @@ namespace Survivors.Cheats
         public void ApplyAllSquadUpgrades() => _upgradeService.ApplyAllUpgrades();  
         public void AddUnit(string unitId) => _upgradeService.AddUnit(unitId);
         public void AddMetaUpgrade(string upgradeId) => _metaUpgradeService.Upgrade(upgradeId);
-        public void SetCheatAbTest(string abTestId) => CheatABTestProvider.SetCheatAbTestId(abTestId);
+        public void SetCheatAbTest(string variantId) => CheatABTestProvider.SetVariantId(variantId);
 
         public void LogTestMessage()
         {

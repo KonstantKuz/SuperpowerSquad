@@ -16,12 +16,12 @@ namespace Survivors.ABTest.Providers
         }
         public void LoadAbTest()
         {
-            var cheatAbTestId = GetCheatAbTestId();
-            this.Logger().Info($"CheatABTestProvider, experiment {ABTest.TEST_ID} value is {cheatAbTestId}");
-            ABTest.SetExperiment(ABTest.TEST_ID, cheatAbTestId);
+            var variantId = GetVariantId();
+            this.Logger().Info($"CheatABTestProvider, experiment {ABTest.TEST_ID} value is {variantId}");
+            ABTest.SetExperiment(ABTest.TEST_ID, variantId);
             _abTest.Reload();
         }
-        public static void SetCheatAbTestId(string abTestId) => PlayerPrefs.SetString(CHEAT_KEY, abTestId);
-        private static string GetCheatAbTestId() => PlayerPrefs.GetString(CHEAT_KEY, ABTestId.Control.ToCamelCase());
+        public static void SetVariantId(string variantId) => PlayerPrefs.SetString(CHEAT_KEY, variantId);
+        private static string GetVariantId() => PlayerPrefs.GetString(CHEAT_KEY, ABTestVariantId.Control.ToCamelCase());
     }
 }
