@@ -11,34 +11,44 @@ namespace Survivors.UI.Screen.World
         private const string SECONDS_LOCALIZATION_ID = "Seconds";
         
         private readonly LevelMissionConfig _levelConfig;
-        private readonly IReadOnlyReactiveProperty<float> _playTime;
         
         public LevelMissionType MissionType { get; }
-        public string LabelId { get; }
-        public float LeftSeconds => _levelConfig.Time - _playTime.Value;
-        public IReadOnlyReactiveProperty<float> LevelProgress { get; }
+        public string LabelId { get; private set; }
+        public IReadOnlyReactiveProperty<string> LabelContent { get; private set; }
+        public IReadOnlyReactiveProperty<float> LevelProgress { get; private set; }
+
         public MissionProgressModel(LevelMissionConfig levelConfig, 
             IReadOnlyReactiveProperty<int> killsCount, 
             IReadOnlyReactiveProperty<float> playTime)
         {
             _levelConfig = levelConfig;
-            _playTime = playTime;
             
             MissionType = _levelConfig.MissionType;
-            
-            LabelId = _levelConfig.MissionType switch
+            switch (MissionType)
             {
-                LevelMissionType.KillCount => CHAPTER_LOCALIZATION_ID,
-                LevelMissionType.Time => SECONDS_LOCALIZATION_ID,
-                _ => throw new ArgumentOutOfRangeException($"Unexpected level mission type := {_levelConfig.MissionType}")
-            };
-            
-            LevelProgress = _levelConfig.MissionType switch
-            {
-                LevelMissionType.KillCount => killsCount.Select(count => (float) count / _levelConfig.KillCount).ToReactiveProperty(),
-                LevelMissionType.Time => playTime.Select(time => time / _levelConfig.Time).ToReactiveProperty(),
-                _ => throw new ArgumentOutOfRangeException($"Unexpected level mission type := {_levelConfig.MissionType}")
-            };
+                case LevelMissionType.KillCount:
+                    InitForKillCountMission(killsCount);
+                    break;
+                case LevelMissionType.Time:
+                    InitForTimeMission(playTime);
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException($"Unexpected mission type := {MissionType}");
+            }
+        }
+
+        private void InitForKillCountMission(IReadOnlyReactiveProperty<int> killsCount)
+        {
+            LabelId = CHAPTER_LOCALIZATION_ID;
+            LabelContent = new StringReactiveProperty(_levelConfig.Level.ToString());
+            LevelProgress = killsCount.Select(count => (float) count / _levelConfig.KillCount).ToReactiveProperty();
+        }
+
+        private void InitForTimeMission(IReadOnlyReactiveProperty<float> playTime)
+        {
+            LabelId = SECONDS_LOCALIZATION_ID;
+            LabelContent = playTime.Select(time => (_levelConfig.Time - time).ToString()).ToReactiveProperty();
+            LevelProgress = playTime.Select(time => time / _levelConfig.Time).ToReactiveProperty();
         }
     }
 }

@@ -17,9 +17,6 @@ namespace Survivors.UI.Screen.World
         [SerializeField]
         private TextMeshProLocalization _text;
 
-        [Inject]
-        private SessionService _sessionService;
-
         private MissionProgressModel _model;
         private CompositeDisposable _disposable;
 
@@ -46,35 +43,14 @@ namespace Survivors.UI.Screen.World
         private void InitText()
         {
             _text.LocalizationId = _model.LabelId;
-            switch (_model.MissionType)
-            {
-                case LevelMissionType.KillCount:
-                    SetChapterNumber();
-                    break;
-                case LevelMissionType.Time:
-                    SetSecondsToWin();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException($"Unexpected level mission type := {_model.MissionType}");
-            }
+            _model.LabelContent.Subscribe(UpdateText).AddTo(_disposable);
         }
 
-        private void SetChapterNumber()
+        private void UpdateText(string content)
         {
-            _text.SetTextFormatted(_text.LocalizationId, _sessionService.LevelConfig.Level);
-        }
-
-        private void SetSecondsToWin()
-        {
-            _text.SetTextFormatted(_text.LocalizationId, _model.LeftSeconds);
-            _model.LevelProgress.Subscribe(it => UpdateTimerText(_model.LeftSeconds)).AddTo(_disposable);
+            _text.SetTextFormatted(_text.LocalizationId, content);
         }
         
-        private void UpdateTimerText(float leftSeconds)
-        {
-            _text.SetTextFormatted(_text.LocalizationId, leftSeconds);
-        }
-
         private void Dispose()
         {
             _disposable?.Dispose();
