@@ -2,6 +2,7 @@
 {
     public interface IABTestProvider
     {
+        string CurrentVariantId { get; }
         bool IsVariantId(string variantId);
     }
 }
