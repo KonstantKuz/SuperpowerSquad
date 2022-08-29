@@ -37,11 +37,13 @@ namespace Survivors.Squad
         private readonly IReactiveCollection<Unit> _units = new List<Unit>().ToReactiveCollection();
         
         private IDamageable _damageable;
-        private IReadOnlyReactiveProperty<int> _unitCount;        
-
+        private IReadOnlyReactiveProperty<int> _unitCount;
+        private Bounds _groundBounds;
+        
         [Inject] private Joystick _joystick;
         [Inject] private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
         [Inject] private UnitFactory _unitFactory;
+        [Inject] private World _world;
         
         public bool IsActive { get; set; }
         public SquadModel Model { get; private set; }
@@ -72,6 +74,7 @@ namespace Survivors.Squad
             TargetProvider = gameObject.RequireComponent<SquadTargetProvider>();   
             WeaponTimerManager = gameObject.RequireComponent<WeaponTimerManager>();
             _damageable = gameObject.RequireComponent<IDamageable>();
+            _groundBounds = _world.Ground.GetComponent<Collider>().bounds;
             UpdateSquadRadius();
         }
 
@@ -211,13 +214,14 @@ namespace Survivors.Squad
         private void Move(Vector3 joystickDirection)
         {
             var delta = Model.Speed.Value * joystickDirection * Time.deltaTime;
-        
-            var position = Destination.transform.position;
-            position += delta;
-            if (Math.Abs(position.x) > _destinationLimit || Math.Abs(position.z) > _destinationLimit) {
-                return;
-            }
-            Destination.transform.position = position;
+            Destination.transform.position = ClampByWorldBBox(Destination.transform.position + delta);
+        }
+
+        private Vector3 ClampByWorldBBox(Vector3 position)
+        {
+            position.x = Mathf.Clamp(position.x, _groundBounds.min.x, _groundBounds.max.x);
+            position.z = Mathf.Clamp(position.z, _groundBounds.min.z, _groundBounds.max.z);
+            return position;
         }
 
         private void UpdateUnitsAnimations()
