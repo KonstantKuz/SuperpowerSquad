@@ -1,31 +1,34 @@
 ﻿using System;
 using JetBrains.Annotations;
+using Logger.Extension;
 using Survivors.ABTest.Providers;
+using Zenject;
 
 namespace Survivors.ABTest
 {
     [PublicAPI]
     public class ABTest
     {
-        private const string CONTROL_VARIANT_ID = "control";
-        private const string WITH_DISASTERS_VARIANT_ID = "withDisasters";
-
-        private IABTestProvider _provider;
+        [Inject]
+        private IABTestProvider _abTestProvider;
         
-        public IABTestProvider Provider
+        private string _variantId;
+        public string CurrentVariantId
         {
             get
             {
-                if (_provider == null) {
-                    throw new NullReferenceException("ABTestProvider is null, ABTest is not ready yet");
+                if (_variantId == null) {
+                    throw new NullReferenceException("ABTest not initialized, variantId is null");
                 }
-                return _provider;
+                return _variantId;
             }
-            set => _provider = value;
         }
-
-        public string CurrentVariantId => Provider.CurrentVariantId;
-        public bool Control => Provider.IsVariantId(CONTROL_VARIANT_ID);
-        public bool WithDisasters => Provider.IsVariantId(WITH_DISASTERS_VARIANT_ID);
+        public bool WithDisasters => CurrentVariantId.Equals(ABTestVariantId.WithDisasters.ToCamelCase());
+        
+        public void Reload()
+        {
+            _variantId = _abTestProvider.GetVariant();
+            this.Logger().Info($"ABTest, setting ab-test variant:= {_variantId}");
+        }
     }
 }

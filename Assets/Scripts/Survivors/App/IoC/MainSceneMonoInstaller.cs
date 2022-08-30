@@ -1,5 +1,6 @@
 using Feofun.Localization.Service;
 using SuperMaxim.Messaging;
+using Survivors.ABTest.Installer;
 using Survivors.Advertisment.Installer;
 using Survivors.Analytics;
 using Survivors.App.Config;
@@ -39,9 +40,9 @@ namespace Survivors.App.IoC
             Container.Bind<IMessenger>().FromInstance(Messenger.Default).AsSingle();     
             Container.Bind<LocalizationService>().AsSingle();
             Container.Bind<VibrationManager>().AsSingle();   
-            Container.Bind<ABTest.ABTest>().AsSingle();
-            
 
+            
+            ABTestServicesInstaller.Install(Container);
             ConfigsInstaller.Install(Container);
             ModifiersInstaller.Install(Container);  
             
@@ -54,7 +55,6 @@ namespace Survivors.App.IoC
             _worldServicesInstaller.Install(Container);
             _uiInstaller.Install(Container);
             _cheatsInstaller.Install(Container);
-            
         }
     }
 }
