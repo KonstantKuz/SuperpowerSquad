@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8200632565177598753}
   - component: {fileID: 6320879860712907822}
-  - component: {fileID: 7356971098661409725}
   m_Layer: 0
   m_Name: Humanoid.059
   m_TagString: Untagged
@@ -84,18 +83,6 @@ SkinnedMeshRenderer:
     m_Center: {x: -0.000323385, y: 0.17102423, z: 0.030349761}
     m_Extent: {x: 0.7264259, y: 0.78414357, z: 0.41905478}
   m_DirtyAABB: 0
---- !u!114 &7356971098661409725
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 628175333818672673}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5ed660e230304382a17ae66ec0729804, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2047533565645016285
 GameObject:
   m_ObjectHideFlags: 0
@@ -432,6 +419,8 @@ GameObject:
   m_Component:
   - component: {fileID: 9174834685097270984}
   - component: {fileID: 3004924998954124466}
+  - component: {fileID: 6553246280143947130}
+  - component: {fileID: 2393826093784845401}
   m_Layer: 0
   m_Name: Body Type 6-New
   m_TagString: Untagged
@@ -473,3 +462,29 @@ Animator:
   m_HasTransformHierarchy: 0
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!114 &6553246280143947130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8365540923523171442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3b42d0e0bc214bfa92bc80a94318433d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 3004924998954124466}
+  _renderer: {fileID: 6320879860712907822}
+--- !u!114 &2393826093784845401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8365540923523171442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6085c0ebd3454baba25d46794c849e97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
