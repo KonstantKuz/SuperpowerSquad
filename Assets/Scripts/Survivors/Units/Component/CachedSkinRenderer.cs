@@ -13,7 +13,8 @@ namespace Survivors.Units.Component
         [SerializeField] private Animator _animator;
         [SerializeField] private SkinnedMeshRenderer _renderer;
 
-        private int _animationOffset;
+        private float _currentTime;
+        private float _animationLength;
 
         private static readonly Dictionary<int, Mesh> _meshCache = new Dictionary<int, Mesh>();
         public Bounds Bounds => _renderer.bounds;
@@ -28,7 +29,9 @@ namespace Survivors.Units.Component
             _renderer.updateWhenOffscreen = false;
             _renderer.enabled = false;
             _animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
-            _animationOffset = Random.Range(0, FRAME_COUNT);            
+            _animator.enabled = false;
+            _animationLength = _animator.GetCurrentAnimatorStateInfo(0).length;
+            _currentTime = Random.Range(0f, _animationLength);
         }
 
         private void PrepareCache()
@@ -48,8 +51,8 @@ namespace Survivors.Units.Component
 
         private void LateUpdate()
         {
-            var animState = _animator.GetCurrentAnimatorStateInfo(0);
-            int currentFrame = Mathf.RoundToInt(  animState.normalizedTime * FRAME_COUNT + _animationOffset) % (FRAME_COUNT + 1);
+            _currentTime = Mathf.Repeat(_currentTime + Time.deltaTime, _animationLength);
+            int currentFrame = Mathf.RoundToInt( _currentTime / _animationLength * FRAME_COUNT );
             Graphics.DrawMesh(_meshCache[currentFrame], 
                 transform.localToWorldMatrix, 
                 _renderer.material, 
