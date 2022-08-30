@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using JetBrains.Annotations;
-using Logger.Extension;
 using UnityEngine;
 
 namespace Survivors.ObjectPool
@@ -58,23 +57,25 @@ namespace Survivors.ObjectPool
             if (initialCapacity <= 0) {
                 return;
             }
-            CreateInactiveItems(initialCapacity);
+            Allocate(initialCapacity);
         }
-
         public T Get()
         {
             DetectInitialCapacityShortage();
-            var item = _inactiveStack.Count == 0 ? Create(_poolParams.SizeIncrementStep) : _inactiveStack.Pop();
+            if (_inactiveStack.Count == 0) {
+                Allocate(_poolParams.SizeIncrementStep);
+            }
+            var item = _inactiveStack.Pop();
             _onGet?.Invoke(item);
             return item;
         }
+
 
         public void Release(T element)
         {
             if (_inactiveStack.Count > 0 && _inactiveStack.Contains(element)) {
                 throw new InvalidOperationException($"Trying to release an object that has already been released to the pool. Pool type:= {typeof(T)}");
             }
-
             _onRelease?.Invoke(element);
 
             if (CountInactive < _poolParams.MaxCapacity) {
@@ -103,32 +104,20 @@ namespace Survivors.ObjectPool
                 _initialCapacityShortageDetected = true;
             }
         }
-        private T Create(int sizeIncrementStep)
-        {
-            var item = Create();
-            if (sizeIncrementStep <= 1) {
-                return item;
-            }
-            CreateInactiveItems(sizeIncrementStep - 1);
-            return item;
-        }
-
-        private void CreateInactiveItems(int count)
+        private void Allocate(int count)
         {
             for (int i = 0; i < count; i++) {
                 var item = Create();
                 Release(item);
             }
         }
-
         private T Create()
         {
             var element = _createFunc();
             _allItems.Add(element);
             return element;
         }
-
-        public void Clear()
+        private void Clear()
         {
             foreach (var element in _inactiveStack) {
                 CallOnDestroy(element);

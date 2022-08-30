@@ -370,6 +370,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8746036833993048138}
   - component: {fileID: 1866441843583567248}
+  - component: {fileID: 605664749890416982}
   - component: {fileID: 3088611838475355998}
   - component: {fileID: 8743563882573435223}
   - component: {fileID: 1873516484607207762}
@@ -419,8 +420,20 @@ MonoBehaviour:
   _objectInstancingFactory: {fileID: 8743563882573435223}
   _enemyWavesSpawner: {fileID: 1873516484607207762}
   _enemyHpsSpawner: {fileID: 186752239828696303}
-  _diObjectPoolWrapper: {fileID: 6580668805740882331}
   _worldEventFactory: {fileID: 1913784875}
+--- !u!114 &605664749890416982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8746036833993048137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ded3cd42b91f4a9aa914bd63f5ccd714, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _diObjectPoolWrapper: {fileID: 6580668805740882331}
 --- !u!114 &3088611838475355998
 MonoBehaviour:
   m_ObjectHideFlags: 0

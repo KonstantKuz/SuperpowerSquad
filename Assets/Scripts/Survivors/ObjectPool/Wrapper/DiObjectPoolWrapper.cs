@@ -19,6 +19,7 @@ namespace Survivors.ObjectPool.Wrapper
         {
             var createdGameObject = _container.InstantiatePrefab(prefab, _poolRoot);
             createdGameObject.transform.SetPositionAndRotation(Vector3.zero, Quaternion.identity);
+            createdGameObject.gameObject.SetActive(false);
             return createdGameObject;
         }
         private void OnGetFromPool(GameObject instance)
