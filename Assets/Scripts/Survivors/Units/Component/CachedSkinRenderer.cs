@@ -53,8 +53,9 @@ namespace Survivors.Units.Component
         {
             _currentTime = Mathf.Repeat(_currentTime + Time.deltaTime, _animationLength);
             int currentFrame = Mathf.RoundToInt( _currentTime / _animationLength * FRAME_COUNT );
+            var rendererTransform = _renderer.transform;
             Graphics.DrawMesh(_meshCache[currentFrame], 
-                transform.localToWorldMatrix, 
+                rendererTransform.localToWorldMatrix, 
                 _renderer.material, 
                 gameObject.layer, 
                 UnityEngine.Camera.main, 
@@ -62,7 +63,7 @@ namespace Survivors.Units.Component
                 null, 
                 _renderer.shadowCastingMode, 
                 _renderer.receiveShadows,
-                gameObject.transform,
+                rendererTransform,
                 _renderer.lightProbeUsage);
         }
 
