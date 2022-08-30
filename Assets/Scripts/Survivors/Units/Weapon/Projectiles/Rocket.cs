@@ -26,7 +26,7 @@ namespace Survivors.Units.Weapon.Projectiles
         private Vector3 _lastTargetPos;
         
         [Inject(Id = ObjectFactoryType.Instancing)] 
-        protected IObjectFactory _objectFactory;  
+        private IObjectFactory _objectFactory;  
 
         private ITarget _target;
 

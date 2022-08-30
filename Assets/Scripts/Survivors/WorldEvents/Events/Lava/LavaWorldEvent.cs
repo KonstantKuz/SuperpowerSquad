@@ -15,7 +15,7 @@ namespace Survivors.WorldEvents.Events.Lava
         private readonly List<Lava> _createdLava = new List<Lava>();
 
         [Inject(Id = ObjectFactoryType.Instancing)] 
-        protected IObjectFactory _objectFactory;  
+        private IObjectFactory _objectFactory;  
         [Inject]
         private World _world;
 

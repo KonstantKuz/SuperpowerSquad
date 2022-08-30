@@ -23,14 +23,10 @@ namespace Survivors.Location.ObjectFactory.Factories
         [Inject]
         private DiContainer _container;
 
-        public void Prepare()
-        {
-            
-        }
+        private CompositeDisposable Disposable => _disposable ??= new CompositeDisposable();
 
         public T Create<T>(string objectId, Transform container = null)
         {
-            TryCreateDisposable();
             var prefab = _objectResourceService.GetPrefab(objectId);
             return Create<T>(prefab.GameObject, container);
         }
@@ -47,7 +43,7 @@ namespace Survivors.Location.ObjectFactory.Factories
             var parentContainer = container == null ? _world.Spawn.transform : container.transform;
             var createdGameObject = _container.InstantiatePrefab(prefab, parentContainer);
             _createdObjects.Add(createdGameObject);
-            createdGameObject.OnDestroyAsObservable().Subscribe((o) => RemoveObject(createdGameObject)).AddTo(_disposable);
+            createdGameObject.OnDestroyAsObservable().Subscribe((o) => RemoveObject(createdGameObject)).AddTo(Disposable);
             return createdGameObject;
         }
         public void DestroyAllObjects()
@@ -56,14 +52,6 @@ namespace Survivors.Location.ObjectFactory.Factories
             Dispose();
             _createdObjects.Clear();
         }
-
-        private void TryCreateDisposable()
-        {
-            if (_disposable == null) {
-                _disposable = new CompositeDisposable();
-            }
-        }
-
         private void RemoveObject(GameObject obj) => _createdObjects.Remove(obj);
         
         private void OnDestroy()

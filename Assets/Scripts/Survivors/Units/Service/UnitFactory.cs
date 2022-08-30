@@ -13,10 +13,10 @@ namespace Survivors.Units.Service
     {
         [Inject] private World _world;
         [Inject(Id = ObjectFactoryType.Instancing)] 
-        protected IObjectFactory _objectFactory;
+        private IObjectFactory _objectFactory;
         
         [Inject(Id = ObjectFactoryType.Pool)] 
-        protected IObjectFactory _poolObjectFactory;  
+        private IObjectFactory _poolObjectFactory;  
         
         [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
         [Inject] private PlayerUnitModelBuilder _playerUnitModelBuilder;

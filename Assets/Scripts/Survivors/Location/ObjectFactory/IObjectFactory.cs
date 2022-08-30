@@ -4,8 +4,7 @@ using UnityEngine;
 namespace Survivors.Location.ObjectFactory
 {
     public interface IObjectFactory
-    { 
-        void Prepare();
+    {
         T Create<T>(string objectId, [CanBeNull] Transform container = null);
 
         T Create<T>(GameObject prefab, [CanBeNull] Transform container = null);

@@ -15,7 +15,7 @@ namespace Survivors.WorldEvents.Events.Tornado
         private readonly List<Tornado> _createdTornado = new List<Tornado>();
 
         [Inject(Id = ObjectFactoryType.Instancing)] 
-        protected IObjectFactory _objectFactory;  
+        private IObjectFactory _objectFactory;  
         [Inject]
         private World _world;
 

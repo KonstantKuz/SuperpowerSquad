@@ -22,7 +22,7 @@ namespace Survivors.Squad
 
         [Inject] private World _world;
         [Inject(Id = ObjectFactoryType.Instancing)] 
-        protected IObjectFactory _objectFactory;  
+        private IObjectFactory _objectFactory;  
         [Inject] private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
         [Inject] private SquadConfig _squadConfig;
         [Inject] private ConstantsConfig _constantsConfig;

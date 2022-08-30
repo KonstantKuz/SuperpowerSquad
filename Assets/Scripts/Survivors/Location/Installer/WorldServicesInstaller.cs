@@ -26,8 +26,9 @@ namespace Survivors.Location.Installer
             container.Bind<ObjectResourceService>().AsSingle();
             InstallObjectFactory(container);
             container.BindInterfacesAndSelfTo<WorldObjectRemover>().AsSingle();
+            
             container.Bind<PoolManager>().FromNew().AsSingle().WithArguments(_diObjectPoolWrapper);
-
+            container.Bind<PoolPreparer>().AsSingle();
 
             container.Bind<World>().FromInstance(_world);
             

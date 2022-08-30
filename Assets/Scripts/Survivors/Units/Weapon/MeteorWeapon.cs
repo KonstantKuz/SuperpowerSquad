@@ -20,7 +20,7 @@ namespace Survivors.Units.Weapon
         [SerializeField] private float _randomDelay;
         
         [Inject(Id = ObjectFactoryType.Instancing)] 
-        protected IObjectFactory _objectFactory; 
+        private IObjectFactory _objectFactory; 
 
             
         public override void Fire(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)

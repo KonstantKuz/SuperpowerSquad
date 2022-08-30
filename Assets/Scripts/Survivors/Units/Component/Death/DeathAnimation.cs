@@ -20,7 +20,7 @@ namespace Survivors.Units.Component.Death
         private float _offsetYDisappear;
         
         [Inject(Id = ObjectFactoryType.Instancing)] 
-        protected IObjectFactory _objectFactory;  
+        private IObjectFactory _objectFactory;  
         
         private Animator _animator;
         private Tweener _disappearTween;

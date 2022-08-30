@@ -1,8 +1,7 @@
 using Feofun.App.Init;
 using Feofun.UI.Screen;
 using JetBrains.Annotations;
-using Survivors.Location.ObjectFactory;
-using Survivors.Location.ObjectFactory.Factories;
+using Survivors.ObjectPool.Service;
 using Survivors.UI.Screen.Main;
 using Survivors.Units.Enemy;
 using Zenject;
@@ -14,13 +13,14 @@ namespace Survivors.App.InitSteps
     {
         [Inject]
         private ScreenSwitcher _screenSwitcher;
-        [Inject(Id = ObjectFactoryType.Pool)] 
-        protected IObjectFactory _objectFactory;  
+        [Inject] 
+        private PoolPreparer _poolPreparer;  
+        
         protected override void Run()
         {
             DOTweenInitializer.Init();
             NavMeshInitializer.Init();
-            _objectFactory.Prepare();
+            _poolPreparer.Prepare();
             _screenSwitcher.SwitchTo(MainScreen.URL);
             Next();
         }

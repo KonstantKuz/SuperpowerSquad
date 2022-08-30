@@ -24,7 +24,7 @@ namespace Survivors.Units.Weapon.Projectiles
         private float _speed;
         
         [Inject(Id = ObjectFactoryType.Instancing)] 
-        protected IObjectFactory _objectFactory;     
+        private IObjectFactory _objectFactory;     
 
         public void Launch(UnitType targetType, IProjectileParams projectileParams, float lifeTime, float speed, Action<GameObject> hitCallback)
         {

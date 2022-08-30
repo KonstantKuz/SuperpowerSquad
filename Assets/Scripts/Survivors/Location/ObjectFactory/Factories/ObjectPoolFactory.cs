@@ -16,15 +16,6 @@ namespace Survivors.Location.ObjectFactory.Factories
         [Inject] private PoolManager _poolManager;
         [Inject] private ObjectResourceService _objectResourceService;
 
-        public void Prepare()
-        {
-            _objectResourceService.GetAllPrefabs()
-                                  .Select(it => it.GetComponent<ObjectPoolParamsComponent>())
-                                  .Where(it => it != null && it.PreparePoolOnInitScene)
-                                  .ForEach(it => _poolManager.Prepare(it.PoolType, it.gameObject, it.GetPoolParams()));
-        
-        }
-
         public T Create<T>(string objectId, Transform container = null)
         {
             var prefab = _objectResourceService.GetPrefab(objectId);

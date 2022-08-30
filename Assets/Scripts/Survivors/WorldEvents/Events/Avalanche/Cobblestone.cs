@@ -31,7 +31,7 @@ namespace Survivors.WorldEvents.Events.Avalanche
         private Tween _destroyTween;
 
         [Inject(Id = ObjectFactoryType.Instancing)] 
-        protected IObjectFactory _objectFactory;  
+        private IObjectFactory _objectFactory;  
         
         private float DistanceToDisappear => _maxDistance - _moveSpeed * _disappearTime;
         public float Radius => _radius;

@@ -15,7 +15,7 @@ namespace Survivors.WorldEvents.Events.Avalanche
         
         [Inject] private World _world;
         [Inject(Id = ObjectFactoryType.Instancing)] 
-        protected IObjectFactory _objectFactory;  
+        private IObjectFactory _objectFactory;  
 
         public override IEnumerator Start(EventConfig eventConfig)
         {
