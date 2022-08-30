@@ -21,6 +21,7 @@ namespace Survivors.Units.Enemy
 
         private ITarget _selfTarget;
         private CapsuleCollider _collider;
+        private EnemyAttack _attack;
         private EnemyTargetProvider _targetProvider;
         private EnemyMovement _movement;
         private AgentRadiusHandler _agentRadiusHandler;
@@ -43,10 +44,12 @@ namespace Survivors.Units.Enemy
             var model = (EnemyUnitModel) unit.Model;
             NavMeshAgent.speed = model.MoveSpeed;
         }
+        
         private void Awake()
         {
             _selfTarget = gameObject.RequireComponent<ITarget>();
             _collider = gameObject.RequireComponent<CapsuleCollider>();
+            _attack = gameObject.RequireComponent<EnemyAttack>();
             var agent = gameObject.RequireComponent<NavMeshAgent>();
             _targetProvider = new EnemyTargetProvider(gameObject.RequireComponent<ITargetSearcher>());
             _movement = new EnemyMovement(_selfTarget, agent, gameObject.RequireComponentInChildren<Animator>());
@@ -54,21 +57,26 @@ namespace Survivors.Units.Enemy
                 _agentDistanceNear, _agentDistanceAfar);
         }
 
-        public void AimAtTarget()
+        public void OnActiveStateChanged(bool active)
         {
-            _movement.IsStopped = true;
-            _movement.LookAt(CurrentTarget.Root.position);
+            Active = active;
+            _movement.IsStopped = !active;
         }
-        
+
         public void OnTick()
         {
             if (!Active || _world.Squad == null) return;
             UpdateAgentRadius();
             UpdateDestination();
+            if (_attack.CanAttack()) {
+                AimAtTarget();
+            }
+            _movement.UpdateAnimation();
         }
         
         private void UpdateDestination()
         {
+            _movement.IsStopped = false;
             if (DistanceToSquad > _targetSelectionDistance) {
                 _movement.MoveTo(SquadPosition);
                 return;
@@ -85,10 +93,10 @@ namespace Survivors.Units.Enemy
             _agentRadiusHandler.UpdateRadius(DistanceToSquad, Scale);
         }
 
-        public void OnActiveStateChanged(bool active)
+        private void AimAtTarget()
         {
-            Active = active;
-            _movement.IsStopped = !active;
+            _movement.IsStopped = true;
+            _movement.LookAt(CurrentTarget.Root.position);
         }
     }
 }

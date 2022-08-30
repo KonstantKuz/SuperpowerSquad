@@ -14,18 +14,19 @@ namespace Survivors.Units.Enemy
         private readonly ITarget _selfTarget;
         private readonly NavMeshAgent _agent;
         private readonly Animator _animator;
-        private readonly MoveAnimationWrapper _animationWrapper;
+        private readonly AnimationWrapper _animationWrapper;
 
         public EnemyMovement(ITarget selfTarget, NavMeshAgent agent, Animator animator)
         {
             _selfTarget = selfTarget;
             _agent = agent;
             _animator = animator;
-            _animationWrapper = new MoveAnimationWrapper(_animator);
+            _animationWrapper = new AnimationWrapper(_animator);
         }
 
         private bool CanChangeIsStopped => _agent.enabled && _agent.isOnNavMesh;
         public NavMeshAgent Agent => _agent;
+        
         public bool IsStopped 
         {
             get => _agent.isStopped;
@@ -41,10 +42,9 @@ namespace Survivors.Units.Enemy
                 return;
             }
             _agent.isStopped = value;
-            UpdateAnimation();
         }
 
-        private void UpdateAnimation()
+        public void UpdateAnimation()
         {
             if (IsStopped) {
                 _animationWrapper.PlayIdleSmooth();
@@ -55,7 +55,6 @@ namespace Survivors.Units.Enemy
         
         public void MoveTo(Vector3 destination)
         {
-            IsStopped = false;
             if (Vector3.Distance(_selfTarget.Root.position, destination) > ACCURATE_FOLLOW_DISTANCE) {
                 SetDestination(_selfTarget.Root.position + (destination - _selfTarget.Root.position).normalized);
             } else {
