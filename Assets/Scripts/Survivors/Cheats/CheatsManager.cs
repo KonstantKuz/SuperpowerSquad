@@ -55,7 +55,7 @@ namespace Survivors.Cheats
 
         public void SetCheatAbTest(string variantId)
         {
-            CheatABTestProvider.SetVariantId(variantId);
+            OverrideABTestProvider.SetVariantId(variantId);
             _abTest.Reload();
         }
         public void LogTestMessage()
