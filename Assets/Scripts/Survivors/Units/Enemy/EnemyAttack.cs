@@ -46,6 +46,13 @@ namespace Survivors.Units.Enemy
 
         public void OnTick()
         {
+            if(!_enemyAi.Active) return;
+            
+            if (CanAttack())
+            {
+                _enemyAi.AimAtTarget();
+            }
+
             _weaponTimer.OnTick();
         }
 

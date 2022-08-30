@@ -2,6 +2,6 @@ StartingHPS,0
 HPSSpeed,75
 MinWaveSize,20
 MaxWaveSize,30
-MinInterval,1
-MaxInterval,2
+MinInterval,10000
+MaxInterval,20000
 EnemyId,SimpleEnemy
