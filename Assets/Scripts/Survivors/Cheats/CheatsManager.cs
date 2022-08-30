@@ -25,7 +25,8 @@ namespace Survivors.Cheats
         [Inject] private UpgradeService _upgradeService;
         [Inject] private MetaUpgradeService _metaUpgradeService;
         [Inject] private AdsManager _adsManager;
-        [Inject] private DiContainer _diContainer;
+        [Inject] private DiContainer _diContainer;   
+        [Inject] private ABTest.ABTest _abTest;
 
         [SerializeField] private GameObject _fpsMonitor;
         [SerializeField] private GameObject _debugConsole;
@@ -51,8 +52,12 @@ namespace Survivors.Cheats
         public void ApplyAllSquadUpgrades() => _upgradeService.ApplyAllUpgrades();  
         public void AddUnit(string unitId) => _upgradeService.AddUnit(unitId);
         public void AddMetaUpgrade(string upgradeId) => _metaUpgradeService.Upgrade(upgradeId);
-        public void SetCheatAbTest(string variantId) => CheatABTestProvider.SetVariantId(variantId);
 
+        public void SetCheatAbTest(string variantId)
+        {
+            CheatABTestProvider.SetVariantId(variantId);
+            _abTest.Reload();
+        }
         public void LogTestMessage()
         {
             var logger = this.Logger();
@@ -94,6 +99,7 @@ namespace Survivors.Cheats
             set
             {
                 UpdateSettings(settings => { settings.ABTestCheatEnabled = value; });
+                _abTest.Reload();
             }
         }    
         public bool IsFPSMonitorEnabled

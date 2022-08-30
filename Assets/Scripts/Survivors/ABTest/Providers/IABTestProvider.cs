@@ -2,6 +2,6 @@
 {
     public interface IABTestProvider
     {
-        void LoadAbTest();
+        string GetVariant();
     }
 }

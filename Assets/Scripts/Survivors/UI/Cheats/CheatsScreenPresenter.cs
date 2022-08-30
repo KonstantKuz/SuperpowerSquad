@@ -82,7 +82,7 @@ namespace Survivors.UI.Cheats
         {
             _addUnitsView.Init(_playerUnitConfigs.Keys, _cheatsManager.AddUnit);
             _addMetaUpgradeView.Init(_modifierConfigs.Keys, _cheatsManager.AddMetaUpgrade);
-            _abTestDropdown.Init(EnumExt.Values<ABTestVariantId>().Select(it => it.ToString()).ToList(), _cheatsManager.SetCheatAbTest);
+            _abTestDropdown.Init(EnumExt.Values<ABTestVariantId>().Select(it => it.ToCamelCase()).ToList(), _cheatsManager.SetCheatAbTest);
             
         }
 
