@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using ModestTree;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -19,23 +20,30 @@ namespace Survivors.Units.Component
 
         private void Awake()
         {
+            if (_meshCache.IsEmpty())
+            {
+                PrepareCache();
+            }
+            
+            _renderer.updateWhenOffscreen = false;
+            _renderer.enabled = false;
+            _animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
+            _animationOffset = Random.Range(0, FRAME_COUNT);            
+        }
+
+        private void PrepareCache()
+        {
             _renderer.updateWhenOffscreen = true;
             _animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
-            
+
             var animState = _animator.GetCurrentAnimatorStateInfo(0);
             for (int frameNum = 0; frameNum <= FRAME_COUNT; frameNum++)
             {
                 _animator.Update(animState.length / FRAME_COUNT);
                 _meshCache[frameNum] = new Mesh();
-                
+
                 _renderer.BakeMesh(_meshCache[frameNum]);
             }
-
-            _renderer.updateWhenOffscreen = false;
-            _renderer.enabled = false;
-            _animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
-
-            _animationOffset = Random.Range(0, FRAME_COUNT);
         }
 
         private void LateUpdate()
