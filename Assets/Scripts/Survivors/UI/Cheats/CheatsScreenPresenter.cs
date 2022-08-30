@@ -1,6 +1,9 @@
-﻿using Feofun.Cheats;
+﻿using System.Linq;
+using Feofun.Cheats;
 using Feofun.Config;
+using Feofun.Extension;
 using Feofun.UI.Components.Button;
+using Survivors.ABTest;
 using Survivors.Cheats;
 using Survivors.Config;
 using Survivors.Modifiers.Config;
@@ -18,7 +21,8 @@ namespace Survivors.UI.Cheats
 
         [SerializeField] private ActionToggle _toggleConsoleButton;
         [SerializeField] private ActionToggle _toggleFPSButton;   
-        [SerializeField] private ActionToggle _toggleAdsButton; 
+        [SerializeField] private ActionToggle _toggleAdsButton;   
+        [SerializeField] private ActionToggle _toggleABTestButton; 
         
         [SerializeField] private ActionButton _increaseSquadLevelButton; 
         [SerializeField] private ActionButton _applyAllUpgradesButton;
@@ -34,7 +38,8 @@ namespace Survivors.UI.Cheats
         [SerializeField] private ActionButton _testLogButton;    
         
         [SerializeField] private DropdownWithButtonView _addUnitsView;
-        [SerializeField] private DropdownWithButtonView _addMetaUpgradeView;
+        [SerializeField] private DropdownWithButtonView _addMetaUpgradeView;  
+        [SerializeField] private DropdownWithButtonView _abTestDropdown;
 
         [Inject] private CheatsManager _cheatsManager;
         [Inject] private CheatsActivator _cheatsActivator;
@@ -70,12 +75,15 @@ namespace Survivors.UI.Cheats
         {
             _toggleConsoleButton.Init(_cheatsManager.IsConsoleEnabled, value => _cheatsManager.IsConsoleEnabled = value);
             _toggleFPSButton.Init(_cheatsManager.IsFPSMonitorEnabled, value => _cheatsManager.IsFPSMonitorEnabled = value);
-            _toggleAdsButton.Init(_cheatsManager.IsCheatAdsEnabled, value => _cheatsManager.IsCheatAdsEnabled = value);
+            _toggleAdsButton.Init(_cheatsManager.IsAdsCheatEnabled, value => _cheatsManager.IsAdsCheatEnabled = value);
+            _toggleABTestButton.Init(_cheatsManager.IsABTestCheatEnabled, value => _cheatsManager.IsABTestCheatEnabled = value);
         }     
         private void InitDropdowns()
         {
-            _addUnitsView.Init(_playerUnitConfigs.Keys, _cheatsManager.AddUnit);   
+            _addUnitsView.Init(_playerUnitConfigs.Keys, _cheatsManager.AddUnit);
             _addMetaUpgradeView.Init(_modifierConfigs.Keys, _cheatsManager.AddMetaUpgrade);
+            _abTestDropdown.Init(EnumExt.Values<ABTestVariantId>().Select(it => it.ToCamelCase()).ToList(), _cheatsManager.SetCheatAbTest);
+            
         }
 
         private void DisableCheats()

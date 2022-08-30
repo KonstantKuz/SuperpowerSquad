@@ -4,7 +4,7 @@ using Survivors.Extension;
 using UnityEngine;
 using UnityEngine.AI;
 
-namespace Survivors.Units.Component.Health
+namespace Survivors.Units.Component.DamageReaction
 {
     [RequireComponent(typeof(Unit))]  
     [RequireComponent(typeof(NavMeshAgent))]
