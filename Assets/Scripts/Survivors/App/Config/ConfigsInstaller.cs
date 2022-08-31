@@ -32,6 +32,7 @@ namespace Survivors.App.Config
                 .RegisterSingleObjectConfig<SquadConfig>(Configs.SQUAD)
                 .RegisterSingleObjectConfig<ConstantsConfig>(Configs.CONSTANTS)
                 .RegisterSingleObjectConfig<HpsSpawnerConfig>(Configs.ENEMY_SPAWNER)
+                .RegisterStringKeyedCollection<SpawnableEnemyConfig>(Configs.SPAWNABLE_ENEMIES)
                 .RegisterStringKeyedCollection<PlayerUnitConfig>(Configs.PLAYER_UNIT)
                 .RegisterStringKeyedCollection<EnemyUnitConfig>(Configs.ENEMY_UNIT)
                 .RegisterStringKeyedCollection<LootEmitterConfig>(Configs.DROPPING_LOOT)

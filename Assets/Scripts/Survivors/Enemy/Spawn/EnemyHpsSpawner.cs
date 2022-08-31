@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using Feofun.Config;
 using Logger.Extension;
 using SuperMaxim.Messaging;
 using Survivors.Enemy.Spawn.Config;
 using Survivors.Session.Messages;
+using Survivors.Session.Service;
 using Survivors.Units.Enemy.Config;
 using UnityEngine;
 using Zenject;
@@ -14,13 +16,17 @@ namespace Survivors.Enemy.Spawn
 {
     public class EnemyHpsSpawner : MonoBehaviour
     {
+        private const int SELECT_ENEMY_MAX_ATTEMPT_COUNT = 5;
+        
         private Coroutine _spawnCoroutine;
         
         [Inject] private EnemyWavesSpawner _enemyWavesSpawner;
         [Inject] private HpsSpawnerConfig _config;   
         [Inject] private IMessenger _messenger;
         [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
-
+        [Inject] private StringKeyedConfigCollection<SpawnableEnemyConfig> _spawnableEnemyConfigs;
+        [Inject] private SessionService _sessionService;
+        
         private void Awake()
         {
             _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
@@ -59,57 +65,81 @@ namespace Survivors.Enemy.Spawn
         private void SpawnWave(float health)
         {
             Log($"Spawning wave of health {health}");
-            var desiredUnitCount = Random.Range(_config.MinWaveSize, _config.MaxWaveSize + 1);
+            var spawnConfig = GetSuitableSpawnConfig();
+            var desiredUnitCount = Random.Range(spawnConfig.MinWaveSize, spawnConfig.MaxWaveSize + 1);
             var averageHealth = health / desiredUnitCount;
-            var enemyUnitConfig = _enemyUnitConfigs.Get(_config.EnemyId);
+            var enemyUnitConfig = _enemyUnitConfigs.Get(spawnConfig.Id);
             var averageLevel = EnemyUnitConfig.MIN_LEVEL + (averageHealth - enemyUnitConfig.Health) / enemyUnitConfig.HealthStep;
 
             if (averageLevel < EnemyUnitConfig.MIN_LEVEL)
             {
                 var level = EnemyUnitConfig.MIN_LEVEL;
                 var possibleUnitCount = Mathf.RoundToInt(health / enemyUnitConfig.Health);
-                var place = GetWavePlace(possibleUnitCount, level);
-                SpawnWave(possibleUnitCount, level, place);
+                var waveConfig = EnemyWaveConfig.Create(enemyUnitConfig.Id, possibleUnitCount, level);
+                var place = GetWavePlace(waveConfig);
+                SpawnWave(waveConfig, place);
             }
             else
             {
-                SpawnMixedWave(averageLevel, desiredUnitCount);
+                var waveConfig = EnemyWaveConfig.Create(enemyUnitConfig.Id, desiredUnitCount, (int) Math.Floor(averageLevel));
+                SpawnMixedWave(waveConfig);
             }
         }
 
-        private SpawnPlace GetWavePlace(float unitCount, int level)
+        private SpawnableEnemyConfig GetSuitableSpawnConfig()
         {
-            return _enemyWavesSpawner.GetPlaceForWave(GetWaveConfig(Mathf.RoundToInt(unitCount), level));
-        }
-
-        private void SpawnMixedWave(float averageLevel, float unitCount)
-        {
-            var partition = averageLevel % 1;
-            var highLevelCount = (int)(partition * unitCount);
-            var lowerLevelCount = Mathf.RoundToInt(unitCount - highLevelCount);
-            var lowerLevel = (int)Math.Floor(averageLevel);
-            var highLevel = lowerLevel + 1;
-            
-            var place = GetWavePlace(unitCount, highLevel);
-            SpawnWave(highLevelCount, highLevel, place);
-            SpawnWave(lowerLevelCount, lowerLevel, place);
-        }
-
-        private void SpawnWave(int count, int level, SpawnPlace place)
-        {
-            Log($"Spawning wave of {count} units of level {level}");
-            _enemyWavesSpawner.SpawnWave(GetWaveConfig(count, level), place);
-        }
-
-        private EnemyWaveConfig GetWaveConfig(int count, int level)
-        {
-            return new EnemyWaveConfig
+            for (int i = 0; i < SELECT_ENEMY_MAX_ATTEMPT_COUNT; i++)
             {
-                Count = count,
-                EnemyId = _config.EnemyId,
-                EnemyLevel = level
-            };
+                var randomConfig = GetRandomEnemyConfig();
+                if (randomConfig != null)
+                {
+                    return randomConfig;
+                }
+            }
+            
+            return _spawnableEnemyConfigs.OrderBy(it => it.Chance).First();
         }
+
+        private SpawnableEnemyConfig GetRandomEnemyConfig()
+        {
+            var spawnChance = Random.value;
+            foreach (var spawnConfig in _spawnableEnemyConfigs.OrderBy(it => it.Chance))
+            {
+                if (spawnChance > spawnConfig.Chance) continue;
+                if (_sessionService.PlayTime.Value < spawnConfig.Delay) continue;
+
+                return spawnConfig;
+            }
+
+            return null;
+        }
+
+        private SpawnPlace GetWavePlace(EnemyWaveConfig waveConfig)
+        {
+            return _enemyWavesSpawner.GetPlaceForWave(waveConfig);
+        }
+
+        private void SpawnMixedWave(EnemyWaveConfig waveConfig)
+        {
+            var partition = waveConfig.EnemyLevel % 1;
+            var highLevelCount = partition * waveConfig.Count;
+            var lowerLevelCount = waveConfig.Count - highLevelCount;
+            var lowerLevel = waveConfig.EnemyLevel;
+            var highLevel = lowerLevel + 1;
+
+            var lowerLevelConfig = EnemyWaveConfig.Create(waveConfig.EnemyId, lowerLevelCount, lowerLevel);
+            var highLevelConfig = EnemyWaveConfig.Create(waveConfig.EnemyId, highLevelCount, highLevel);
+            var place = GetWavePlace(waveConfig);
+            SpawnWave(lowerLevelConfig, place);
+            SpawnWave(highLevelConfig, place);
+        }
+
+        private void SpawnWave(EnemyWaveConfig waveConfig, SpawnPlace place)
+        {
+            Log($"Spawning wave of {waveConfig.Count} units of level {waveConfig.EnemyLevel}");
+            _enemyWavesSpawner.SpawnWave(waveConfig, place);
+        }
+
         private void OnDestroy()
         {
             _messenger.Unsubscribe<SessionEndMessage>(OnSessionFinished);
