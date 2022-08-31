@@ -4,19 +4,24 @@ using Feofun.Config;
 namespace Survivors.Loot.Config
 {
     [DataContract]
-    public class DroppingLootConfig : ICollectionItem<string>
+    public class LootEmitterConfig : ICollectionItem<string>
     {
-        [DataMember(Name = "Id")] 
-        private string _id;
+        public string Id => EmitterId;
         
-        public string Id => _id;
         [DataMember]
-        public DroppingLootType Type;
+        public string EmitterId;
         [DataMember]
-        public string EnemyId;
-        [DataMember] 
+        public DroppingLootConfig LootConfig;
+    }
+
+    [DataContract]
+    public class DroppingLootConfig
+    {
+        [DataMember]
+        public string LootId;
+        [DataMember]
         public int Amount;
-        [DataMember] 
+        [DataMember]
         public float DropChance;
     }
 }

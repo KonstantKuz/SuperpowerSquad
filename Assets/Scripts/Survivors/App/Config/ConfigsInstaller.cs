@@ -34,7 +34,7 @@ namespace Survivors.App.Config
                 .RegisterSingleObjectConfig<HpsSpawnerConfig>(Configs.ENEMY_SPAWNER)
                 .RegisterStringKeyedCollection<PlayerUnitConfig>(Configs.PLAYER_UNIT)
                 .RegisterStringKeyedCollection<EnemyUnitConfig>(Configs.ENEMY_UNIT)
-                .RegisterStringKeyedCollection<DroppingLootConfig>(Configs.DROPPING_LOOT)
+                .RegisterStringKeyedCollection<LootEmitterConfig>(Configs.DROPPING_LOOT)
                 .RegisterStringKeyedCollection<SquadLevelConfig>(Configs.SQUAD_LEVEL)
                 .RegisterStringKeyedCollection<ParameterUpgradeConfig>(Configs.MODIFIERS, true)            
                 .RegisterStringKeyedCollection<UpgradeProductConfig>(Configs.META_UPGRADES_SHOP)
