@@ -1,6 +1,7 @@
 using System.Collections;
 using Survivors.Extension;
 using Survivors.Location;
+using Survivors.Location.ObjectFactory;
 using Survivors.Location.Service;
 using UnityEngine;
 using Zenject;
@@ -13,7 +14,8 @@ namespace Survivors.WorldEvents.Events.Avalanche
         private AvalancheEventConfig _config;
         
         [Inject] private World _world;
-        [Inject] private WorldObjectFactory _worldObjectFactory;
+        [Inject(Id = ObjectFactoryType.Instancing)] 
+        private IObjectFactory _objectFactory;  
 
         public override IEnumerator Start(EventConfig eventConfig)
         {
@@ -30,7 +32,7 @@ namespace Survivors.WorldEvents.Events.Avalanche
         }
         private void SpawnCobblestone()
         {
-            var stone = _worldObjectFactory.CreateObject(_config.CobblestonePrefab).RequireComponent<Cobblestone>();
+            var stone = _objectFactory.Create<Cobblestone>(_config.CobblestonePrefab);
             stone.transform.position = GetEmptyRandomPlace(stone);
             
             var directionToPlayer = GetDirectionToPlayerFor(stone);
