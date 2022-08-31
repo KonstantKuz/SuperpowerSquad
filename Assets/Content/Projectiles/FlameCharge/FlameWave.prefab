@@ -46,6 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fe1875485cf1a4842a14b9f63e0078b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _damageAngle: 160
   _destroyDelay: 1
   _trigger: {fileID: 6012486596328704607}
   _particlesRoot: {fileID: 3435929270348785973}
@@ -82,7 +83,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8633208507046843126}
   - component: {fileID: 5324438875410997466}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
