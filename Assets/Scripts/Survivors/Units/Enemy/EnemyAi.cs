@@ -14,25 +14,20 @@ namespace Survivors.Units.Enemy
     public class EnemyAi : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent, IUnitActiveStateReceiver
     {
         [SerializeField] private float _targetSelectionDistance = 10f;
-        [SerializeField] private float _agentRadiusAfar;
-        [SerializeField] private float _agentRadiusNear;
-        [SerializeField] private float _agentDistanceAfar;
-        [SerializeField] private float _agentDistanceNear;
 
         private ITarget _selfTarget;
         private CapsuleCollider _collider;
         private EnemyAttack _attack;
         private EnemyTargetProvider _targetProvider;
         private EnemyMovement _movement;
-        private AgentRadiusHandler _agentRadiusHandler;
 
         [Inject] private World _world;
 
         public ITarget CurrentTarget => _targetProvider.CurrentTarget;
         private Vector3 SquadPosition => _world.Squad.Destination.transform.position;
-        private float Scale => transform.localScale.x;
-        private float SelfRadius => _collider.radius * Scale;
-        private float DistanceToSquad => Vector3.Distance(_selfTarget.Root.position, SquadPosition) - SelfRadius;
+        public float Scale => transform.localScale.x;
+        public float SelfRadius => _collider.radius * Scale;
+        public float DistanceToSquad => Vector3.Distance(_selfTarget.Root.position, SquadPosition) - SelfRadius;
         public float DistanceToTarget => CurrentTarget == null ? float.MaxValue : Vector3.Distance(_selfTarget.Root.position, CurrentTarget.Root.position) - SelfRadius;
 
         public NavMeshAgent NavMeshAgent => _movement.Agent;
@@ -50,11 +45,8 @@ namespace Survivors.Units.Enemy
             _selfTarget = gameObject.RequireComponent<ITarget>();
             _collider = gameObject.RequireComponent<CapsuleCollider>();
             _attack = gameObject.RequireComponent<EnemyAttack>();
-            var agent = gameObject.RequireComponent<NavMeshAgent>();
+            _movement = gameObject.RequireComponent<EnemyMovement>();
             _targetProvider = new EnemyTargetProvider(gameObject.RequireComponent<ITargetSearcher>());
-            _movement = new EnemyMovement(_selfTarget, agent, gameObject.RequireComponentInChildren<Animator>());
-            _agentRadiusHandler = new AgentRadiusHandler(agent, _agentRadiusAfar, _agentRadiusNear,
-                _agentDistanceNear, _agentDistanceAfar);
         }
 
         public void OnActiveStateChanged(bool active)
@@ -66,7 +58,6 @@ namespace Survivors.Units.Enemy
         public void OnTick()
         {
             if (!Active || _world.Squad == null) return;
-            UpdateAgentRadius();
             UpdateDestination();
             if (_attack.CanAttack()) {
                 AimAtTarget();
@@ -86,11 +77,6 @@ namespace Survivors.Units.Enemy
                 return;
             }
             _movement.MoveTo(CurrentTarget.Root.position);
-        }
-
-        private void UpdateAgentRadius()
-        {
-            _agentRadiusHandler.UpdateRadius(DistanceToSquad, Scale);
         }
 
         private void AimAtTarget()

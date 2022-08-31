@@ -1,4 +1,5 @@
-﻿using Logger.Extension;
+﻿using System;
+using Logger.Extension;
 using Survivors.Extension;
 using Survivors.Units.Component;
 using Survivors.Units.Target;
@@ -7,24 +8,16 @@ using UnityEngine.AI;
 
 namespace Survivors.Units.Enemy
 {
-    public class EnemyMovement
+    public class EnemyMovement : MonoBehaviour
     {
         private const float ACCURATE_FOLLOW_DISTANCE = 1f;
 
-        private readonly ITarget _selfTarget;
-        private readonly NavMeshAgent _agent;
-        private readonly Animator _animator;
-        private readonly AnimationWrapper _animationWrapper;
+        private ITarget _selfTarget;
+        private NavMeshAgent _agent;
+        private Animator _animator;
+        private AnimationWrapper _animationWrapper;
 
-        public EnemyMovement(ITarget selfTarget, NavMeshAgent agent, Animator animator)
-        {
-            _selfTarget = selfTarget;
-            _agent = agent;
-            _animator = animator;
-            _animationWrapper = new AnimationWrapper(_animator);
-        }
-
-        private bool CanChangeIsStopped => _agent.enabled && _agent.isOnNavMesh;
+        private bool IsAgentValid => _agent.enabled && _agent.isOnNavMesh;
         public NavMeshAgent Agent => _agent;
         
         public bool IsStopped 
@@ -33,9 +26,17 @@ namespace Survivors.Units.Enemy
             set => SetIsStopped(value);
         }
 
+        private void Awake()
+        {
+            _selfTarget = gameObject.RequireComponent<ITarget>();
+            _agent = gameObject.RequireComponent<NavMeshAgent>();
+            _animator = gameObject.RequireComponentInChildren<Animator>();
+            _animationWrapper = new AnimationWrapper(_animator);
+        }
+
         private void SetIsStopped(bool value)
         {
-            if (!CanChangeIsStopped) {
+            if (!IsAgentValid) {
                 return;
             }
             if (_agent.isStopped == value) {
@@ -47,9 +48,9 @@ namespace Survivors.Units.Enemy
         public void UpdateAnimation()
         {
             if (IsStopped) {
-                _animationWrapper.PlayIdleSmooth();
+                _animationWrapper.PlayIdle();
             } else {
-                _animationWrapper.PlayMoveForwardSmooth();
+                _animationWrapper.PlayMoveForward();
             }
         }
         

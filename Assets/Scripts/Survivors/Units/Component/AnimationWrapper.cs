@@ -14,12 +14,12 @@ namespace Survivors.Units.Component
             _animator = animator;
         }
 
-        public void PlayIdleSmooth()
+        public void PlayIdle()
         {
             _animator.SetFloat(_verticalMotionHash, 0, SMOOTH_TRANSITION_TIME, Time.deltaTime);
         }
 
-        public void PlayMoveForwardSmooth()
+        public void PlayMoveForward()
         {
             _animator.SetFloat(_verticalMotionHash, 1, SMOOTH_TRANSITION_TIME, Time.deltaTime);
         }

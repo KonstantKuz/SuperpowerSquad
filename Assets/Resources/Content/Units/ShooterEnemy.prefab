@@ -258,6 +258,8 @@ GameObject:
   - component: {fileID: 7792710414609505496}
   - component: {fileID: 6629324333623088289}
   - component: {fileID: 3006564440288677136}
+  - component: {fileID: 7606489921268461171}
+  - component: {fileID: 817811970232612325}
   - component: {fileID: 7586013564207719466}
   - component: {fileID: 6828866866986922698}
   - component: {fileID: 4491497861294361367}
@@ -355,6 +357,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _targetSelectionDistance: 10
+--- !u!114 &7606489921268461171
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047533565645016285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a4bbdebdeb54fc8a772401a85c5e7a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &817811970232612325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047533565645016285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71a34f40da254c9895ee30361bc29b98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   _agentRadiusAfar: 0.4
   _agentRadiusNear: 0
   _agentDistanceAfar: 10
@@ -371,7 +397,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70fa05843c1c45d9a3e4d8b411bf6adc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _stopWhileAttack: 1
 --- !u!114 &6828866866986922698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1509,7 +1534,7 @@ GameObject:
   - component: {fileID: 18335183252906604}
   - component: {fileID: 307604244848911820}
   m_Layer: 0
-  m_Name: Body Type 6
+  m_Name: Body Type 6-New
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1540,7 +1565,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6767467374051582636}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 86bb9ca2d12e94b1a978acbe6a293454, type: 3}
+  m_Avatar: {fileID: 9000000, guid: 75b1ec1ff91519a4499e704e1cdbdd27, type: 3}
   m_Controller: {fileID: 9100000, guid: 46e416572dee452458b8738db87c4fb3, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
@@ -1946,7 +1971,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7807515448616251854}
-  - component: {fileID: 3699037065846758062}
+  - component: {fileID: 898774728298080932}
   m_Layer: 6
   m_Name: Weapon
   m_TagString: Untagged
@@ -1968,7 +1993,7 @@ Transform:
   m_Father: {fileID: 3102595488552592063}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3699037065846758062
+--- !u!114 &898774728298080932
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1977,7 +2002,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8217310743306618948}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd2de21b51fc4a4b978c2fe6e691d6ad, type: 3}
+  m_Script: {fileID: 11500000, guid: 88e047fd1ac7403baecbb859c7f5710c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   _barrel: {fileID: 5321002628444456396}
@@ -1985,7 +2010,6 @@ MonoBehaviour:
   _supportShotCount: 0
   _ammo: {fileID: 460837788804016623, guid: 6a78c2ded359b8f4686b5ec6629e4e78, type: 3}
   _angleBetweenShots: 0
-  _bulletSpeed: 5
 --- !u!1 &8282203062272164400
 GameObject:
   m_ObjectHideFlags: 0
