@@ -4,9 +4,9 @@ using Zenject;
 namespace Survivors.Camera.FrustrumCulling
 {
     [RequireComponent(typeof(Collider))]
-    public class TornadoCulledByFrustrum : MonoBehaviour, ICulledByFrustrum
+    public class DisableGameObjectByFrustrum : MonoBehaviour, ICulledByFrustrum
     {
-        [SerializeField] private GameObject _rootVfx;
+        [SerializeField] private GameObject _targetGameObject;    //should be gameobject of this mono behavior...
 
         private Collider _collider;
         
@@ -14,7 +14,7 @@ namespace Survivors.Camera.FrustrumCulling
 
         public void SetVisible(bool isVisible)
         {
-            _rootVfx.SetActive(isVisible);
+            _targetGameObject.SetActive(isVisible);
         }
 
         public Bounds Bounds => _collider.bounds;
