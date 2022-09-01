@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Survivors.Units.Component.FrustrumCulling
+namespace Survivors.Camera.FrustrumCulling
 {
     [RequireComponent(typeof(UnityEngine.Camera))]
     public class FrustrumCullingSystem: MonoBehaviour

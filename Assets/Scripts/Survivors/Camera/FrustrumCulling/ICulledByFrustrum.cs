@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Survivors.Units.Component.FrustrumCulling
+namespace Survivors.Camera.FrustrumCulling
 {
     public interface ICulledByFrustrum
     {

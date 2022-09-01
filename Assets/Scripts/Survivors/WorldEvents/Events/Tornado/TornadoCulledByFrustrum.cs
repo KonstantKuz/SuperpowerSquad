@@ -1,5 +1,4 @@
-﻿using Survivors.Units.Component.FrustrumCulling;
-using UnityEngine;
+﻿using UnityEngine;
 using Zenject;
 
 namespace Survivors.Camera.FrustrumCulling

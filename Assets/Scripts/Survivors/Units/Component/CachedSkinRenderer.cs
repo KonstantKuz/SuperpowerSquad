@@ -26,9 +26,7 @@ namespace Survivors.Units.Component
                 PrepareCache();
             }
             
-            _renderer.updateWhenOffscreen = false;
             _renderer.enabled = false;
-            _animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
             _animator.enabled = false;
             _animationLength = _animator.GetCurrentAnimatorStateInfo(0).length;
             _currentTime = Random.Range(0f, _animationLength);
@@ -65,16 +63,6 @@ namespace Survivors.Units.Component
                 _renderer.receiveShadows,
                 rendererTransform,
                 _renderer.lightProbeUsage);
-        }
-
-        private void OnEnable()
-        {
-            _animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
-        }
-
-        private void OnDisable()
-        {
-            _animator.cullingMode = AnimatorCullingMode.CullCompletely;
         }
     }
 }

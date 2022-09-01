@@ -1,4 +1,4 @@
-﻿using Survivors.Units.Component.FrustrumCulling;
+﻿using Survivors.Camera.FrustrumCulling;
 using UnityEngine;
 using Zenject;
 

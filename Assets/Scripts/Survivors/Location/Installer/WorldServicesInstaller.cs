@@ -1,10 +1,10 @@
-﻿using Survivors.Enemy.Spawn;
+﻿using Survivors.Camera.FrustrumCulling;
+using Survivors.Enemy.Spawn;
 using Survivors.Location.ObjectFactory;
 using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Location.Service;
 using Survivors.Loot.Service;
 using Survivors.Session.Service;
-using Survivors.Units.Component.FrustrumCulling;
 using Survivors.WorldEvents.Service;
 using UnityEngine;
 using Zenject;
