@@ -108,6 +108,7 @@ GameObject:
   - component: {fileID: 6914640508219096985}
   - component: {fileID: 5316809173621734762}
   - component: {fileID: 4216857391725555909}
+  - component: {fileID: 1466685940277589372}
   m_Layer: 6
   m_Name: SimpleEnemy
   m_TagString: Untagged
@@ -362,6 +363,24 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _scalePunchForce: -0.25
   _scalePunchDuration: 0.2
+--- !u!114 &1466685940277589372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047533565645016285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e82e6f051d748b4b639f27452a4ae87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _initialCapacity: 500
+  _detectInitialCapacityShortage: 1
+  _maxCapacity: 4000
+  _sizeIncrementStep: 1
+  _preparePoolOnInitScene: 1
+  _poolType: {fileID: 6629324333623088289}
 --- !u!1 &3753810788131279791
 GameObject:
   m_ObjectHideFlags: 0

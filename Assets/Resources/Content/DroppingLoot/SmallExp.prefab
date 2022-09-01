@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4722960005787595987}
   - component: {fileID: 7747151162341376555}
   - component: {fileID: 8464070402915899788}
+  - component: {fileID: 4842332899313086891}
   m_Layer: 10
   m_Name: SmallExp
   m_TagString: Untagged
@@ -60,6 +61,24 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4842332899313086891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7367133389438525348}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e82e6f051d748b4b639f27452a4ae87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _initialCapacity: 300
+  _detectInitialCapacityShortage: 1
+  _maxCapacity: 3000
+  _sizeIncrementStep: 1
+  _preparePoolOnInitScene: 1
+  _poolType: {fileID: 7747151162341376555}
 --- !u!1 &8854076856243805676
 GameObject:
   m_ObjectHideFlags: 0

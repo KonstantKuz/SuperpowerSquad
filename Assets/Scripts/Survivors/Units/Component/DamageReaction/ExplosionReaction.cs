@@ -1,4 +1,5 @@
-﻿using DG.Tweening;
+﻿using System;
+using DG.Tweening;
 using Survivors.Extension;
 using UnityEngine;
 using UnityEngine.AI;
@@ -74,11 +75,11 @@ namespace Survivors.Units.Component.DamageReaction
             return DOTween.Sequence().Append(rotate).Append(rotateBack);
         }
 
-        private void OnDestroy() => Dispose();
+        private void OnDisable()=> Dispose();
 
         private void Dispose()
         {
-            _explosionJump?.Kill(); 
+            _explosionJump?.Kill(true); 
         }
     }
 }

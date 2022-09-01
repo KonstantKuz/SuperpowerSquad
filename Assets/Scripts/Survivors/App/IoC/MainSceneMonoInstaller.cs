@@ -6,7 +6,9 @@ using Survivors.Analytics;
 using Survivors.App.Config;
 using Survivors.Cheats.Installer;
 using Survivors.Location;
+using Survivors.Location.Installer;
 using Survivors.Modifiers;
+using Survivors.ObjectPool.Installer;
 using Survivors.Player.Installer;
 using Survivors.Reward.Installer;
 using Survivors.Squad.Installer;
@@ -24,7 +26,9 @@ namespace Survivors.App.IoC
         [SerializeField]
         private UpdateManager _updateManager;
         [SerializeField]
-        private WorldServicesInstaller _worldServicesInstaller;  
+        private WorldServicesInstaller _worldServicesInstaller;      
+        [SerializeField]
+        private PoolInstaller _poolInstaller;  
         [SerializeField]
         private UIInstaller _uiInstaller;     
         [SerializeField]
@@ -52,6 +56,7 @@ namespace Survivors.App.IoC
             RewardServicesInstaller.Install(Container); 
             AdsServicesInstaller.Install(Container);
             
+            _poolInstaller.Install(Container);
             _worldServicesInstaller.Install(Container);
             _uiInstaller.Install(Container);
             _cheatsInstaller.Install(Container);

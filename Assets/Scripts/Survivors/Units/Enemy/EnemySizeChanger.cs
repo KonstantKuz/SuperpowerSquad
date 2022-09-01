@@ -38,10 +38,13 @@ namespace Survivors.Units.Enemy
             var scale = _enemyModel.CalculateScale(level);
             transform.localScale = Vector3.one * scale;
         }
-        private void OnDestroy()
+        private void OnDisable()
         {
             _disposable?.Dispose();
-            _health.OnDamageTaken -= OnHealthChanged;
+            if (_health != null) {
+                _health.OnDamageTaken -= OnHealthChanged;
+            }
+        
         }
     }
 }

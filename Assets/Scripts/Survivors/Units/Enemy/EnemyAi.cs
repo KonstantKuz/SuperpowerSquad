@@ -83,6 +83,7 @@ namespace Survivors.Units.Enemy
 
         public void Init(IUnit unit)
         {
+            _agent.enabled = true;
             var model = (EnemyUnitModel) unit.Model;
             _agent.speed = model.MoveSpeed;
         }
