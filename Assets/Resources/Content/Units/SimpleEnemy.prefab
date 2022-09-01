@@ -96,6 +96,8 @@ GameObject:
   - component: {fileID: 7792710414609505496}
   - component: {fileID: 6629324333623088289}
   - component: {fileID: 3006564440288677136}
+  - component: {fileID: 1267451572736321338}
+  - component: {fileID: 6863805387519956681}
   - component: {fileID: 7586013564207719466}
   - component: {fileID: 6828866866986922698}
   - component: {fileID: 4491497861294361367}
@@ -193,6 +195,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _targetSelectionDistance: 10
+--- !u!114 &1267451572736321338
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047533565645016285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a4bbdebdeb54fc8a772401a85c5e7a3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &6863805387519956681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047533565645016285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 71a34f40da254c9895ee30361bc29b98, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   _agentRadiusAfar: 0.4
   _agentRadiusNear: 0
   _agentDistanceAfar: 10
@@ -410,6 +436,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1bc05b71fdfb48908536dabe25cf699e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _spawnHitVfx: 1
+  _hitVfxScale: 1
+  _hitVfx: {fileID: 1814342322200015211, guid: 8d42205bab19a784ea343039566f929f, type: 3}
 --- !u!1 &8365540923523171442
 GameObject:
   m_ObjectHideFlags: 0

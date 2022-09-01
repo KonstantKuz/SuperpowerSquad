@@ -19,6 +19,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 113737432540472073, guid: 4f8aaf7eebed7794cbde04a321dc83f9, type: 3}
+      propertyPath: _hitVfxScale
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 2047533565645016285, guid: 4f8aaf7eebed7794cbde04a321dc83f9, type: 3}
       propertyPath: m_Name
       value: DogEnemy

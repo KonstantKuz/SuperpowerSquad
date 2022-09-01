@@ -4,4 +4,4 @@ MinWaveSize,20
 MaxWaveSize,30
 MinInterval,1
 MaxInterval,2
-EnemyId,SimpleEnemy
+EnemyId,DogEnemy

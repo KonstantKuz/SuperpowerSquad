@@ -19,6 +19,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 113737432540472073, guid: 4f8aaf7eebed7794cbde04a321dc83f9, type: 3}
+      propertyPath: _hitVfxScale
+      value: 1.3
+      objectReference: {fileID: 0}
     - target: {fileID: 2047533565645016285, guid: 4f8aaf7eebed7794cbde04a321dc83f9, type: 3}
       propertyPath: m_Name
       value: GiantEnemy
@@ -86,6 +90,14 @@ PrefabInstance:
     - target: {fileID: 6629324333623088289, guid: 4f8aaf7eebed7794cbde04a321dc83f9, type: 3}
       propertyPath: _objectId
       value: GiantEnemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 7586013564207719466, guid: 4f8aaf7eebed7794cbde04a321dc83f9, type: 3}
+      propertyPath: _stopOnAttack
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7586013564207719466, guid: 4f8aaf7eebed7794cbde04a321dc83f9, type: 3}
+      propertyPath: _stopWhileAttack
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f8aaf7eebed7794cbde04a321dc83f9, type: 3}

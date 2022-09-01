@@ -6,6 +6,7 @@ using Survivors.Units.Component.Health;
 using Survivors.Units.Enemy.Model;
 using Survivors.Units.Player.Attack;
 using Survivors.Units.Weapon;
+using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
 
 namespace Survivors.Units.Enemy
@@ -18,6 +19,7 @@ namespace Survivors.Units.Enemy
         private EnemyAi _enemyAi;
         private BaseWeapon _weapon;
         private EnemyAttackModel _attackModel;
+        private IProjectileParams _projectileParams;
         private WeaponTimer _weaponTimer;
         
         private Animator _animator;
@@ -29,6 +31,7 @@ namespace Survivors.Units.Enemy
         public void Init(IUnit unit)
         {
             _attackModel = (EnemyAttackModel) unit.Model.AttackModel;
+            _projectileParams = _attackModel.CreateProjectileParams();
             _weaponTimer = new WeaponTimer(_attackModel.AttackInterval);
             _weaponTimer.OnAttackReady += Attack;
             if (HasWeaponAnimationHandler) {
@@ -49,7 +52,7 @@ namespace Survivors.Units.Enemy
             _weaponTimer.OnTick();
         }
 
-        private bool CanAttack()
+        public bool CanAttack()
         {
             return _enemyAi.CurrentTarget != null && 
                    _enemyAi.DistanceToTarget <= _attackModel.AttackDistance;
@@ -71,7 +74,7 @@ namespace Survivors.Units.Enemy
             if (!CanAttack()) {
                 return;
             }
-            _weapon.Fire(_enemyAi.CurrentTarget, null, DoDamage);
+            _weapon.Fire(_enemyAi.CurrentTarget, _projectileParams, DoDamage);
         }
 
         private void DoDamage(GameObject target)

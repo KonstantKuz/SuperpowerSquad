@@ -11,5 +11,9 @@ namespace Survivors.Units.Enemy.Config
         public int AttackDamage;
         [DataMember]
         public float AttackInterval;
+        [DataMember] 
+        public float DamageRadius;
+        [DataMember] 
+        public float ProjectileSpeed;
     }
 }
