@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7687018588186695880}
   - component: {fileID: 1873367120698188467}
   - component: {fileID: 8327978116598172925}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: EnemyBullet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -76,7 +76,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96d0aecff9984f6784a1de30bc798fae, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _unitType: 0
 --- !u!135 &1873367120698188467
 SphereCollider:
   m_ObjectHideFlags: 0
