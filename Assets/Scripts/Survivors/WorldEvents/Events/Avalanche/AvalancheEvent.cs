@@ -2,6 +2,7 @@ using System.Collections;
 using Survivors.Extension;
 using Survivors.Location;
 using Survivors.Location.ObjectFactory;
+using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Location.Service;
 using UnityEngine;
 using Zenject;
@@ -14,8 +15,9 @@ namespace Survivors.WorldEvents.Events.Avalanche
         private AvalancheEventConfig _config;
         
         [Inject] private World _world;
-        [Inject(Id = ObjectFactoryType.Instancing)] 
-        private IObjectFactory _objectFactory;  
+    
+        [Inject]
+        private ObjectInstancingFactory _objectFactory;  
 
         public override IEnumerator Start(EventConfig eventConfig)
         {

@@ -2,6 +2,7 @@ using DG.Tweening;
 using Logger.Extension;
 using Survivors.Extension;
 using Survivors.Location.ObjectFactory;
+using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Location.Service;
 using Survivors.Units;
 using Survivors.Units.Component.DamageReaction;
@@ -31,8 +32,8 @@ namespace Survivors.WorldEvents.Events.Avalanche
         private Sequence _appearTween;
         private Tween _destroyTween;
 
-        [Inject(Id = ObjectFactoryType.Instancing)] 
-        private IObjectFactory _objectFactory;  
+        [Inject]
+        private ObjectInstancingFactory _objectFactory;  
         
         private float DistanceToDisappear => _maxDistance - _moveSpeed * _disappearTime;
         public float Radius => _radius;

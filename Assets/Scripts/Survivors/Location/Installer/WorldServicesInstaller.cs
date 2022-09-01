@@ -42,18 +42,22 @@ namespace Survivors.Location.Installer
 
         private void InstallObjectFactory(DiContainer container)
         {
+            container.Bind<ObjectInstancingFactory>()
+                     .FromInstance(_objectInstancingFactory)
+                     .AsSingle();
+            container.Bind<ObjectPoolFactory>().AsSingle();
+
             container.Bind<IObjectFactory>()
                      .WithId(ObjectFactoryType.Instancing)
                      .To<ObjectInstancingFactory>()
-                     .FromInstance(_objectInstancingFactory)
-                     .AsSingle();
-            
+                     .FromResolve();   
             container.Bind<IObjectFactory>()
                      .WithId(ObjectFactoryType.Pool)
                      .To<ObjectPoolFactory>()
-                     .AsSingle();
-            
-        
+                     .FromResolve();
+
+
+
         }
     }
 }

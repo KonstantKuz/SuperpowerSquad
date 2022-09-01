@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using JetBrains.Annotations;
-using SuperMaxim.Core.Extensions;
+﻿using JetBrains.Annotations;
 using Survivors.Extension;
 using Survivors.Location.Service;
 using Survivors.ObjectPool;
@@ -19,38 +17,33 @@ namespace Survivors.Location.ObjectFactory.Factories
         public T Create<T>(string objectId, Transform container = null)
         {
             var prefab = _objectResourceService.GetPrefab(objectId);
-            return Create<T>(prefab.GameObject, container);
+            return Create<T>(objectId, prefab.GameObject, container);
         }
 
-        public T Create<T>(GameObject prefab, Transform container = null)
+        public T Create<T>(string objectId, GameObject prefab, Transform container = null)
         {
-            return GetPoolObject<T>(prefab, container).RequireComponent<T>();
+            return GetPoolObject(objectId, prefab, container).RequireComponent<T>();
         }
-
-        public void Destroy<T>(GameObject instance)
+        public void Destroy(string objectId, GameObject instance)
         {
-            _poolManager.Release<T>(instance);
+            _poolManager.Release(objectId, instance);
         }
-
         public void DestroyAllObjects()
         {
             _poolManager.ReleaseAllActive();
         }
-
-        private GameObject GetPoolObject<T>(GameObject prefab, [CanBeNull] Transform container = null)
+        private GameObject GetPoolObject(string objectId, GameObject prefab, [CanBeNull] Transform container = null)
         {
-            var poolObject = _poolManager.Get<T>(prefab, TryGetPoolParams<T>(prefab));
+            var poolObject = _poolManager.Get(objectId, prefab, TryGetPoolParams(objectId, prefab));
             if (container != null) {
                 poolObject.transform.SetParent(container);
             }
-
             return poolObject;
         }
-
         [CanBeNull]
-        private ObjectPoolParams TryGetPoolParams<T>(GameObject prefab)
+        private ObjectPoolParams TryGetPoolParams(string objectId, GameObject prefab)
         {
-            if (_poolManager.HasPool<T>()) {
+            if (_poolManager.HasPool(objectId)) {
                 return null;
             }
             var poolParamsComponent = prefab.GetComponent<ObjectPoolParamsComponent>();

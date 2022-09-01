@@ -34,10 +34,6 @@ namespace Survivors.Location.ObjectFactory.Factories
         {
             return CreateObject(prefab, container).RequireComponent<T>();
         }
-        public void Destroy<T>(GameObject instance)
-        {
-            Destroy(instance);
-        }
         private GameObject CreateObject(GameObject prefab, [CanBeNull] Transform container = null)
         {
             var parentContainer = container == null ? _world.Spawn.transform : container.transform;

@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Feofun.Components;
 using Survivors.Location;
 using Survivors.Location.ObjectFactory;
@@ -23,8 +24,9 @@ namespace Survivors.Loot
 
         [Inject]
         private DroppingLootService _lootService;       
-        [Inject(Id = ObjectFactoryType.Pool)] 
-        private IObjectFactory _objectFactory;  
+
+        [Inject]
+        private ObjectPoolFactory _objectFactory;  
         [Inject]
         private SessionService _sessionService;
         [Inject] 
@@ -77,7 +79,7 @@ namespace Survivors.Loot
             
             _lootService.OnLootCollected(loot.Config);
             _movingLoots.Remove(loot);
-            _objectFactory.Destroy<DroppingLoot>(loot.gameObject);
+            _objectFactory.Destroy(loot.ObjectId, loot.gameObject);
         }
 
         public void OnDestroy()

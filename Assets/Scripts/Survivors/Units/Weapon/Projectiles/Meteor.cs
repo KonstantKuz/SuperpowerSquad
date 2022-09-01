@@ -1,5 +1,6 @@
 ﻿using System;
 using Survivors.Location.ObjectFactory;
+using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Units.Component.DamageReaction;
 using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
@@ -22,8 +23,8 @@ namespace Survivors.Units.Weapon.Projectiles
         private float _timeLeft;
         private float _speed;
         
-        [Inject(Id = ObjectFactoryType.Instancing)] 
-        private IObjectFactory _objectFactory;  
+        [Inject]
+        private ObjectInstancingFactory _objectFactory;  
 
         public void Launch(UnitType targetType, IProjectileParams projectileParams, float lifeTime, float speed, Action<GameObject> hitCallback)
         {

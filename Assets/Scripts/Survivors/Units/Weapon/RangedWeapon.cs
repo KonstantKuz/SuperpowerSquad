@@ -26,8 +26,8 @@ namespace Survivors.Units.Weapon
         [SerializeField]
         private float _angleBetweenShots;
         
-        [Inject(Id = ObjectFactoryType.Instancing)] 
-        protected IObjectFactory ObjectFactory;
+        [Inject]
+        protected ObjectInstancingFactory ObjectFactory;
 
         protected Transform Barrel => _barrel;
         protected Vector3 BarrelPos; //Seems that in some cases unity cannot correctly take position inside animation event

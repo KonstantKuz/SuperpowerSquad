@@ -78,7 +78,7 @@ MonoBehaviour:
   _maxCapacity: 3000
   _sizeIncrementStep: 1
   _preparePoolOnInitScene: 1
-  _poolType: {fileID: 7747151162341376555}
+  _poolId: SmallExp
 --- !u!1 &8854076856243805676
 GameObject:
   m_ObjectHideFlags: 0

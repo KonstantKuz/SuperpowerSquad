@@ -16,8 +16,8 @@ namespace Survivors.Units.Weapon.Projectiles
         [SerializeField]
         private GameObject _hitVfx;
 
-        [Inject(Id = ObjectFactoryType.Instancing)] 
-        private IObjectFactory _objectFactory;
+        [Inject]
+        private ObjectInstancingFactory _objectFactory;  
         
         private float _timeLeft;
 

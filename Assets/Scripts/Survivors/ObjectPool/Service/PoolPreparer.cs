@@ -16,7 +16,7 @@ namespace Survivors.ObjectPool.Service
             _objectResourceService.GetAllPrefabs()
                 .Select(it => it.GetComponent<ObjectPoolParamsComponent>())
                 .Where(it => it != null && it.PreparePoolOnInitScene)
-                .ForEach(it => _poolManager.Prepare(it.PoolType, it.gameObject, it.GetPoolParams()));
+                .ForEach(it => _poolManager.Prepare(it.PoolId, it.gameObject, it.GetPoolParams()));
         
         }
     }
