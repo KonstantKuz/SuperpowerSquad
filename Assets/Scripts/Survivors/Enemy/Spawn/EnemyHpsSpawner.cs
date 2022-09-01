@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections;
+using System.Linq;
 using Feofun.Config;
 using Logger.Extension;
+using SuperMaxim.Core.Extensions;
 using SuperMaxim.Messaging;
 using Survivors.Enemy.Spawn.Config;
 using Survivors.Session.Messages;
+using Survivors.Session.Service;
 using Survivors.Units.Enemy.Config;
 using UnityEngine;
 using Zenject;
@@ -20,7 +23,9 @@ namespace Survivors.Enemy.Spawn
         [Inject] private HpsSpawnerConfig _config;   
         [Inject] private IMessenger _messenger;
         [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
-
+        [Inject] private StringKeyedConfigCollection<SpawnableEnemyConfig> _spawnableEnemyConfigs;
+        [Inject] private SessionService _sessionService;
+        
         private void Awake()
         {
             _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
@@ -59,57 +64,72 @@ namespace Survivors.Enemy.Spawn
         private void SpawnWave(float health)
         {
             Log($"Spawning wave of health {health}");
-            var desiredUnitCount = Random.Range(_config.MinWaveSize, _config.MaxWaveSize + 1);
+            var spawnConfig = GetRandomEnemyConfig();
+            var desiredUnitCount = Random.Range(spawnConfig.MinWaveSize, spawnConfig.MaxWaveSize + 1);
             var averageHealth = health / desiredUnitCount;
-            var enemyUnitConfig = _enemyUnitConfigs.Get(_config.EnemyId);
+            var enemyUnitConfig = _enemyUnitConfigs.Get(spawnConfig.Id);
             var averageLevel = EnemyUnitConfig.MIN_LEVEL + (averageHealth - enemyUnitConfig.Health) / enemyUnitConfig.HealthStep;
 
             if (averageLevel < EnemyUnitConfig.MIN_LEVEL)
             {
                 var level = EnemyUnitConfig.MIN_LEVEL;
                 var possibleUnitCount = Mathf.RoundToInt(health / enemyUnitConfig.Health);
-                var place = GetWavePlace(possibleUnitCount, level);
-                SpawnWave(possibleUnitCount, level, place);
+                var waveConfig = EnemyWaveConfig.Create(enemyUnitConfig.Id, possibleUnitCount, level);
+                var place = GetWavePlace(waveConfig);
+                SpawnWave(waveConfig, place);
             }
             else
             {
-                SpawnMixedWave(averageLevel, desiredUnitCount);
+                SpawnMixedWave(enemyUnitConfig.Id, desiredUnitCount, averageLevel);
             }
         }
 
-        private SpawnPlace GetWavePlace(float unitCount, int level)
+        private SpawnableEnemyConfig GetRandomEnemyConfig()
         {
-            return _enemyWavesSpawner.GetPlaceForWave(GetWaveConfig(Mathf.RoundToInt(unitCount), level));
+            var possibleEnemies = _spawnableEnemyConfigs
+                .Where(it => it.Delay <= _sessionService.PlayTime.Value).ToList();
+            var spawnChanceSum = possibleEnemies.Sum(it => it.Chance);
+            var randomChance = Random.Range(0f, spawnChanceSum);
+            foreach (var spawnConfig in possibleEnemies) 
+            {
+                if (randomChance <= spawnConfig.Chance)
+                {
+                    return spawnConfig;
+                }
+                randomChance -= spawnConfig.Chance;
+            }
+            
+            throw new ArgumentException("Can't find suitable spawn config.");
         }
 
-        private void SpawnMixedWave(float averageLevel, float unitCount)
+        private SpawnPlace GetWavePlace(EnemyWaveConfig waveConfig)
+        {
+            return _enemyWavesSpawner.GetPlaceForWave(waveConfig);
+        }
+
+        private void SpawnMixedWave(string enemyId, int count, float averageLevel)
         {
             var partition = averageLevel % 1;
-            var highLevelCount = (int)(partition * unitCount);
-            var lowerLevelCount = Mathf.RoundToInt(unitCount - highLevelCount);
-            var lowerLevel = (int)Math.Floor(averageLevel);
+            var highLevelCount = (int) partition * count;
+            var lowerLevelCount = Mathf.RoundToInt(count - highLevelCount);
+            var lowerLevel = (int) Math.Floor(averageLevel);
             var highLevel = lowerLevel + 1;
-            
-            var place = GetWavePlace(unitCount, highLevel);
-            SpawnWave(highLevelCount, highLevel, place);
-            SpawnWave(lowerLevelCount, lowerLevel, place);
+
+            var configForPlace = EnemyWaveConfig.Create(enemyId, count, highLevel);
+            var place = GetWavePlace(configForPlace);
+
+            var lowerLevelConfig = EnemyWaveConfig.Create(enemyId, lowerLevelCount, lowerLevel);
+            var highLevelConfig = EnemyWaveConfig.Create(enemyId, highLevelCount, highLevel);
+            SpawnWave(lowerLevelConfig, place);
+            SpawnWave(highLevelConfig, place);
         }
 
-        private void SpawnWave(int count, int level, SpawnPlace place)
+        private void SpawnWave(EnemyWaveConfig waveConfig, SpawnPlace place)
         {
-            Log($"Spawning wave of {count} units of level {level}");
-            _enemyWavesSpawner.SpawnWave(GetWaveConfig(count, level), place);
+            Log($"Spawning wave of {waveConfig.Count} units of level {waveConfig.EnemyLevel}");
+            _enemyWavesSpawner.SpawnWave(waveConfig, place);
         }
 
-        private EnemyWaveConfig GetWaveConfig(int count, int level)
-        {
-            return new EnemyWaveConfig
-            {
-                Count = count,
-                EnemyId = _config.EnemyId,
-                EnemyLevel = level
-            };
-        }
         private void OnDestroy()
         {
             _messenger.Unsubscribe<SessionEndMessage>(OnSessionFinished);

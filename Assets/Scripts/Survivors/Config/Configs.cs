@@ -18,5 +18,6 @@ namespace Survivors.Config
         public const string MISSION_REWARDS = "MissionRewards";     
         public const string META_UPGRADES_SHOP = "MetaUpgradesShop";   
         public const string WORLD_EVENTS = "WorldEvents";
+        public const string SPAWNABLE_ENEMIES = "SpawnableEnemies";
     }
 }

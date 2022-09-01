@@ -12,6 +12,15 @@ namespace Survivors.Enemy.Spawn.Config
         public string EnemyId;       
         [DataMember]
         public int EnemyLevel;
-        
+
+        public static EnemyWaveConfig Create(string id, int count, int level)
+        {
+            return new EnemyWaveConfig
+            {
+                EnemyId = id,
+                Count = count,
+                EnemyLevel = level,
+            };
+        }
     }
 }

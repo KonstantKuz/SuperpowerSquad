@@ -9,14 +9,8 @@ namespace Survivors.Enemy.Spawn.Config
         [DataMember]
         public float HPSSpeed;
         [DataMember]
-        public int MinWaveSize;
-        [DataMember]
-        public int MaxWaveSize;
-        [DataMember]
         public float MinInterval;
         [DataMember]
         public float MaxInterval;
-        [DataMember] 
-        public string EnemyId;
     }
 }
