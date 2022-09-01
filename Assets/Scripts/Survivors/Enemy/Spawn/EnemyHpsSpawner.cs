@@ -86,14 +86,21 @@ namespace Survivors.Enemy.Spawn
 
         private SpawnableEnemyConfig GetRandomEnemyConfig()
         {
-            var spawnChance = Random.value;
-
-            var enemyConfig = _spawnableEnemyConfigs
+            var possibleEnemies = _spawnableEnemyConfigs
                 .Where(it => it.Delay <= _sessionService.PlayTime.Value)
-                .OrderBy(it => it.Chance)
-                .FirstOrDefault(it => spawnChance <= it.Chance);
-
-            return enemyConfig ?? throw new ArgumentException("Can't find suitable spawn config.");
+                .OrderBy(it => it.Chance).ToList();
+            var spawnChanceSum = possibleEnemies.Sum(it => it.Chance);
+            var randomChance = Random.Range(0f, spawnChanceSum);
+            foreach (var spawnConfig in possibleEnemies) 
+            {
+                if (randomChance <= spawnConfig.Chance)
+                {
+                    return spawnConfig;
+                }
+                randomChance -= spawnConfig.Chance;
+            }
+            
+            throw new ArgumentException("Can't find suitable spawn config.");
         }
 
         private SpawnPlace GetWavePlace(EnemyWaveConfig waveConfig)
