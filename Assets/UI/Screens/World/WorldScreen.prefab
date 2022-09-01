@@ -416,6 +416,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5229005068636481157, guid: cc36bfeeb16efc040b4639efc7fce56e, type: 3}
+      propertyPath: m_fontAsset
+      value: 
+      objectReference: {fileID: 11400000, guid: 265ef220137c50240b29d737124a3efb, type: 2}
+    - target: {fileID: 5229005068636481157, guid: cc36bfeeb16efc040b4639efc7fce56e, type: 3}
+      propertyPath: m_sharedMaterial
+      value: 
+      objectReference: {fileID: -1229812891129471450, guid: 265ef220137c50240b29d737124a3efb, type: 2}
     - target: {fileID: 7595574091857187859, guid: cc36bfeeb16efc040b4639efc7fce56e, type: 3}
       propertyPath: m_Name
       value: MissionProgressView
