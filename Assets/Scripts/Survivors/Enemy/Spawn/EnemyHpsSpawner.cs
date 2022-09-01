@@ -87,8 +87,7 @@ namespace Survivors.Enemy.Spawn
         private SpawnableEnemyConfig GetRandomEnemyConfig()
         {
             var possibleEnemies = _spawnableEnemyConfigs
-                .Where(it => it.Delay <= _sessionService.PlayTime.Value)
-                .OrderBy(it => it.Chance).ToList();
+                .Where(it => it.Delay <= _sessionService.PlayTime.Value).ToList();
             var spawnChanceSum = possibleEnemies.Sum(it => it.Chance);
             var randomChance = Random.Range(0f, spawnChanceSum);
             foreach (var spawnConfig in possibleEnemies) 
