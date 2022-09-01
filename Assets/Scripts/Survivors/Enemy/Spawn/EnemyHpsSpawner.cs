@@ -3,6 +3,7 @@ using System.Collections;
 using System.Linq;
 using Feofun.Config;
 using Logger.Extension;
+using SuperMaxim.Core.Extensions;
 using SuperMaxim.Messaging;
 using Survivors.Enemy.Spawn.Config;
 using Survivors.Session.Messages;
@@ -16,8 +17,6 @@ namespace Survivors.Enemy.Spawn
 {
     public class EnemyHpsSpawner : MonoBehaviour
     {
-        private const int SELECT_ENEMY_MAX_ATTEMPT_COUNT = 5;
-        
         private Coroutine _spawnCoroutine;
         
         [Inject] private EnemyWavesSpawner _enemyWavesSpawner;
@@ -65,7 +64,7 @@ namespace Survivors.Enemy.Spawn
         private void SpawnWave(float health)
         {
             Log($"Spawning wave of health {health}");
-            var spawnConfig = GetSuitableSpawnConfig();
+            var spawnConfig = GetRandomEnemyConfig();
             var desiredUnitCount = Random.Range(spawnConfig.MinWaveSize, spawnConfig.MaxWaveSize + 1);
             var averageHealth = health / desiredUnitCount;
             var enemyUnitConfig = _enemyUnitConfigs.Get(spawnConfig.Id);
@@ -81,37 +80,20 @@ namespace Survivors.Enemy.Spawn
             }
             else
             {
-                var waveConfig = EnemyWaveConfig.Create(enemyUnitConfig.Id, desiredUnitCount, (int) Math.Floor(averageLevel));
-                SpawnMixedWave(waveConfig);
+                SpawnMixedWave(enemyUnitConfig.Id, desiredUnitCount, averageLevel);
             }
-        }
-
-        private SpawnableEnemyConfig GetSuitableSpawnConfig()
-        {
-            for (int i = 0; i < SELECT_ENEMY_MAX_ATTEMPT_COUNT; i++)
-            {
-                var randomConfig = GetRandomEnemyConfig();
-                if (randomConfig != null)
-                {
-                    return randomConfig;
-                }
-            }
-            
-            return _spawnableEnemyConfigs.OrderBy(it => it.Chance).First();
         }
 
         private SpawnableEnemyConfig GetRandomEnemyConfig()
         {
             var spawnChance = Random.value;
-            foreach (var spawnConfig in _spawnableEnemyConfigs.OrderBy(it => it.Chance))
-            {
-                if (spawnChance > spawnConfig.Chance) continue;
-                if (_sessionService.PlayTime.Value < spawnConfig.Delay) continue;
 
-                return spawnConfig;
-            }
+            var enemyConfig = _spawnableEnemyConfigs
+                .Where(it => it.Delay <= _sessionService.PlayTime.Value)
+                .OrderBy(it => it.Chance)
+                .FirstOrDefault(it => spawnChance <= it.Chance);
 
-            return null;
+            return enemyConfig ?? throw new ArgumentException("Can't find suitable spawn config.");
         }
 
         private SpawnPlace GetWavePlace(EnemyWaveConfig waveConfig)
@@ -119,17 +101,19 @@ namespace Survivors.Enemy.Spawn
             return _enemyWavesSpawner.GetPlaceForWave(waveConfig);
         }
 
-        private void SpawnMixedWave(EnemyWaveConfig waveConfig)
+        private void SpawnMixedWave(string enemyId, int count, float averageLevel)
         {
-            var partition = waveConfig.EnemyLevel % 1;
-            var highLevelCount = partition * waveConfig.Count;
-            var lowerLevelCount = waveConfig.Count - highLevelCount;
-            var lowerLevel = waveConfig.EnemyLevel;
+            var partition = averageLevel % 1;
+            var highLevelCount = (int) partition * count;
+            var lowerLevelCount = Mathf.RoundToInt(count - highLevelCount);
+            var lowerLevel = (int) Math.Floor(averageLevel);
             var highLevel = lowerLevel + 1;
 
-            var lowerLevelConfig = EnemyWaveConfig.Create(waveConfig.EnemyId, lowerLevelCount, lowerLevel);
-            var highLevelConfig = EnemyWaveConfig.Create(waveConfig.EnemyId, highLevelCount, highLevel);
-            var place = GetWavePlace(waveConfig);
+            var configForPlace = EnemyWaveConfig.Create(enemyId, count, highLevel);
+            var place = GetWavePlace(configForPlace);
+
+            var lowerLevelConfig = EnemyWaveConfig.Create(enemyId, lowerLevelCount, lowerLevel);
+            var highLevelConfig = EnemyWaveConfig.Create(enemyId, highLevelCount, highLevel);
             SpawnWave(lowerLevelConfig, place);
             SpawnWave(highLevelConfig, place);
         }
