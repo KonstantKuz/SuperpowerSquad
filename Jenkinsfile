@@ -133,7 +133,7 @@ pipeline {
                 DISTRIBUTION_PROFILE_ID='f3bf7e3c-649d-43a9-a118-cb3519a6452c'
                 DEVELOPMENT_CODE_SIGN_IDENTITY='Apple Development: Ludd Ludd (NR2QZ5TJDW)'
                 DISTRIBUTION_CODE_SIGN_IDENTITY='Apple Distribution: Feofun Limited (8Y9KH6XT49)'
-                IPA_NAME='survivors'  //Alas, it is not taken from OUTPUT_FILE_NAME. But from module name in project...
+                IPA_NAME='Survivors'  //Alas, it is not taken from OUTPUT_FILE_NAME. But from module name in project...
                 IPA_FULL_PATH="build/xcode/build/Release-iphoneos/build/${IPA_NAME}.ipa"
             }         
             when {
