@@ -1,11 +1,14 @@
 using System;
 using Feofun.Localization.Service;
 using Logger.Extension;
+using Survivors.ABTest.Providers;
+using Survivors.Advertisment.Providers;
+using Survivors.Advertisment.Service;
 using Survivors.Cheats.Data;
 using Survivors.Cheats.Repository;
-using Survivors.Player.Inventory.Service;
 using Survivors.Squad.Service;
-using Survivors.Squad.Upgrade;
+using Survivors.Upgrade;
+using Survivors.Upgrade.MetaUpgrade;
 using UnityEngine;
 using Zenject;
 
@@ -14,12 +17,16 @@ namespace Survivors.Cheats
     public class CheatsManager : MonoBehaviour
     {
         private const string TEST_LOG_MESSAGE = "Test log message";
+        
         private readonly CheatRepository _repository = new CheatRepository();
         
         [Inject] private LocalizationService _localizationService;     
         [Inject] private SquadProgressService _squadProgressService;
         [Inject] private UpgradeService _upgradeService;
         [Inject] private MetaUpgradeService _metaUpgradeService;
+        [Inject] private AdsManager _adsManager;
+        [Inject] private DiContainer _diContainer;   
+        [Inject] private ABTest.ABTest _abTest;
 
         [SerializeField] private GameObject _fpsMonitor;
         [SerializeField] private GameObject _debugConsole;
@@ -46,6 +53,11 @@ namespace Survivors.Cheats
         public void AddUnit(string unitId) => _upgradeService.AddUnit(unitId);
         public void AddMetaUpgrade(string upgradeId) => _metaUpgradeService.Upgrade(upgradeId);
 
+        public void SetCheatAbTest(string variantId)
+        {
+            OverrideABTestProvider.SetVariantId(variantId);
+            _abTest.Reload();
+        }
         public void LogTestMessage()
         {
             var logger = this.Logger();
@@ -66,6 +78,12 @@ namespace Survivors.Cheats
             updateFunc?.Invoke(settings);
             _repository.Set(settings);
         }
+
+        public bool IsAdsCheatEnabled  {
+            get => _adsManager.AdsProvider is CheatAdsProvider;
+            set => _adsManager.AdsProvider = value ? new CheatAdsProvider() : _diContainer.Resolve<IAdsProvider>();
+        } 
+        
         public bool IsConsoleEnabled
         {
             get => Settings.ConsoleEnabled;
@@ -73,6 +91,15 @@ namespace Survivors.Cheats
             {
                 UpdateSettings(settings => { settings.ConsoleEnabled = value; });
                 _debugConsole.SetActive(value);
+            }
+        }    
+        public bool IsABTestCheatEnabled
+        {
+            get => Settings.ABTestCheatEnabled;
+            set
+            {
+                UpdateSettings(settings => { settings.ABTestCheatEnabled = value; });
+                _abTest.Reload();
             }
         }    
         public bool IsFPSMonitorEnabled

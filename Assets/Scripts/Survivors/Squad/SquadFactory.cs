@@ -4,7 +4,8 @@ using Survivors.App.Config;
 using Survivors.Config;
 using Survivors.Extension;
 using Survivors.Location;
-using Survivors.Location.Service;
+using Survivors.Location.ObjectFactory;
+using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Modifiers.Config;
 using Survivors.Player.Inventory.Service;
 using Survivors.Squad.Config;
@@ -20,7 +21,8 @@ namespace Survivors.Squad
         private const string SQUAD_NAME = "Squad";
 
         [Inject] private World _world;
-        [Inject] private WorldObjectFactory _worldObjectFactory;
+        [Inject(Id = ObjectFactoryType.Instancing)] 
+        private IObjectFactory _objectFactory;  
         [Inject] private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
         [Inject] private SquadConfig _squadConfig;
         [Inject] private ConstantsConfig _constantsConfig;
@@ -32,7 +34,7 @@ namespace Survivors.Squad
 
         public Squad CreateSquad()
         {
-            var squad = _worldObjectFactory.CreateObject(SQUAD_NAME, _world.transform).RequireComponent<Squad>();
+            var squad = _objectFactory.Create<Squad>(SQUAD_NAME, _world.transform);
             squad.transform.SetPositionAndRotation(_world.Spawn.transform.position, _world.Spawn.transform.rotation);
             squad.Init(BuildSquadModel());
             return squad;

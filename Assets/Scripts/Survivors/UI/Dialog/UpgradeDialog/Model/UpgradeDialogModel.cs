@@ -7,8 +7,8 @@ using Feofun.Extension;
 using Feofun.Localization;
 using Survivors.Modifiers;
 using Survivors.Modifiers.Config;
-using Survivors.Squad.Upgrade;
-using Survivors.Squad.Upgrade.Config;
+using Survivors.Upgrade;
+using Survivors.Upgrade.Config;
 
 namespace Survivors.UI.Dialog.UpgradeDialog.Model
 {

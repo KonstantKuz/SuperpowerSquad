@@ -46,7 +46,7 @@ namespace Survivors.Enemy.Service
 
         private void Update()
         {
-            if (_isWorldActive) return;
+            if (!_isWorldActive) return;
             if (_units.Count <= _softLimit) return;
             
             var frustumPlanes = GeometryUtility.CalculateFrustumPlanes(UnityEngine.Camera.main);

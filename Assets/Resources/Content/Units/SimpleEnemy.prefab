@@ -102,8 +102,13 @@ GameObject:
   - component: {fileID: 8111980166562719412}
   - component: {fileID: 158354064725451873}
   - component: {fileID: 7094039851140565474}
-  - component: {fileID: 5316809173621734762}
   - component: {fileID: 8473987040358760045}
+  - component: {fileID: 442751807213895732}
+  - component: {fileID: 1265837359138098205}
+  - component: {fileID: 6914640508219096985}
+  - component: {fileID: 5316809173621734762}
+  - component: {fileID: 4216857391725555909}
+  - component: {fileID: 1466685940277589372}
   m_Layer: 6
   m_Name: SimpleEnemy
   m_TagString: Untagged
@@ -270,23 +275,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7db81620c98d454184b056940050610a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5316809173621734762
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2047533565645016285}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 689701d1975e99b4695c1b90ab60568a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _scalePunchForce: -0.25
-  _scalePunchDuration: 0.2
-  _colorBlinkDuration: 0.05
-  _blinkColor: {r: 0.57602674, g: 0, b: 0.8490566, a: 1}
-  _renderer: {fileID: 6320879860712907822}
 --- !u!114 &8473987040358760045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -301,6 +289,98 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _jumpRotationAngle: 50
   _jumpRotationTimeRatio: 0.9
+--- !u!54 &442751807213895732
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047533565645016285}
+  serializedVersion: 2
+  m_Mass: 0.0000001
+  m_Drag: 0
+  m_AngularDrag: 0
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
+--- !u!114 &1265837359138098205
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047533565645016285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 021f799e7de844959061334b5c6ac98b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _moveSpeed: 9
+  _swirlDuration: 1.5
+  _moveAngle: 90
+  _distanceForSwirl: 1.7
+  _timeoutAfterRelease: 1.5
+--- !u!114 &6914640508219096985
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047533565645016285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a9e0fa77ae74d9c85b417cfee45567a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5316809173621734762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047533565645016285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 689701d1975e99b4695c1b90ab60568a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _colorBlinkDuration: 0.05
+  _blinkColor: {r: 0.57602674, g: 0, b: 0.8490566, a: 1}
+  _renderer: {fileID: 6320879860712907822}
+--- !u!114 &4216857391725555909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047533565645016285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a4e1a31d3c917244ad3db39059d8a95, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _scalePunchForce: -0.25
+  _scalePunchDuration: 0.2
+--- !u!114 &1466685940277589372
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047533565645016285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e82e6f051d748b4b639f27452a4ae87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _initialCapacity: 500
+  _detectInitialCapacityShortage: 1
+  _maxCapacity: 4000
+  _sizeIncrementStep: 1
+  _preparePoolOnInitScene: 1
+  _poolType: {fileID: 6629324333623088289}
 --- !u!1 &3753810788131279791
 GameObject:
   m_ObjectHideFlags: 0

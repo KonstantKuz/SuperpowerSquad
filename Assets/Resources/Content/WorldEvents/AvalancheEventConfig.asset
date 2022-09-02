@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 534bb52f0de42fb46b53663d35df0ef3, type: 3}
+  m_Name: AvalancheEventConfig
+  m_EditorClassIdentifier: 
+  _eventDuration: 15
+  _spawnPeriod: 2
+  _stoneDamagePercent: 10
+  _moveDirectionDrivenChance: 0.5
+  _minDistanceBtwnStones: 20
+  _maxAngleSpread: 30
+  _minDistanceFromPlayer: 10
+  _maxDistanceFromPlayer: 20
+  _cobbleStoneMask:
+    serializedVersion: 2
+    m_Bits: 256
+  _cobblestonePrefab: {fileID: 5995756455171398060, guid: 1eeaf1ff48004c845b3b0ced0fcbafe2, type: 3}

@@ -1,7 +1,12 @@
 ﻿namespace Survivors.Session.Messages
 {
-    public struct SessionStartMessage
+    public readonly struct SessionStartMessage
     {
-        public int Level;
+        public readonly int Level;
+
+        public SessionStartMessage(int level)
+        {
+            Level = level;
+        }
     }
 }

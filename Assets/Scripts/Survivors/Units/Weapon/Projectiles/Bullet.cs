@@ -1,5 +1,6 @@
 ﻿using System;
-using Survivors.Location.Service;
+using Survivors.Location.ObjectFactory;
+using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
@@ -15,8 +16,8 @@ namespace Survivors.Units.Weapon.Projectiles
         [SerializeField]
         private GameObject _hitVfx;
 
-        [Inject]
-        private WorldObjectFactory _objectFactory;
+        [Inject(Id = ObjectFactoryType.Instancing)] 
+        private IObjectFactory _objectFactory;
         
         private float _timeLeft;
 
@@ -61,7 +62,7 @@ namespace Survivors.Units.Weapon.Projectiles
         protected void PlayVfx(Vector3 pos, Vector3 up)
         {
             if (_hitVfx == null) return;
-            var vfx = _objectFactory.CreateObject(_hitVfx);
+            var vfx = _objectFactory.Create<MonoBehaviour>(_hitVfx);
             vfx.transform.SetPositionAndRotation(pos, Quaternion.LookRotation(up));
         }
     }

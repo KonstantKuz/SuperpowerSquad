@@ -8,6 +8,7 @@ using Logger.Extension;
 using SuperMaxim.Core.Extensions;
 using Survivors.App;
 using Survivors.Location.Model;
+using Survivors.Units.Component;
 using Survivors.Units.Component.Death;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Service;
@@ -20,7 +21,7 @@ using UnityEngine;
 
 namespace Survivors.Units
 {
-    public class Unit : WorldObject, IUnit
+    public class Unit : WorldObject, IUnit, IMovementLockable
     {
         private IUpdatableComponent[] _updatables;
         private IDamageable _damageable;
@@ -30,6 +31,7 @@ namespace Survivors.Units
         private IUnitActiveStateReceiver[] _activeStateReceiver;
         private MovementController _movementController;
         private bool _isActive;
+        private int _lockCount;
         private float _spawnTime;
         private Collider _collider;
 
@@ -41,8 +43,10 @@ namespace Survivors.Units
         public bool IsActive
         {
             get => _isActive;
-            set
-            {
+            set {
+                if (_isActive == value) {
+                    return;
+                }
                 _isActive = value;
                 _activeStateReceiver.ForEach(it => it.OnActiveStateChanged(_isActive));
             }
@@ -61,17 +65,22 @@ namespace Survivors.Units
         public Health Health { get; private set; }
         public Bounds Bounds => _collider.bounds;
 
-        public void Init(IUnitModel model)
+        private void Awake()
         {
-            Model = model;
-
             _updatables = GetComponentsInChildren<IUpdatableComponent>();
             _damageable = gameObject.RequireComponent<IDamageable>();
             _death = gameObject.RequireComponent<IUnitDeath>();
             _selfTarget = gameObject.RequireComponent<ITarget>();
             _deathEventReceivers = GetComponentsInChildren<IUnitDeathEventReceiver>();
-            _activeStateReceiver = GetComponentsInChildren<IUnitActiveStateReceiver>();
-
+            _activeStateReceiver = GetComponentsInChildren<IUnitActiveStateReceiver>();    
+            Health = GetComponent<Health>();
+            _collider = GetComponent<CapsuleCollider>();
+            
+        }
+        public void Init(IUnitModel model)
+        {
+            Model = model;
+            
             if (UnitType == UnitType.ENEMY)
             {
                 _damageable.OnZeroHealth += DieOnZeroHealth;
@@ -79,17 +88,28 @@ namespace Survivors.Units
 
             IsActive = true;
             _spawnTime = Time.time;
-            Health = GetComponent<Health>();
-            _collider = GetComponent<CapsuleCollider>();
-
+            
             foreach (var component in GetComponentsInChildren<IInitializable<IUnit>>()) {
                 component.Init(this);
             }
-
             _unitService.Add(this);
             _updateManager.StartUpdate(UpdateComponents);
         }
+        public void Lock()
+        {
+            _lockCount++;
+            IsActive = false;
+        }
 
+        public void UnLock()
+        {
+            if (_lockCount > 0) {
+                _lockCount--;
+            }
+            if (_lockCount <= 0) {
+                IsActive = true;
+            }
+        }
         [Button]
         public void Kill(DeathCause deathCause)
         {
@@ -97,9 +117,10 @@ namespace Survivors.Units
             _damageable.OnZeroHealth -= DieOnZeroHealth;
             IsActive = false;
             _deathEventReceivers.ForEach(it => it.OnDeath(deathCause));
-            _death.PlayDeath();
             OnDeath?.Invoke(this, deathCause);
             OnDeath = null;
+            _death.PlayDeath();
+   
         }
 
         private void DieOnZeroHealth()
@@ -116,15 +137,13 @@ namespace Survivors.Units
                 _updatables[i].OnTick();
             }
         }
-
-        private void OnDestroy()
+        private void OnDisable()
         {
             OnUnitDestroyed?.Invoke(this);
             OnUnitDestroyed = null;
             _unitService.Remove(this);
             _updateManager.StopUpdate(UpdateComponents);
         }
-
         public void AddModifier(IModifier modifier)
         {
             if (!(Model is PlayerUnitModel playerUnitModel)) {

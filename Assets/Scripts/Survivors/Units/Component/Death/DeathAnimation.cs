@@ -1,6 +1,10 @@
 ﻿using System.Collections;
 using DG.Tweening;
+using Feofun.Components;
+using Survivors.Location.ObjectFactory;
+using Survivors.Location.ObjectFactory.Factories;
 using UnityEngine;
+using Zenject;
 
 namespace Survivors.Units.Component.Death
 {
@@ -14,11 +18,14 @@ namespace Survivors.Units.Component.Death
         private float _delayUntilDisappear;     
         [SerializeField]
         private float _offsetYDisappear;
-
+        
+        [Inject(Id = ObjectFactoryType.Instancing)] 
+        private IObjectFactory _objectFactory;  
+        
         private Animator _animator;
         private Tweener _disappearTween;
         private Coroutine _disappear;
-
+        
         private void Awake()
         {
             _animator = GetComponentInChildren<Animator>();
@@ -37,7 +44,7 @@ namespace Survivors.Units.Component.Death
             yield return new WaitForSeconds(_delayUntilDisappear);
             _disappearTween = gameObject.transform.DOMoveY(transform.position.y - _offsetYDisappear, _disappearTime);
             yield return _disappearTween.WaitForCompletion(); 
-            Destroy(gameObject);
+            _objectFactory.Destroy<Unit>(gameObject);
         }
 
         private void EndAnimationIfStarted()
@@ -60,5 +67,7 @@ namespace Survivors.Units.Component.Death
         {
             Dispose();
         }
+
+     
     }
 }

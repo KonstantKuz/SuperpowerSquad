@@ -9,8 +9,9 @@ using Survivors.Session.Config;
 using Survivors.Session.Service;
 using Survivors.Squad.Component;
 using Survivors.Squad.Service;
-using Survivors.Squad.Upgrade;
 using Survivors.Units.Service;
+using Survivors.Upgrade;
+using Survivors.Upgrade.MetaUpgrade;
 using UnityEngine;
 using UnityEngine.Assertions;
 using Zenject;
@@ -27,7 +28,7 @@ namespace Survivors.App
         [Inject] private UnitService _unitService;       
         [Inject] private MetaUpgradeService _metaUpgradeService;
         [Inject] private World _world;
-        
+        [Inject] private ABTest.ABTest _abTest;
         
         public Dictionary<string, object> GetParams(IEnumerable<string> paramNames)
         {
@@ -61,7 +62,7 @@ namespace Survivors.App
                 EventParams.WINS => playerProgress.WinCount,
                 EventParams.DEFEATS => playerProgress.LoseCount,
                 EventParams.REVIVE_COUNT => _sessionService.Session.Revives,
-                
+                EventParams.AB_TEST_ID => _abTest.CurrentVariantId,
                 _ => throw new ArgumentOutOfRangeException(nameof(paramName), paramName, $"Unsupported analytics parameter {paramName}")
             };
         }

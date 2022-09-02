@@ -14,12 +14,17 @@ namespace Survivors.App.Config
         private int _maxMetaUpgradeLevel;
 
         [DataMember(Name = "ReviveEnemyRemoveRadius")]
-        private float _reviveEnemyRemoveRadius;
+        private float _reviveEnemyRemoveRadius;     
+        
+        [DataMember(Name = "EventWarningShowDuration")]
+        private float _eventWarningShowDuration;
 
         public float HealthScaleIncrementFactor => _healthScaleIncrementFactor;
         public string FirstUnit => _firstUnit;
         public int MaxMetaUpgradeLevel => _maxMetaUpgradeLevel;
 
-        public float ReviveEnemyRemoveRadius => _reviveEnemyRemoveRadius;
+        public float ReviveEnemyRemoveRadius => _reviveEnemyRemoveRadius;  
+        
+        public float EventWarningShowDuration => _eventWarningShowDuration;
     }
 }
