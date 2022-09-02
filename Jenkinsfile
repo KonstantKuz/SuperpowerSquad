@@ -239,7 +239,7 @@ pipeline {
                 }
                 stage ('Store') {
                     steps {
-                        archiveArtifacts artifacts: "${IPA_FULL_PATH},build/xcode/build/Release-iphoneos/build/${OUTPUT_FILE_NAME}-dSYM.zip"              
+                        archiveArtifacts artifacts: "${IPA_FULL_PATH},build/xcode/build/Release-iphoneos/build/survivors-dSYM.zip"              
                     }
                 }  
                 stage('Publish') {
