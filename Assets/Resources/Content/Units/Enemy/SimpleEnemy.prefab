@@ -341,7 +341,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _meshAnimator: {fileID: 8952620247966179962}
-  crossFade: 0
+  _crossFade: 0
 --- !u!1 &8217310743306618948
 GameObject:
   m_ObjectHideFlags: 0
@@ -394,7 +394,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1732140574995939956, guid: b56d4b9574c1e7c4fb7e5981c1514e41, type: 3}
       propertyPath: m_Name
-      value: SimpleEnemy_AnimatedMesh
+      value: BakedBodyMesh
       objectReference: {fileID: 0}
     - target: {fileID: 2962342123002455160, guid: b56d4b9574c1e7c4fb7e5981c1514e41, type: 3}
       propertyPath: m_RootOrder
