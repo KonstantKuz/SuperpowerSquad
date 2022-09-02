@@ -22,20 +22,27 @@ namespace Survivors.ObjectPool.Service
             if (_pools.ContainsKey(poolId)) {
                 throw new ArgumentException($"Object pool already prepared by pool id, id:= {poolId}");
             }
-            _pools[poolId] = _objectPoolWrapper.BuildObjectPool(prefab, poolParams);
+            _pools[poolId] = _objectPoolWrapper.BuildObjectPool(prefab, 
+                obj=>OnObjectCreated(poolId, obj),
+                poolParams);
         }
         public bool HasPool(string poolId) => _pools.ContainsKey(poolId);
 
         public GameObject Get(string poolId, GameObject prefab, [CanBeNull] ObjectPoolParams poolParams = null)
         {
             if (!_pools.ContainsKey(poolId)) {
-                _pools[poolId] = _objectPoolWrapper.BuildObjectPool(prefab, poolParams);
+                _pools[poolId] = _objectPoolWrapper.BuildObjectPool(prefab, 
+                    obj=>OnObjectCreated(poolId, obj),
+                    poolParams);
+            } 
+            return _pools[poolId].Get();
+        }
+
+        private void OnObjectCreated(string poolId, GameObject obj)
+        {
+            if (!obj.TryGetComponent(out ObjectPoolIdentifier poolIdentifier)) {
+                obj.AddComponent<ObjectPoolIdentifier>().PoolId = poolId;
             }
-            var item = _pools[poolId].Get();
-            if (!item.TryGetComponent(out ObjectPoolIdentifier poolIdentifier)) {
-                item.AddComponent<ObjectPoolIdentifier>().PoolId = poolId;
-            }
-            return item;
         }
 
         public void Release(GameObject instance)
