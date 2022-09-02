@@ -27,17 +27,13 @@ namespace Survivors.Units.Weapon.Projectiles
         public static bool CanDamageTarget(Collider targetCollider, UnitType type, [CanBeNull] out ITarget target)
         {
             target = null;
-            if (!targetCollider.TryGetComponent(out ITarget targetComponent)) {
-                return false;
+            if (targetCollider.TryGetComponent(out ITarget targetComponent)) {
+                target = targetComponent;
+                if (!targetComponent.IsTargetValidAndAlive() || type != targetComponent.UnitType) {
+                    return false;
+                }
             }
-            if (!targetComponent.IsTargetValidAndAlive() || type != targetComponent.UnitType) {
-                return false;
-            }
-            if (!targetCollider.TryGetComponent(out IDamageable damageable)) {
-                return false;
-            }
-            target = targetComponent;
-            return true;
+            return targetCollider.TryGetComponent(out IDamageable damageable);
         }
         protected virtual void TryHit(GameObject target, Vector3 hitPos, Vector3 collisionNorm)
         {
