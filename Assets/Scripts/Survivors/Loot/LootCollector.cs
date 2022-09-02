@@ -23,10 +23,10 @@ namespace Survivors.Loot
         private SphereCollider _collider;
 
         [Inject]
-        private DroppingLootService _lootService;       
-
-        [Inject]
-        private ObjectPoolFactory _objectFactory;  
+        private DroppingLootService _lootService;     
+        
+        [Inject(Id = ObjectFactoryType.Pool)]
+        private IObjectFactory _objectFactory;
         [Inject]
         private SessionService _sessionService;
         [Inject] 
@@ -79,7 +79,7 @@ namespace Survivors.Loot
             
             _lootService.OnLootCollected(loot.Config);
             _movingLoots.Remove(loot);
-            _objectFactory.Destroy(loot.ObjectId, loot.gameObject);
+            _objectFactory.Destroy(loot.gameObject);
         }
 
         public void OnDestroy()

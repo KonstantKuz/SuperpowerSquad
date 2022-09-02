@@ -1,25 +1,19 @@
-using Feofun.Components;
-using Survivors.Location.ObjectFactory.Factories;
+using Survivors.Location.ObjectFactory;
 using UnityEngine;
 using Zenject;
 
 namespace Survivors.Units.Component.Death
 {
-    public class DestroyDeath : MonoBehaviour, IUnitDeath, IInitializable<IUnit>
+    public class DestroyDeath : MonoBehaviour, IUnitDeath
     {
-        [Inject]
-        private ObjectPoolFactory _objectFactory;
+        [Inject(Id = ObjectFactoryType.Pool)]
+        private IObjectFactory _objectFactory;
 
         private Unit _owner;
         
-        public void Init(IUnit owner)
-        {
-            _owner = (Unit) owner;
-        }
-        
         public void PlayDeath()
         {
-            _objectFactory.Destroy(_owner.ObjectId, gameObject);
+            _objectFactory.Destroy(gameObject);
         }
 
     

@@ -24,14 +24,9 @@ namespace Survivors.Location.ObjectFactory.Factories
         {
             return GetPoolObject(objectId, prefab, container).RequireComponent<T>();
         }
-        public void Destroy(string objectId, GameObject instance)
-        {
-            _poolManager.Release(objectId, instance);
-        }
-        public void DestroyAllObjects()
-        {
-            _poolManager.ReleaseAllActive();
-        }
+        public void Destroy(GameObject instance) => _poolManager.Release(instance);
+        public void DestroyAllObjects() => _poolManager.ReleaseAllActive();
+    
         private GameObject GetPoolObject(string objectId, GameObject prefab, [CanBeNull] Transform container = null)
         {
             var poolObject = _poolManager.Get(objectId, prefab, TryGetPoolParams(objectId, prefab));
