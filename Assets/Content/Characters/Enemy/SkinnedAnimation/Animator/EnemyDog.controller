@@ -56,10 +56,10 @@ BlendTree:
   m_Name: Blend Tree
   m_Childs:
   - serializedVersion: 2
-    m_Motion: {fileID: 7400000, guid: af74d65c4e777b944b46c03d1091daeb, type: 2}
+    m_Motion: {fileID: 7400000, guid: 0b3aea08bd228514d87bb53ba4644695, type: 2}
     m_Threshold: 0
     m_Position: {x: 0, y: 0}
-    m_TimeScale: 0.01
+    m_TimeScale: 1
     m_CycleOffset: 0
     m_DirectBlendParameter: Motion
     m_Mirror: 0

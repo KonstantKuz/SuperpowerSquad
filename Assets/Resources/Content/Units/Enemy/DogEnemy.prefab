@@ -1,5 +1,17 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!114 &5478305486594842895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2991954113839922967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a403e78fb60a4119895031136f8e7b9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2409019043190965661
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15,9 +27,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: BakedDogEnemyBody
       objectReference: {fileID: 0}
+    - target: {fileID: 964169664041124645, guid: 4f8aaf7eebed7794cbde04a321dc83f9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1068544068039888157, guid: 4f8aaf7eebed7794cbde04a321dc83f9, type: 3}
       propertyPath: _crossFade
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1068544068039888157, guid: 4f8aaf7eebed7794cbde04a321dc83f9, type: 3}
+      propertyPath: _crossFadeSpeed
+      value: 0.2
       objectReference: {fileID: 0}
     - target: {fileID: 1068544068039888157, guid: 4f8aaf7eebed7794cbde04a321dc83f9, type: 3}
       propertyPath: _animationTransitions._map.Array.size
@@ -45,11 +65,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1068544068039888157, guid: 4f8aaf7eebed7794cbde04a321dc83f9, type: 3}
       propertyPath: _animationTransitions._map.Array.data[1]._value.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1068544068039888157, guid: 4f8aaf7eebed7794cbde04a321dc83f9, type: 3}
       propertyPath: _animationTransitions._map.Array.data[2]._value.Array.size
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1068544068039888157, guid: 4f8aaf7eebed7794cbde04a321dc83f9, type: 3}
       propertyPath: _animationTransitions._map.Array.data[0]._value.ToAnimation
@@ -228,9 +248,21 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3322758811681233247, guid: 4f8aaf7eebed7794cbde04a321dc83f9, type: 3}
+      propertyPath: FPS
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 3322758811681233247, guid: 4f8aaf7eebed7794cbde04a321dc83f9, type: 3}
+      propertyPath: eventReciever
+      value: 
+      objectReference: {fileID: 2991954113839922967}
+    - target: {fileID: 3322758811681233247, guid: 4f8aaf7eebed7794cbde04a321dc83f9, type: 3}
       propertyPath: defaultMeshAnimation
       value: 
       objectReference: {fileID: 11400000, guid: ad09fd52dbba960499a01b473a3d5b71, type: 2}
+    - target: {fileID: 3322758811681233247, guid: 4f8aaf7eebed7794cbde04a321dc83f9, type: 3}
+      propertyPath: meshAnimations.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: 36dd0d62f2cc962488ee9b6067eac219, type: 2}
     - target: {fileID: 6629324333623088289, guid: 4f8aaf7eebed7794cbde04a321dc83f9, type: 3}
       propertyPath: _objectId
       value: DogEnemy
@@ -245,3 +277,8 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f8aaf7eebed7794cbde04a321dc83f9, type: 3}
+--- !u!1 &2991954113839922967 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 642607803428436618, guid: 4f8aaf7eebed7794cbde04a321dc83f9, type: 3}
+  m_PrefabInstance: {fileID: 2409019043190965661}
+  m_PrefabAsset: {fileID: 0}

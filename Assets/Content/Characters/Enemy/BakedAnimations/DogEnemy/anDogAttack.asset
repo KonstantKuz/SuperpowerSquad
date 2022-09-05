@@ -15,7 +15,13 @@ MonoBehaviour:
   animationName: attack
   playbackSpeed: 1
   wrapMode: 0
-  events: []
+  events:
+  - methodName: Fire
+    frame: 10
+    eventType: 0
+    stringValue: 
+    floatValue: 0
+    data: {fileID: 0}
   length: 0.6666667
   frameSkip: 1
   rootMotionMode: 0

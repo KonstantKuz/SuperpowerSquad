@@ -15,7 +15,7 @@ namespace Survivors.Units.Component.Animation
         [SerializeField]
         public string ToAnimation;
         [SerializeField]
-        public SerializableDictionary<string, bool> BoolConditions  = new SerializableDictionary<string, bool>();
+        public SerializableDictionary<string, bool> BoolConditions = new SerializableDictionary<string, bool>();
     }
     
 
@@ -25,7 +25,9 @@ namespace Survivors.Units.Component.Animation
         private MeshAnimatorBase _meshAnimator;
 
         [SerializeField]
-        private bool _crossFade = false;
+        private bool _crossFade = false;   
+        [SerializeField]
+        private float _crossFadeSpeed = 0.5f;
 
         [SerializeField]
         private SerializableDictionary<string, List<TransitionState>> _animationTransitions = new SerializableDictionary<string, List<TransitionState>>();
@@ -40,7 +42,7 @@ namespace Survivors.Units.Component.Animation
         public void Play(string animationName)
         {
             if (_crossFade) {
-                _meshAnimator.Crossfade(animationName);
+                _meshAnimator.Crossfade(animationName, _crossFadeSpeed);
             } else {
                 _meshAnimator.Play(animationName);
             }

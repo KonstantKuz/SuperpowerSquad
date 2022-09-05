@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: anDogIdle
   m_EditorClassIdentifier: 
   animationName: idle
-  playbackSpeed: 0.5
+  playbackSpeed: 0.1
   wrapMode: 2
   events: []
   length: 0.07666667
