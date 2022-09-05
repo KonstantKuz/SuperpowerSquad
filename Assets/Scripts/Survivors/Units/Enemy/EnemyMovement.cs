@@ -54,7 +54,6 @@ namespace Survivors.Units.Enemy
                 return;
             }
             _agent.isStopped = isStopped;
-            UpdateAnimation(isStopped);
         }
         private void SetDestination(Vector3 destination)
         {
@@ -64,9 +63,9 @@ namespace Survivors.Units.Enemy
             }
             _agent.destination = destination;
         }
-        private void UpdateAnimation(bool isStopped)
+        public void UpdateAnimation()
         {
-            if (isStopped) {
+            if (IsStopped) {
                 _enemyAnimationWrapper.PlayIdle();
             } else {
                 _enemyAnimationWrapper.PlayMoveForward();
