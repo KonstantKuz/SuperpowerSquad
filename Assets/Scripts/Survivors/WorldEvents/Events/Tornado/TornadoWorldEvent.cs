@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Logger.Extension;
 using Survivors.Location;
-using Survivors.Location.Service;
+using Survivors.Location.ObjectFactory;
 using Survivors.WorldEvents.Events.Tornado.Config;
 using Survivors.WorldEvents.Spawner;
 using UnityEngine;
@@ -14,8 +14,8 @@ namespace Survivors.WorldEvents.Events.Tornado
     {
         private readonly List<Tornado> _createdTornado = new List<Tornado>();
 
-        [Inject]
-        private WorldObjectFactory _worldObjectFactory;
+        [Inject(Id = ObjectFactoryType.Instancing)] 
+        private IObjectFactory _objectFactory;  
         [Inject]
         private World _world;
 
@@ -36,7 +36,7 @@ namespace Survivors.WorldEvents.Events.Tornado
 
         private void CreateTornado(Vector3 place)
         {
-            var tornado = _worldObjectFactory.CreateObject<Tornado>(_config.PrefabId);
+            var tornado = _objectFactory.Create<Tornado>(_config.PrefabId);
             tornado.transform.SetPositionAndRotation(place, Quaternion.identity);
             tornado.Init(_config);
             _createdTornado.Add(tornado);

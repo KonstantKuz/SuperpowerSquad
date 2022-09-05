@@ -1,5 +1,6 @@
 ﻿using System;
-using Survivors.Location.Service;
+using Survivors.Location.ObjectFactory;
+using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
@@ -23,8 +24,10 @@ namespace Survivors.Units.Weapon.Projectiles
         [SerializeField] private float _initialCourseTime;
 
         private Vector3 _lastTargetPos;
+        
 
-        [Inject] private WorldObjectFactory _objectFactory;
+        [Inject]
+        private ObjectInstancingFactory _objectFactory;  
 
         private ITarget _target;
 

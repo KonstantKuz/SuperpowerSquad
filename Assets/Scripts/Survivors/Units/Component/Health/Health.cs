@@ -54,7 +54,7 @@ namespace Survivors.Units.Component.Health
             _currentHealth.Value = allowOverMax ?  newValue : Mathf.Min(newValue, MaxValue.Value);
         }
         
-        private void OnDestroy()
+        private void OnDisable()
         {
             OnZeroHealth = null;
             OnDamageTaken = null;

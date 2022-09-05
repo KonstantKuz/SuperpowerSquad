@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Logger.Extension;
 using Survivors.Location;
-using Survivors.Location.Service;
+using Survivors.Location.ObjectFactory;
 using Survivors.WorldEvents.Events.Lava.Config;
 using Survivors.WorldEvents.Spawner;
 using UnityEngine;
@@ -14,8 +14,8 @@ namespace Survivors.WorldEvents.Events.Lava
     {
         private readonly List<Lava> _createdLava = new List<Lava>();
 
-        [Inject]
-        private WorldObjectFactory _worldObjectFactory;
+        [Inject(Id = ObjectFactoryType.Instancing)] 
+        private IObjectFactory _objectFactory;  
         [Inject]
         private World _world;
 
@@ -36,7 +36,7 @@ namespace Survivors.WorldEvents.Events.Lava
 
         private void CreateLava(Vector3 place)
         {
-            var lava = _worldObjectFactory.CreateObject<Lava>(_config.LavaPrefabId);
+            var lava = _objectFactory.Create<Lava>(_config.LavaPrefabId);
             lava.transform.SetPositionAndRotation(place, Quaternion.identity);
             lava.Init(_config);
             _createdLava.Add(lava);

@@ -36,6 +36,7 @@ namespace Survivors.Units.Enemy
         
         public void Init(IUnit unit)
         {
+            NavMeshAgent.enabled = true;
             var model = (EnemyUnitModel) unit.Model;
             NavMeshAgent.speed = model.MoveSpeed;
         }

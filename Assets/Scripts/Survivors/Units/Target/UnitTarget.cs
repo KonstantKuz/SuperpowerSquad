@@ -34,8 +34,9 @@ namespace Survivors.Units.Target
         }
         public Action OnTargetInvalid { get; set; }
 
-        private void Awake()
+        private void OnEnable()
         {
+            IsAlive = true;
             TargetId = $"{_unitType.ToString()}#{_idCount++}";
             _targetService.Add(this);
         }
@@ -48,7 +49,7 @@ namespace Survivors.Units.Target
             OnTargetInvalid?.Invoke();
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
             if (!IsAlive) return;
             _targetService.Remove(this);

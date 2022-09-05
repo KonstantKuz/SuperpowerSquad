@@ -55,7 +55,7 @@ namespace Survivors.Units.Component.Health
             return _renderer.material.DOColor(color, BASE_COLOR, _colorBlinkDuration).SetEase(ease);
         }
 
-        private void OnDestroy() => Dispose();
+        private void OnDisable() => Dispose();
 
         private void Dispose()
         {

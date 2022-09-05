@@ -1,8 +1,7 @@
 ﻿using Feofun.Config;
 using ModestTree;
-using Survivors.Extension;
 using Survivors.Location;
-using Survivors.Location.Service;
+using Survivors.Location.ObjectFactory;
 using Survivors.Units.Enemy.Config;
 using Survivors.Units.Enemy.Model;
 using Zenject;
@@ -12,7 +11,12 @@ namespace Survivors.Units.Service
     public class UnitFactory
     {
         [Inject] private World _world;
-        [Inject] private WorldObjectFactory _worldObjectFactory;
+        [Inject(Id = ObjectFactoryType.Instancing)] 
+        private IObjectFactory _objectFactory;
+        
+        [Inject(Id = ObjectFactoryType.Pool)] 
+        private IObjectFactory _poolObjectFactory;  
+        
         [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
         [Inject] private PlayerUnitModelBuilder _playerUnitModelBuilder;
         
@@ -28,7 +32,7 @@ namespace Survivors.Units.Service
         public Unit CreatePlayerUnit(string unitId)
         {
             CheckSquad();
-            var unit = _worldObjectFactory.CreateObject(unitId).RequireComponent<Unit>();
+            var unit = _objectFactory.Create<Unit>(unitId);
             var model = _playerUnitModelBuilder.BuildUnit(unitId);
             unit.Init(model);
             _world.Squad.AddUnit(unit);
@@ -37,7 +41,7 @@ namespace Survivors.Units.Service
         
         public Unit CreateEnemy(string unitId, int level)
         {
-            var enemy = _worldObjectFactory.CreateObject(unitId).RequireComponent<Unit>();
+            var enemy = _poolObjectFactory.Create<Unit>(unitId, _world.Spawn.transform);
             var config = _enemyUnitConfigs.Get(unitId);
             var model = new EnemyUnitModel(config, level);
             enemy.Init(model);

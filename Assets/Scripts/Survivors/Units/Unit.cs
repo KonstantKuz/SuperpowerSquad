@@ -65,17 +65,22 @@ namespace Survivors.Units
         public Health Health { get; private set; }
         public Bounds Bounds => _collider.bounds;
 
-        public void Init(IUnitModel model)
+        private void Awake()
         {
-            Model = model;
-
             _updatables = GetComponentsInChildren<IUpdatableComponent>();
             _damageable = gameObject.RequireComponent<IDamageable>();
             _death = gameObject.RequireComponent<IUnitDeath>();
             _selfTarget = gameObject.RequireComponent<ITarget>();
             _deathEventReceivers = GetComponentsInChildren<IUnitDeathEventReceiver>();
-            _activeStateReceiver = GetComponentsInChildren<IUnitActiveStateReceiver>();
-
+            _activeStateReceiver = GetComponentsInChildren<IUnitActiveStateReceiver>();    
+            Health = GetComponent<Health>();
+            _collider = GetComponent<CapsuleCollider>();
+            
+        }
+        public void Init(IUnitModel model)
+        {
+            Model = model;
+            
             if (UnitType == UnitType.ENEMY)
             {
                 _damageable.OnZeroHealth += DieOnZeroHealth;
@@ -83,13 +88,10 @@ namespace Survivors.Units
 
             IsActive = true;
             _spawnTime = Time.time;
-            Health = GetComponent<Health>();
-            _collider = GetComponent<CapsuleCollider>();
-
+            
             foreach (var component in GetComponentsInChildren<IInitializable<IUnit>>()) {
                 component.Init(this);
             }
-
             _unitService.Add(this);
             _updateManager.StartUpdate(UpdateComponents);
         }
@@ -115,9 +117,10 @@ namespace Survivors.Units
             _damageable.OnZeroHealth -= DieOnZeroHealth;
             IsActive = false;
             _deathEventReceivers.ForEach(it => it.OnDeath(deathCause));
-            _death.PlayDeath();
             OnDeath?.Invoke(this, deathCause);
             OnDeath = null;
+            _death.PlayDeath();
+   
         }
 
         private void DieOnZeroHealth()
@@ -134,8 +137,7 @@ namespace Survivors.Units
                 _updatables[i].OnTick();
             }
         }
-
-        private void OnDestroy()
+        private void OnDisable()
         {
             OnUnitDestroyed?.Invoke(this);
             OnUnitDestroyed = null;

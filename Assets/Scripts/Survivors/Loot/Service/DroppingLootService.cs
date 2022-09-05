@@ -3,11 +3,13 @@ using System.Linq;
 using Feofun.Config;
 using Logger.Extension;
 using Survivors.Location;
-using Survivors.Location.Service;
+using Survivors.Location.ObjectFactory;
+using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Loot.Config;
 using Survivors.Squad.Service;
 using Survivors.Units;
 using Survivors.Units.Service;
+using UnityEditor;
 using Zenject;
 using Random = UnityEngine.Random;
 
@@ -18,7 +20,8 @@ namespace Survivors.Loot.Service
         [Inject] private World _world;
         [Inject] private SquadProgressService _squadProgressService;
         [Inject] private UnitService _unitService;
-        [Inject] private WorldObjectFactory _worldObjectFactory;
+        [Inject(Id = ObjectFactoryType.Pool)] 
+        private IObjectFactory _objectFactory;
         [Inject] private StringKeyedConfigCollection<LootEmitterConfig> _lootEmitters;
 
         public void OnWorldSetup()
@@ -45,7 +48,7 @@ namespace Survivors.Loot.Service
                 return;
             }
             
-            var loot = _worldObjectFactory.CreateObject(lootConfig.LootId, _world.Spawn.transform).GetComponent<DroppingLoot>();
+            var loot = _objectFactory.Create<DroppingLoot>(lootConfig.LootId, _world.Spawn.transform);
             loot.transform.position = unit.GameObject.transform.position;
             loot.Init(lootConfig);
         }

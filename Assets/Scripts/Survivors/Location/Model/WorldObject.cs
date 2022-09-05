@@ -8,23 +8,20 @@ namespace Survivors.Location.Model
         private string _objectId;
         
         [SerializeField]
-        private ObjectType _objectType;
+        private ObjectType _objectType;      
+        
         public void Reset()
         {
             ObjectId = gameObject.name;
         }
         public string ObjectId
         {
-            get { return _objectId; }
-            set { _objectId = value; }
+            get => _objectId;
+            private set => _objectId = value;
         }
-        public GameObject GameObject
-        {
-            get { return gameObject; }
-        }
-        public ObjectType ObjectType
-        {
-            get { return _objectType; }
-        }
+        public GameObject GameObject => gameObject;
+        public ObjectType ObjectType => _objectType;
+        
+
     }
 }

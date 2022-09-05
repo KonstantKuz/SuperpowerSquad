@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using Feofun.Extension;
 using Survivors.Extension;
 using Survivors.Location;
-using Survivors.Location.Service;
+using Survivors.Location.ObjectFactory;
+using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Session;
 using Survivors.Squad.Formation;
 using Survivors.Units.Weapon.Projectiles;
@@ -21,7 +22,9 @@ namespace Survivors.Units.Weapon
         private readonly List<CircularSaw> _ownedSaws = new List<CircularSaw>();
 
         [Inject] private World _world;
-        [Inject] private WorldObjectFactory _worldObjectFactory;
+        
+        [Inject]
+        private ObjectInstancingFactory _objectFactory;  
 
         private CircularSawsRoot SawsRoot => _sawsRoot ??= _world.Squad.GetComponentInChildren<CircularSawsRoot>();
         public IReadOnlyList<CircularSaw> OwnedSaws => _ownedSaws;
@@ -62,7 +65,7 @@ namespace Survivors.Units.Weapon
 
         private CircularSaw CreateSaw()
         {
-            return _worldObjectFactory.CreateObject(_circularSawPrefab.gameObject).RequireComponent<CircularSaw>();
+            return _objectFactory.Create<CircularSaw>(_circularSawPrefab.gameObject);
         }
 
         private void CleanUpSaws()

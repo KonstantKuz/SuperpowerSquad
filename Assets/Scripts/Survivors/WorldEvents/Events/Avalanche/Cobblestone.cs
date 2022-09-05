@@ -1,8 +1,11 @@
 using DG.Tweening;
 using Logger.Extension;
 using Survivors.Extension;
+using Survivors.Location.ObjectFactory;
+using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Location.Service;
 using Survivors.Units;
+using Survivors.Units.Component.DamageReaction;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Weapon.Projectiles;
 using UnityEngine;
@@ -29,7 +32,8 @@ namespace Survivors.WorldEvents.Events.Avalanche
         private Sequence _appearTween;
         private Tween _destroyTween;
 
-        [Inject] private WorldObjectFactory _worldObjectFactory;
+        [Inject]
+        private ObjectInstancingFactory _objectFactory;  
         
         private float DistanceToDisappear => _maxDistance - _moveSpeed * _disappearTime;
         public float Radius => _radius;
@@ -58,7 +62,7 @@ namespace Survivors.WorldEvents.Events.Avalanche
 
         private void SpawnTrajectory()
         {
-            _trajectory = _worldObjectFactory.CreateObject(_trajectoryPrefab).GetComponent<LineRenderer>();
+            _trajectory = _objectFactory.Create<LineRenderer>(_trajectoryPrefab);
         }
 
         private void SetTrajectoryPosition()

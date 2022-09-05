@@ -1,6 +1,7 @@
 ﻿using System;
-using Survivors.Location.Service;
-using Survivors.Units.Component.Health;
+using Survivors.Location.ObjectFactory;
+using Survivors.Location.ObjectFactory.Factories;
+using Survivors.Units.Component.DamageReaction;
 using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
 using Zenject;
@@ -23,7 +24,7 @@ namespace Survivors.Units.Weapon.Projectiles
         private float _speed;
         
         [Inject]
-        private WorldObjectFactory _objectFactory;        
+        private ObjectInstancingFactory _objectFactory;  
 
         public void Launch(UnitType targetType, IProjectileParams projectileParams, float lifeTime, float speed, Action<GameObject> hitCallback)
         {
@@ -61,7 +62,7 @@ namespace Survivors.Units.Weapon.Projectiles
         private void PlayVfx(Vector3 pos, Vector3 up)
         {
             if (_hitVfx == null) return;
-            var vfx = _objectFactory.CreateObject(_hitVfx);
+            var vfx = _objectFactory.Create<MonoBehaviour>(_hitVfx);
             vfx.transform.SetPositionAndRotation(pos, Quaternion.LookRotation(up));
             vfx.transform.localScale *= _params.DamageRadius * _explosionScaleMultiplier;
         }

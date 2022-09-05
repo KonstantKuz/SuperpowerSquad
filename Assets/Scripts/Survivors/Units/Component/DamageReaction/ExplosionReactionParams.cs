@@ -1,7 +1,7 @@
 ﻿using System;
 using UnityEngine;
 
-namespace Survivors.Units.Component.Health
+namespace Survivors.Units.Component.DamageReaction
 {
     [Serializable]
     public struct ExplosionReactionParams

@@ -1,5 +1,6 @@
 ﻿using System;
-using Survivors.Location.Service;
+using Survivors.Location.ObjectFactory;
+using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles;
 using Survivors.Units.Weapon.Projectiles.Params;
@@ -14,8 +15,9 @@ namespace Survivors.Units.Weapon
         private Transform _barrel;
         [SerializeField]
         private Beam _beam;
+        
         [Inject]
-        private WorldObjectFactory _objectFactory;
+        private ObjectInstancingFactory _objectFactory;  
 
         public Vector3 BarrelPos { get; private set; }
 
@@ -29,7 +31,7 @@ namespace Survivors.Units.Weapon
 
         private Beam CreateBeam()
         {
-            return _objectFactory.CreateObject(_beam.gameObject, _barrel).GetComponent<Beam>();
+            return _objectFactory.Create<Beam>(_beam.gameObject, _barrel);
         }
 
         private void LateUpdate()

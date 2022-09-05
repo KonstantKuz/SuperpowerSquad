@@ -1,5 +1,7 @@
 ﻿using System;
 using Logger.Extension;
+using Survivors.Location.ObjectFactory;
+using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Location.Service;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Target;
@@ -16,7 +18,7 @@ namespace Survivors.Units.Weapon
         [SerializeField] private GameObject _hitVfx;
         
         [Inject]
-        private WorldObjectFactory _objectFactory;
+        private ObjectInstancingFactory _objectFactory;
         
         public override void Fire(ITarget target, IProjectileParams chargeParams, Action<GameObject> hitCallback)
         {
@@ -43,7 +45,7 @@ namespace Survivors.Units.Weapon
         private void PlayVfx(Vector3 pos, Vector3 up)
         {
             if (_hitVfx == null) return;
-            var vfx = _objectFactory.CreateObject(_hitVfx);
+            var vfx = _objectFactory.Create<MonoBehaviour>(_hitVfx);
             vfx.transform.localScale = _hitVfx.transform.localScale * _hitVfxScale;
             vfx.transform.SetPositionAndRotation(pos, Quaternion.LookRotation(up));
         }

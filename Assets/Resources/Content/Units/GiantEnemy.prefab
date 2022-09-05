@@ -99,6 +99,14 @@ PrefabInstance:
       propertyPath: _stopWhileAttack
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7639369040847028779, guid: 4f8aaf7eebed7794cbde04a321dc83f9, type: 3}
+      propertyPath: _poolId
+      value: GiantEnemy
+      objectReference: {fileID: 0}
+    - target: {fileID: 7639369040847028779, guid: 4f8aaf7eebed7794cbde04a321dc83f9, type: 3}
+      propertyPath: _initialCapacity
+      value: 250
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4f8aaf7eebed7794cbde04a321dc83f9, type: 3}
 --- !u!1 &5693163200149871159 stripped

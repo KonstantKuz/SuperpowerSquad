@@ -1,6 +1,7 @@
 ﻿using System;
 using Survivors.Extension;
-using Survivors.Location.Service;
+using Survivors.Location.ObjectFactory;
+using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles.Params;
 using UniRx;
@@ -25,7 +26,7 @@ namespace Survivors.Units.Weapon.Projectiles
         [SerializeField] private float _hitTimeout;
 
         [Inject]
-        private WorldObjectFactory _objectFactory;
+        private ObjectInstancingFactory _objectFactory;  
         
         private Vector3 _targetPosition;
         private float _curveTime; 
