@@ -1,4 +1,5 @@
-﻿using Survivors.Enemy.Spawn;
+﻿using Survivors.Camera.FrustrumCulling;
+using Survivors.Enemy.Spawn;
 using Survivors.Location.ObjectFactory;
 using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Location.Service;
@@ -16,6 +17,7 @@ namespace Survivors.Location.Installer
         [SerializeField] private EnemyWavesSpawner _enemyWavesSpawner;
         [SerializeField] private EnemyHpsSpawner _enemyHpsSpawner;
         [SerializeField] private WorldEventFactory _worldEventFactory;
+        [SerializeField] private FrustrumCullingSystem _frustrumCullingSystem;
         
         public void Install(DiContainer container)
         {
@@ -37,6 +39,7 @@ namespace Survivors.Location.Installer
             
             container.BindInterfacesAndSelfTo<WorldEventService>().AsSingle();  
             container.Bind<WorldEventFactory>().FromInstance(_worldEventFactory);
+            container.Bind<FrustrumCullingSystem>().FromInstance(_frustrumCullingSystem);
         }
 
         private void InstallObjectFactory(DiContainer container)
