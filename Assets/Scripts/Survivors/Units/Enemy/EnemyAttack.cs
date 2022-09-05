@@ -14,6 +14,7 @@ namespace Survivors.Units.Enemy
         private EnemyAi _enemyAi;
         private BaseWeapon _weapon;
         private EnemyAttackModel _attackModel;
+        private EnemyAnimationWrapper _enemyAnimationWrapper;
 
         private float _attackTimer;
 
@@ -27,6 +28,7 @@ namespace Survivors.Units.Enemy
         {
             _enemyAi = gameObject.RequireComponent<EnemyAi>();
             _weapon = gameObject.RequireComponentInChildren<BaseWeapon>();
+            _enemyAnimationWrapper = gameObject.RequireComponentInChildren<EnemyAnimationWrapper>();
         }
 
         public void OnTick()
@@ -52,6 +54,7 @@ namespace Survivors.Units.Enemy
         
         private void Attack()
         {
+            _enemyAnimationWrapper.PlayAttack();
             _weapon.Fire(_enemyAi.CurrentTarget, null, DoDamage);
             _attackTimer = 0;
         }
