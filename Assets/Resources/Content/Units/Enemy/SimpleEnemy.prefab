@@ -342,6 +342,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _meshAnimator: {fileID: 8952620247966179962}
   _crossFade: 0
+  _animationTransitions:
+    _map:
+    - _key: attack
+      _value: walk
 --- !u!1 &8217310743306618948
 GameObject:
   m_ObjectHideFlags: 0
