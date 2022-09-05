@@ -63,7 +63,6 @@ namespace Survivors.Units.Enemy
             if (_attack.CanAttack()) {
                 AimAtTarget();
             }
-            _movement.UpdateAnimation();
         }
         
         private void UpdateDestination()

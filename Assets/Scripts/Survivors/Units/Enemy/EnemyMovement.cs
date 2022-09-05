@@ -1,7 +1,5 @@
-﻿using System;
-using Logger.Extension;
+﻿using Logger.Extension;
 using Survivors.Extension;
-using Survivors.Units.Component;
 using Survivors.Units.Target;
 using UnityEngine;
 using UnityEngine.AI;
@@ -14,8 +12,7 @@ namespace Survivors.Units.Enemy
 
         private ITarget _selfTarget;
         private NavMeshAgent _agent;
-        private Animator _animator;
-        private AnimationWrapper _animationWrapper;
+        private EnemyAnimationWrapper _enemyAnimationWrapper;
 
         private bool IsAgentValid => _agent.enabled && _agent.isOnNavMesh;
         public NavMeshAgent Agent => _agent;
@@ -30,30 +27,9 @@ namespace Survivors.Units.Enemy
         {
             _selfTarget = gameObject.RequireComponent<ITarget>();
             _agent = gameObject.RequireComponent<NavMeshAgent>();
-            _animator = gameObject.RequireComponentInChildren<Animator>();
-            _animationWrapper = new AnimationWrapper(_animator);
+            _enemyAnimationWrapper = gameObject.RequireComponentInChildren<EnemyAnimationWrapper>();
         }
 
-        private void SetIsStopped(bool value)
-        {
-            if (!IsAgentValid) {
-                return;
-            }
-            if (_agent.isStopped == value) {
-                return;
-            }
-            _agent.isStopped = value;
-        }
-
-        public void UpdateAnimation()
-        {
-            if (IsStopped) {
-                _animationWrapper.PlayIdle();
-            } else {
-                _animationWrapper.PlayMoveForward();
-            }
-        }
-        
         public void MoveTo(Vector3 destination)
         {
             if (Vector3.Distance(_selfTarget.Root.position, destination) > ACCURATE_FOLLOW_DISTANCE) {
@@ -62,14 +38,24 @@ namespace Survivors.Units.Enemy
                 SetDestination(destination); 
             }
         }
-
         public void LookAt(Vector3 target)
         {
             var lookDirection = (target - _selfTarget.Root.position).XZ();
             var lookRotation = Quaternion.LookRotation(lookDirection);
             _agent.transform.rotation = lookRotation;
         }
-
+  
+        private void SetIsStopped(bool isStopped)
+        {
+            if (!IsAgentValid) {
+                return;
+            }
+            if (_agent.isStopped == isStopped) {
+                return;
+            }
+            _agent.isStopped = isStopped;
+            UpdateAnimation(isStopped);
+        }
         private void SetDestination(Vector3 destination)
         {
             if (!_agent.isOnNavMesh) {
@@ -77,6 +63,14 @@ namespace Survivors.Units.Enemy
                 return;
             }
             _agent.destination = destination;
+        }
+        private void UpdateAnimation(bool isStopped)
+        {
+            if (isStopped) {
+                _enemyAnimationWrapper.PlayIdle();
+            } else {
+                _enemyAnimationWrapper.PlayMoveForward();
+            }
         }
     }
 }
