@@ -18,9 +18,9 @@ namespace Survivors.Units.Weapon
         [SerializeField] private float _startHeight;
         [SerializeField] private Meteor _meteor;
         [SerializeField] private float _randomDelay;
-        
-        [Inject(Id = ObjectFactoryType.Instancing)] 
-        private IObjectFactory _objectFactory; 
+       
+        [Inject]
+        private ObjectInstancingFactory _objectFactory;  
 
             
         public override void Fire(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)

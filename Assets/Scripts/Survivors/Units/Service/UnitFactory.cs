@@ -2,7 +2,6 @@
 using ModestTree;
 using Survivors.Location;
 using Survivors.Location.ObjectFactory;
-using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Units.Enemy.Config;
 using Survivors.Units.Enemy.Model;
 using Zenject;

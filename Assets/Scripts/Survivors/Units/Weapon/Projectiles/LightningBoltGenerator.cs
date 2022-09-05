@@ -19,12 +19,12 @@ namespace Survivors.Units.Weapon.Projectiles
 
         private readonly List<BoltData> _lightnings = new List<BoltData>();
         
-        public void Hit(IObjectFactory objectFactory, Transform container, Transform endPosition, float duration)
+        public void Hit(ObjectInstancingFactory objectFactory, Transform container, Transform endPosition, float duration)
         {
             var boltData = CreateLightning(objectFactory, container, endPosition, duration);
             _lightnings.Add(boltData);
         }
-        private BoltData CreateLightning(IObjectFactory objectFactory, Transform container, Transform endPosition, float duration)
+        private BoltData CreateLightning(ObjectInstancingFactory objectFactory, Transform container, Transform endPosition, float duration)
         {
             var lightning = objectFactory.Create<LightningBoltPrefabScript>(_boltPrefab.gameObject, container);
             lightning.transform.localPosition = Vector3.zero;

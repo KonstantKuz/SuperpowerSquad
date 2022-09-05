@@ -2,6 +2,7 @@ using System;
 using DG.Tweening;
 using Survivors.Extension;
 using Survivors.Location.ObjectFactory;
+using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Location.Service;
 using Survivors.Units.Component.DamageReaction;
 using Survivors.Units.Component.Health;
@@ -23,8 +24,8 @@ namespace Survivors.Units.Weapon.Projectiles
 
         private Tween _throwMove;
         
-        [Inject(Id = ObjectFactoryType.Instancing)] 
-        private IObjectFactory _objectFactory;  
+        [Inject]
+        private ObjectInstancingFactory _objectFactory;  
         
         public void Launch(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback, Vector3 targetPos)
         {

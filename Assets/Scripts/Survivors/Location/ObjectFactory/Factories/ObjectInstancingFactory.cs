@@ -10,7 +10,7 @@ using Zenject;
 
 namespace Survivors.Location.ObjectFactory.Factories
 {
-    public class ObjectInstancingFactory : MonoBehaviour, IObjectFactory 
+    public class ObjectInstancingFactory : IObjectFactory 
     {
         private readonly HashSet<GameObject> _createdObjects = new HashSet<GameObject>();
         
@@ -34,10 +34,9 @@ namespace Survivors.Location.ObjectFactory.Factories
         {
             return CreateObject(prefab, container).RequireComponent<T>();
         }
-        public void Destroy<T>(GameObject instance)
-        {
-            Destroy(instance);
-        }
+        
+        public void Destroy(GameObject instance) => GameObject.Destroy(instance);
+        
         private GameObject CreateObject(GameObject prefab, [CanBeNull] Transform container = null)
         {
             var parentContainer = container == null ? _world.Spawn.transform : container.transform;
@@ -54,10 +53,6 @@ namespace Survivors.Location.ObjectFactory.Factories
         }
         private void RemoveObject(GameObject obj) => _createdObjects.Remove(obj);
         
-        private void OnDestroy()
-        {
-            Dispose();
-        }
         private void Dispose()
         {
             _disposable?.Dispose();

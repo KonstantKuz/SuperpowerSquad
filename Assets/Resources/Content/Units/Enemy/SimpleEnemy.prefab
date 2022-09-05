@@ -297,7 +297,7 @@ MonoBehaviour:
   _maxCapacity: 4000
   _sizeIncrementStep: 1
   _preparePoolOnInitScene: 1
-  _poolType: {fileID: 6629324333623088289}
+  _poolId: SimpleEnemy
 --- !u!1 &3753810788131279791
 GameObject:
   m_ObjectHideFlags: 0

@@ -13,8 +13,7 @@ namespace Survivors.Location.Installer
 {
     public class WorldServicesInstaller : MonoBehaviour
     {
-        [SerializeField] private World _world; 
-        [SerializeField] private ObjectInstancingFactory _objectInstancingFactory;
+        [SerializeField] private World _world;
         [SerializeField] private EnemyWavesSpawner _enemyWavesSpawner;
         [SerializeField] private EnemyHpsSpawner _enemyHpsSpawner;
         [SerializeField] private WorldEventFactory _worldEventFactory;
@@ -45,18 +44,21 @@ namespace Survivors.Location.Installer
 
         private void InstallObjectFactory(DiContainer container)
         {
+            container.Bind<ObjectInstancingFactory>().AsSingle();
+            container.Bind<ObjectPoolFactory>().AsSingle();
+
             container.Bind<IObjectFactory>()
                      .WithId(ObjectFactoryType.Instancing)
                      .To<ObjectInstancingFactory>()
-                     .FromInstance(_objectInstancingFactory)
-                     .AsSingle();
+                     .FromResolve();
             
             container.Bind<IObjectFactory>()
                      .WithId(ObjectFactoryType.Pool)
                      .To<ObjectPoolFactory>()
-                     .AsSingle();
-            
-        
+                     .FromResolve();
+
+
+
         }
     }
 }

@@ -25,8 +25,8 @@ namespace Survivors.Units.Weapon.Projectiles
         [SerializeField] private float _lightningDuration;
         [SerializeField] private float _hitTimeout;
 
-        [Inject(Id = ObjectFactoryType.Instancing)] 
-        private IObjectFactory _objectFactory;
+        [Inject]
+        private ObjectInstancingFactory _objectFactory;  
         
         private Vector3 _targetPosition;
         private float _curveTime; 
