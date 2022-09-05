@@ -20,7 +20,7 @@ MonoBehaviour:
   frameSkip: 1
   rootMotionMode: 0
   exposedTransforms: []
-  vertexCount: 0
+  vertexCount: 1102
   preGenerateFrames: 0
   meshNormalMode: 0
   recalculateNormalsOnRotation: 0
