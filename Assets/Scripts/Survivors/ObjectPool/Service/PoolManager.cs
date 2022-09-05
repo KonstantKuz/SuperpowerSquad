@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using JetBrains.Annotations;
+using Survivors.ObjectPool.Component;
 using Survivors.ObjectPool.Wrapper;
 using UnityEngine;
 
@@ -8,47 +9,52 @@ namespace Survivors.ObjectPool.Service
 {
     public class PoolManager : IDisposable
     {
-        
-        private readonly Dictionary<Type, IObjectPool<GameObject>> _pools = new Dictionary<Type, IObjectPool<GameObject>>();
+        private readonly Dictionary<string, IObjectPool<GameObject>> _pools = new Dictionary<string, IObjectPool<GameObject>>();
         
         private readonly IObjectPoolWrapper _objectPoolWrapper;
-        
+                
         public PoolManager(IObjectPoolWrapper objectPoolWrapper)
         {
             _objectPoolWrapper = objectPoolWrapper;
         }
-        public void Prepare<T>(GameObject prefab, [CanBeNull] ObjectPoolParams poolParams = null)
+        public void Prepare(string poolId, GameObject prefab, [CanBeNull] ObjectPoolParams poolParams = null)
         {
-            var typePool = typeof(T);
-            Prepare(typePool, prefab, poolParams);
-        }   
-        public void Prepare(Type typePool, GameObject prefab, [CanBeNull] ObjectPoolParams poolParams = null)
-        {
-            if (_pools.ContainsKey(typePool)) {
-                throw new ArgumentException($"Object pool already prepared by object type, type:= {typePool}");
+            if (_pools.ContainsKey(poolId)) {
+                throw new ArgumentException($"Object pool already prepared by pool id, id:= {poolId}");
             }
-            _pools[typePool] = _objectPoolWrapper.BuildObjectPool(prefab, poolParams);
+            _pools[poolId] = _objectPoolWrapper.BuildObjectPool(prefab, 
+                obj=>OnObjectCreated(poolId, obj),
+                poolParams);
         }
-        public bool HasPool<T>() => _pools.ContainsKey(typeof(T));
+        public bool HasPool(string poolId) => _pools.ContainsKey(poolId);
 
-        public GameObject Get<T>(GameObject prefab, [CanBeNull] ObjectPoolParams poolParams = null)
+        public GameObject Get(string poolId, GameObject prefab, [CanBeNull] ObjectPoolParams poolParams = null)
         {
-            var type = typeof(T);
-
-            if (!_pools.ContainsKey(type)) {
-                _pools[type] = _objectPoolWrapper.BuildObjectPool(prefab, poolParams);
-            }
-            return _pools[type].Get();
+            if (!_pools.ContainsKey(poolId)) {
+                _pools[poolId] = _objectPoolWrapper.BuildObjectPool(prefab, 
+                    obj=>OnObjectCreated(poolId, obj),
+                    poolParams);
+            } 
+            return _pools[poolId].Get();
         }
 
-        public void Release<T>(GameObject instance)
+        private void OnObjectCreated(string poolId, GameObject obj)
         {
-            var type = typeof(T);
-
-            if (!_pools.ContainsKey(type)) {
-                throw new NullReferenceException($"ObjectPool is null by object type:= {type}");
+            if (!obj.TryGetComponent(out ObjectPoolIdentifier poolIdentifier)) {
+                obj.AddComponent<ObjectPoolIdentifier>().PoolId = poolId;
             }
-            _pools[type].Release(instance);
+        }
+
+        public void Release(GameObject instance)
+        {
+            if (!instance.TryGetComponent(out ObjectPoolIdentifier poolIdentifier)) {
+                throw new NullReferenceException($"Error releasing gameObject to the pool, instance does't contain ObjectPoolIdentifier, gameObject name:= {instance.name}");
+            }
+            var poolId = poolIdentifier.PoolId;
+            if (!_pools.ContainsKey(poolId)) {
+                throw new NullReferenceException($"ObjectPool is null by pool id:= {poolId}");
+            }
+            _pools[poolId].Release(instance);
         }
 
         public void ReleaseAllActive()

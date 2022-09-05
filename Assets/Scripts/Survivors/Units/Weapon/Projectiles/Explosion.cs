@@ -48,14 +48,14 @@ namespace Survivors.Units.Weapon.Projectiles
                     hitCallback?.Invoke(hit.gameObject);
                 }
             }
-        }
+        }     
 
-        public static GameObject Create(IObjectFactory objectFactory, 
-            Explosion prefab, 
-            Vector3 pos,
-            float radius, 
-            UnitType targetType,
-            Action<GameObject> hitCallback)
+        public static GameObject Create(ObjectInstancingFactory objectFactory, 
+                                        Explosion prefab, 
+                                        Vector3 pos,
+                                        float radius, 
+                                        UnitType targetType,
+                                        Action<GameObject> hitCallback)
         {
             var explosion = objectFactory.Create<Explosion>(prefab.gameObject);
             explosion.transform.position = pos;

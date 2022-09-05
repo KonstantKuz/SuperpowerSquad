@@ -16,8 +16,8 @@ namespace Survivors.Units.Weapon
         [SerializeField]
         private Beam _beam;
         
-        [Inject(Id = ObjectFactoryType.Instancing)] 
-        private IObjectFactory _objectFactory;
+        [Inject]
+        private ObjectInstancingFactory _objectFactory;  
 
         public Vector3 BarrelPos { get; private set; }
 

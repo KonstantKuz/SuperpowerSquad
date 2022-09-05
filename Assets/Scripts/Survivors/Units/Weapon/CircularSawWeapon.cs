@@ -23,8 +23,8 @@ namespace Survivors.Units.Weapon
 
         [Inject] private World _world;
         
-        [Inject(Id = ObjectFactoryType.Instancing)] 
-        private IObjectFactory _objectFactory;
+        [Inject]
+        private ObjectInstancingFactory _objectFactory;  
 
         private CircularSawsRoot SawsRoot => _sawsRoot ??= _world.Squad.GetComponentInChildren<CircularSawsRoot>();
         public IReadOnlyList<CircularSaw> OwnedSaws => _ownedSaws;

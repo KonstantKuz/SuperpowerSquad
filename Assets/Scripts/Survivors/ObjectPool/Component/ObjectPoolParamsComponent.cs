@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Survivors.ObjectPool.Component
 {
@@ -17,10 +16,10 @@ namespace Survivors.ObjectPool.Component
         [SerializeField]
         private bool _preparePoolOnInitScene;
         [SerializeField]
-        private MonoBehaviour _poolType;
+        private string _poolId;
         
         public bool PreparePoolOnInitScene => _preparePoolOnInitScene;
-        public Type PoolType => _poolType.GetType();
+        public string PoolId => _poolId;
         
         public ObjectPoolParams GetPoolParams()
         {

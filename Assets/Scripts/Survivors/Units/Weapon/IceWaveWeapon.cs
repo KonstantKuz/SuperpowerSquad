@@ -15,8 +15,8 @@ namespace Survivors.Units.Weapon
     {
         [SerializeField] private IceWave _iceWave;
         
-        [Inject(Id = ObjectFactoryType.Instancing)] 
-        private IObjectFactory _objectFactory;
+        [Inject]
+        private ObjectInstancingFactory _objectFactory;  
         
         public void Fire(Transform parent, UnitType targetType, IProjectileParams projectileParams,
             Action<GameObject> hitCallback)
