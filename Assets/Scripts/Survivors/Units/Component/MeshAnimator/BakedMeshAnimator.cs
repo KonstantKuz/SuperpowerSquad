@@ -24,8 +24,7 @@ namespace Survivors.Units.Component.MeshAnimator
 
         private Dictionary<string, List<TransitionState>> _transactions;
         private Dictionary<string, List<TransitionState>> Transactions =>
-                _transactions ??= _animationTransitions.GroupBy(it => it.FromAnimation)
-                                                       .ToDictionary(it => it.Key, it => it.ToList());
+                _transactions ??= _animationTransitions.GroupBy(it => it.FromAnimation).ToDictionary(it => it.Key, it => it.ToList());
 
         private void Awake()
         {
@@ -51,16 +50,16 @@ namespace Survivors.Units.Component.MeshAnimator
             if (!Transactions.ContainsKey(animationName)) {
                 return;
             }
-            var nextAnimationState = FindTransaction(Transactions[animationName]);
+            var nextAnimationState = FindTransaction(animationName);
             if (nextAnimationState != null) {
                 Play(nextAnimationState.Value.ToAnimation);
             }
         }
 
         [CanBeNull]
-        private TransitionState? FindTransaction(List<TransitionState> transitions)
+        private TransitionState? FindTransaction(string animationName)
         {
-            foreach (var transitionState in transitions) {
+            foreach (var transitionState in Transactions[animationName]) {
                 if (CanMoveToState(transitionState)) {
                     return transitionState;
                 }
@@ -73,12 +72,16 @@ namespace Survivors.Units.Component.MeshAnimator
             if (nextAnimationState.BoolConditions == null || nextAnimationState.BoolConditions.IsEmpty()) {
                 return true;
             }
-            return nextAnimationState.BoolConditions.All(condition => {
-                if (!_boolConditions.ContainsKey(condition.Key)) {
-                    return false;
-                }
-                return _boolConditions[condition.Key] == condition.Value;
-            });
+            return nextAnimationState.BoolConditions
+                                     .All(condition => IsRightCondition(condition.Key, condition.Value));
+        }
+
+        private bool IsRightCondition(string conditionName, bool conditionValue)
+        {
+            if (!_boolConditions.ContainsKey(conditionName)) {
+                return false;
+            }
+            return _boolConditions[conditionName] == conditionValue;
         }
 
         private void OnDestroy()
