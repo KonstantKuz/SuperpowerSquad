@@ -20,7 +20,7 @@ namespace Survivors.Units.Enemy
         private IProjectileParams _projectileParams;
         private WeaponTimer _weaponTimer;
         
-        private EnemyAnimationWrapper _enemyAnimationWrapper;
+        private EnemyAnimationWrapper enemyAnimationWrapper;
         [CanBeNull]
         private WeaponAnimationHandler _weaponAnimationHandler;
 
@@ -41,7 +41,7 @@ namespace Survivors.Units.Enemy
         {
             _enemyAi = gameObject.RequireComponent<EnemyAi>();
             _weapon = gameObject.RequireComponentInChildren<BaseWeapon>();
-            _enemyAnimationWrapper = gameObject.RequireComponentInChildren<EnemyAnimationWrapper>();
+            enemyAnimationWrapper = gameObject.RequireComponentInChildren<EnemyAnimationWrapper>();
             _weaponAnimationHandler = gameObject.GetComponentInChildren<WeaponAnimationHandler>();
         }
 
@@ -61,7 +61,7 @@ namespace Survivors.Units.Enemy
             if (!CanAttack()) {
                 return;
             }
-            _enemyAnimationWrapper.PlayAttack();
+            enemyAnimationWrapper.PlayAttack();
             if (!HasWeaponAnimationHandler) {
                 Fire();
             }

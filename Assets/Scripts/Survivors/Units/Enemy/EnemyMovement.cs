@@ -12,7 +12,7 @@ namespace Survivors.Units.Enemy
 
         private ITarget _selfTarget;
         private NavMeshAgent _agent;
-        private EnemyAnimationWrapper _enemyAnimationWrapper;
+        private EnemyAnimationWrapper enemyAnimationWrapper;
 
         private bool IsAgentValid => _agent.enabled && _agent.isOnNavMesh;
         public NavMeshAgent Agent => _agent;
@@ -27,7 +27,7 @@ namespace Survivors.Units.Enemy
         {
             _selfTarget = gameObject.RequireComponent<ITarget>();
             _agent = gameObject.RequireComponent<NavMeshAgent>();
-            _enemyAnimationWrapper = gameObject.RequireComponentInChildren<EnemyAnimationWrapper>();
+            enemyAnimationWrapper = gameObject.RequireComponentInChildren<EnemyAnimationWrapper>();
         }
 
         public void MoveTo(Vector3 destination)
@@ -66,9 +66,9 @@ namespace Survivors.Units.Enemy
         public void UpdateAnimation()
         {
             if (IsStopped) {
-                _enemyAnimationWrapper.PlayIdle();
+                enemyAnimationWrapper.PlayIdle();
             } else {
-                _enemyAnimationWrapper.PlayMoveForward();
+                enemyAnimationWrapper.PlayMoveForward();
             }
         }
     }

@@ -12,6 +12,8 @@ GameObject:
   - component: {fileID: 3074732272467052243}
   - component: {fileID: 9002511794751224752}
   - component: {fileID: 6561943256171398064}
+  - component: {fileID: 2501068261110644981}
+  - component: {fileID: 5021164960853321504}
   m_Layer: 0
   m_Name: BakedShooterEnemyyBody
   m_TagString: Untagged
@@ -58,7 +60,7 @@ MonoBehaviour:
   updateWhenOffscreen: 0
   playAutomatically: 1
   resetOnEnable: 1
-  eventReciever: {fileID: 0}
+  eventReciever: {fileID: 8957765788051211613}
   FPS: 30
   skipLastLoopFrame: 0
   currentFrame: 0
@@ -68,7 +70,7 @@ MonoBehaviour:
   meshFilter: {fileID: 3074732272467052243}
   meshRenderer: {fileID: 0}
   currentAnimation: {fileID: 0}
-  defaultMeshAnimation: {fileID: 11400000, guid: 8794ef8bd11bb2e47b4f8449868b36fa, type: 2}
+  defaultMeshAnimation: {fileID: 11400000, guid: 9b7128cd548263c438b35230330df743, type: 2}
   meshAnimations:
   - {fileID: 11400000, guid: 8794ef8bd11bb2e47b4f8449868b36fa, type: 2}
   - {fileID: 11400000, guid: eba4f537c088823429eb11203fe1fd81, type: 2}
@@ -2014,3 +2016,56 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &2501068261110644981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8957765788051211613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46bc9d1bb026472dbc0a254a9b7f3d7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 5021164960853321504}
+--- !u!114 &5021164960853321504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8957765788051211613}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb24284c3ca34307aaa1d066276a7c22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _meshAnimator: {fileID: 9002511794751224752}
+  _crossFade: 1
+  _crossFadeSpeed: 0.1
+  _animationTransitions:
+  - _fromAnimation: attack
+    _toAnimation: idle
+    _boolConditions:
+      _map:
+      - _key: isMotion
+        _value: 0
+  - _fromAnimation: attack
+    _toAnimation: motion
+    _boolConditions:
+      _map:
+      - _key: isMotion
+        _value: 1
+  - _fromAnimation: idle
+    _toAnimation: motion
+    _boolConditions:
+      _map:
+      - _key: isMotion
+        _value: 1
+  - _fromAnimation: motion
+    _toAnimation: idle
+    _boolConditions:
+      _map:
+      - _key: isMotion
+        _value: 0
