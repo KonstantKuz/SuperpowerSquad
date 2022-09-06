@@ -16,7 +16,7 @@ MonoBehaviour:
   playbackSpeed: 0.1
   wrapMode: 2
   events: []
-  length: 0.07666667
+  length: 0.05
   frameSkip: 1
   rootMotionMode: 0
   exposedTransforms: []

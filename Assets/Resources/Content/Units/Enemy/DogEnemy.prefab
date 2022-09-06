@@ -509,9 +509,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 747646084131890978}
     m_Modifications:
+    - target: {fileID: 217796296518529630, guid: 7b03fefc5c7553544b14e643513692ee, type: 3}
+      propertyPath: meshAnimations.Array.data[1]
+      value: 
+      objectReference: {fileID: 11400000, guid: ad62c837c73bd5e40b38d5b2ffdf6645, type: 2}
     - target: {fileID: 1015031145540000991, guid: 7b03fefc5c7553544b14e643513692ee, type: 3}
       propertyPath: m_Name
       value: BakedDogEnemyBody
+      objectReference: {fileID: 0}
+    - target: {fileID: 3084502024874065061, guid: 7b03fefc5c7553544b14e643513692ee, type: 3}
+      propertyPath: _crossFade
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7161278110086071300, guid: 7b03fefc5c7553544b14e643513692ee, type: 3}
       propertyPath: m_RootOrder
