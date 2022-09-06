@@ -44,7 +44,14 @@ namespace Survivors.Units.Enemy
             var lookRotation = Quaternion.LookRotation(lookDirection);
             _agent.transform.rotation = lookRotation;
         }
-  
+        public void UpdateAnimation()
+        {
+            if (IsStopped) {
+                enemyAnimationWrapper.PlayIdle();
+            } else {
+                enemyAnimationWrapper.PlayMoveForward();
+            }
+        }
         private void SetIsStopped(bool isStopped)
         {
             if (!IsAgentValid) {
@@ -63,13 +70,6 @@ namespace Survivors.Units.Enemy
             }
             _agent.destination = destination;
         }
-        public void UpdateAnimation()
-        {
-            if (IsStopped) {
-                enemyAnimationWrapper.PlayIdle();
-            } else {
-                enemyAnimationWrapper.PlayMoveForward();
-            }
-        }
+
     }
 }
