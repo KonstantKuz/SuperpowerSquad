@@ -22,10 +22,10 @@ namespace Survivors.Units.Component.MeshAnimator
 
         private readonly Dictionary<string, bool> _boolConditions = new SerializableDictionary<string, bool>();
 
-        private Dictionary<string, List<AnimationTransition>> _transactions;
-        private Dictionary<string, List<AnimationTransition>> Transactions =>
-                _transactions ??= _animationTransitions.GroupBy(it => it.FromAnimation)
-                                                       .ToDictionary(it => it.Key, it => it.ToList());
+        private Dictionary<string, List<AnimationTransition>> _transitionsMap;
+        private Dictionary<string, List<AnimationTransition>> TransitionsMap =>
+                _transitionsMap ??= _animationTransitions.GroupBy(it => it.FromAnimation)
+                                                         .ToDictionary(it => it.Key, it => it.ToList());
 
         private void Awake()
         {
@@ -48,19 +48,19 @@ namespace Survivors.Units.Component.MeshAnimator
 
         private void OnAnimationFinished(string animationName)
         {
-            var nextAnimationState = FindTransaction(animationName);
-            if (nextAnimationState != null) {
-                Play(nextAnimationState.Value.ToAnimation);
+            var transition = FindTransition(animationName);
+            if (transition != null) {
+                Play(transition.Value.ToAnimation);
             }
         }
 
         [CanBeNull]
-        private AnimationTransition? FindTransaction(string animationName)
+        private AnimationTransition? FindTransition(string animationName)
         {
-            if (!Transactions.ContainsKey(animationName)) {
+            if (!TransitionsMap.ContainsKey(animationName)) {
                 return null;
             }
-            foreach (var transition in Transactions[animationName]) {
+            foreach (var transition in TransitionsMap[animationName]) {
                 if (IsTransitionActive(transition)) {
                     return transition;
                 }
