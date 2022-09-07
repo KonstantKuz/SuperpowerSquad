@@ -14,15 +14,13 @@ namespace Survivors.Units.Enemy
     [RequireComponent(typeof(EnemyAi))]
     public class EnemyAttack : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent
     {
-        private static readonly int AttackHash = Animator.StringToHash("Attack");
-
         private EnemyAi _enemyAi;
         private BaseWeapon _weapon;
         private EnemyAttackModel _attackModel;
         private IProjectileParams _projectileParams;
         private WeaponTimer _weaponTimer;
         
-        private Animator _animator;
+        private EnemyAnimationWrapper enemyAnimationWrapper;
         [CanBeNull]
         private WeaponAnimationHandler _weaponAnimationHandler;
 
@@ -43,7 +41,7 @@ namespace Survivors.Units.Enemy
         {
             _enemyAi = gameObject.RequireComponent<EnemyAi>();
             _weapon = gameObject.RequireComponentInChildren<BaseWeapon>();
-            _animator = gameObject.RequireComponentInChildren<Animator>();
+            enemyAnimationWrapper = gameObject.RequireComponentInChildren<EnemyAnimationWrapper>();
             _weaponAnimationHandler = gameObject.GetComponentInChildren<WeaponAnimationHandler>();
         }
 
@@ -63,7 +61,7 @@ namespace Survivors.Units.Enemy
             if (!CanAttack()) {
                 return;
             }
-            _animator.SetTrigger(AttackHash);
+            enemyAnimationWrapper.PlayAttack();
             if (!HasWeaponAnimationHandler) {
                 Fire();
             }
