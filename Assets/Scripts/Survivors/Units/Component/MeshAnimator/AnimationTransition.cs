@@ -5,7 +5,7 @@ using UnityEngine;
 namespace Survivors.Units.Component.MeshAnimator
 {
     [Serializable]
-    public struct TransitionState
+    public struct AnimationTransition
     {
         [SerializeField]
         private string _fromAnimation;

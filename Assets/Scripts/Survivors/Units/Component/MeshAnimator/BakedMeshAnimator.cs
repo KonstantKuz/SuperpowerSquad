@@ -18,13 +18,14 @@ namespace Survivors.Units.Component.MeshAnimator
         [SerializeField]
         private float _crossFadeSpeed = 0.2f;
         [SerializeField]
-        private List<TransitionState> _animationTransitions = new List<TransitionState>();
+        private List<AnimationTransition> _animationTransitions = new List<AnimationTransition>();
 
         private readonly Dictionary<string, bool> _boolConditions = new SerializableDictionary<string, bool>();
 
-        private Dictionary<string, List<TransitionState>> _transactions;
-        private Dictionary<string, List<TransitionState>> Transactions =>
-                _transactions ??= _animationTransitions.GroupBy(it => it.FromAnimation).ToDictionary(it => it.Key, it => it.ToList());
+        private Dictionary<string, List<AnimationTransition>> _transactions;
+        private Dictionary<string, List<AnimationTransition>> Transactions =>
+                _transactions ??= _animationTransitions.GroupBy(it => it.FromAnimation)
+                                                       .ToDictionary(it => it.Key, it => it.ToList());
 
         private void Awake()
         {
@@ -47,9 +48,6 @@ namespace Survivors.Units.Component.MeshAnimator
 
         private void OnAnimationFinished(string animationName)
         {
-            if (!Transactions.ContainsKey(animationName)) {
-                return;
-            }
             var nextAnimationState = FindTransaction(animationName);
             if (nextAnimationState != null) {
                 Play(nextAnimationState.Value.ToAnimation);
@@ -57,23 +55,26 @@ namespace Survivors.Units.Component.MeshAnimator
         }
 
         [CanBeNull]
-        private TransitionState? FindTransaction(string animationName)
+        private AnimationTransition? FindTransaction(string animationName)
         {
-            foreach (var transitionState in Transactions[animationName]) {
-                if (CanMoveToState(transitionState)) {
-                    return transitionState;
+            if (!Transactions.ContainsKey(animationName)) {
+                return null;
+            }
+            foreach (var transition in Transactions[animationName]) {
+                if (IsTransitionActive(transition)) {
+                    return transition;
                 }
             }
             return null;
         }
 
-        private bool CanMoveToState(TransitionState nextAnimationState)
+        private bool IsTransitionActive(AnimationTransition transition)
         {
-            if (nextAnimationState.BoolConditions == null || nextAnimationState.BoolConditions.IsEmpty()) {
+            if (transition.BoolConditions == null || transition.BoolConditions.IsEmpty()) {
                 return true;
             }
-            return nextAnimationState.BoolConditions
-                                     .All(condition => IsRightCondition(condition.Key, condition.Value));
+            return transition.BoolConditions
+                             .All(condition => IsRightCondition(condition.Key, condition.Value));
         }
 
         private bool IsRightCondition(string conditionName, bool conditionValue)
