@@ -2345,6 +2345,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: BakedShooterEnemyyBody
       objectReference: {fileID: 0}
+    - target: {fileID: 9002511794751224752, guid: 97023f7d75bc01747a5e75d6027d5372, type: 3}
+      propertyPath: resetOnEnable
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 97023f7d75bc01747a5e75d6027d5372, type: 3}
 --- !u!4 &807273643969907366 stripped

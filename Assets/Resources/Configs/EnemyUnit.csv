@@ -1,5 +1,5 @@
 Id,Scale,Health,MoveSpeed,AttackRange,AttackDamage,AttackInterval,DamageRadius,ProjectileSpeed,HealthStep,MultiplicationScaleStepFactor,MultiplicationScaleLimitLevel,IncrementScaleStep
 SimpleEnemy,1,100,3.5,1.25,5,2,,,100,1,1,0
 DogEnemy,1,100,4.5,1.25,5,2,,,100,1,1,0
-GiantEnemy,5,500,2.5,1.25,25,2,,,100,1,1,0
+GiantEnemy,5,500,2.5,3.5,25,2,,,100,1,1,0
 ShooterEnemy,1,200,3.5,10,5,2,1,6.5,100,1,1,0

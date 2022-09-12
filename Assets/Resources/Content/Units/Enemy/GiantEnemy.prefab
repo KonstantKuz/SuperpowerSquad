@@ -190,6 +190,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2381228521922042521}
     - target: {fileID: 138658631883320524, guid: 4bb9ae801c994574495f7eb58ee5b2dc, type: 3}
+      propertyPath: resetOnEnable
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 138658631883320524, guid: 4bb9ae801c994574495f7eb58ee5b2dc, type: 3}
       propertyPath: skipLastLoopFrame
       value: 1
       objectReference: {fileID: 0}
