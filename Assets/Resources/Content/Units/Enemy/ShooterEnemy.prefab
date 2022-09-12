@@ -565,7 +565,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e82e6f051d748b4b639f27452a4ae87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _initialCapacity: 300
+  _initialCapacity: 350
   _detectInitialCapacityShortage: 1
   _maxCapacity: 3000
   _sizeIncrementStep: 1
