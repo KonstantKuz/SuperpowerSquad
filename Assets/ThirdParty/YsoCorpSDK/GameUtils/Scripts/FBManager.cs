@@ -33,10 +33,7 @@ namespace YsoCorp {
                         FB.ActivateApp();
 #if UNITY_IOS
                         //bool status = ATTrackingStatusBinding.GetAuthorizationTrackingStatus() == ATTrackingStatusBinding.AuthorizationTrackingStatus.AUTHORIZED;
-
-                        //TODO: next line causes crash due to some problem with build process on ios
-                        //restore and fix when will need ios support for yso 
-                        //AudienceNetwork.AdSettings.SetAdvertiserTrackingEnabled(true);  <-- 
+                        AudienceNetwork.AdSettings.SetAdvertiserTrackingEnabled(true);
                         FB.Mobile.SetAdvertiserTrackingEnabled(true);
 #endif
                     } else {
