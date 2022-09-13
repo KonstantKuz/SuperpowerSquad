@@ -12,9 +12,6 @@ GameObject:
   - component: {fileID: 9190905414574841856}
   - component: {fileID: 217796296518529630}
   - component: {fileID: 9038734313683358075}
-  - component: {fileID: 4543751460962572241}
-  - component: {fileID: 4586119872883982706}
-  - component: {fileID: 3084502024874065061}
   m_Layer: 0
   m_Name: BakedDogEnemyBody
   m_TagString: Untagged
@@ -29,7 +26,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1015031145540000991}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
@@ -74,7 +71,7 @@ MonoBehaviour:
   defaultMeshAnimation: {fileID: 11400000, guid: ad09fd52dbba960499a01b473a3d5b71, type: 2}
   meshAnimations:
   - {fileID: 11400000, guid: c27fe207a99275543a0cb0047c774d10, type: 2}
-  - {fileID: 11400000, guid: 36dd0d62f2cc962488ee9b6067eac219, type: 2}
+  - {fileID: 11400000, guid: ad62c837c73bd5e40b38d5b2ffdf6645, type: 2}
   - {fileID: 11400000, guid: ad09fd52dbba960499a01b473a3d5b71, type: 2}
   syncCrossfadeMeshCount: 0
   recalculateCrossfadeNormals: 0
@@ -1226,68 +1223,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &4543751460962572241
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1015031145540000991}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46bc9d1bb026472dbc0a254a9b7f3d7d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _animator: {fileID: 3084502024874065061}
---- !u!114 &4586119872883982706
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1015031145540000991}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a403e78fb60a4119895031136f8e7b9f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &3084502024874065061
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1015031145540000991}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb24284c3ca34307aaa1d066276a7c22, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _meshAnimator: {fileID: 217796296518529630}
-  _crossFade: 1
-  _crossFadeSpeed: 0.1
-  _animationTransitions:
-  - _fromAnimation: attack
-    _toAnimation: idle
-    _boolConditions:
-      _map:
-      - _key: isMotion
-        _value: 0
-  - _fromAnimation: attack
-    _toAnimation: motion
-    _boolConditions:
-      _map:
-      - _key: isMotion
-        _value: 1
-  - _fromAnimation: idle
-    _toAnimation: motion
-    _boolConditions:
-      _map:
-      - _key: isMotion
-        _value: 1
-  - _fromAnimation: motion
-    _toAnimation: idle
-    _boolConditions:
-      _map:
-      - _key: isMotion
-        _value: 0

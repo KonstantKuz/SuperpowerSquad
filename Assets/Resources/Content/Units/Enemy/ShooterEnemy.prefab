@@ -505,7 +505,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _colorBlinkDuration: 0.05
   _blinkColor: {r: 0.57602674, g: 0, b: 0.8490566, a: 1}
-  _renderer: {fileID: 9100303851927552752}
+  _renderer: {fileID: 2131161930470126534}
 --- !u!114 &8473987040358760045
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2354,5 +2354,10 @@ PrefabInstance:
 --- !u!4 &807273643969907366 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5600190925780335312, guid: 97023f7d75bc01747a5e75d6027d5372, type: 3}
+  m_PrefabInstance: {fileID: 5081147676227809398}
+  m_PrefabAsset: {fileID: 0}
+--- !u!23 &2131161930470126534 stripped
+MeshRenderer:
+  m_CorrespondingSourceObject: {fileID: 6561943256171398064, guid: 97023f7d75bc01747a5e75d6027d5372, type: 3}
   m_PrefabInstance: {fileID: 5081147676227809398}
   m_PrefabAsset: {fileID: 0}

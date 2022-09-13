@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7212792850055955307
+--- !u!1 &7262932878182143389
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,13 +8,10 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 6754986835790480583}
-  - component: {fileID: 8820111740575292313}
-  - component: {fileID: 138658631883320524}
-  - component: {fileID: 4788100576494287135}
-  - component: {fileID: 7575151747791354773}
-  - component: {fileID: 2607262372173572307}
-  - component: {fileID: 2462715651782644181}
+  - component: {fileID: 533301578106926774}
+  - component: {fileID: 952232827736002352}
+  - component: {fileID: 155579600609767015}
+  - component: {fileID: 4157930728703469054}
   m_Layer: 0
   m_Name: BakedGiantEnemyBody
   m_TagString: Untagged
@@ -22,13 +19,13 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &6754986835790480583
+--- !u!4 &533301578106926774
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7212792850055955307}
+  m_GameObject: {fileID: 7262932878182143389}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
@@ -36,27 +33,27 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &8820111740575292313
+--- !u!33 &952232827736002352
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7212792850055955307}
-  m_Mesh: {fileID: -6430544946706963843, guid: 75b1ec1ff91519a4499e704e1cdbdd27, type: 3}
---- !u!114 &138658631883320524
+  m_GameObject: {fileID: 7262932878182143389}
+  m_Mesh: {fileID: -6430544946706963843, guid: 27e69d38cbdea344993b8a33d6a089e0, type: 3}
+--- !u!114 &155579600609767015
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7212792850055955307}
+  m_GameObject: {fileID: 7262932878182143389}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 26f48aa2d31090947a96e7b95bee577c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseMesh: {fileID: -6430544946706963843, guid: 75b1ec1ff91519a4499e704e1cdbdd27, type: 3}
+  baseMesh: {fileID: -6430544946706963843, guid: 27e69d38cbdea344993b8a33d6a089e0, type: 3}
   speed: 1
   updateWhenOffscreen: 0
   playAutomatically: 1
@@ -68,15 +65,14 @@ MonoBehaviour:
   LODCamera: {fileID: 0}
   LODLevels: []
   nextTick: 0
-  meshFilter: {fileID: 8820111740575292313}
+  meshFilter: {fileID: 952232827736002352}
   meshRenderer: {fileID: 0}
   currentAnimation: {fileID: 0}
-  defaultMeshAnimation: {fileID: 11400000, guid: 2d1274f6b39ec864894cf5ebc5d494e7, type: 2}
+  defaultMeshAnimation: {fileID: 11400000, guid: 6b26c89bf653aca48a45ca62a66b7c19, type: 2}
   meshAnimations:
-  - {fileID: 11400000, guid: 2d1274f6b39ec864894cf5ebc5d494e7, type: 2}
-  - {fileID: 11400000, guid: 52f60b3d78094584499ef862f32da828, type: 2}
-  - {fileID: 11400000, guid: 10443d67ae747cc4c8425f6e4eb0ada7, type: 2}
-  - {fileID: 11400000, guid: c38317b188ad37c4997e62a8d36d034d, type: 2}
+  - {fileID: 11400000, guid: 066f3603ba064fa4f9d1f93805a917aa, type: 2}
+  - {fileID: 11400000, guid: f43d3f283b984f046988c61dc8dd7f89, type: 2}
+  - {fileID: 11400000, guid: 6b26c89bf653aca48a45ca62a66b7c19, type: 2}
   syncCrossfadeMeshCount: 0
   recalculateCrossfadeNormals: 0
   meshTriangleData: []
@@ -1186,13 +1182,13 @@ MonoBehaviour:
   uv2Data: []
   uv3Data: []
   uv4Data: []
---- !u!23 &4788100576494287135
+--- !u!23 &4157930728703469054
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7212792850055955307}
+  m_GameObject: {fileID: 7262932878182143389}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -1227,68 +1223,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &7575151747791354773
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7212792850055955307}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a403e78fb60a4119895031136f8e7b9f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2607262372173572307
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7212792850055955307}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 46bc9d1bb026472dbc0a254a9b7f3d7d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _animator: {fileID: 2462715651782644181}
---- !u!114 &2462715651782644181
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7212792850055955307}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb24284c3ca34307aaa1d066276a7c22, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _meshAnimator: {fileID: 138658631883320524}
-  _crossFade: 1
-  _crossFadeSpeed: 0.2
-  _animationTransitions:
-  - _fromAnimation: attack
-    _toAnimation: idle
-    _boolConditions:
-      _map:
-      - _key: isMotion
-        _value: 0
-  - _fromAnimation: attack
-    _toAnimation: motion
-    _boolConditions:
-      _map:
-      - _key: isMotion
-        _value: 1
-  - _fromAnimation: idle
-    _toAnimation: motion
-    _boolConditions:
-      _map:
-      - _key: isMotion
-        _value: 1
-  - _fromAnimation: motion
-    _toAnimation: idle
-    _boolConditions:
-      _map:
-      - _key: isMotion
-        _value: 0
