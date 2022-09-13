@@ -293,7 +293,7 @@ Transform:
   m_Children:
   - {fileID: 7807515448616251854}
   - {fileID: 6242287137116633110}
-  - {fileID: 807273643969907366}
+  - {fileID: 1981489937268175795}
   - {fileID: 1228820858336296983}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -1443,6 +1443,105 @@ Transform:
   m_Father: {fileID: 5955289854062103167}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &5551609650401508011
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1981489937268175795}
+  - component: {fileID: 7728612885304387865}
+  - component: {fileID: 5034589527404309347}
+  - component: {fileID: 6129543188726227799}
+  m_Layer: 0
+  m_Name: BakedRoot
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1981489937268175795
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5551609650401508011}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children:
+  - {fileID: 807273643969907366}
+  m_Father: {fileID: 3102595488552592063}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7728612885304387865
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5551609650401508011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a403e78fb60a4119895031136f8e7b9f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &5034589527404309347
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5551609650401508011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 46bc9d1bb026472dbc0a254a9b7f3d7d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _animator: {fileID: 6129543188726227799}
+--- !u!114 &6129543188726227799
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5551609650401508011}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb24284c3ca34307aaa1d066276a7c22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _meshAnimator: {fileID: 4209885043326520262}
+  _crossFade: 0
+  _crossFadeSpeed: 0.1
+  _animationTransitions:
+  - _fromAnimation: attack
+    _toAnimation: idle
+    _boolConditions:
+      _map:
+      - _key: isMotion
+        _value: 0
+  - _fromAnimation: attack
+    _toAnimation: motion
+    _boolConditions:
+      _map:
+      - _key: isMotion
+        _value: 1
+  - _fromAnimation: idle
+    _toAnimation: motion
+    _boolConditions:
+      _map:
+      - _key: isMotion
+        _value: 1
+  - _fromAnimation: motion
+    _toAnimation: idle
+    _boolConditions:
+      _map:
+      - _key: isMotion
+        _value: 0
 --- !u!1 &5676534331328764001
 GameObject:
   m_ObjectHideFlags: 0
@@ -2291,15 +2390,11 @@ PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Modification:
-    m_TransformParent: {fileID: 3102595488552592063}
+    m_TransformParent: {fileID: 1981489937268175795}
     m_Modifications:
-    - target: {fileID: 5021164960853321504, guid: 97023f7d75bc01747a5e75d6027d5372, type: 3}
-      propertyPath: _crossFade
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5600190925780335312, guid: 97023f7d75bc01747a5e75d6027d5372, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5600190925780335312, guid: 97023f7d75bc01747a5e75d6027d5372, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2319,15 +2414,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5600190925780335312, guid: 97023f7d75bc01747a5e75d6027d5372, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5600190925780335312, guid: 97023f7d75bc01747a5e75d6027d5372, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5600190925780335312, guid: 97023f7d75bc01747a5e75d6027d5372, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 5600190925780335312, guid: 97023f7d75bc01747a5e75d6027d5372, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -2346,9 +2441,9 @@ PrefabInstance:
       value: BakedShooterEnemyyBody
       objectReference: {fileID: 0}
     - target: {fileID: 9002511794751224752, guid: 97023f7d75bc01747a5e75d6027d5372, type: 3}
-      propertyPath: resetOnEnable
-      value: 0
-      objectReference: {fileID: 0}
+      propertyPath: eventReciever
+      value: 
+      objectReference: {fileID: 5551609650401508011}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 97023f7d75bc01747a5e75d6027d5372, type: 3}
 --- !u!4 &807273643969907366 stripped
@@ -2356,6 +2451,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5600190925780335312, guid: 97023f7d75bc01747a5e75d6027d5372, type: 3}
   m_PrefabInstance: {fileID: 5081147676227809398}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4209885043326520262 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9002511794751224752, guid: 97023f7d75bc01747a5e75d6027d5372, type: 3}
+  m_PrefabInstance: {fileID: 5081147676227809398}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26f48aa2d31090947a96e7b95bee577c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!23 &2131161930470126534 stripped
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 6561943256171398064, guid: 97023f7d75bc01747a5e75d6027d5372, type: 3}
