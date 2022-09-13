@@ -36,7 +36,7 @@ namespace Survivors.Loot.Service
             var emitterConfig = _lootEmitters.Values.FirstOrDefault(it => it.EmitterId == unit.Model.Id);
             if (emitterConfig == null)
             {
-                this.Logger().Warn($"There is no loot config for enemy with id {unit.Model.Id}.");
+                this.Logger().Trace($"There is no loot config for enemy with id {unit.Model.Id}.");
                 return;
             }
 
