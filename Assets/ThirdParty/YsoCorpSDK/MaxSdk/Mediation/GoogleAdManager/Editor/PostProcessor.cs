@@ -20,9 +20,6 @@ namespace AppLovinMax.Mediation.GoogleAdManager.Editor
         [PostProcessBuild]
         public static void OnPostProcessBuild(BuildTarget buildTarget, string buildPath)
         {
-#if UNITY_IOS
-            return; //TODO: restore if we'll need ios support
-#endif            
             var plistPath = Path.Combine(buildPath, "Info.plist");
             var plist = new PlistDocument();
             plist.ReadFromFile(plistPath);
