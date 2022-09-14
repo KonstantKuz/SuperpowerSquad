@@ -1,4 +1,5 @@
-﻿using Feofun.Components;
+﻿using System;
+using Feofun.Components;
 using JetBrains.Annotations;
 using Logger.Extension;
 using Survivors.Extension;
@@ -86,10 +87,18 @@ namespace Survivors.Units.Enemy
 
         private void Dispose()
         {
-            _weaponTimer.OnAttackReady -= Attack;
+            if (_weaponTimer != null) {
+                _weaponTimer.OnAttackReady -= Attack;
+                _weaponTimer = null;
+            }
             if(HasWeaponAnimationHandler) {
                 _weaponAnimationHandler.OnFireEvent -= Fire;
             }
+        }
+
+        private void OnDisable()
+        {
+            Dispose();
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using DG.Tweening;
 using Survivors.Location.Model;
 using Survivors.WorldEvents.Events.Tornado.Config;
@@ -18,8 +17,6 @@ namespace Survivors.WorldEvents.Events.Tornado
         
         private Coroutine _directionCoroutine;
 
-        public event Action OnReleaseAll;
-        
         public void Init(TornadoEventConfig config)
         {
             Dispose();
@@ -37,7 +34,7 @@ namespace Survivors.WorldEvents.Events.Tornado
         {
             var swirler = other.GetComponentInParent<SwirlController>();
             if (swirler != null) {
-                swirler.AttachToTornado(this);
+                swirler.AttachToTornado(gameObject);
             }
         }
         private IEnumerator ChangeDirectionPeriodically()
@@ -80,17 +77,11 @@ namespace Survivors.WorldEvents.Events.Tornado
 
         private void Dispose()
         {
-            OnReleaseAll?.Invoke();
             DisposeTween();
             DisposeCoroutine();
         }
         
         private void OnDisable()
-        {
-            Dispose();
-        }
-
-        private void OnDestroy()
         {
             Dispose();
         }

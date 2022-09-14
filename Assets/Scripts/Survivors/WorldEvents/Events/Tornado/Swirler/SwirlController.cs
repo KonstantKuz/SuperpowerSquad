@@ -22,7 +22,8 @@ namespace Survivors.WorldEvents.Events.Tornado.Swirler
         
         private IMovementLockable _owner;
         
-        private Tornado _tornado;
+        private GameObject _tornado;
+        private IDisposable _disposable;
         private Coroutine _timeoutCoroutine;
         
         private float _passedTime;
@@ -36,7 +37,7 @@ namespace Survivors.WorldEvents.Events.Tornado.Swirler
             _owner = gameObject.RequireComponentInParent<IMovementLockable>();
         }
         
-        public void AttachToTornado(Tornado tornado)
+        public void AttachToTornado(GameObject tornado)
         {
             if (!CanAttach) {
                 return;
@@ -48,7 +49,7 @@ namespace Survivors.WorldEvents.Events.Tornado.Swirler
             _timeoutCompleted = false;
             
             _tornado = tornado;
-            _tornado.OnReleaseAll += ReleaseFromTornado;
+            _disposable = _tornado.OnDestroyAsObservable().Subscribe(it => ReleaseFromTornado());
         }
         
         private void ReleaseFromTornado()
@@ -107,13 +108,12 @@ namespace Survivors.WorldEvents.Events.Tornado.Swirler
         
         private void Dispose()
         {
-            if (IsAttached) {
-                _tornado.OnReleaseAll -= ReleaseFromTornado;
-                _tornado = null;
-            }
-            
+            _tornado = null;
             _passedTime = 0;
 
+            _disposable?.Dispose();
+            _disposable = null;
+            
             if (_timeoutCoroutine == null) {
                 return;
             }
