@@ -15,7 +15,7 @@ namespace Editor.Scripts.PostProcess
         private const string PODFILE_NAME = "Podfile";
 
         private const string GOOGLE_UTILITIES_POD_NAME = "  pod 'GoogleUtilities', '~> 7.7.0'";
-        private const string GOOGLE_MOBILE_ADS_SDK_POD_NAME = "  pod 'Google-Mobile-Ads-SDK', '~> 9.9.0'";
+        private const string GOOGLE_MOBILE_ADS_SDK_POD_NAME = "  pod 'Google-Mobile-Ads-SDK', '~> 9.8.0'";
 
         [PostProcessBuild(BUILD_ORDER_CHANGE_PODFILE)]
         public static void OnPostprocessBuild(BuildTarget target, string pathToBuiltProject)
