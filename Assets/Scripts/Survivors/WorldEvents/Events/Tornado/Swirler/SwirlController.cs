@@ -22,39 +22,46 @@ namespace Survivors.WorldEvents.Events.Tornado.Swirler
         
         private IMovementLockable _owner;
         
-        private GameObject _tornado;
-        private IDisposable _disposable; 
+        private Tornado _tornado;
         private Coroutine _timeoutCoroutine;
         
         private float _passedTime;
 
         private bool _timeoutCompleted = true;
         private bool IsAttached => _tornado != null;
+        private bool CanAttach => !IsAttached && _timeoutCompleted;
 
         private void Awake()
         {
             _owner = gameObject.RequireComponentInParent<IMovementLockable>();
         }
-        public void AttachToTornado(GameObject tornado)
+        
+        public void AttachToTornado(Tornado tornado)
         {
-            if (IsAttached || !_timeoutCompleted) {
+            if (!CanAttach) {
                 return;
             }
+            
             Dispose();
-            _tornado = tornado;
-            _disposable = _tornado.OnDestroyAsObservable().Subscribe((o) => ReleaseFromTornado());
+            
             _owner.Lock();
             _timeoutCompleted = false;
+            
+            _tornado = tornado;
+            _tornado.OnReleaseAll += ReleaseFromTornado;
         }
         
         private void ReleaseFromTornado()
         {
-            if (!IsAttached) {
-                return;
-            }
+            UnlockOwner();
             Dispose();
-            _owner.UnLock();
             _timeoutCoroutine = StartCoroutine(StartTimeoutAfterRelease());
+        }
+        
+        private void UnlockOwner()
+        {
+            if (!IsAttached) return;
+            _owner.UnLock();
         }
         
         private IEnumerator StartTimeoutAfterRelease()
@@ -89,6 +96,7 @@ namespace Survivors.WorldEvents.Events.Tornado.Swirler
 
         private void OnDisable()
         {
+            UnlockOwner();
             Dispose();
         }
 
@@ -96,20 +104,23 @@ namespace Survivors.WorldEvents.Events.Tornado.Swirler
         {
             Dispose();
         }
+        
         private void Dispose()
         {
-            _tornado = null;
+            if (IsAttached) {
+                _tornado.OnReleaseAll -= ReleaseFromTornado;
+                _tornado = null;
+            }
+            
             _passedTime = 0;
-            
-            _disposable?.Dispose();
-            _disposable = null;
-            
+
             if (_timeoutCoroutine == null) {
                 return;
             }
+            
+            _timeoutCompleted = true;
             StopCoroutine(_timeoutCoroutine);
             _timeoutCoroutine = null;
         }
     }
-    
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using DG.Tweening;
 using Survivors.Location.Model;
 using Survivors.WorldEvents.Events.Tornado.Config;
@@ -16,6 +17,8 @@ namespace Survivors.WorldEvents.Events.Tornado
         private Tween _disappearTween;
         
         private Coroutine _directionCoroutine;
+
+        public event Action OnReleaseAll;
         
         public void Init(TornadoEventConfig config)
         {
@@ -34,7 +37,7 @@ namespace Survivors.WorldEvents.Events.Tornado
         {
             var swirler = other.GetComponentInParent<SwirlController>();
             if (swirler != null) {
-                swirler.AttachToTornado(gameObject);
+                swirler.AttachToTornado(this);
             }
         }
         private IEnumerator ChangeDirectionPeriodically()
@@ -60,7 +63,6 @@ namespace Survivors.WorldEvents.Events.Tornado
                 Destroy(gameObject);
                 _disappearTween = null;
             };
-            
         }
         private void DisposeCoroutine()
         {
@@ -78,11 +80,17 @@ namespace Survivors.WorldEvents.Events.Tornado
 
         private void Dispose()
         {
+            OnReleaseAll?.Invoke();
             DisposeTween();
             DisposeCoroutine();
         }
         
         private void OnDisable()
+        {
+            Dispose();
+        }
+
+        private void OnDestroy()
         {
             Dispose();
         }
