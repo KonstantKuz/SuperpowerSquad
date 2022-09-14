@@ -28,6 +28,8 @@ namespace Survivors.Units.Enemy
         
         public void Init(IUnit unit)
         {
+            Dispose();
+            
             _attackModel = (EnemyAttackModel) unit.Model.AttackModel;
             _projectileParams = _attackModel.CreateProjectileParams();
             _weaponTimer = new WeaponTimer(_attackModel.AttackInterval);
@@ -80,6 +82,14 @@ namespace Survivors.Units.Enemy
             var damageable = target.RequireComponent<IDamageable>();
             damageable.TakeDamage(_attackModel.AttackDamage);
             this.Logger().Trace($"Damage applied, target:= {target.name}");
+        }
+
+        private void Dispose()
+        {
+            _weaponTimer.OnAttackReady -= Attack;
+            if(HasWeaponAnimationHandler) {
+                _weaponAnimationHandler.OnFireEvent -= Fire;
+            }
         }
     }
 }
