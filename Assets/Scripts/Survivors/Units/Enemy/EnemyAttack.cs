@@ -1,4 +1,5 @@
-﻿using Feofun.Components;
+﻿using System;
+using Feofun.Components;
 using JetBrains.Annotations;
 using Logger.Extension;
 using Survivors.Extension;
@@ -28,6 +29,8 @@ namespace Survivors.Units.Enemy
         
         public void Init(IUnit unit)
         {
+            Dispose();
+            
             _attackModel = (EnemyAttackModel) unit.Model.AttackModel;
             _projectileParams = _attackModel.CreateProjectileParams();
             _weaponTimer = new WeaponTimer(_attackModel.AttackInterval);
@@ -80,6 +83,22 @@ namespace Survivors.Units.Enemy
             var damageable = target.RequireComponent<IDamageable>();
             damageable.TakeDamage(_attackModel.AttackDamage);
             this.Logger().Trace($"Damage applied, target:= {target.name}");
+        }
+
+        private void Dispose()
+        {
+            if (_weaponTimer != null) {
+                _weaponTimer.OnAttackReady -= Attack;
+                _weaponTimer = null;
+            }
+            if(HasWeaponAnimationHandler) {
+                _weaponAnimationHandler.OnFireEvent -= Fire;
+            }
+        }
+
+        private void OnDisable()
+        {
+            Dispose();
         }
     }
 }
