@@ -45,7 +45,6 @@ namespace Editor.Scripts.PostProcess
         private static void FixLibrarySearchPath(PBXProject project)
         {
             var target = project.GetUnityMainTargetGuid();
-            project.SetBuildProperty(target, "OTHER_LDFLAGS", "$(inherited)");
             project.AddBuildProperty(target, "LIBRARY_SEARCH_PATHS", "$(inherited)");
         }
     }
