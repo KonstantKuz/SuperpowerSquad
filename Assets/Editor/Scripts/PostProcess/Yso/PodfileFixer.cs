@@ -10,7 +10,7 @@ namespace Editor.Scripts.PostProcess
 {
     public class PodfileFixer
     {
-        private const int BUILD_ORDER_CHANGE_PODFILE = 45;      //after podfile generation in external dependency manager
+        private const int BUILD_ORDER_CHANGE_PODFILE = 46;      //after podfile generation in external dependency manager which hase order 45
 
         private const string PODFILE_NAME = "Podfile";
 
