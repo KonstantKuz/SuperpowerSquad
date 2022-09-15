@@ -46,6 +46,7 @@ namespace Survivors.Squad
         
         public bool IsActive { get; set; }
         public SquadModel Model { get; private set; }
+        public Health Health { get; private set; }
         public SquadDestination Destination { get; private set; }
         public SquadTargetProvider TargetProvider { get; private set; }
         public WeaponTimerManager WeaponTimerManager { get; private set; }
@@ -69,6 +70,7 @@ namespace Survivors.Squad
         public void Awake()
         {
             _formation = new FilledCircleFormation();
+            Health = gameObject.RequireComponent<Health>();
             Destination = gameObject.RequireComponentInChildren<SquadDestination>();
             TargetProvider = gameObject.RequireComponent<SquadTargetProvider>();   
             WeaponTimerManager = gameObject.RequireComponent<WeaponTimerManager>();
@@ -237,8 +239,12 @@ namespace Survivors.Squad
 
         public void RestoreHealth()
         {
-            GetComponent<Health>().Restore();
+            Health.Restore();
         }
 
+        public void AddHealthPercent(int percentFromMax)
+        {
+            Health.Add(Health.MaxValue.Value * percentFromMax / 100);
+        }
     }
 }
