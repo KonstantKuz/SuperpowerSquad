@@ -1,9 +1,9 @@
 EmitterId,LootId,Amount,DropChance
 SimpleEnemy,SmallExp,1,1
-,SmallHealth,50,0
+,SmallHealth,50,0.01
 DogEnemy,SmallExp,1,1
-,SmallHealth,50,0
-GiantEnemy,SmallExp,1,1
-,SmallHealth,50,0
+,SmallHealth,50,0.01
+GiantEnemy,SmallExp,3,1
+,SmallHealth,50,0.01
 ShooterEnemy,SmallExp,1,1
-,SmallHealth,50,0.1
+,SmallHealth,50,0.01

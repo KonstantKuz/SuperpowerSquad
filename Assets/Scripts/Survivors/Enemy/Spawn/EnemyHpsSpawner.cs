@@ -16,7 +16,7 @@ using Random = UnityEngine.Random;
 
 namespace Survivors.Enemy.Spawn
 {
-    public class EnemyHpsSpawner : MonoBehaviour
+    public class EnemyHpsSpawner : MonoBehaviour, IEnemySpawner
     {
         private Coroutine _spawnCoroutine;
         
