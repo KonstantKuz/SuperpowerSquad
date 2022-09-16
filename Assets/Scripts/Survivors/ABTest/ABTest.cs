@@ -2,6 +2,7 @@
 using JetBrains.Annotations;
 using Logger.Extension;
 using Survivors.ABTest.Providers;
+using Survivors.App.Config;
 using Zenject;
 
 namespace Survivors.ABTest
@@ -11,6 +12,10 @@ namespace Survivors.ABTest
     {
         [Inject]
         private IABTestProvider _abTestProvider;
+        [Inject]
+        private ConstantsConfig _constantsConfig;
+
+        public bool IsEnabled => _constantsConfig.AbTestEnabled;
         
         private string _variantId;
         public string CurrentVariantId
