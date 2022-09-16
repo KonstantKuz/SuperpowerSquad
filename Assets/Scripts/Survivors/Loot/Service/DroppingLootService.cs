@@ -34,7 +34,7 @@ namespace Survivors.Loot.Service
         {
             if (deathCause != DeathCause.Killed) return;
             
-            var possibleLoot = _lootConfig.GetPossibleLootsFor(unit.Model.Id);
+            var possibleLoot = _lootConfig.FindPossibleLootsFor(unit.Model.Id);
             if (possibleLoot == null)
             {
                 this.Logger().Trace($"There is no loot config for enemy with id {unit.Model.Id}.");

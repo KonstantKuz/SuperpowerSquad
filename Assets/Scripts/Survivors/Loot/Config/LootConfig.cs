@@ -15,7 +15,7 @@ namespace Survivors.Loot.Config
             DroppingLootMap = new CsvSerializer().ReadNestedTable<DroppingLootConfig>(stream).ToDictionary(it => it.Key, it => it.Value);
         }
 
-        public IReadOnlyList<DroppingLootConfig> GetPossibleLootsFor(string emitterId)
+        public IReadOnlyList<DroppingLootConfig> FindPossibleLootsFor(string emitterId)
         {
             if (!DroppingLootMap.ContainsKey(emitterId)) {
                 return null;
