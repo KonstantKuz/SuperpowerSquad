@@ -44,7 +44,7 @@ namespace Survivors.Session.Service
         
         private CompositeDisposable _disposable;
         
-        private PlayerProgress PlayerProgress => _playerProgressService.Progress;
+        public PlayerProgress PlayerProgress => _playerProgressService.Progress;
         public Model.Session Session => _repository.Require();
         
         public IReadOnlyReactiveProperty<int> Kills => _kills;

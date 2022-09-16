@@ -38,7 +38,7 @@ namespace Survivors.UI.Screen.Main
             _world.Setup();
             
             _joystick.Attach(transform); // todo: can be replaced by adding to the parent screen
-            _levelProgressBar.Init(_sessionService.LevelConfig.Level);
+            _levelProgressBar.Init(_sessionService.PlayerProgress.WinCount);
             
             StartCoroutine(WaitForAnimationUpdateBeforePause());
         }
