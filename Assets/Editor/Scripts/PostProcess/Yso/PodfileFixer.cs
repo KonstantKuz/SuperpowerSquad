@@ -10,7 +10,10 @@ namespace Editor.Scripts.PostProcess
 {
     public class PodfileFixer
     {
-        private const int BUILD_ORDER_CHANGE_PODFILE = 46;      //after podfile generation in external dependency manager which hase order 45
+        private const int BUILD_ORDER_CHANGE_PODFILE = 40 + 1;      //after podfile generation in external dependency manager which has order 40
+        //Cause IosResolver overrides pod list
+        //check this order in https://github.com/googlesamples/unity-jar-resolver/blob/379916e3a6efb0cc2e0c6246b6f06914dd038dd0/source/IOSResolver/src/IOSResolver.cs
+        //line 412:   private const int BUILD_ORDER_GEN_PODFILE = 40;
 
         private const string PODFILE_NAME = "Podfile";
 
@@ -35,7 +38,7 @@ namespace Editor.Scripts.PostProcess
         private static void SavePodfile(string podfilePath, List<string> lines)
         {
             using var stream = new StreamWriter(podfilePath);
-            stream.Write(string.Join(Environment.NewLine, lines));
+            stream.Write(string.Join(Environment.NewLine, lines) + Environment.NewLine);
             stream.Close();
         }
 
