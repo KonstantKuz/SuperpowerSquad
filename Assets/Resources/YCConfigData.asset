@@ -27,15 +27,15 @@ MonoBehaviour:
   activeLogs: 1
   Name: Survivors
   FbAppId: 2148152355339705
-  appleId: 
+  appleId: 1626072143
   MmpAdjust: 0
   MmpAdjustAppToken: 
   MmpTenjin: 1
   AdMobAndroidAppId: 
   AdMobIosAppId: 
-  IosInterstitial: 
-  IosRewarded: 
-  IosBanner: 
+  IosInterstitial: 023f8c435c22c8c8
+  IosRewarded: 40745af613c92c07
+  IosBanner: 8ecf156d42aaf968
   AndroidInterstitial: 14724f903baf67aa
   AndroidRewarded: 709a452cfe60e252
   AndroidBanner: d6e87eeff0ae8de1
