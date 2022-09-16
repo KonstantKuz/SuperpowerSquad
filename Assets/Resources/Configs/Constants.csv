@@ -1,7 +1,8 @@
 MaxUnitUpgrade,3
 MaxAbilityUpgrade,2
-HealthScaleIncrementFactor,0.5
+HealthScaleIncrementFactor,0.4
 FirstUnit,RocketUnit
 ReviveEnemyRemoveRadius,3
 MaxMetaUpgradeLevel,100
 EventWarningShowDuration,5
+EnemyHpsSpawnerEnabled,TRUE

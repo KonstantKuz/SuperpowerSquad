@@ -26,13 +26,10 @@ namespace Survivors.Session.Service
 {
     public class SessionService : IWorldScope
     {
-        
         private readonly IntReactiveProperty _kills = new IntReactiveProperty(0);
         private readonly FloatReactiveProperty _playTime = new FloatReactiveProperty(0);
         
-        [Inject] private EnemyWavesSpawner _enemyWavesSpawner;
-        [Inject] private EnemyHpsSpawner _enemyHpsSpawner;
-        [Inject] private EnemyWavesConfig _enemyWavesConfig;
+        [Inject] private IEnemySpawner _enemySpawner;
         [Inject] private UnitFactory _unitFactory;     
         [Inject] private SquadFactory _squadFactory; 
         [Inject] private World _world;
@@ -116,8 +113,7 @@ namespace Survivors.Session.Service
         {
             CheckSquad();
             CreatePlayerUnits(_world.Squad.Model.StartingUnitCount.Value); 
-            _enemyWavesSpawner.StartSpawn(_enemyWavesConfig); 
-            _enemyHpsSpawner.StartSpawn();
+            _enemySpawner.StartSpawn();
         }
 
         private void ResetKills() => _kills.Value = 0;

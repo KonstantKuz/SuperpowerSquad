@@ -18,25 +18,26 @@ using ILogger = Logger.ILogger;
 
 namespace Survivors.Enemy.Spawn
 {
-    public class EnemyWavesSpawner : MonoBehaviour
+    public class EnemyWavesSpawner : MonoBehaviour, IEnemySpawner
     {
-        
         private const string ENEMY_LAYER_NAME = "Enemy";
         private static int ENEMY_LAYER;
         
         [SerializeField] private int _angleAttemptCount = 3;
         [SerializeField] private int _rangeAttemptCount = 3;
         [SerializeField] private float _minOutOfViewOffset = 2f;
-
-        private ISpawnPlaceProvider _placeProvider;
-        private List<EnemyWaveConfig> _waves;
-        private Coroutine _spawnCoroutine;
-        private SpawnerDebugger _spawnerDebugger;
         
         [Inject] private World _world;
         [Inject] private UnitFactory _unitFactory;
         [Inject] private IMessenger _messenger;
         [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
+        [Inject] private EnemyWavesConfig _enemyWavesConfig;
+        
+        private ISpawnPlaceProvider _placeProvider;
+        private List<EnemyWaveConfig> _waves;
+        private Coroutine _spawnCoroutine;
+        private SpawnerDebugger _spawnerDebugger;
+        
         private SpawnerDebugger Debugger => _spawnerDebugger ??= gameObject.AddComponent<SpawnerDebugger>();
 
         private void Awake()
@@ -45,11 +46,11 @@ namespace Survivors.Enemy.Spawn
             _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
         }
 
-        public void StartSpawn(EnemyWavesConfig enemyWavesConfig)
+        public void StartSpawn()
         {
             Stop();
             InitPlaceProvider();
-            var orderedConfigs = enemyWavesConfig.EnemySpawns.OrderBy(it => it.SpawnTime);
+            var orderedConfigs = _enemyWavesConfig.EnemySpawns.OrderBy(it => it.SpawnTime);
             _waves = new List<EnemyWaveConfig>(orderedConfigs);
             _spawnCoroutine = StartCoroutine(SpawnWaves());
         }

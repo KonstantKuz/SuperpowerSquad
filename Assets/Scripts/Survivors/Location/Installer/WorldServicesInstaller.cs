@@ -34,6 +34,7 @@ namespace Survivors.Location.Installer
             
             container.Bind<EnemyWavesSpawner>().FromInstance(_enemyWavesSpawner);
             container.Bind<EnemyHpsSpawner>().FromInstance(_enemyHpsSpawner).AsSingle();
+            container.Bind<IEnemySpawner>().To<CompositeEnemySpawner>().AsSingle();
             container.BindInterfacesAndSelfTo<DroppingLootService>().AsSingle();
             
             
