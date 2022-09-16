@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Linq;
 using Feofun.Config;
+using Feofun.Extension;
 using Logger.Extension;
 using SuperMaxim.Core.Extensions;
 using SuperMaxim.Messaging;
@@ -88,18 +89,8 @@ namespace Survivors.Enemy.Spawn
         {
             var possibleEnemies = _spawnableEnemyConfigs
                 .Where(it => it.Delay <= _sessionService.PlayTime.Value).ToList();
-            var spawnChanceSum = possibleEnemies.Sum(it => it.Chance);
-            var randomChance = Random.Range(0f, spawnChanceSum);
-            foreach (var spawnConfig in possibleEnemies) 
-            {
-                if (randomChance <= spawnConfig.Chance)
-                {
-                    return spawnConfig;
-                }
-                randomChance -= spawnConfig.Chance;
-            }
-            
-            throw new ArgumentException("Can't find suitable spawn config.");
+            var configsWithChance = possibleEnemies.Select(it => Tuple.Create(it, it.Chance)).ToList();
+            return configsWithChance.SelectRandomWithChance();
         }
 
         private SpawnPlace GetWavePlace(EnemyWaveConfig waveConfig)
