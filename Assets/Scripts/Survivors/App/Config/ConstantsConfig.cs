@@ -22,6 +22,9 @@ namespace Survivors.App.Config
         [DataMember(Name = "EnemyHpsSpawnerEnabled")]
         private bool _enemyHpsSpawnerEnabled;
 
+        [DataMember(Name = "AbTestEnabled")]
+        private bool _abTestEnabled;
+
         public float HealthScaleIncrementFactor => _healthScaleIncrementFactor;
         public string FirstUnit => _firstUnit;
         public int MaxMetaUpgradeLevel => _maxMetaUpgradeLevel;
@@ -31,5 +34,6 @@ namespace Survivors.App.Config
         public float EventWarningShowDuration => _eventWarningShowDuration;   
         
         public bool EnemyHpsSpawnerEnabled => _enemyHpsSpawnerEnabled;
+        public bool AbTestEnabled => _abTestEnabled;
     }
 }

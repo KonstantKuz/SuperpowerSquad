@@ -5,4 +5,5 @@ FirstUnit,RocketUnit
 ReviveEnemyRemoveRadius,3
 MaxMetaUpgradeLevel,100
 EventWarningShowDuration,5
-EnemyHpsSpawnerEnabled,TRUE
+EnemyHpsSpawnerEnabled,FALSE
+AbTestEnabled,FALSE
