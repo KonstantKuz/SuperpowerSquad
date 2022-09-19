@@ -2,29 +2,35 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Feofun.UI.Components;
+using Feofun.Util.SerializableDictionary;
+using TMPro;
 using UnityEngine;
 
 namespace Survivors.UI.Screen.Main
 {
     public class LevelProgressBar : MonoBehaviour
     {
-        private const int MIN_LEVEL_NUMBER = 1;
-        private const int MAX_LEVEL_NUMBER = 5;
+        private const int MAX_STEP_NUMBER = 5;
         
         [SerializeField] private ProgressBarView _levelBar;
-  
-        [SerializeField] private List<ProgressByStep> _progressByStep;  //todo: can use SerializableDictionary<TKey, TValue>
+        [SerializeField] private List<TextMeshProUGUI> _levelLabels;
+        [SerializeField] private List<float> _progressValues;
 
-        public void Init(int currentLevel)
+        public void Init(int value)
         {
-            var step = Mathf.Clamp(currentLevel, MIN_LEVEL_NUMBER, MAX_LEVEL_NUMBER);
-            _levelBar.SetData(_progressByStep.First(it => it.Step == step).ProgressValue);
+            var currentStep = value % MAX_STEP_NUMBER;
+            _levelBar.Reset(_progressValues[currentStep]);
+
+            var initialDisplayedValue = value - currentStep + 1;
+            FillLabels(initialDisplayedValue);
         }
-        [Serializable]
-        private struct ProgressByStep
+        
+        private void FillLabels(int initialValue) 
         {
-            public int Step;
-            public float ProgressValue;
+            for (int labelIdx = 0; labelIdx < _levelLabels.Count; labelIdx++)
+            {
+                _levelLabels[labelIdx].SetText($"{initialValue + labelIdx}");
+            }
         }
     }
 }
