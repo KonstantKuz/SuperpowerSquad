@@ -21,12 +21,16 @@ namespace Survivors.UI.Screen.Main
             var currentStep = value % MAX_STEP_NUMBER;
             _levelBar.Reset(_progressValues[currentStep]);
 
-            var displayedValue = value - currentStep + 1;
-            _levelLabels.ForEach(it =>
+            var initialDisplayedValue = value - currentStep + 1;
+            FillLabels(initialDisplayedValue);
+        }
+        
+        private void FillLabels(int initialValue) 
+        {
+            for (int labelIdx = 0; labelIdx < _levelLabels.Count; labelIdx++)
             {
-                it.SetText(displayedValue.ToString());
-                displayedValue++;
-            });
+                _levelLabels[labelIdx].SetText($"{initialValue + labelIdx}");
+            }
         }
     }
 }
