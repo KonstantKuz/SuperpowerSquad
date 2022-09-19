@@ -42,7 +42,7 @@ namespace Survivors.WorldEvents.Service
         }
         private void OnSessionStarted(SessionStartMessage evn)
         {
-            if (_abTest.IsEnabled && _abTest.WithDisasters) {
+            if (_abTest.WithDisasters) {
                 StartLevelEvents(evn.Level.ToString());
                 this.Logger().Info("Disasters enabled");
             } else {

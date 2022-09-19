@@ -28,7 +28,7 @@ namespace Survivors.ABTest
                 return _variantId;
             }
         }
-        public bool WithDisasters => CurrentVariantId.Equals(ABTestVariantId.WithDisasters.ToCamelCase());
+        public bool WithDisasters => IsEnabled && CurrentVariantId.Equals(ABTestVariantId.WithDisasters.ToCamelCase());
         
         public void Reload()
         {
