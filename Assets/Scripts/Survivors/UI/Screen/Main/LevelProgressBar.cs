@@ -16,13 +16,17 @@ namespace Survivors.UI.Screen.Main
         [SerializeField] private List<TextMeshProUGUI> _levelLabels;
         [SerializeField] private List<float> _progressValues;
 
-        public void Init(int winCount)
+        public void Init(int value)
         {
-            var currentStep = winCount % MAX_STEP_NUMBER;
+            var currentStep = value % MAX_STEP_NUMBER;
             _levelBar.Reset(_progressValues[currentStep]);
 
-            var levelNumber = winCount - currentStep;
-            _levelLabels.ForEach(it => it.SetText((++levelNumber).ToString()));
+            var displayedValue = value - currentStep + 1;
+            _levelLabels.ForEach(it =>
+            {
+                it.SetText(displayedValue.ToString());
+                displayedValue++;
+            });
         }
     }
 }
