@@ -7,3 +7,4 @@ MaxMetaUpgradeLevel,100
 EventWarningShowDuration,5
 EnemyHpsSpawnerEnabled,FALSE
 AbTestEnabled,FALSE
+ChooseFirstUnitEnabled,FALSE
