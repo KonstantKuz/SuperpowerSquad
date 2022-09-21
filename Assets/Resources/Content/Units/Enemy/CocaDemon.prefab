@@ -63,10 +63,10 @@ CapsuleCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  m_Radius: 0.25
-  m_Height: 1
+  m_Radius: 2
+  m_Height: 5.8050036
   m_Direction: 1
-  m_Center: {x: 0, y: 0.5, z: 0}
+  m_Center: {x: 0.020706654, y: 2.056936, z: 0}
 --- !u!195 &7792710414609505496
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -76,7 +76,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 2047533565645016285}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 0.25
+  m_Radius: 2
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -140,8 +140,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71a34f40da254c9895ee30361bc29b98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _agentRadiusAfar: 0.4
-  _agentRadiusNear: 0
+  _agentRadiusAfar: 2
+  _agentRadiusNear: 2
   _agentDistanceAfar: 10
   _agentDistanceNear: 2
 --- !u!114 &7586013564207719466
@@ -244,7 +244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5a4e1a31d3c917244ad3db39059d8a95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _scalePunchForce: -0.25
+  _scalePunchForce: -0.1
   _scalePunchDuration: 0.2
 --- !u!114 &5316809173621734762
 MonoBehaviour:
@@ -502,7 +502,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3628748317433897461, guid: fdb7535f5aad87e45b29d0c7e5880ea5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.58
+      value: 2.7
       objectReference: {fileID: 0}
     - target: {fileID: 3628748317433897461, guid: fdb7535f5aad87e45b29d0c7e5880ea5, type: 3}
       propertyPath: m_LocalPosition.z

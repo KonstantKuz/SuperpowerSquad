@@ -713,10 +713,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1873516484607207762, guid: d6eb7c9c829425d47a84bcef4eeb0c9e, type: 3}
-      propertyPath: _minOutOfViewOffset
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8746036833993048137, guid: d6eb7c9c829425d47a84bcef4eeb0c9e, type: 3}
       propertyPath: m_Name
       value: Location
