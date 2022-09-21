@@ -6,21 +6,22 @@ namespace Survivors.Units.Component.DamageReaction.Reactions
 {
     public class DamageColorReaction : MonoBehaviour, IDamageReaction, IDisposable
     {
-        private const string BASE_COLOR = "_BaseColor";
-
+        
         [SerializeField]
         private float _colorBlinkDuration;
         [SerializeField]
         private Color _blinkColor;
         [SerializeField]
         private Renderer _renderer;
-
+        [SerializeField]
+        private int _materialIndex;
+        
         private Color _startColor;
         private Tween _colorBlink;
 
         private void Awake()
         {
-            _startColor = _renderer.material.GetColor(BASE_COLOR);
+            _startColor = _renderer.materials[_materialIndex].color;
         }
         public void OnDamageReaction()
         {
@@ -35,7 +36,7 @@ namespace Survivors.Units.Component.DamageReaction.Reactions
 
         private Tween DoColor(Color color, Ease ease)
         {
-            return _renderer.material.DOColor(color, BASE_COLOR, _colorBlinkDuration).SetEase(ease);
+            return _renderer.materials[_materialIndex].DOColor(color, _colorBlinkDuration).SetEase(ease);
         }
         public void Dispose()
         { 

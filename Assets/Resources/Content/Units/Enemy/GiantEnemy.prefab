@@ -194,6 +194,10 @@ PrefabInstance:
       propertyPath: _renderer
       value: 
       objectReference: {fileID: 5423940993280663903}
+    - target: {fileID: 5316809173621734762, guid: 4f8aaf7eebed7794cbde04a321dc83f9, type: 3}
+      propertyPath: _materialIndex
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6629324333623088289, guid: 4f8aaf7eebed7794cbde04a321dc83f9, type: 3}
       propertyPath: _objectId
       value: GiantEnemy
