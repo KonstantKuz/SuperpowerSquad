@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -121,7 +122,12 @@ namespace Survivors.Enemy.Spawn
 
         private float GetOutOfViewOffset(EnemyWaveConfig waveConfig, int rangeTry)
         {
-            return _minOutOfViewOffset + rangeTry * GetWaveRadius(waveConfig);
+            return waveConfig.PlacingType switch
+            {
+                WavePlacingType.OutsideView => (_minOutOfViewOffset + rangeTry * GetWaveRadius(waveConfig)),
+                WavePlacingType.InsideView => (-_minOutOfViewOffset + rangeTry * GetWaveRadius(waveConfig)),
+                _ => throw new ArgumentOutOfRangeException()
+            };
         }
 
         private float GetWaveRadius(EnemyWaveConfig waveConfig)
