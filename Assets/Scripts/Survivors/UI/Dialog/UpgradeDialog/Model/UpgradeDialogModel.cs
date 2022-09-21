@@ -7,6 +7,7 @@ using Feofun.Extension;
 using Feofun.Localization;
 using Survivors.Modifiers;
 using Survivors.Modifiers.Config;
+using Survivors.UI.Dialog.UpgradeDialog.Star;
 using Survivors.Upgrade;
 using Survivors.Upgrade.Config;
 
@@ -14,7 +15,6 @@ namespace Survivors.UI.Dialog.UpgradeDialog.Model
 {
     public class UpgradeDialogModel
     {
-        private const string LEVEL_LOCALIZATION_ID = "lvl";
         private const string ADD_UNIT_LOCALIZATION_ID = "weapon +1";
 
         private readonly List<UpgradeItemModel> _upgrades;
@@ -50,9 +50,17 @@ namespace Survivors.UI.Dialog.UpgradeDialog.Model
                     Id = upgradeBranchId,
                     Name = upgradeBranchId,
                     Description = description,
-                    Level = LocalizableText.Create(LEVEL_LOCALIZATION_ID, nextLevel),
+                    Stars = CreateStars(upgradeBranchId),
                     OnClick = () => onUpgrade?.Invoke(upgradeBranchId),
             };
+        }
+
+        private IEnumerable<StarViewModel> CreateStars(string upgradeBranchId)
+        {
+            var countActive = _upgradeState.GetLevel(upgradeBranchId);
+            var countInactive = Math.Max(0, _upgradesConfig.GetMaxLevel(upgradeBranchId) - countActive);
+            return StarViewModel.CreateCollection(countActive, StarState.Active)
+                                .Concat(StarViewModel.CreateCollection(countInactive, StarState.Inactive));
         }
 
         private LocalizableText CreateModifierDescription(UpgradeLevelConfig nextUpgradeLevelConfig)

@@ -1319,10 +1319,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: WorldScreen
       objectReference: {fileID: 0}
-    - target: {fileID: 488810047606895948, guid: 972ccb21d8f739d4fabc59268ee480f5, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 6618466727412736662, guid: 972ccb21d8f739d4fabc59268ee480f5, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5

@@ -1,6 +1,7 @@
 using System.Collections;
 using Feofun.UI.Screen;
 using JetBrains.Annotations;
+using Survivors.Player.Progress.Service;
 using Survivors.Session.Service;
 using Survivors.UI.Screen.Menu;
 using Survivors.UI.Screen.World;
@@ -24,7 +25,7 @@ namespace Survivors.UI.Screen.Main
         
         private CompositeDisposable _disposable;
 
-        [Inject] private SessionService _sessionService;
+        [Inject] private PlayerProgressService _playerProgressService;
         [Inject] private ScreenSwitcher _screenSwitcher;     
         [Inject] private Location.World _world;
         [Inject] private Joystick _joystick;
@@ -38,7 +39,7 @@ namespace Survivors.UI.Screen.Main
             _world.Setup();
             
             _joystick.Attach(transform); // todo: can be replaced by adding to the parent screen
-            _levelProgressBar.Init(_sessionService.LevelConfig.Level);
+            _levelProgressBar.Init(_playerProgressService.Progress.WinCount);
             
             StartCoroutine(WaitForAnimationUpdateBeforePause());
         }

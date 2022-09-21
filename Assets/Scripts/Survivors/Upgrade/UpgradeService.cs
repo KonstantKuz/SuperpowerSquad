@@ -6,6 +6,7 @@ using Feofun.Extension;
 using Feofun.Modifiers;
 using JetBrains.Annotations;
 using Logger.Extension;
+using SuperMaxim.Messaging;
 using Survivors.Config;
 using Survivors.Location;
 using Survivors.Modifiers;
@@ -13,6 +14,7 @@ using Survivors.Modifiers.Config;
 using Survivors.Units;
 using Survivors.Units.Service;
 using Survivors.Upgrade.Config;
+using Survivors.Upgrade.Messages;
 using Survivors.Upgrade.UpgradeSelection;
 using UnityEngine.Assertions;
 using Zenject;
@@ -22,12 +24,13 @@ namespace Survivors.Upgrade
     [PublicAPI]
     public class UpgradeService : IWorldScope
     {
-        
         [Inject] private UpgradesConfig _config;
         [Inject] private World _world;
         [Inject] private UnitFactory _unitFactory;
         [Inject] private ModifierFactory _modifierFactory;
-        [Inject] private SquadUpgradeRepository _repository;
+        [Inject] private SquadUpgradeRepository _repository;      
+        [Inject] private IMessenger _messenger;
+        
         [Inject(Id = Configs.MODIFIERS)]
         private StringKeyedConfigCollection<ParameterUpgradeConfig> _modifierConfigs;
         public SquadUpgradeState SquadUpgradeState => _repository.Require();
@@ -55,7 +58,9 @@ namespace Survivors.Upgrade
             if (SquadUpgradeState.IsMaxLevel(upgradeBranchId, _config)) return;
             IncreaseLevel(upgradeBranchId);
             ApplyUpgrade(upgradeBranchId, SquadUpgradeState.GetLevel(upgradeBranchId));
+            _messenger.Publish(new UpgradeAppliedMessage(upgradeBranchId));
             this.Logger().Debug($"Upgrade:={upgradeBranchId} applied, level:= {SquadUpgradeState.GetLevel(upgradeBranchId)}");
+            
         }
 
         public void IncreaseLevel(string upgradeBranchId)

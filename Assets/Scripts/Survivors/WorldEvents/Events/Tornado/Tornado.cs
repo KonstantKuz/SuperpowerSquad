@@ -16,7 +16,7 @@ namespace Survivors.WorldEvents.Events.Tornado
         private Tween _disappearTween;
         
         private Coroutine _directionCoroutine;
-        
+
         public void Init(TornadoEventConfig config)
         {
             Dispose();
@@ -60,7 +60,6 @@ namespace Survivors.WorldEvents.Events.Tornado
                 Destroy(gameObject);
                 _disappearTween = null;
             };
-            
         }
         private void DisposeCoroutine()
         {

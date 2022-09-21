@@ -1,22 +1,15 @@
 ﻿using System.Runtime.Serialization;
-using Feofun.Config;
 
 namespace Survivors.Loot.Config
 {
     [DataContract]
-    public class DroppingLootConfig : ICollectionItem<string>
+    public class DroppingLootConfig
     {
-        [DataMember(Name = "Id")] 
-        private string _id;
-        
-        public string Id => _id;
         [DataMember]
-        public DroppingLootType Type;
+        public string LootId;
         [DataMember]
-        public string EnemyId;
-        [DataMember] 
         public int Amount;
-        [DataMember] 
+        [DataMember]
         public float DropChance;
     }
 }

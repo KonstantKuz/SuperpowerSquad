@@ -1,0 +1,5 @@
+EnemyId,Delay,Chance,MinWaveSize,MaxWaveSize
+SimpleEnemy,0,1,15,20
+DogEnemy,30,0.7,20,30
+ShooterEnemy,60,0.3,5,10
+GiantEnemy,120,0.1,1,3

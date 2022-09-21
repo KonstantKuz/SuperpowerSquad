@@ -17,7 +17,13 @@ namespace Survivors.App.Config
         private float _reviveEnemyRemoveRadius;     
         
         [DataMember(Name = "EventWarningShowDuration")]
-        private float _eventWarningShowDuration;
+        private float _eventWarningShowDuration;   
+        
+        [DataMember(Name = "EnemyHpsSpawnerEnabled")]
+        private bool _enemyHpsSpawnerEnabled;
+
+        [DataMember(Name = "AbTestEnabled")]
+        private bool _abTestEnabled;
 
         public float HealthScaleIncrementFactor => _healthScaleIncrementFactor;
         public string FirstUnit => _firstUnit;
@@ -25,6 +31,9 @@ namespace Survivors.App.Config
 
         public float ReviveEnemyRemoveRadius => _reviveEnemyRemoveRadius;  
         
-        public float EventWarningShowDuration => _eventWarningShowDuration;
+        public float EventWarningShowDuration => _eventWarningShowDuration;   
+        
+        public bool EnemyHpsSpawnerEnabled => _enemyHpsSpawnerEnabled;
+        public bool AbTestEnabled => _abTestEnabled;
     }
 }

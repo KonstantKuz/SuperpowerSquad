@@ -6,6 +6,9 @@ namespace Survivors.Loot
 {
     public class DroppingLoot : WorldObject
     {
+        [SerializeField] private DroppingLootType _lootType;
+
+        public DroppingLootType LootType => _lootType;
         public DroppingLootConfig Config { get; private set; }
         public void Init(DroppingLootConfig config)
         {

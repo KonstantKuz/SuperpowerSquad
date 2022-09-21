@@ -3,5 +3,6 @@
     public enum DroppingLootType
     {
         Exp,
+        Health,
     }
 }

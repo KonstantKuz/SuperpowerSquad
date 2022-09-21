@@ -74,7 +74,7 @@ namespace Survivors.Loot
                 return;
             }
             
-            _lootService.OnLootCollected(loot.Config);
+            _lootService.OnLootCollected(loot.LootType, loot.Config);
             _movingLoots.Remove(loot);
             _objectFactory.Destroy(loot.gameObject);
         }

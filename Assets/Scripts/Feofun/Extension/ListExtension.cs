@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityRandom = UnityEngine.Random;
 
 namespace Feofun.Extension
@@ -49,6 +50,22 @@ namespace Feofun.Extension
             }
             int randomNumber = new Random(seed).Next(minInclusive, maxExclusive);
             return collection[randomNumber];
+        }
+
+        public static T SelectRandomWithChance<T>(this IReadOnlyList<Tuple<T,float>> collection)
+        {
+            var chanceSum = collection.Sum(it => it.Item2);
+            var randomChance = UnityRandom.Range(0f, chanceSum);
+            foreach (var tuple in collection) 
+            {
+                if (randomChance <= tuple.Item2)
+                {
+                    return tuple.Item1;
+                }
+                randomChance -= tuple.Item2;
+            }
+            
+            throw new ArgumentException("Can't find suitable item.");
         }
     }
 }

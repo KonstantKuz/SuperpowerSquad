@@ -19,8 +19,13 @@ namespace Survivors.Units.Component.DamageReaction
         {
             _damageable = gameObject.GetComponent<IDamageable>();
             _reactions = gameObject.GetComponents<IDamageReaction>();
+        }
+
+        private void OnEnable()
+        {
             _damageable.OnDamageTaken += OnDamageTakenReaction;
         }
+
         private void OnDamageTakenReaction()
         {
             if (gameObject == null) {
@@ -29,7 +34,7 @@ namespace Survivors.Units.Component.DamageReaction
             _reactions.ForEach(it => it.OnDamageReaction());
         }
 
-        private void OnDestroy() => Dispose();
+        private void OnDisable() => Dispose();
 
         private void Dispose()
         {

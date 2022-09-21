@@ -13,12 +13,12 @@ SpeedSquad2,AddValue,Speed,0.5,Squad
 DamageRadius0.5,AddValue,DamageRadius,0.5,Unit
 AttackDamage50Percent,AddPercent,AttackDamage,50,Unit
 AttackInterval0.5,AddValue,AttackInterval,-0.5,Unit
-AttackDamageTier1,AddPercent,AttackDamage,30,Unit
+AttackDamageTier1,AddPercent,AttackDamage,50,Unit
 DamageRadiusTier1,AddValue,DamageRadius,0.3,Unit
-DamageRadiusTier2,AddValue,DamageRadius,0.6,Unit
-DamageRadiusTier3,AddValue,DamageRadius,1.2,Unit
+DamageRadiusTier2,AddValue,DamageRadius,0.5,Unit
+DamageRadiusTier3,AddValue,DamageRadius,0.9,Unit
 AttackIntervalTier1,AddValue,AttackInterval,-0.5,Unit
-ProjectileSpeedTier1,AddPercent,ProjectileSpeed,50,Unit
+ProjectileSpeedTier1,AddPercent,ProjectileSpeed,40,Unit
 ShotCountTier1,AddValue,ShotCount,1,Unit
 AttackIntervalSquad,AddValue,AttackInterval,-0.15,Unit
 AttackDamageSquad,AddPercent,AttackDamage,20,Unit
