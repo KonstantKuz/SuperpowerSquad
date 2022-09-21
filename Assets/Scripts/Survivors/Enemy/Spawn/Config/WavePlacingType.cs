@@ -4,5 +4,6 @@
     {
         OutsideView,
         InsideView,
+        OnViewEdge,
     }
 }

@@ -15,7 +15,6 @@ using Survivors.Units.Service;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
-using ILogger = Logger.ILogger;
 
 namespace Survivors.Enemy.Spawn
 {
@@ -28,6 +27,7 @@ namespace Survivors.Enemy.Spawn
         [SerializeField] private int _rangeAttemptCount = 3;
         [SerializeField] private float _minOutOfViewOffset = 2f;
         [SerializeField] private float _insideViewOffset = 5f;
+        [SerializeField] private float _onEdgeViewOffset = 0.1f;
         
         [Inject] private World _world;
         [Inject] private UnitFactory _unitFactory;
@@ -127,6 +127,7 @@ namespace Survivors.Enemy.Spawn
             {
                 WavePlacingType.OutsideView => _minOutOfViewOffset + rangeTry * GetWaveRadius(waveConfig),
                 WavePlacingType.InsideView => -_insideViewOffset,
+                WavePlacingType.OnViewEdge => _onEdgeViewOffset,
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
