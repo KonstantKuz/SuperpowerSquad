@@ -126,7 +126,7 @@ namespace Survivors.Enemy.Spawn
             return waveConfig.PlacingType switch
             {
                 WavePlacingType.OutsideView => _minOutOfViewOffset + rangeTry * GetWaveRadius(waveConfig),
-                WavePlacingType.InsideView => -_insideViewOffset + rangeTry * GetWaveRadius(waveConfig),
+                WavePlacingType.InsideView => -_insideViewOffset,
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
