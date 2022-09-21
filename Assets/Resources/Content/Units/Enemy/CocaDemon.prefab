@@ -22,7 +22,6 @@ GameObject:
   - component: {fileID: 158354064725451873}
   - component: {fileID: 7094039851140565474}
   - component: {fileID: 5066505888642405458}
-  - component: {fileID: 4492347006497957291}
   - component: {fileID: 5316809173621734762}
   - component: {fileID: 8473987040358760045}
   - component: {fileID: 442751807213895732}
@@ -76,7 +75,7 @@ NavMeshAgent:
   m_GameObject: {fileID: 2047533565645016285}
   m_Enabled: 1
   m_AgentTypeID: 0
-  m_Radius: 2
+  m_Radius: 0.4
   m_Speed: 3.5
   m_Acceleration: 8
   avoidancePriority: 50
@@ -140,8 +139,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71a34f40da254c9895ee30361bc29b98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _agentRadiusAfar: 2
-  _agentRadiusNear: 2
+  _agentRadiusAfar: 0.4
+  _agentRadiusNear: 0.4
   _agentDistanceAfar: 10
   _agentDistanceNear: 2
 --- !u!114 &7586013564207719466
@@ -232,20 +231,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a9e0fa77ae74d9c85b417cfee45567a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &4492347006497957291
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2047533565645016285}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5a4e1a31d3c917244ad3db39059d8a95, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _scalePunchForce: -0.1
-  _scalePunchDuration: 0.2
 --- !u!114 &5316809173621734762
 MonoBehaviour:
   m_ObjectHideFlags: 0
