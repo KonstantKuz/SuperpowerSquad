@@ -124,8 +124,8 @@ namespace Survivors.Enemy.Spawn
         {
             return waveConfig.PlacingType switch
             {
-                WavePlacingType.OutsideView => (_minOutOfViewOffset + rangeTry * GetWaveRadius(waveConfig)),
-                WavePlacingType.InsideView => (-_minOutOfViewOffset + rangeTry * GetWaveRadius(waveConfig)),
+                WavePlacingType.OutsideView => _minOutOfViewOffset + rangeTry * GetWaveRadius(waveConfig),
+                WavePlacingType.InsideView => -_minOutOfViewOffset + rangeTry * GetWaveRadius(waveConfig),
                 _ => throw new ArgumentOutOfRangeException()
             };
         }
@@ -157,7 +157,7 @@ namespace Survivors.Enemy.Spawn
         {
             var enemy = _unitFactory.CreateEnemy(wave.EnemyId, wave.EnemyLevel);
             var enemyAi = enemy.GetComponent<EnemyAi>();
-            enemyAi.NavMeshAgent.Warp(place);
+            enemyAi.NavMeshAgent.Warp(place + Vector3.up);
         }
 
         private void Stop()
