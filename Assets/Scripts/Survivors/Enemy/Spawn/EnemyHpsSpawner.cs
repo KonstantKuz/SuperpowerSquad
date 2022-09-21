@@ -15,24 +15,6 @@ using Random = UnityEngine.Random;
 
 namespace Survivors.Enemy.Spawn
 {
-
-    public class SessionTimer
-    {
-        public bool Pause { get; set; }
-        public float Time { get; private set; }
-
-        public SessionTimer()
-        {
-            Time = 0;
-        }
-
-        public void Update(float deltaTime)
-        {
-            if (Pause) return;
-            Time += deltaTime;
-        }
-    }
-
     public class EnemyHpsSpawner : MonoBehaviour, IEnemySpawner
     {
         private Coroutine _spawnCoroutine;
@@ -79,7 +61,7 @@ namespace Survivors.Enemy.Spawn
             var time = 0.0f;
             while (true) {
                 var timeToNextWave = Random.Range(_config.MinInterval, _config.MaxInterval);
-                yield return new WaitForSeconds(timeToNextWave);
+                yield return new WaitForSeconds(new ScopeTimer(), timeToNextWave);
                 time += timeToNextWave;
                 var health = timeToNextWave * (_config.StartingHPS + _config.HPSSpeed * time);
                 SpawnWave(health);

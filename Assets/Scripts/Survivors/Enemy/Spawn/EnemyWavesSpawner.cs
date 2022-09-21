@@ -14,7 +14,6 @@ using Survivors.Units.Service;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
-using ILogger = Logger.ILogger;
 
 namespace Survivors.Enemy.Spawn
 {
@@ -38,6 +37,10 @@ namespace Survivors.Enemy.Spawn
         private Coroutine _spawnCoroutine;
         private SpawnerDebugger _spawnerDebugger;
         
+        [SerializeField]
+        private bool _pause;
+        private ScopeTimer _timer;
+        
         private SpawnerDebugger Debugger => _spawnerDebugger ??= gameObject.AddComponent<SpawnerDebugger>();
 
         private void Awake()
@@ -52,7 +55,23 @@ namespace Survivors.Enemy.Spawn
             InitPlaceProvider();
             var orderedConfigs = _enemyWavesConfig.EnemySpawns.OrderBy(it => it.SpawnTime);
             _waves = new List<EnemyWaveConfig>(orderedConfigs);
-            _spawnCoroutine = StartCoroutine(SpawnWaves());
+            
+            Stop();
+            _timer = new ScopeTimer();
+            
+            _timer.StartCoroutine(SpawnWaves());
+        }
+
+        private void Update()
+        {
+            
+            if (_timer != null) {
+                _timer.Pause = _pause;
+            }
+            if (_pause) {
+                return;
+            }
+            _timer?.Update(Time.deltaTime);
         }
 
         private void InitPlaceProvider()
@@ -69,7 +88,7 @@ namespace Survivors.Enemy.Spawn
             var currentTime = 0;
             foreach (var wave in _waves)
             {
-                yield return new WaitForSeconds(wave.SpawnTime - currentTime);
+                yield return new WaitForSeconds(_timer,wave.SpawnTime - currentTime);
                 currentTime = wave.SpawnTime; 
                 SpawnNextWave(wave);
             } 
@@ -156,6 +175,7 @@ namespace Survivors.Enemy.Spawn
 
         private void Stop()
         {
+            _timer?.StopCoroutine();
             if (_spawnCoroutine != null)
             {
                 StopCoroutine(_spawnCoroutine);
