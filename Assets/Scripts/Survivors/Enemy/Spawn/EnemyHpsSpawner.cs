@@ -4,7 +4,6 @@ using System.Linq;
 using Feofun.Config;
 using Feofun.Extension;
 using Logger.Extension;
-using SuperMaxim.Core.Extensions;
 using SuperMaxim.Messaging;
 using Survivors.Enemy.Spawn.Config;
 using Survivors.Session.Messages;
@@ -16,35 +15,61 @@ using Random = UnityEngine.Random;
 
 namespace Survivors.Enemy.Spawn
 {
+
+    public class SessionTimer
+    {
+        public bool Pause { get; set; }
+        public float Time { get; private set; }
+
+        public SessionTimer()
+        {
+            Time = 0;
+        }
+
+        public void Update(float deltaTime)
+        {
+            if (Pause) return;
+            Time += deltaTime;
+        }
+    }
+
     public class EnemyHpsSpawner : MonoBehaviour, IEnemySpawner
     {
         private Coroutine _spawnCoroutine;
-        
-        [Inject] private EnemyWavesSpawner _enemyWavesSpawner;
-        [Inject] private HpsSpawnerConfig _config;   
-        [Inject] private IMessenger _messenger;
-        [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
-        [Inject] private StringKeyedConfigCollection<SpawnableEnemyConfig> _spawnableEnemyConfigs;
-        [Inject] private SessionService _sessionService;
-        
+
+        [Inject]
+        private EnemyWavesSpawner _enemyWavesSpawner;
+        [Inject]
+        private HpsSpawnerConfig _config;
+        [Inject]
+        private IMessenger _messenger;
+        [Inject]
+        private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
+        [Inject]
+        private StringKeyedConfigCollection<SpawnableEnemyConfig> _spawnableEnemyConfigs;
+        [Inject]
+        private SessionService _sessionService;
+
         private void Awake()
         {
             _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
         }
-        
+
         public void StartSpawn()
         {
             Stop();
             _spawnCoroutine = StartCoroutine(SpawnCoroutine());
         }
+
         private void OnSessionFinished(SessionEndMessage evn)
         {
             Stop();
         }
+
         private void Stop()
         {
             if (_spawnCoroutine == null) return;
-            
+
             StopCoroutine(_spawnCoroutine);
             _spawnCoroutine = null;
         }
@@ -52,8 +77,7 @@ namespace Survivors.Enemy.Spawn
         private IEnumerator SpawnCoroutine()
         {
             var time = 0.0f;
-            while (true)
-            {
+            while (true) {
                 var timeToNextWave = Random.Range(_config.MinInterval, _config.MaxInterval);
                 yield return new WaitForSeconds(timeToNextWave);
                 time += timeToNextWave;
@@ -71,24 +95,20 @@ namespace Survivors.Enemy.Spawn
             var enemyUnitConfig = _enemyUnitConfigs.Get(spawnConfig.Id);
             var averageLevel = EnemyUnitConfig.MIN_LEVEL + (averageHealth - enemyUnitConfig.Health) / enemyUnitConfig.HealthStep;
 
-            if (averageLevel < EnemyUnitConfig.MIN_LEVEL)
-            {
+            if (averageLevel < EnemyUnitConfig.MIN_LEVEL) {
                 var level = EnemyUnitConfig.MIN_LEVEL;
                 var possibleUnitCount = Mathf.RoundToInt(health / enemyUnitConfig.Health);
                 var waveConfig = EnemyWaveConfig.Create(enemyUnitConfig.Id, possibleUnitCount, level);
                 var place = GetWavePlace(waveConfig);
                 SpawnWave(waveConfig, place);
-            }
-            else
-            {
+            } else {
                 SpawnMixedWave(enemyUnitConfig.Id, desiredUnitCount, averageLevel);
             }
         }
 
         private SpawnableEnemyConfig GetRandomEnemyConfig()
         {
-            var possibleEnemies = _spawnableEnemyConfigs
-                .Where(it => it.Delay <= _sessionService.PlayTime.Value).ToList();
+            var possibleEnemies = _spawnableEnemyConfigs.Where(it => it.Delay <= _sessionService.PlayTime.Value).ToList();
             var configsWithChance = possibleEnemies.Select(it => Tuple.Create(it, it.Chance)).ToList();
             return configsWithChance.SelectRandomWithChance();
         }
@@ -125,11 +145,12 @@ namespace Survivors.Enemy.Spawn
         {
             _messenger.Unsubscribe<SessionEndMessage>(OnSessionFinished);
         }
+
         private void Log(string message)
         {
 #if UNITY_EDITOR
-            this.Logger().Trace(message);            
-#endif            
+            this.Logger().Trace(message);
+#endif
         }
     }
 }
