@@ -9,16 +9,18 @@ namespace Survivors.Loot
     public class DroppingLoot : WorldObject
     {
         [SerializeField] private DroppingLootType _lootType;
+        [SerializeField] private bool _randomRotation;
 
         public DroppingLootType LootType => _lootType;
         public DroppingLootConfig Config { get; private set; }
-
-        [Inject] private DroppingLootService _droppingLootService;
         
         public void Init(DroppingLootConfig config)
         {
             Config = config;
-            SetRandomRotation();
+            if (_randomRotation)
+            {
+                SetRandomRotation();
+            }
         }
 
         private void SetRandomRotation()
