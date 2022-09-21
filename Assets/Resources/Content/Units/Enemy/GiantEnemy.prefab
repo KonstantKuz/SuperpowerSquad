@@ -186,6 +186,10 @@ PrefabInstance:
       propertyPath: meshAnimations.Array.data[2]
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 5262006286517913559, guid: 4f8aaf7eebed7794cbde04a321dc83f9, type: 3}
+      propertyPath: _animatorBase
+      value: 
+      objectReference: {fileID: 5059793798522521241}
     - target: {fileID: 5316809173621734762, guid: 4f8aaf7eebed7794cbde04a321dc83f9, type: 3}
       propertyPath: _renderer
       value: 
@@ -241,6 +245,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 1162729436278913802, guid: 4f8aaf7eebed7794cbde04a321dc83f9, type: 3}
   m_PrefabInstance: {fileID: 4258842712315649605}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5059793798522521241 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 9020020965588670684, guid: 4f8aaf7eebed7794cbde04a321dc83f9, type: 3}
+  m_PrefabInstance: {fileID: 4258842712315649605}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6730902196850067173}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb24284c3ca34307aaa1d066276a7c22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &8283907998693278881
 PrefabInstance:
   m_ObjectHideFlags: 0
