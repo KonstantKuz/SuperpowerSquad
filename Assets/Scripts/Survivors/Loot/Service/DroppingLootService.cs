@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using Feofun.Extension;
 using Logger.Extension;
@@ -18,6 +19,8 @@ namespace Survivors.Loot.Service
 {
     public class DroppingLootService : IWorldScope
     {
+        private readonly ISet<DroppingLoot> _loots = new HashSet<DroppingLoot>();
+
         [Inject] private World _world;
         [Inject] private SquadProgressService _squadProgressService;
         [Inject] private UnitService _unitService;
@@ -25,9 +28,16 @@ namespace Survivors.Loot.Service
         private IObjectFactory _objectFactory;
         [Inject] private LootConfig _lootConfig;
 
+        public IEnumerable<DroppingLoot> AllLoot => _loots;
+
         public void OnWorldSetup()
         {
             _unitService.OnEnemyUnitDeath += TrySpawnLoot;
+        }
+
+        public void RemoveAll()
+        {
+            _loots.Clear();
         }
 
         private void TrySpawnLoot(IUnit unit, DeathCause deathCause)
@@ -42,14 +52,21 @@ namespace Survivors.Loot.Service
             }
 
             var configsWithChance = possibleLoot.Select(it => Tuple.Create(it, it.DropChance)).ToList();
-            SpawnLoot(unit.SelfTarget.Root.position, configsWithChance.SelectRandomWithChance());
+            var loot = SpawnLoot(unit.SelfTarget.Root.position, configsWithChance.SelectRandomWithChance());
+            _loots.Add(loot);
         }
 
-        private void SpawnLoot(Vector3 position, DroppingLootConfig config)
+        public void Remove(DroppingLoot loot)
+        {
+            _loots.Remove(loot);
+        }
+
+        private DroppingLoot SpawnLoot(Vector3 position, DroppingLootConfig config)
         {
             var loot = _objectFactory.Create<DroppingLoot>(config.LootId, _world.Spawn.transform);
             loot.transform.position = position;
             loot.Init(config);
+            return loot;
         }
         
         public void OnLootCollected(DroppingLootType lootType, DroppingLootConfig collectedLoot)
@@ -61,6 +78,9 @@ namespace Survivors.Loot.Service
                     break;
                 case DroppingLootType.Health:
                     _world.GetSquad().AddHealthPercent(collectedLoot.Amount);
+                    break;
+                case DroppingLootType.Magnet:
+                    _world.GetSquad().CollectAllLoot();
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();

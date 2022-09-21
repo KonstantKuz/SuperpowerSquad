@@ -1,6 +1,8 @@
 ﻿using Survivors.Location.Model;
 using Survivors.Loot.Config;
+using Survivors.Loot.Service;
 using UnityEngine;
+using Zenject;
 
 namespace Survivors.Loot
 {
@@ -10,6 +12,9 @@ namespace Survivors.Loot
 
         public DroppingLootType LootType => _lootType;
         public DroppingLootConfig Config { get; private set; }
+
+        [Inject] private DroppingLootService _droppingLootService;
+        
         public void Init(DroppingLootConfig config)
         {
             Config = config;
