@@ -252,6 +252,7 @@ MonoBehaviour:
   _colorBlinkDuration: 0.05
   _blinkColor: {r: 0.8867924, g: 0.7923214, b: 0.78221786, a: 1}
   _renderer: {fileID: 3502657726139544785}
+  _materialIndex: 0
 --- !u!114 &8993007250237367053
 MonoBehaviour:
   m_ObjectHideFlags: 0
