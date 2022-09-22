@@ -1,6 +1,5 @@
 ﻿using System;
 using Survivors.Session.Config;
-using Survivors.Session.Service;
 using UniRx;
 
 namespace Survivors.UI.Screen.World
@@ -47,7 +46,7 @@ namespace Survivors.UI.Screen.World
         private void InitForTimeMission(IReadOnlyReactiveProperty<float> spawnTime)
         {
             LabelId = SECONDS_LOCALIZATION_ID;
-            LabelContent = spawnTime.Select(time => (_levelConfig.Time - time).ToString()).ToReactiveProperty();
+            LabelContent = spawnTime.Select(time => Convert.ToInt32(_levelConfig.Time - time).ToString()).ToReactiveProperty();
             LevelProgress = spawnTime.Select(time => time / _levelConfig.Time).ToReactiveProperty();
         }
     }

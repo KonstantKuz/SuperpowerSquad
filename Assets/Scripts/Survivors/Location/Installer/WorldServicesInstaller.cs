@@ -16,8 +16,7 @@ namespace Survivors.Location.Installer
         [SerializeField] private World _world;
         
         [SerializeField] private EnemyWavesSpawner _enemyWavesSpawner;
-        [SerializeField] private EnemySpawnService _enemySpawnService;
-        
+
         [SerializeField] private WorldEventFactory _worldEventFactory;
         [SerializeField] private FrustrumCullingSystem _frustrumCullingSystem;
 
@@ -35,12 +34,13 @@ namespace Survivors.Location.Installer
             container.Bind<SessionRepository>().AsSingle();
             container.BindInterfacesAndSelfTo<ReviveService>().AsSingle();
             
+            
+            container.BindInterfacesAndSelfTo<EnemySpawnService>().AsSingle();
             container.Bind<EnemyWavesSpawner>().FromInstance(_enemyWavesSpawner);
             container.Bind<EnemyHpsSpawner>().AsSingle();
-            container.BindInterfacesAndSelfTo<EnemySpawnService>().FromInstance(_enemySpawnService).AsSingle();
+   
             
             container.BindInterfacesAndSelfTo<DroppingLootService>().AsSingle();
-            
             
             container.BindInterfacesAndSelfTo<WorldEventService>().AsSingle();  
             container.Bind<WorldEventFactory>().FromInstance(_worldEventFactory);

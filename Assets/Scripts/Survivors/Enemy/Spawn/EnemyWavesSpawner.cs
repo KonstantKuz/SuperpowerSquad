@@ -45,16 +45,14 @@ namespace Survivors.Enemy.Spawn
 
 
         private ICoroutineRunner CoroutineRunner => _scopeUpdatable.CoroutineRunner;
-
-        private void Awake()
-        {
-            ENEMY_LAYER = LayerMask.NameToLayer(ENEMY_LAYER_NAME);
-            _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
-        }
+        
 
         public void Init(IScopeUpdatable scopeUpdatable)
         {
             _scopeUpdatable = scopeUpdatable;
+            ENEMY_LAYER = LayerMask.NameToLayer(ENEMY_LAYER_NAME);
+            _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
+ 
         }
 
         public void StartSpawn()
