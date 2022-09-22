@@ -23,7 +23,6 @@ GameObject:
   - component: {fileID: 7094039851140565474}
   - component: {fileID: 5066505888642405458}
   - component: {fileID: 5316809173621734762}
-  - component: {fileID: 8473987040358760045}
   - component: {fileID: 442751807213895732}
   - component: {fileID: 1265837359138098205}
   - component: {fileID: 3651550046723161448}
@@ -249,20 +248,6 @@ MonoBehaviour:
   _blinkColor: {r: 0.57602674, g: 0, b: 0.8490566, a: 1}
   _renderer: {fileID: 751447729089251593}
   _materialIndex: 1
---- !u!114 &8473987040358760045
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2047533565645016285}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3be624bc40d495798e4573afb21839e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _jumpRotationAngle: 50
-  _jumpRotationTimeRatio: 0.9
 --- !u!54 &442751807213895732
 Rigidbody:
   m_ObjectHideFlags: 0

@@ -63,6 +63,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _missionProgressView: {fileID: 2505145832484989899}
+  _squadProgressView: {fileID: 3308901465038045186}
   _afterSessionDelay: 2
 --- !u!1 &7594123374163453228
 GameObject:
@@ -673,6 +674,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3c7f6bef29cd91342829531ba0df0048, type: 3}
+--- !u!1 &3308901465038045186 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5475220072389213390, guid: 3c7f6bef29cd91342829531ba0df0048, type: 3}
+  m_PrefabInstance: {fileID: 7354510117817302220}
+  m_PrefabAsset: {fileID: 0}
 --- !u!224 &48401856976966479 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 7402654207986167683, guid: 3c7f6bef29cd91342829531ba0df0048, type: 3}
