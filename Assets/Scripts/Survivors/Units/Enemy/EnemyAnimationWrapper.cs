@@ -1,4 +1,4 @@
-﻿using Survivors.Units.Component.MeshAnimator;
+﻿using Survivors.Units.Component.Animator;
 using UnityEngine;
 
 namespace Survivors.Units.Enemy
@@ -9,10 +9,10 @@ namespace Survivors.Units.Enemy
         private const string ATTACK_ANIMATION_NAME = "attack";
 
         [SerializeField]
-        private BakedMeshAnimator _animator;
-
-        public void PlayIdle() => _animator.SetBool(MOTION_ANIMATION_PARAM, false);
-        public void PlayMoveForward() => _animator.SetBool(MOTION_ANIMATION_PARAM, true);
-        public void PlayAttack() => _animator.Play(ATTACK_ANIMATION_NAME);
+        private AnimatorBase _animatorBase;
+        
+        public void PlayIdle() => _animatorBase.SetBool(MOTION_ANIMATION_PARAM, false);
+        public void PlayMoveForward() => _animatorBase.SetBool(MOTION_ANIMATION_PARAM, true);
+        public void PlayAttack() => _animatorBase.Play(ATTACK_ANIMATION_NAME);
     }
 }

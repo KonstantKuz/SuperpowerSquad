@@ -9,6 +9,7 @@ using JetBrains.Annotations;
 using SuperMaxim.Core.Extensions;
 using Survivors.Extension;
 using Survivors.Location;
+using Survivors.Loot;
 using Survivors.Modifiers;
 using Survivors.Squad.Component;
 using Survivors.Squad.Formation;
@@ -38,6 +39,7 @@ namespace Survivors.Squad
         
         private IDamageable _damageable;
         private IReadOnlyReactiveProperty<int> _unitCount;
+        private LootCollector _lootCollector;
         
         [Inject] private Joystick _joystick;
         [Inject] private StringKeyedConfigCollection<PlayerUnitConfig> _playerUnitConfigs;
@@ -75,6 +77,7 @@ namespace Survivors.Squad
             TargetProvider = gameObject.RequireComponent<SquadTargetProvider>();   
             WeaponTimerManager = gameObject.RequireComponent<WeaponTimerManager>();
             _damageable = gameObject.RequireComponent<IDamageable>();
+            _lootCollector = gameObject.RequireComponentInChildren<LootCollector>();
             UpdateSquadRadius();
         }
 
@@ -245,6 +248,11 @@ namespace Survivors.Squad
         public void AddHealthPercent(int percentFromMax)
         {
             Health.Add(Health.MaxValue.Value * percentFromMax / 100);
+        }
+
+        public void CollectAllLoot()
+        {
+            _lootCollector.CollectAllLoot();
         }
     }
 }

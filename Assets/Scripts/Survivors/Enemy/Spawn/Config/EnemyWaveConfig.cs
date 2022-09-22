@@ -12,6 +12,8 @@ namespace Survivors.Enemy.Spawn.Config
         public string EnemyId;       
         [DataMember]
         public int EnemyLevel;
+        [DataMember] 
+        public WavePlacingType PlacingType;
 
         public static EnemyWaveConfig Create(string id, int count, int level)
         {

@@ -2,7 +2,7 @@
 using Feofun.Util.SerializableDictionary;
 using UnityEngine;
 
-namespace Survivors.Units.Component.MeshAnimator
+namespace Survivors.Units.Component.Animator.MeshAnimator
 {
     [Serializable]
     public struct AnimationTransition

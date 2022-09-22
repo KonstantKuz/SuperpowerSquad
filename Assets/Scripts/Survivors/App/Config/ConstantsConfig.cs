@@ -25,6 +25,9 @@ namespace Survivors.App.Config
         [DataMember(Name = "AbTestEnabled")]
         private bool _abTestEnabled;
 
+        [DataMember(Name = "ChooseFirstUnitEnabled")] 
+        private bool _chooseFirstUnitEnabled;
+        
         public float HealthScaleIncrementFactor => _healthScaleIncrementFactor;
         public string FirstUnit => _firstUnit;
         public int MaxMetaUpgradeLevel => _maxMetaUpgradeLevel;
@@ -35,5 +38,6 @@ namespace Survivors.App.Config
         
         public bool EnemyHpsSpawnerEnabled => _enemyHpsSpawnerEnabled;
         public bool AbTestEnabled => _abTestEnabled;
+        public bool ChooseFirstUnitEnabled => _chooseFirstUnitEnabled;
     }
 }

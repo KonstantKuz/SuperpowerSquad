@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,6 +29,8 @@ namespace Survivors.Enemy.Spawn
         [SerializeField] private int _angleAttemptCount = 3;
         [SerializeField] private int _rangeAttemptCount = 3;
         [SerializeField] private float _minOutOfViewOffset = 2f;
+        [SerializeField] private float _insideViewOffset = 5f;
+        [SerializeField] private float _onEdgeViewOffset = 0.1f;
         
         [Inject] private World _world;
         [Inject] private UnitFactory _unitFactory;
@@ -64,7 +67,7 @@ namespace Survivors.Enemy.Spawn
             
             _spawnCoroutine = CoroutineRunner.StartCoroutine(SpawnWaves());
         }
-        
+
         private void InitPlaceProvider()
         {
             _placeProvider = new CompositeSpawnPlaceProvider(this, _world);
@@ -131,7 +134,13 @@ namespace Survivors.Enemy.Spawn
 
         private float GetOutOfViewOffset(EnemyWaveConfig waveConfig, int rangeTry)
         {
-            return _minOutOfViewOffset + rangeTry * GetWaveRadius(waveConfig);
+            return waveConfig.PlacingType switch
+            {
+                WavePlacingType.OutsideView => _minOutOfViewOffset + rangeTry * GetWaveRadius(waveConfig),
+                WavePlacingType.InsideView => -_insideViewOffset,
+                WavePlacingType.OnViewEdge => _onEdgeViewOffset,
+                _ => throw new ArgumentOutOfRangeException()
+            };
         }
 
         private float GetWaveRadius(EnemyWaveConfig waveConfig)
@@ -161,15 +170,17 @@ namespace Survivors.Enemy.Spawn
         {
             var enemy = _unitFactory.CreateEnemy(wave.EnemyId, wave.EnemyLevel);
             var enemyAi = enemy.GetComponent<EnemyAi>();
-            enemyAi.NavMeshAgent.Warp(place);
+            enemyAi.NavMeshAgent.Warp(place + Vector3.up);
+            enemy.transform.LookAt(_world.Squad.Position);
         }
 
         private void Stop()
         {
             if (_spawnCoroutine != null) {
                 CoroutineRunner.StopCoroutine(_spawnCoroutine);
+                _spawnCoroutine = null;
             }
-            _spawnCoroutine = null;
+          
         }
         private void OnDestroy()
         {

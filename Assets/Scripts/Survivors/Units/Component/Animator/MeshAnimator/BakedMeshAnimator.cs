@@ -6,9 +6,9 @@ using JetBrains.Annotations;
 using ModestTree;
 using UnityEngine;
 
-namespace Survivors.Units.Component.MeshAnimator
+namespace Survivors.Units.Component.Animator.MeshAnimator
 {
-    public class BakedMeshAnimator : MonoBehaviour
+    public class BakedMeshAnimator : AnimatorBase
     {
         [SerializeField]
         private MeshAnimatorBase _meshAnimator;
@@ -24,15 +24,14 @@ namespace Survivors.Units.Component.MeshAnimator
 
         private Dictionary<string, List<AnimationTransition>> _transitionsMap;
         private Dictionary<string, List<AnimationTransition>> TransitionsMap =>
-                _transitionsMap ??= _animationTransitions.GroupBy(it => it.FromAnimation)
-                                                         .ToDictionary(it => it.Key, it => it.ToList());
+                _transitionsMap ??= _animationTransitions.GroupBy(it => it.FromAnimation).ToDictionary(it => it.Key, it => it.ToList());
 
         private void Awake()
         {
             _meshAnimator.OnAnimationFinished += OnAnimationFinished;
         }
 
-        public void Play(string animationName)
+        public override void Play(string animationName)
         {
             if (_crossFade) {
                 _meshAnimator.Crossfade(animationName, _crossFadeSpeed);
@@ -41,7 +40,7 @@ namespace Survivors.Units.Component.MeshAnimator
             }
         }
 
-        public void SetBool(string param, bool value)
+        public override void SetBool(string param, bool value)
         {
             _boolConditions[param] = value;
         }
@@ -73,8 +72,7 @@ namespace Survivors.Units.Component.MeshAnimator
             if (transition.BoolConditions == null || transition.BoolConditions.IsEmpty()) {
                 return true;
             }
-            return transition.BoolConditions
-                             .All(condition => IsRightCondition(condition.Key, condition.Value));
+            return transition.BoolConditions.All(condition => IsRightCondition(condition.Key, condition.Value));
         }
 
         private bool IsRightCondition(string conditionName, bool conditionValue)

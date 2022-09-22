@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using ModestTree;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -10,7 +9,7 @@ namespace Survivors.Units.Component
     {
         private const int FRAME_COUNT = 30;
         
-        [SerializeField] private Animator _animator;
+        [SerializeField] private UnityEngine.Animator _animator;
         [SerializeField] private SkinnedMeshRenderer _renderer;
 
         private float _currentTime;

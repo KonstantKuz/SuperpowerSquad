@@ -203,6 +203,10 @@ PrefabInstance:
       propertyPath: _objectId
       value: PyroUnit
       objectReference: {fileID: 0}
+    - target: {fileID: 6599089327559607127, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
+      propertyPath: _materialIndex
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6901569034813441397, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
       propertyPath: _attackAnimationName
       value: PyroAttack

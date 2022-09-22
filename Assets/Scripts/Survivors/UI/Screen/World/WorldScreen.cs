@@ -4,6 +4,7 @@ using Feofun.UI.Dialog;
 using Feofun.UI.Screen;
 using JetBrains.Annotations;
 using SuperMaxim.Messaging;
+using Survivors.App.Config;
 using Survivors.Session.Messages;
 using Survivors.Session.Model;
 using Survivors.Session.Service;
@@ -34,6 +35,7 @@ namespace Survivors.UI.Screen.World
         [Inject] private Joystick _joystick;
         [Inject] private DialogManager _dialogManager;
         [Inject] private UpgradeService _upgradeService;
+        [Inject] private ConstantsConfig _constants;
         
         [PublicAPI]
         public void Init()
@@ -43,9 +45,14 @@ namespace Survivors.UI.Screen.World
             _sessionService.Start();
             InitProgressView();
 
-            _dialogManager.Show<StartUnitDialog, Action<StartUnitSelection>>(OnChangeStartUnit);
             _joystick.Attach(transform);
             _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
+
+            if (_constants.ChooseFirstUnitEnabled)
+            {
+                _world.Pause();
+                _dialogManager.Show<StartUnitDialog, Action<StartUnitSelection>>(OnChangeStartUnit);
+            }
         }
 
         private void InitProgressView()

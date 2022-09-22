@@ -8,7 +8,7 @@ namespace Survivors.Units.Component.Death
 {
     public class DeathAnimation : MonoBehaviour, IUnitDeath
     { 
-        private readonly int _deathHash = Animator.StringToHash("Death");
+        private readonly int _deathHash = UnityEngine.Animator.StringToHash("Death");
         
         [SerializeField]
         private float _disappearTime;       
@@ -17,7 +17,7 @@ namespace Survivors.Units.Component.Death
         [SerializeField]
         private float _offsetYDisappear;
         
-        private Animator _animator;
+        private UnityEngine.Animator _animator;
         private Tweener _disappearTween;
         private Coroutine _disappear;
         
@@ -25,7 +25,7 @@ namespace Survivors.Units.Component.Death
         private IObjectFactory _objectFactory;
         private void Awake()
         {
-            _animator = GetComponentInChildren<Animator>();
+            _animator = GetComponentInChildren<UnityEngine.Animator>();
         }
 
         public void PlayDeath()
