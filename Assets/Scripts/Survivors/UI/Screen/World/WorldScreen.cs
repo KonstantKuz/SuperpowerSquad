@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections;
+using Feofun.Config;
 using Feofun.UI.Dialog;
 using Feofun.UI.Screen;
 using JetBrains.Annotations;
 using SuperMaxim.Messaging;
+using Survivors.Enemy.Spawn.Config;
 using Survivors.Session.Messages;
 using Survivors.Session.Model;
 using Survivors.Session.Service;
@@ -12,6 +14,7 @@ using Survivors.UI.Dialog.StartUnitDialog;
 using Survivors.UI.Dialog.StartUnitDialog.Model;
 using Survivors.UI.Screen.Debriefing;
 using Survivors.UI.Screen.Debriefing.Model;
+using Survivors.Units.Enemy.Config;
 using Survivors.Upgrade;
 using UnityEngine;
 using Zenject;
@@ -34,7 +37,9 @@ namespace Survivors.UI.Screen.World
         [Inject] private Joystick _joystick;
         [Inject] private DialogManager _dialogManager;
         [Inject] private UpgradeService _upgradeService;
-        
+        [Inject] private EnemyWavesConfig _enemyWavesConfig;
+        [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
+
         [PublicAPI]
         public void Init()
         {
@@ -50,7 +55,11 @@ namespace Survivors.UI.Screen.World
 
         private void InitProgressView()
         {
-            var model = new MissionProgressModel(_sessionService.LevelConfig, _sessionService.Kills, _sessionService.PlayTime);
+            var model = new MissionProgressModel(_sessionService.LevelConfig, 
+                _sessionService.Kills, 
+                _sessionService.PlayTime,
+                _enemyWavesConfig,
+                _enemyUnitConfigs);
             _missionProgressView.Init(model);
         }
 
