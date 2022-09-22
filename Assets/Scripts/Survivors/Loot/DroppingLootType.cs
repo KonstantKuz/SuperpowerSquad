@@ -4,5 +4,6 @@
     {
         Exp,
         Health,
+        Magnet
     }
 }
