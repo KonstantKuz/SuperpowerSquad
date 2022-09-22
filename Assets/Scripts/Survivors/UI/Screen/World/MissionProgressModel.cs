@@ -56,7 +56,7 @@ namespace Survivors.UI.Screen.World
             LabelId = SECONDS_LOCALIZATION_ID;
             LabelContent = playTime.Select(time => (_levelConfig.Time - time).ToString()).ToReactiveProperty();
             LevelProgress = playTime.Select(time => time / _levelConfig.Time).ToReactiveProperty();
-            MissionEventModel = new MissionEventModel(wavesConfig, enemyUnitConfig, playTime.Value);
+            MissionEventModel = new MissionEventModel(wavesConfig, enemyUnitConfig, _levelConfig.Time);
         }
     }
 }

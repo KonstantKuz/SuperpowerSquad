@@ -12,6 +12,6 @@
         public static string GetCurrency(string currencyId) => string.Format(CURRENCY_PATH_PATTERN, currencyId);
 
         public static string GetMissionEvent(string missionEventId) =>
-            string.Format(CURRENCY_PATH_PATTERN, missionEventId);
+            string.Format(MISSION_EVENT_PATH_PATTERN, missionEventId);
     }
 }

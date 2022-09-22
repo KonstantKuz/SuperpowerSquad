@@ -29,6 +29,7 @@ namespace Survivors.UI.Screen.World
 
         [SerializeField] private MissionProgressView _missionProgressView;
         [SerializeField] private float _afterSessionDelay = 2;
+        [SerializeField] private MissionEventView _missionEventView;
 
         [Inject] private SessionService _sessionService;
         [Inject] private IMessenger _messenger;
@@ -61,6 +62,7 @@ namespace Survivors.UI.Screen.World
                 _enemyWavesConfig,
                 _enemyUnitConfigs);
             _missionProgressView.Init(model);
+            _missionEventView.Init(model.MissionEventModel);
         }
 
         private void OnChangeStartUnit(StartUnitSelection startUnitSelection)
