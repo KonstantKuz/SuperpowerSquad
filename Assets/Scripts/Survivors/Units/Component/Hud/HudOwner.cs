@@ -23,7 +23,7 @@ namespace Survivors.Units.Component.Hud
 
         public void CreateHud()
         {
-            Dispose();
+            CleanUp();
             _disposable = new CompositeDisposable();
             _hudPresenter = _container.InstantiatePrefabForComponent<HudPresenter>(_hudPrefab);
             _hudPresenter.Init(this, _hudPlace);
@@ -31,15 +31,15 @@ namespace Survivors.Units.Component.Hud
 
         private void OnDestroy()
         {
-            Dispose();
+            CleanUp();
         }
 
         private void OnDisable()
         {
-            Dispose();
+            CleanUp();
         }
 
-        private void Dispose()
+        private void CleanUp()
         {
             _disposable?.Dispose();
             _disposable = null;
