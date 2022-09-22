@@ -48,6 +48,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objectId: SmallExp
   _objectType: 2
+  _lootType: 0
+  _randomRotation: 1
 --- !u!135 &8464070402915899788
 SphereCollider:
   m_ObjectHideFlags: 0

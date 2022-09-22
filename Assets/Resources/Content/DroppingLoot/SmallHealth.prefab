@@ -130,6 +130,7 @@ MonoBehaviour:
   _objectId: SmallHealth
   _objectType: 2
   _lootType: 1
+  _randomRotation: 0
 --- !u!135 &5131041378376899430
 SphereCollider:
   m_ObjectHideFlags: 0
