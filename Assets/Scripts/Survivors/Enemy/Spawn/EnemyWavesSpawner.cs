@@ -69,11 +69,15 @@ namespace Survivors.Enemy.Spawn
         private IEnumerator SpawnWaves()
         {
             var currentTime = 0;
-            foreach (var wave in _waves)
+            var wavesGroupedBySpawnTime = _waves.GroupBy(it => it.SpawnTime);
+            foreach (var currentTimeWaves in wavesGroupedBySpawnTime)
             {
-                yield return new WaitForSeconds(wave.SpawnTime - currentTime);
-                currentTime = wave.SpawnTime; 
-                SpawnNextWave(wave);
+                yield return new WaitForSeconds(currentTimeWaves.Key - currentTime);
+                currentTime = currentTimeWaves.Key; 
+                foreach (var waveConfig in currentTimeWaves)
+                {
+                    SpawnNextWave(waveConfig);
+                }
             } 
             Stop();
         }

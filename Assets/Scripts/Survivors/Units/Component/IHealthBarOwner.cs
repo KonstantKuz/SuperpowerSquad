@@ -7,5 +7,6 @@ namespace Survivors.Units.Component
         float StartingMaxValue { get; }
         IReadOnlyReactiveProperty<float> MaxValue { get; }
         IReadOnlyReactiveProperty<float> CurrentValue { get; }
+        IReadOnlyReactiveProperty<float> TakenDamage { get; }
     }
 }
