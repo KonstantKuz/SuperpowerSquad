@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Feofun.Components;
+using SuperMaxim.Core.Extensions;
 using Survivors.Location;
 using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Loot.Service;
@@ -31,7 +32,7 @@ namespace Survivors.Loot
 
         private Squad.Squad _squad;
         private CompositeDisposable _disposable;
-        private List<DroppingLoot> _movingLoots = new List<DroppingLoot>();
+        private readonly ISet<DroppingLoot> _movingLoots = new HashSet<DroppingLoot>();
         
         public void Init(Squad.Squad squad)
         {
@@ -39,6 +40,12 @@ namespace Survivors.Loot
             _disposable?.Dispose();
             _disposable = new CompositeDisposable();
             squad.Model.CollectRadius.Subscribe(radius => _collider.radius = radius).AddTo(_disposable);
+        }
+
+        public void CollectAllLoot()
+        {
+            _lootService.AllLoot.ForEach(it => _movingLoots.Add(it));
+            _lootService.RemoveAll();
         }
 
         private void OnTriggerEnter(Collider other)
@@ -49,6 +56,9 @@ namespace Survivors.Loot
             if (!other.TryGetComponent(out DroppingLoot loot)) {
                 return;
             }
+            if (_movingLoots.Contains(loot)) return;
+
+            _lootService.Remove(loot);
             _movingLoots.Add(loot);
         }
 
@@ -63,7 +73,7 @@ namespace Survivors.Loot
         {
             var moveDirection = (transform.position - loot.transform.position).normalized;
             var speed = _collectSpeed + _squad.Model.Speed.Value;
-            loot.transform.position += moveDirection * speed * Time.deltaTime;
+            loot.transform.position +=  speed * Time.deltaTime * moveDirection;
         }
 
         private void TryCollect(DroppingLoot loot)

@@ -1,8 +1,10 @@
 using System.Collections;
+using Feofun.UI.Dialog;
 using Feofun.UI.Screen;
 using JetBrains.Annotations;
 using Survivors.Player.Progress.Service;
 using Survivors.Session.Service;
+using Survivors.UI.Dialog.PauseDialog;
 using Survivors.UI.Screen.Menu;
 using Survivors.UI.Screen.World;
 using UniRx;
@@ -61,6 +63,7 @@ namespace Survivors.UI.Screen.Main
 
         private void StartSession(PointerEventData eventData)
         {
+            _world.UnPause();
             _screenSwitcher.SwitchTo(WorldScreen.ID.ToString());
         }
 
