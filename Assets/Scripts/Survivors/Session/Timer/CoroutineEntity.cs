@@ -1,35 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace Survivors.Enemy.Spawn
+namespace Survivors.Session.Timer
 {
-    public class WaitForSeconds : IEnumerator
-    {
-        private ITimer _timer;
-        private float _timeout;
-
-        private float _leftTime;
-        public WaitForSeconds(ITimer timer, float timeout)
-        {
-            _timer = timer;
-            _timeout = timeout;
-        }
-
-        public bool MoveNext()
-        {
-            _leftTime += _timer.DeltaTime;
-            return _leftTime < _timeout;
-        }
-
-        public void Reset()
-        {
-            _leftTime = 0;
-        }
-
-        public object Current => (object) null;
-    }
-
-    public class CoroutineEntity
+    public class CoroutineEntity : IEnumerator
     {
         private readonly Stack<IEnumerator> _enumerators = new Stack<IEnumerator>();
         
@@ -41,20 +15,31 @@ namespace Survivors.Enemy.Spawn
         {
             _currentCoroutine = coroutine;
         }
-        public void Update()
+        public void Stop() => IsComplete = true;
+
+        public bool MoveNext()
         {
+            if (IsComplete) {
+                return false;
+            }
             if (_currentCoroutine == null) {
                 IsComplete = true;
-                return;
+                return false;
             }
             if (_currentCoroutine.MoveNext())
             {
-                if (!(_currentCoroutine.Current is IEnumerator nestedCoroutine)) return;
+                if (!(_currentCoroutine.Current is IEnumerator nestedCoroutine)) return true;
                 _enumerators.Push(_currentCoroutine);
                 _currentCoroutine = nestedCoroutine;
+       
             } else {
                 _currentCoroutine = _enumerators.Count > 0 ? _enumerators.Pop() : null;
             }
+            return true;
         }
+
+        public void Reset() { }
+
+        public object Current => _currentCoroutine;
     }
 }

@@ -8,16 +8,18 @@ using SuperMaxim.Messaging;
 using Survivors.Enemy.Spawn.Config;
 using Survivors.Session.Messages;
 using Survivors.Session.Service;
+using Survivors.Session.Timer;
 using Survivors.Units.Enemy.Config;
 using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
+using WaitForSeconds = Survivors.Session.Timer.WaitForSeconds;
 
 namespace Survivors.Enemy.Spawn
 {
     public class EnemyHpsSpawner : MonoBehaviour, IEnemySpawner
     {
-        private Coroutine _spawnCoroutine;
+        private CoroutineEntity _spawnCoroutine;
 
         [Inject]
         private EnemyWavesSpawner _enemyWavesSpawner;
@@ -31,6 +33,9 @@ namespace Survivors.Enemy.Spawn
         private StringKeyedConfigCollection<SpawnableEnemyConfig> _spawnableEnemyConfigs;
         [Inject]
         private SessionService _sessionService;
+        
+        private IScopeUpdatable ScopeUpdatable => _sessionService.ScopeUpdatable;
+        private ICoroutineRunner CoroutineRunner => ScopeUpdatable.CoroutineRunner;
 
         private void Awake()
         {
@@ -40,7 +45,7 @@ namespace Survivors.Enemy.Spawn
         public void StartSpawn()
         {
             Stop();
-            _spawnCoroutine = StartCoroutine(SpawnCoroutine());
+            _spawnCoroutine = CoroutineRunner.StartCoroutine(SpawnCoroutine());
         }
 
         private void OnSessionFinished(SessionEndMessage evn)
@@ -52,7 +57,7 @@ namespace Survivors.Enemy.Spawn
         {
             if (_spawnCoroutine == null) return;
 
-            StopCoroutine(_spawnCoroutine);
+            CoroutineRunner.StopCoroutine(_spawnCoroutine);
             _spawnCoroutine = null;
         }
 
@@ -61,7 +66,7 @@ namespace Survivors.Enemy.Spawn
             var time = 0.0f;
             while (true) {
                 var timeToNextWave = Random.Range(_config.MinInterval, _config.MaxInterval);
-                yield return new WaitForSeconds(new ScopeTimer(), timeToNextWave);
+                yield return new WaitForSeconds(new UpdatableTimer(), timeToNextWave);
                 time += timeToNextWave;
                 var health = timeToNextWave * (_config.StartingHPS + _config.HPSSpeed * time);
                 SpawnWave(health);
@@ -90,7 +95,7 @@ namespace Survivors.Enemy.Spawn
 
         private SpawnableEnemyConfig GetRandomEnemyConfig()
         {
-            var possibleEnemies = _spawnableEnemyConfigs.Where(it => it.Delay <= _sessionService.PlayTime.Value).ToList();
+            var possibleEnemies = _spawnableEnemyConfigs.Where(it => it.Delay <= ScopeUpdatable.Timer.Time).ToList();
             var configsWithChance = possibleEnemies.Select(it => Tuple.Create(it, it.Chance)).ToList();
             return configsWithChance.SelectRandomWithChance();
         }
