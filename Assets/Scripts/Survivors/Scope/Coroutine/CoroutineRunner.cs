@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using ModestTree;
-using Survivors.ScopeUpdatable.Timer;
+using Survivors.Scope.Timer;
 
-namespace Survivors.ScopeUpdatable.Coroutine
+namespace Survivors.Scope.Coroutine
 {
     public class CoroutineRunner : IDisposable, ICoroutineRunner
     {
@@ -32,18 +33,14 @@ namespace Survivors.ScopeUpdatable.Coroutine
         public void Dispose() => _timer.OnUpdate -= OnUpdate;
         private void OnUpdate()
         {
-            if (_coroutines.IsEmpty()) { 
+            if (_coroutines.IsEmpty()) {
                 return;
             }
-            var removeCoroutine = new List<CoroutineEntity>();
-            foreach (var coroutineEntity in _coroutines) {
+            foreach (var coroutineEntity in _coroutines.ToList()) {
                 if (!coroutineEntity.MoveNext()) {
-                    removeCoroutine.Add(coroutineEntity);
+                    _coroutines.Remove(coroutineEntity);
                 }
             }
-            removeCoroutine.ForEach(it => {
-                _coroutines.Remove(it);
-            });
         }
     }
 }

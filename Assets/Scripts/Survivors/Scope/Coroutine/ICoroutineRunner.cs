@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 
-namespace Survivors.ScopeUpdatable.Coroutine
+namespace Survivors.Scope.Coroutine
 {
     public interface ICoroutineRunner
     { 

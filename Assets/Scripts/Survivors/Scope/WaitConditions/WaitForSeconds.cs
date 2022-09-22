@@ -1,7 +1,7 @@
 ﻿using System.Collections;
-using Survivors.ScopeUpdatable.Timer;
+using Survivors.Scope.Timer;
 
-namespace Survivors.ScopeUpdatable.WaitConditions
+namespace Survivors.Scope.WaitConditions
 {
     public class WaitForSeconds : IEnumerator
     {

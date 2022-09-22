@@ -1,4 +1,4 @@
-namespace Survivors.ScopeUpdatable.Coroutine
+namespace Survivors.Scope.Coroutine
 {
     public interface ICoroutine
     {

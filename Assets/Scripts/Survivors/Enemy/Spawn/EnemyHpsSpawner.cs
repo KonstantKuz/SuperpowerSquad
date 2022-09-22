@@ -6,43 +6,35 @@ using Feofun.Extension;
 using Logger.Extension;
 using SuperMaxim.Messaging;
 using Survivors.Enemy.Spawn.Config;
-using Survivors.ScopeUpdatable;
-using Survivors.ScopeUpdatable.Coroutine;
+using Survivors.Scope;
+using Survivors.Scope.Coroutine;
 using Survivors.Session.Messages;
-using Survivors.Session.Service;
 using Survivors.Units.Enemy.Config;
 using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
-using WaitForSeconds = Survivors.ScopeUpdatable.WaitConditions.WaitForSeconds;
+using WaitForSeconds = Survivors.Scope.WaitConditions.WaitForSeconds;
 
 namespace Survivors.Enemy.Spawn
 {
-    public class EnemyHpsSpawner : MonoBehaviour, IEnemySpawner
+    public class EnemyHpsSpawner : IEnemySpawner
     {
-        [Inject]
-        private EnemyWavesSpawner _enemyWavesSpawner;
-        [Inject]
-        private HpsSpawnerConfig _config;
-        [Inject]
-        private IMessenger _messenger;
-        [Inject]
-        private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
-        [Inject]
-        private StringKeyedConfigCollection<SpawnableEnemyConfig> _spawnableEnemyConfigs;
-        [Inject]
-        private SessionService _sessionService;
-        
+        [Inject] private EnemyWavesSpawner _enemyWavesSpawner;
+        [Inject] private HpsSpawnerConfig _config;
+        [Inject] private IMessenger _messenger;
+        [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
+        [Inject] private StringKeyedConfigCollection<SpawnableEnemyConfig> _spawnableEnemyConfigs;
+
+        private IScopeUpdatable _scopeUpdatable;
         private ICoroutine _spawnCoroutine;
         
-        private IScopeUpdatable ScopeUpdatable => _sessionService.ScopeUpdatable;
-        private ICoroutineRunner CoroutineRunner => ScopeUpdatable.CoroutineRunner;
-
-        private void Awake()
+        private ICoroutineRunner CoroutineRunner => _scopeUpdatable.CoroutineRunner;
+        
+        public void Init(IScopeUpdatable scopeUpdatable)
         {
+            _scopeUpdatable = scopeUpdatable;
             _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
         }
-
         public void StartSpawn()
         {
             Stop();
@@ -67,7 +59,7 @@ namespace Survivors.Enemy.Spawn
             var time = 0.0f;
             while (true) {
                 var timeToNextWave = Random.Range(_config.MinInterval, _config.MaxInterval);
-                yield return new WaitForSeconds(ScopeUpdatable.Timer, timeToNextWave);
+                yield return new WaitForSeconds(_scopeUpdatable.Timer, timeToNextWave);
                 time += timeToNextWave;
                 var health = timeToNextWave * (_config.StartingHPS + _config.HPSSpeed * time);
                 SpawnWave(health);
@@ -96,7 +88,7 @@ namespace Survivors.Enemy.Spawn
 
         private SpawnableEnemyConfig GetRandomEnemyConfig()
         {
-            var possibleEnemies = _spawnableEnemyConfigs.Where(it => it.Delay <= ScopeUpdatable.Timer.Time).ToList();
+            var possibleEnemies = _spawnableEnemyConfigs.Where(it => it.Delay <= _scopeUpdatable.Timer.Time).ToList();
             var configsWithChance = possibleEnemies.Select(it => Tuple.Create(it, it.Chance)).ToList();
             return configsWithChance.SelectRandomWithChance();
         }

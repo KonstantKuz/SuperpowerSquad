@@ -402,12 +402,12 @@ GameObject:
   - component: {fileID: 8746036833993048138}
   - component: {fileID: 3088611838475355998}
   - component: {fileID: 1873516484607207762}
-  - component: {fileID: 186752239828696303}
   - component: {fileID: 1866441843583567248}
   - component: {fileID: 6484450709119096639}
   - component: {fileID: 1913784875}
   - component: {fileID: 5448434747336927382}
   - component: {fileID: 4521384427546401654}
+  - component: {fileID: 646207501}
   m_Layer: 0
   m_Name: Location
   m_TagString: Untagged
@@ -463,18 +463,6 @@ MonoBehaviour:
   _angleAttemptCount: 3
   _rangeAttemptCount: 3
   _minOutOfViewOffset: 3
---- !u!114 &186752239828696303
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8746036833993048137}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 79ff066e7a284f8ab029117d16b0ac49, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &1866441843583567248
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -489,7 +477,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _world: {fileID: 3088611838475355998}
   _enemyWavesSpawner: {fileID: 1873516484607207762}
-  _enemyHpsSpawner: {fileID: 186752239828696303}
+  _enemySpawnService: {fileID: 646207501}
   _worldEventFactory: {fileID: 1913784875}
   _frustrumCullingSystem: {fileID: 9083799811716366257}
 --- !u!114 &6484450709119096639
@@ -555,6 +543,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _poolRoot: {fileID: 8990679462212408019}
+--- !u!114 &646207501
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8746036833993048137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da63c0cf35e74c85b0199f2724212e18, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1146793155654911168
 PrefabInstance:
   m_ObjectHideFlags: 0

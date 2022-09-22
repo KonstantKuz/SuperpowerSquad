@@ -1,7 +1,7 @@
 ﻿
-using Survivors.ScopeUpdatable.Coroutine;
+using Survivors.Scope.Coroutine;
 
-namespace Survivors.ScopeUpdatable.Timer
+namespace Survivors.Scope.Timer
 {
     public static class UpdatableTimerExt
     {

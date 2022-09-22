@@ -9,7 +9,6 @@ using Survivors.Enemy.Spawn;
 using Survivors.Location;
 using Survivors.Player.Progress.Model;
 using Survivors.Player.Progress.Service;
-using Survivors.ScopeUpdatable;
 using Survivors.Session.Config;
 using Survivors.Session.Messages;
 using Survivors.Session.Model;
@@ -27,9 +26,9 @@ namespace Survivors.Session.Service
     public class SessionService : IWorldScope
     {
         private readonly IntReactiveProperty _kills = new IntReactiveProperty(0);
-        private readonly FloatReactiveProperty _playTime = new FloatReactiveProperty(0);
+        private readonly FloatReactiveProperty _spawnTime = new FloatReactiveProperty(0);
 
-        [Inject] private IEnemySpawner _enemySpawner;
+        [Inject] private EnemySpawnService _enemySpawnService;
         [Inject] private UnitFactory _unitFactory;
         [Inject] private SquadFactory _squadFactory;
         [Inject] private World _world;
@@ -43,27 +42,24 @@ namespace Survivors.Session.Service
         [Inject] private DialogManager _dialogManager;
 
         private CompositeDisposable _disposable;
-        private ScopeUpdatable.ScopeUpdatable _scopeUpdatable;
 
         private PlayerProgress PlayerProgress => _playerProgressService.Progress;
         public Model.Session Session => _repository.Require();
 
         public IReadOnlyReactiveProperty<int> Kills => _kills;
-        public IReadOnlyReactiveProperty<float> PlayTime => _playTime;
+        public IReadOnlyReactiveProperty<float> SpawnTime => _spawnTime;
 
         public LevelMissionConfig LevelConfig => _levelsConfig.Values[LevelId];
         public int LevelId => Mathf.Min(PlayerProgress.LevelNumber, _levelsConfig.Count() - 1);
         public float SessionTime => Session.SessionTime;
         public bool SessionCompleted => _repository.Exists() && Session.Completed;
-
-        public IScopeUpdatable ScopeUpdatable => _scopeUpdatable; 
-
+        
         public void OnWorldSetup()
         {
             Dispose();
             _unitService.OnEnemyUnitDeath += OnEnemyUnitDeath;
             ResetKills();
-            ResetPlayTime();
+            ResetSpawn();
             _disposable = new CompositeDisposable();
             Create();
         }
@@ -121,11 +117,11 @@ namespace Survivors.Session.Service
         {
             CheckSquad();
             CreatePlayerUnits(_world.Squad.Model.StartingUnitCount.Value);
-            _enemySpawner.StartSpawn();
+            _enemySpawnService.Spawn();
         }
 
         private void ResetKills() => _kills.Value = 0;
-        private void ResetPlayTime() => _playTime.Value = 0;
+        private void ResetSpawn() => _spawnTime.Value = 0;
 
         private void OnEnemyUnitDeath(IUnit unit, DeathCause deathCause)
         {
@@ -139,7 +135,7 @@ namespace Survivors.Session.Service
 
         private void OnTick()
         {
-            _playTime.Value = Session.PlayTime.Value;
+            _spawnTime.Value = _enemySpawnService.ScopeUpdatable.Timer.Time;
             if (Session.IsMissionGoalReached()) {
                 EndSession(UnitType.PLAYER);
             }

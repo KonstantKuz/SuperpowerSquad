@@ -1,7 +1,7 @@
-﻿using Survivors.ScopeUpdatable.Coroutine;
-using Survivors.ScopeUpdatable.Timer;
+﻿using Survivors.Scope.Coroutine;
+using Survivors.Scope.Timer;
 
-namespace Survivors.ScopeUpdatable
+namespace Survivors.Scope
 {
     public interface IScopeUpdatable
     {

@@ -14,10 +14,13 @@ namespace Survivors.Location.Installer
     public class WorldServicesInstaller : MonoBehaviour
     {
         [SerializeField] private World _world;
+        
         [SerializeField] private EnemyWavesSpawner _enemyWavesSpawner;
-        [SerializeField] private EnemyHpsSpawner _enemyHpsSpawner;
+        [SerializeField] private EnemySpawnService _enemySpawnService;
+        
         [SerializeField] private WorldEventFactory _worldEventFactory;
         [SerializeField] private FrustrumCullingSystem _frustrumCullingSystem;
+
         
         public void Install(DiContainer container)
         {
@@ -33,8 +36,9 @@ namespace Survivors.Location.Installer
             container.BindInterfacesAndSelfTo<ReviveService>().AsSingle();
             
             container.Bind<EnemyWavesSpawner>().FromInstance(_enemyWavesSpawner);
-            container.Bind<EnemyHpsSpawner>().FromInstance(_enemyHpsSpawner).AsSingle();
-            container.Bind<IEnemySpawner>().To<CompositeEnemySpawner>().AsSingle();
+            container.Bind<EnemyHpsSpawner>().AsSingle();
+            container.BindInterfacesAndSelfTo<EnemySpawnService>().FromInstance(_enemySpawnService).AsSingle();
+            
             container.BindInterfacesAndSelfTo<DroppingLootService>().AsSingle();
             
             

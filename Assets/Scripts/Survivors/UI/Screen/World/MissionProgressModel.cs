@@ -19,7 +19,7 @@ namespace Survivors.UI.Screen.World
 
         public MissionProgressModel(LevelMissionConfig levelConfig, 
             IReadOnlyReactiveProperty<int> killsCount, 
-            IReadOnlyReactiveProperty<float> playTime)
+            IReadOnlyReactiveProperty<float> spawnTime)
         {
             _levelConfig = levelConfig;
             
@@ -30,7 +30,7 @@ namespace Survivors.UI.Screen.World
                     InitForKillCountMission(killsCount);
                     break;
                 case LevelMissionType.Time:
-                    InitForTimeMission(playTime);
+                    InitForTimeMission(spawnTime);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException($"Unexpected mission type := {MissionType}");
@@ -44,11 +44,11 @@ namespace Survivors.UI.Screen.World
             LevelProgress = killsCount.Select(count => (float) count / _levelConfig.KillCount).ToReactiveProperty();
         }
 
-        private void InitForTimeMission(IReadOnlyReactiveProperty<float> playTime)
+        private void InitForTimeMission(IReadOnlyReactiveProperty<float> spawnTime)
         {
             LabelId = SECONDS_LOCALIZATION_ID;
-            LabelContent = playTime.Select(time => (_levelConfig.Time - time).ToString()).ToReactiveProperty();
-            LevelProgress = playTime.Select(time => time / _levelConfig.Time).ToReactiveProperty();
+            LabelContent = spawnTime.Select(time => (_levelConfig.Time - time).ToString()).ToReactiveProperty();
+            LevelProgress = spawnTime.Select(time => time / _levelConfig.Time).ToReactiveProperty();
         }
     }
 }

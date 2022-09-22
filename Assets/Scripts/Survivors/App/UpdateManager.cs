@@ -12,13 +12,21 @@ namespace Survivors.App
     
         private List<Action> _customUpdates;
         private List<Action> _customFixedUpdates;
-        private List<Action> _customLateUpdates;
+        private List<Action> _customLateUpdates;     
+        
+        private List<Action> _prepareUpdates;
+        private List<Action> _prepareFixedUpdates;
+        private List<Action> _prepareLateUpdates;
     
         private void Awake()
         {
             _customUpdates = new List<Action>(_reservedObjectsCount);
             _customFixedUpdates = new List<Action>(_reservedObjectsCount);
             _customLateUpdates = new List<Action>(_reservedObjectsCount);
+
+            _prepareUpdates = new List<Action>();
+            _prepareFixedUpdates = new List<Action>();
+            _prepareLateUpdates = new List<Action>();
             
             if (_lockFrameRate)
             {
@@ -73,8 +81,7 @@ namespace Survivors.App
 
         private void InvokeAll(List<Action> actions)
         {
-            foreach (var action in actions)
-            {
+            foreach (var action in actions) {
                 action.Invoke();
             }
         }

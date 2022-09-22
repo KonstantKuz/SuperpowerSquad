@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Survivors.ScopeUpdatable.Timer
+namespace Survivors.Scope.Timer
 {
     public interface ITimer
     { 

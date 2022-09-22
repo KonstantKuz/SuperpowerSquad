@@ -50,7 +50,7 @@ namespace Survivors.UI.Screen.World
 
         private void InitProgressView()
         {
-            var model = new MissionProgressModel(_sessionService.LevelConfig, _sessionService.Kills, _sessionService.PlayTime);
+            var model = new MissionProgressModel(_sessionService.LevelConfig, _sessionService.Kills, _sessionService.SpawnTime);
             _missionProgressView.Init(model);
         }
 

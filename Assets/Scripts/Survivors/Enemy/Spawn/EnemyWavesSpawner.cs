@@ -7,17 +7,16 @@ using SuperMaxim.Messaging;
 using Survivors.Enemy.Spawn.Config;
 using Survivors.Enemy.Spawn.PlaceProviders;
 using Survivors.Location;
-using Survivors.ScopeUpdatable;
-using Survivors.ScopeUpdatable.Coroutine;
+using Survivors.Scope;
+using Survivors.Scope.Coroutine;
 using Survivors.Session.Messages;
-using Survivors.Session.Service;
 using Survivors.Units.Enemy;
 using Survivors.Units.Enemy.Config;
 using Survivors.Units.Service;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
-using WaitForSeconds = Survivors.ScopeUpdatable.WaitConditions.WaitForSeconds;
+using WaitForSeconds = Survivors.Scope.WaitConditions.WaitForSeconds;
 
 namespace Survivors.Enemy.Spawn
 {
@@ -34,24 +33,28 @@ namespace Survivors.Enemy.Spawn
         [Inject] private UnitFactory _unitFactory;
         [Inject] private IMessenger _messenger;
         [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
-        [Inject] private EnemyWavesConfig _enemyWavesConfig;  
-        [Inject] private SessionService _sessionService;
+        [Inject] private EnemyWavesConfig _enemyWavesConfig;
         
+        private IScopeUpdatable _scopeUpdatable;
         private ISpawnPlaceProvider _placeProvider;
         private List<EnemyWaveConfig> _waves;
         private ICoroutine _spawnCoroutine;
         private SpawnerDebugger _spawnerDebugger;
         
-        
         private SpawnerDebugger Debugger => _spawnerDebugger ??= gameObject.AddComponent<SpawnerDebugger>();
 
-        private IScopeUpdatable ScopeUpdatable => _sessionService.ScopeUpdatable;
-        private ICoroutineRunner CoroutineRunner => ScopeUpdatable.CoroutineRunner;
+
+        private ICoroutineRunner CoroutineRunner => _scopeUpdatable.CoroutineRunner;
 
         private void Awake()
         {
             ENEMY_LAYER = LayerMask.NameToLayer(ENEMY_LAYER_NAME);
             _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
+        }
+
+        public void Init(IScopeUpdatable scopeUpdatable)
+        {
+            _scopeUpdatable = scopeUpdatable;
         }
 
         public void StartSpawn()
@@ -60,8 +63,6 @@ namespace Survivors.Enemy.Spawn
             InitPlaceProvider();
             var orderedConfigs = _enemyWavesConfig.EnemySpawns.OrderBy(it => it.SpawnTime);
             _waves = new List<EnemyWaveConfig>(orderedConfigs);
-            
-            Stop();
             
             _spawnCoroutine = CoroutineRunner.StartCoroutine(SpawnWaves());
         }
@@ -80,7 +81,7 @@ namespace Survivors.Enemy.Spawn
             var currentTime = 0;
             foreach (var wave in _waves)
             {
-                yield return new WaitForSeconds(ScopeUpdatable.Timer, wave.SpawnTime - currentTime);
+                yield return new WaitForSeconds(_scopeUpdatable.Timer, wave.SpawnTime - currentTime);
                 currentTime = wave.SpawnTime; 
                 SpawnNextWave(wave);
             } 

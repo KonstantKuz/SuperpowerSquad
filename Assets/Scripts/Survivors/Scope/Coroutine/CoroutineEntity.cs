@@ -1,7 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace Survivors.ScopeUpdatable.Coroutine
+namespace Survivors.Scope.Coroutine
 {
     public class CoroutineEntity : IEnumerator, ICoroutine
     {
