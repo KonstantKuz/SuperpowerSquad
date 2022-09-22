@@ -7,16 +7,17 @@ using SuperMaxim.Messaging;
 using Survivors.Enemy.Spawn.Config;
 using Survivors.Enemy.Spawn.PlaceProviders;
 using Survivors.Location;
+using Survivors.ScopeUpdatable;
+using Survivors.ScopeUpdatable.Coroutine;
 using Survivors.Session.Messages;
 using Survivors.Session.Service;
-using Survivors.Session.Timer;
 using Survivors.Units.Enemy;
 using Survivors.Units.Enemy.Config;
 using Survivors.Units.Service;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
-using WaitForSeconds = Survivors.Session.Timer.WaitForSeconds;
+using WaitForSeconds = Survivors.ScopeUpdatable.WaitConditions.WaitForSeconds;
 
 namespace Survivors.Enemy.Spawn
 {
@@ -38,13 +39,14 @@ namespace Survivors.Enemy.Spawn
         
         private ISpawnPlaceProvider _placeProvider;
         private List<EnemyWaveConfig> _waves;
-        private CoroutineEntity _spawnCoroutine;
+        private ICoroutine _spawnCoroutine;
         private SpawnerDebugger _spawnerDebugger;
         
         
         private SpawnerDebugger Debugger => _spawnerDebugger ??= gameObject.AddComponent<SpawnerDebugger>();
 
         private IScopeUpdatable ScopeUpdatable => _sessionService.ScopeUpdatable;
+        private ICoroutineRunner CoroutineRunner => ScopeUpdatable.CoroutineRunner;
 
         private void Awake()
         {
@@ -61,7 +63,7 @@ namespace Survivors.Enemy.Spawn
             
             Stop();
             
-            _spawnCoroutine = ScopeUpdatable.CoroutineRunner.StartCoroutine(SpawnWaves());
+            _spawnCoroutine = CoroutineRunner.StartCoroutine(SpawnWaves());
         }
         
         private void InitPlaceProvider()
@@ -166,8 +168,9 @@ namespace Survivors.Enemy.Spawn
         private void Stop()
         {
             if (_spawnCoroutine != null) {
-                ScopeUpdatable.CoroutineRunner.StopCoroutine(_spawnCoroutine);
+                CoroutineRunner.StopCoroutine(_spawnCoroutine);
             }
+            _spawnCoroutine = null;
         }
         private void OnDestroy()
         {

@@ -1,4 +1,7 @@
-﻿namespace Survivors.Session.Timer
+﻿using Survivors.ScopeUpdatable.Coroutine;
+using Survivors.ScopeUpdatable.Timer;
+
+namespace Survivors.ScopeUpdatable
 {
     public interface IScopeUpdatable
     {

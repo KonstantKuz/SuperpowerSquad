@@ -6,21 +6,20 @@ using Feofun.Extension;
 using Logger.Extension;
 using SuperMaxim.Messaging;
 using Survivors.Enemy.Spawn.Config;
+using Survivors.ScopeUpdatable;
+using Survivors.ScopeUpdatable.Coroutine;
 using Survivors.Session.Messages;
 using Survivors.Session.Service;
-using Survivors.Session.Timer;
 using Survivors.Units.Enemy.Config;
 using UnityEngine;
 using Zenject;
 using Random = UnityEngine.Random;
-using WaitForSeconds = Survivors.Session.Timer.WaitForSeconds;
+using WaitForSeconds = Survivors.ScopeUpdatable.WaitConditions.WaitForSeconds;
 
 namespace Survivors.Enemy.Spawn
 {
     public class EnemyHpsSpawner : MonoBehaviour, IEnemySpawner
     {
-        private CoroutineEntity _spawnCoroutine;
-
         [Inject]
         private EnemyWavesSpawner _enemyWavesSpawner;
         [Inject]
@@ -33,6 +32,8 @@ namespace Survivors.Enemy.Spawn
         private StringKeyedConfigCollection<SpawnableEnemyConfig> _spawnableEnemyConfigs;
         [Inject]
         private SessionService _sessionService;
+        
+        private ICoroutine _spawnCoroutine;
         
         private IScopeUpdatable ScopeUpdatable => _sessionService.ScopeUpdatable;
         private ICoroutineRunner CoroutineRunner => ScopeUpdatable.CoroutineRunner;
@@ -66,7 +67,7 @@ namespace Survivors.Enemy.Spawn
             var time = 0.0f;
             while (true) {
                 var timeToNextWave = Random.Range(_config.MinInterval, _config.MaxInterval);
-                yield return new WaitForSeconds(new UpdatableTimer(), timeToNextWave);
+                yield return new WaitForSeconds(ScopeUpdatable.Timer, timeToNextWave);
                 time += timeToNextWave;
                 var health = timeToNextWave * (_config.StartingHPS + _config.HPSSpeed * time);
                 SpawnWave(health);

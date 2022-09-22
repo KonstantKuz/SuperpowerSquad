@@ -9,10 +9,10 @@ using Survivors.Enemy.Spawn;
 using Survivors.Location;
 using Survivors.Player.Progress.Model;
 using Survivors.Player.Progress.Service;
+using Survivors.ScopeUpdatable;
 using Survivors.Session.Config;
 using Survivors.Session.Messages;
 using Survivors.Session.Model;
-using Survivors.Session.Timer;
 using Survivors.Squad;
 using Survivors.UI.Dialog.ReviveDialog;
 using Survivors.Units;
@@ -43,7 +43,7 @@ namespace Survivors.Session.Service
         [Inject] private DialogManager _dialogManager;
 
         private CompositeDisposable _disposable;
-        private ScopeUpdatable _scopeUpdatable;
+        private ScopeUpdatable.ScopeUpdatable _scopeUpdatable;
 
         private PlayerProgress PlayerProgress => _playerProgressService.Progress;
         public Model.Session Session => _repository.Require();

@@ -2,8 +2,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using ModestTree;
+using Survivors.ScopeUpdatable.Timer;
 
-namespace Survivors.Session.Timer
+namespace Survivors.ScopeUpdatable.Coroutine
 {
     public class CoroutineRunner : IDisposable, ICoroutineRunner
     {
@@ -14,17 +15,18 @@ namespace Survivors.Session.Timer
             _timer = timer;
             _timer.OnUpdate += OnUpdate;
         }
-        public CoroutineEntity StartCoroutine(IEnumerator coroutine)
+        public ICoroutine StartCoroutine(IEnumerator coroutine)
         {
             var coroutineEntity = new CoroutineEntity(coroutine);
             _coroutines.Add(coroutineEntity);
             return coroutineEntity;
         }
 
-        public void StopCoroutine(CoroutineEntity coroutine)
+        public void StopCoroutine(ICoroutine coroutine)
         {
-            coroutine.Stop();
-            _coroutines.Remove(coroutine);
+            var coroutineEntity = (CoroutineEntity) coroutine;
+            coroutineEntity.Stop();
+            _coroutines.Remove(coroutineEntity);
         }
 
         public void Dispose() => _timer.OnUpdate -= OnUpdate;

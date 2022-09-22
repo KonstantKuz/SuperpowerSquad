@@ -1,9 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace Survivors.Session.Timer
+namespace Survivors.ScopeUpdatable.Coroutine
 {
-    public class CoroutineEntity : IEnumerator
+    public class CoroutineEntity : IEnumerator, ICoroutine
     {
         private readonly Stack<IEnumerator> _enumerators = new Stack<IEnumerator>();
         
