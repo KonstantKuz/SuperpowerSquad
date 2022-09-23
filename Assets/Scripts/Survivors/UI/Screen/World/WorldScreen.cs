@@ -14,9 +14,11 @@ using Survivors.Session.Service;
 using Survivors.UI.Dialog.PauseDialog;
 using Survivors.UI.Dialog.StartUnitDialog;
 using Survivors.UI.Dialog.StartUnitDialog.Model;
+using Survivors.UI.Hud.Unit;
 using Survivors.UI.Screen.Debriefing;
 using Survivors.UI.Screen.Debriefing.Model;
 using Survivors.Units;
+using Survivors.Units.Component;
 using Survivors.Units.Enemy.Config;
 using Survivors.Units.Messages;
 using Survivors.Upgrade;
@@ -36,6 +38,7 @@ namespace Survivors.UI.Screen.World
 
         [SerializeField] private MissionProgressView _missionProgressView;
         [SerializeField] private GameObject _squadProgressView;
+        [SerializeField] private HealthBarView _bossHealthBarView;
         [SerializeField] private float _afterSessionDelay = 2;
 
         private CompositeDisposable _disposable;
@@ -83,14 +86,17 @@ namespace Survivors.UI.Screen.World
             {
                 return;
             }
-            SetActiveProgressView(false);
-            unit.GameObject.OnDisableAsObservable().Subscribe(it => SetActiveProgressView(true)).AddTo(_disposable);
+            var healthModel = new HealthBarModel(unit.GameObject.GetComponent<IHealthBarOwner>());
+            _bossHealthBarView.Init(healthModel);
+            SwitchToBossHealthBar(true);
+            unit.GameObject.OnDisableAsObservable().Subscribe(it => SwitchToBossHealthBar(false)).AddTo(_disposable);
         }
 
-        private void SetActiveProgressView(bool value)
+        private void SwitchToBossHealthBar(bool value)
         {
-            _missionProgressView.gameObject.SetActive(value);
-            _squadProgressView.gameObject.SetActive(value);
+            _bossHealthBarView.gameObject.SetActive(value);
+            _missionProgressView.gameObject.SetActive(!value);
+            _squadProgressView.gameObject.SetActive(!value);
         }
         
         private void OnChangeStartUnit(StartUnitSelection startUnitSelection)

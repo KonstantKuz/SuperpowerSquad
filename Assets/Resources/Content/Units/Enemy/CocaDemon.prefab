@@ -27,7 +27,6 @@ GameObject:
   - component: {fileID: 1265837359138098205}
   - component: {fileID: 3651550046723161448}
   - component: {fileID: 2853900473995928057}
-  - component: {fileID: 6483858930705055948}
   m_Layer: 6
   m_Name: CocaDemon
   m_TagString: Untagged
@@ -312,21 +311,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animatorBase: {fileID: 1412917646764468633}
---- !u!114 &6483858930705055948
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2047533565645016285}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d282ddb29b042869a0326cef4a7d69f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _hudPrefab: {fileID: 2937693495648363264, guid: dc555ba73e4296442a66f4c5e64a90ba, type: 3}
-  _hudPlace: {fileID: 4930251924234054188}
-  _hudHeightOffset: 1
 --- !u!1 &3753810788131279791
 GameObject:
   m_ObjectHideFlags: 0
