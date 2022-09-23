@@ -400,9 +400,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8746036833993048138}
+  - component: {fileID: 1866441843583567248}
+  - component: {fileID: 8595453611360376293}
   - component: {fileID: 3088611838475355998}
   - component: {fileID: 1873516484607207762}
-  - component: {fileID: 1866441843583567248}
   - component: {fileID: 6484450709119096639}
   - component: {fileID: 1913784875}
   - component: {fileID: 5448434747336927382}
@@ -433,6 +434,34 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1866441843583567248
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8746036833993048137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8aac26ad0ca244c2a4dc536a25095bd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _world: {fileID: 3088611838475355998}
+  _worldEventFactory: {fileID: 1913784875}
+  _frustrumCullingSystem: {fileID: 9083799811716366257}
+--- !u!114 &8595453611360376293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8746036833993048137}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62d716fd75a149b8ae9fb723b26fb51f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _enemyWavesSpawner: {fileID: 1873516484607207762}
 --- !u!114 &3088611838475355998
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -462,22 +491,8 @@ MonoBehaviour:
   _angleAttemptCount: 3
   _rangeAttemptCount: 3
   _minOutOfViewOffset: 3
---- !u!114 &1866441843583567248
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8746036833993048137}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8aac26ad0ca244c2a4dc536a25095bd6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _world: {fileID: 3088611838475355998}
-  _enemyWavesSpawner: {fileID: 1873516484607207762}
-  _worldEventFactory: {fileID: 1913784875}
-  _frustrumCullingSystem: {fileID: 9083799811716366257}
+  _insideViewOffset: 5
+  _onEdgeViewOffset: 0.1
 --- !u!114 &6484450709119096639
 MonoBehaviour:
   m_ObjectHideFlags: 0

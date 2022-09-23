@@ -37,7 +37,7 @@ namespace Survivors.Enemy.Spawn.Spawners
         [Inject] private IMessenger _messenger;
         [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
         [Inject] private EnemyWavesConfig _enemyWavesConfig;
-        [Inject] private ConfigCollection<string, EnemyUnitConfig> _enemyUnitConfig;
+ 
         private IScopeUpdatable _scopeUpdatable;
         private ISpawnPlaceProvider _placeProvider;
         private List<EnemyWaveConfig> _waves;
@@ -63,7 +63,7 @@ namespace Survivors.Enemy.Spawn.Spawners
             Stop();
             InitPlaceProvider();
             var orderedConfigs = _enemyWavesConfig.EnemySpawns.OrderBy(it => it.SpawnTime)
-                                                  .Where(it => !_enemyUnitConfig.Get(it.EnemyId).IsBoss);
+                                                  .Where(it => !_enemyUnitConfigs.Get(it.EnemyId).IsBoss);
             _waves = new List<EnemyWaveConfig>(orderedConfigs);
             
             _spawnCoroutine = CoroutineRunner.StartCoroutine(SpawnWaves());

@@ -20,16 +20,11 @@ namespace Survivors.Enemy.Spawn.Spawners
 {
     public class BossSpawner : IEnemySpawner
     {
-        [Inject]
-        private EnemyWavesConfig _enemyWavesConfig;
-        [Inject]
-        private ConfigCollection<string, EnemyUnitConfig> _enemyUnitConfig;
-        [Inject]
-        private UnitService _unitService;      
-        [Inject]
-        private EnemyWavesSpawner _enemyWavesSpawner;      
-        [Inject]
-        private IMessenger _messenger;
+        [Inject] private EnemyWavesConfig _enemyWavesConfig;
+        [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
+        [Inject] private UnitService _unitService;      
+        [Inject] private EnemyWavesSpawner _enemyWavesSpawner;      
+        [Inject] private IMessenger _messenger;
         
         private IScopeUpdatable _scopeUpdatable;
         private ICoroutine _spawnCoroutine;
@@ -47,7 +42,7 @@ namespace Survivors.Enemy.Spawn.Spawners
         {
             Stop();
             var bossSpawns = _enemyWavesConfig.EnemySpawns.OrderBy(it => it.SpawnTime)
-                                              .Where(it => _enemyUnitConfig.Get(it.EnemyId).IsBoss)
+                                              .Where(it => _enemyUnitConfigs.Get(it.EnemyId).IsBoss)
                                               .ToList();
             if (bossSpawns.IsEmpty()) {
                 return;
