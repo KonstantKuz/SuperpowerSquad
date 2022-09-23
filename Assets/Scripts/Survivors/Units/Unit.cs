@@ -1,7 +1,7 @@
 ﻿using System;
-using Survivors.Extension;
 using EasyButtons;
 using Feofun.Components;
+using Feofun.Extension;
 using Feofun.Modifiers;
 using JetBrains.Annotations;
 using Logger.Extension;

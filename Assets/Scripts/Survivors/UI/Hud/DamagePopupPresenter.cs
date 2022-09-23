@@ -2,6 +2,7 @@
 using Feofun.UI;
 using SuperMaxim.Core.Extensions;
 using SuperMaxim.Messaging;
+using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Session.Messages;
 using Survivors.Units;
 using Survivors.Units.Messages;
@@ -22,6 +23,7 @@ namespace Survivors.UI.Hud
         [Inject] private IMessenger _messenger;
         [Inject] private UnitService _unitService;
         [Inject] private UIRoot _uiRoot;
+        [Inject] private ObjectPoolFactory _objectPoolFactory;
         
         private void OnEnable()
         {
@@ -48,9 +50,11 @@ namespace Survivors.UI.Hud
 
         public void SpawnPopup(Units.Unit unit, int takenDamage)
         {
-            var popup = Instantiate(_popupPrefab, _uiRoot.HudContainer);
+            var popup = _objectPoolFactory.Create<DamagePopup>(_popupPrefab.gameObject.name, _popupPrefab.gameObject, _uiRoot.HudContainer);
             popup.Init(takenDamage.ToString(), unit.SelfTarget.Center.position);
-            popup.PlayPopup().ToDisposable(true).AddTo(_disposable);
+            var popupTween = popup.PlayPopup();
+            popupTween.onComplete = () => _objectPoolFactory.Destroy(popup.gameObject);
+            popupTween.ToDisposable(true).AddTo(_disposable);
         }
 
         private void OnDisable()

@@ -1,5 +1,5 @@
 ﻿using System;
-using Survivors.Extension;
+using Feofun.Extension;
 using Survivors.Units.Component.Health;
 using UnityEngine;
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
+using Feofun.Extension;
 using Survivors.Enemy.Spawn.Config;
-using Survivors.Extension;
 using UnityEngine;
 
 namespace Survivors.Enemy.Spawn.PlaceProviders

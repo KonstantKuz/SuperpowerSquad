@@ -1,5 +1,5 @@
 ﻿using Feofun.Components;
-using Survivors.Extension;
+using Feofun.Extension;
 using Survivors.Location;
 using Survivors.Units.Component.TargetSearcher;
 using Survivors.Units.Enemy.Model;

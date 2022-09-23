@@ -1,5 +1,5 @@
 using System.Collections;
-using Survivors.Extension;
+using Feofun.Extension;
 using Survivors.Location;
 using Survivors.Location.ObjectFactory;
 using Survivors.Location.ObjectFactory.Factories;

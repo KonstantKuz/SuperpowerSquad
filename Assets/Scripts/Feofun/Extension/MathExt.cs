@@ -1,7 +1,7 @@
 ﻿
 using UnityEngine;
 
-namespace Survivors.Extension
+namespace Feofun.Extension
 {
     public static class MathExt
     {

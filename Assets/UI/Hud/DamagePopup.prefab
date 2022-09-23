@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5576373749928778440}
   - component: {fileID: 4908704962530437816}
   - component: {fileID: 2037988915824908903}
+  - component: {fileID: 3284128904399405747}
   m_Layer: 0
   m_Name: DamagePopup
   m_TagString: Untagged
@@ -65,6 +66,24 @@ MonoBehaviour:
   _maxScaleTimeRatio: 0.5
   _fadeTimeRatio: 0.3
   _text: {fileID: 9222630589953843761}
+--- !u!114 &3284128904399405747
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6601604778592222368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6e82e6f051d748b4b639f27452a4ae87, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _initialCapacity: 10
+  _detectInitialCapacityShortage: 1
+  _maxCapacity: 3000
+  _sizeIncrementStep: 1
+  _preparePoolOnInitScene: 0
+  _poolId: DamagePopup
 --- !u!1 &7934746142864478301
 GameObject:
   m_ObjectHideFlags: 0

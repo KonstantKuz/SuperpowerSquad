@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using Feofun.Extension;
-using Survivors.Extension;
 using Survivors.Location;
 using Survivors.Location.ObjectFactory;
 using Survivors.Location.ObjectFactory.Factories;
