@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using ModestTree;
+using SuperMaxim.Core.Extensions;
 using Survivors.Scope.Timer;
 
 namespace Survivors.Scope.Coroutine
@@ -11,11 +12,13 @@ namespace Survivors.Scope.Coroutine
     {
         private readonly ISet<CoroutineEntity> _coroutines = new HashSet<CoroutineEntity>();
         private readonly ITimer _timer;
+
         public CoroutineRunner(ITimer timer)
         {
             _timer = timer;
             _timer.OnUpdate += OnUpdate;
         }
+
         public ICoroutine StartCoroutine(IEnumerator coroutine)
         {
             var coroutineEntity = new CoroutineEntity(coroutine);
@@ -30,7 +33,13 @@ namespace Survivors.Scope.Coroutine
             _coroutines.Remove(coroutineEntity);
         }
 
-        public void Dispose() => _timer.OnUpdate -= OnUpdate;
+        public void Dispose()
+        {
+            _timer.OnUpdate -= OnUpdate;
+            _coroutines.ForEach(it => it.Stop());
+            _coroutines.Clear();
+        }
+
         private void OnUpdate()
         {
             if (_coroutines.IsEmpty()) {

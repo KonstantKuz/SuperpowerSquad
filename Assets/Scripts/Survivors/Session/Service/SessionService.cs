@@ -59,7 +59,7 @@ namespace Survivors.Session.Service
             Dispose();
             _unitService.OnEnemyUnitDeath += OnEnemyUnitDeath;
             ResetKills();
-            ResetSpawn();
+            ResetSpawnTime();
             _disposable = new CompositeDisposable();
             Create();
         }
@@ -121,7 +121,7 @@ namespace Survivors.Session.Service
         }
 
         private void ResetKills() => _kills.Value = 0;
-        private void ResetSpawn() => _spawnTime.Value = 0;
+        private void ResetSpawnTime() => _spawnTime.Value = 0;
 
         private void OnEnemyUnitDeath(IUnit unit, DeathCause deathCause)
         {
