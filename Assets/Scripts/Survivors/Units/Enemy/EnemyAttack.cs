@@ -1,5 +1,4 @@
-﻿using System;
-using Feofun.Components;
+﻿using Feofun.Components;
 using JetBrains.Annotations;
 using Logger.Extension;
 using Survivors.Extension;
@@ -13,7 +12,7 @@ using UnityEngine;
 namespace Survivors.Units.Enemy
 {
     [RequireComponent(typeof(EnemyAi))]
-    public class EnemyAttack : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent
+    public class EnemyAttack : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent, IAttack
     {
         private EnemyAi _enemyAi;
         private BaseWeapon _weapon;
@@ -26,6 +25,8 @@ namespace Survivors.Units.Enemy
         private WeaponAnimationHandler _weaponAnimationHandler;
 
         private bool HasWeaponAnimationHandler => _weaponAnimationHandler != null;
+        public bool CanAttack => _enemyAi.CurrentTarget != null && 
+                                 _enemyAi.DistanceToTarget <= _attackModel.AttackDistance;
         
         public void Init(IUnit unit)
         {
@@ -53,15 +54,9 @@ namespace Survivors.Units.Enemy
             _weaponTimer.OnTick();
         }
 
-        public bool CanAttack()
-        {
-            return _enemyAi.CurrentTarget != null && 
-                   _enemyAi.DistanceToTarget <= _attackModel.AttackDistance;
-        }
-        
         private void Attack()
         {
-            if (!CanAttack()) {
+            if (!CanAttack) {
                 return;
             }
             enemyAnimationWrapper.PlayAttack();
@@ -72,7 +67,7 @@ namespace Survivors.Units.Enemy
 
         private void Fire()
         {
-            if (!CanAttack()) {
+            if (!CanAttack) {
                 return;
             }
             _weapon.Fire(_enemyAi.CurrentTarget, _projectileParams, DoDamage);

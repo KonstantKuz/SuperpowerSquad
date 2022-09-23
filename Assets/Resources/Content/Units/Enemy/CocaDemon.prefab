@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 3006564440288677136}
   - component: {fileID: 7606489921268461171}
   - component: {fileID: 817811970232612325}
-  - component: {fileID: 7586013564207719466}
+  - component: {fileID: 7572638229425917206}
   - component: {fileID: 6828866866986922698}
   - component: {fileID: 4491497861294361367}
   - component: {fileID: 8111980166562719412}
@@ -143,7 +143,7 @@ MonoBehaviour:
   _agentRadiusNear: 0.4
   _agentDistanceAfar: 10
   _agentDistanceNear: 2
---- !u!114 &7586013564207719466
+--- !u!114 &7572638229425917206
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -152,7 +152,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2047533565645016285}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 70fa05843c1c45d9a3e4d8b411bf6adc, type: 3}
+  m_Script: {fileID: 11500000, guid: 3fcbecef3dca4e80a9310e86d5b7ea96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &6828866866986922698
@@ -379,7 +379,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4352947385628070658}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 3.12, z: 2.2}
+  m_LocalPosition: {x: 0, y: 1.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 7807515448616251854}
@@ -394,7 +394,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7807515448616251854}
-  - component: {fileID: 898774728298080932}
+  - component: {fileID: 514084776896910437}
   m_Layer: 6
   m_Name: Weapon
   m_TagString: Untagged
@@ -417,7 +417,7 @@ Transform:
   m_Father: {fileID: 3102595488552592063}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &898774728298080932
+--- !u!114 &514084776896910437
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -426,14 +426,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 8217310743306618948}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 88e047fd1ac7403baecbb859c7f5710c, type: 3}
+  m_Script: {fileID: 11500000, guid: 1042e58fc9f3436f9735d6dd02137deb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _ammo: {fileID: 8327978116598172927, guid: 6a78c2ded359b8f4686b5ec6629e4e78, type: 3}
   _barrel: {fileID: 5052820678281234989}
-  _aimInXZPlane: 1
-  _supportShotCount: 0
-  _ammo: {fileID: 460837788804016623, guid: 6a78c2ded359b8f4686b5ec6629e4e78, type: 3}
-  _angleBetweenShots: 0
 --- !u!114 &1412917646764468633
 MonoBehaviour:
   m_ObjectHideFlags: 0

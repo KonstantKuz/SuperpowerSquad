@@ -12,6 +12,8 @@ using Survivors.Shop.Config;
 using Survivors.Squad.Config;
 using Survivors.Units.Enemy.Config;
 using Survivors.Units.Player.Config;
+using Survivors.Units.Weapon;
+using Survivors.Units.Weapon.FormationWeapon;
 using Survivors.Upgrade.Config;
 using Survivors.Upgrade.UpgradeSelection.Config;
 using Survivors.WorldEvents.Config;
@@ -36,6 +38,7 @@ namespace Survivors.App.Config
                 .RegisterStringKeyedCollection<SpawnableEnemyConfig>(Configs.SPAWNABLE_ENEMIES)
                 .RegisterStringKeyedCollection<PlayerUnitConfig>(Configs.PLAYER_UNIT)
                 .RegisterStringKeyedCollection<EnemyUnitConfig>(Configs.ENEMY_UNIT)
+                .RegisterCollection<ProjectileFormationType, BossAttackConfig>(Configs.BOSS_ATTACK)
                 .RegisterStringKeyedCollection<SquadLevelConfig>(Configs.SQUAD_LEVEL)
                 .RegisterStringKeyedCollection<ParameterUpgradeConfig>(Configs.MODIFIERS, true)            
                 .RegisterStringKeyedCollection<UpgradeProductConfig>(Configs.META_UPGRADES_SHOP)

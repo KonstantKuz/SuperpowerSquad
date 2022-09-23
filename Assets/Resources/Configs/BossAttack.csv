@@ -1,0 +1,4 @@
+Id,Count,Interval,Damage,ShotCount,DamageRadius,ProjectileSpeed
+Volley,3,2,30,3,1,7
+Wave,4,0.5,20,12,1,7
+Wedge,2,2,20,7,1,7
