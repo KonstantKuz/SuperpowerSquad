@@ -17,8 +17,10 @@ namespace Survivors.UI.Screen.World.WorldEvent
         public void Init(AlertViewModel model)
         {
             Dispose();
-
-            _textLocalization.SetTextFormatted(model.Text);
+            if (model.Text != null) {
+                _textLocalization.SetTextFormatted(model.Text);
+            }
+            
             DisableText();
             gameObject.SetActive(true);
             

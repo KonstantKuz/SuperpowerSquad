@@ -22,7 +22,7 @@ namespace Survivors.UI.Screen.World.Boss
 
         private void OnShowingBossAlert(BossAlertShowingMessage evn)
         {
-            var model = new AlertViewModel(LocalizableText.Create("Boss assault"), evn.ShowDuration);
+            var model = new AlertViewModel(evn.ShowDuration);
             _alertView.Init(model);
         }
         public void OnDisable()

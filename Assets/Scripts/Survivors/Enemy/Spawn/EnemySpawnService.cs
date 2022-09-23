@@ -54,6 +54,7 @@ namespace Survivors.Enemy.Spawn
             _scopeUpdatable.Reset();
 
             _enemyWavesSpawner.StartSpawn();
+            _bossSpawner.StartSpawn();
             if (_constantsConfig.EnemyHpsSpawnerEnabled) {
                 _enemyHpsSpawner.StartSpawn();
             }

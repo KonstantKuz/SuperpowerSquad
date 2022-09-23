@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using Feofun.Config;
 using ModestTree;
-using SuperMaxim.Core.Extensions;
 using SuperMaxim.Messaging;
 using Survivors.Enemy.Messages;
 using Survivors.Enemy.Spawn.Config;
@@ -20,6 +19,7 @@ namespace Survivors.Enemy.Spawn.Spawners
 {
     public class BossSpawner : IEnemySpawner
     {
+        private const float ALERT_SHOWING_DURATION = 5f;
         [Inject] private EnemyWavesConfig _enemyWavesConfig;
         [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
         [Inject] private UnitService _unitService;      
@@ -55,9 +55,9 @@ namespace Survivors.Enemy.Spawn.Spawners
             var currentTime = 0;
             foreach (var bossSpawn in bossSpawns)
             {
-                yield return new WaitForSeconds(ScopeUpdatable.Timer, bossSpawn.SpawnTime - currentTime - 5f);
-                _messenger.Publish(new BossAlertShowingMessage(5));
-                yield return new WaitForSeconds(ScopeUpdatable.Timer, 5f);
+                yield return new WaitForSeconds(ScopeUpdatable.Timer, bossSpawn.SpawnTime - currentTime - ALERT_SHOWING_DURATION);
+                _messenger.Publish(new BossAlertShowingMessage(ALERT_SHOWING_DURATION));
+                yield return new WaitForSeconds(ScopeUpdatable.Timer, ALERT_SHOWING_DURATION);
                 DeleteAllEnemy();
                 SpawnBoss(bossSpawn);
                 currentTime = bossSpawn.SpawnTime;
@@ -68,7 +68,7 @@ namespace Survivors.Enemy.Spawn.Spawners
         private void DeleteAllEnemy()
         {
             ScopeUpdatable.Pause = true;
-            _unitService.GetAllUnits(UnitType.ENEMY).ForEach(it => {
+            _unitService.GetAllUnits(UnitType.ENEMY).ToList().ForEach(it => {
                 it.Kill(DeathCause.Removed);
             });
             
