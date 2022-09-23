@@ -606,27 +606,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5135331769656174514, guid: b337ce0714564fa4e89ac44e7b1e08c0, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0.7466522
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5135331769656174514, guid: b337ce0714564fa4e89ac44e7b1e08c0, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0.86366683
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5135331769656174514, guid: b337ce0714564fa4e89ac44e7b1e08c0, type: 3}
       propertyPath: m_AnchorMin.x
-      value: 0.25455558
+      value: 0.5
       objectReference: {fileID: 0}
     - target: {fileID: 5135331769656174514, guid: b337ce0714564fa4e89ac44e7b1e08c0, type: 3}
       propertyPath: m_AnchorMin.y
-      value: 0.78427094
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5135331769656174514, guid: b337ce0714564fa4e89ac44e7b1e08c0, type: 3}
       propertyPath: m_SizeDelta.x
-      value: -2
+      value: 530
       objectReference: {fileID: 0}
     - target: {fileID: 5135331769656174514, guid: b337ce0714564fa4e89ac44e7b1e08c0, type: 3}
       propertyPath: m_SizeDelta.y
-      value: -3
+      value: 150
       objectReference: {fileID: 0}
     - target: {fileID: 5135331769656174514, guid: b337ce0714564fa4e89ac44e7b1e08c0, type: 3}
       propertyPath: m_LocalPosition.x
@@ -658,11 +658,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5135331769656174514, guid: b337ce0714564fa4e89ac44e7b1e08c0, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: -1.079956
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5135331769656174514, guid: b337ce0714564fa4e89ac44e7b1e08c0, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 5.5
+      value: -315
       objectReference: {fileID: 0}
     - target: {fileID: 5135331769656174514, guid: b337ce0714564fa4e89ac44e7b1e08c0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -679,10 +679,6 @@ PrefabInstance:
     - target: {fileID: 7595574091857187859, guid: b337ce0714564fa4e89ac44e7b1e08c0, type: 3}
       propertyPath: m_Name
       value: BossAlert
-      objectReference: {fileID: 0}
-    - target: {fileID: 7595574091857187859, guid: b337ce0714564fa4e89ac44e7b1e08c0, type: 3}
-      propertyPath: m_IsActive
-      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b337ce0714564fa4e89ac44e7b1e08c0, type: 3}

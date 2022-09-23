@@ -19,7 +19,7 @@ namespace Survivors.Enemy.Spawn.Spawners
 {
     public class BossSpawner : IEnemySpawner
     {
-        private const float ALERT_SHOWING_DURATION = 5f;
+        private const float ALERT_SHOWING_DURATION = 4f;
         [Inject] private EnemyWavesConfig _enemyWavesConfig;
         [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
         [Inject] private UnitService _unitService;      
