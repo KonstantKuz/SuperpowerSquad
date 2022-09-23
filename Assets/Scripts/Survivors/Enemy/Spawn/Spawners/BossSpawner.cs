@@ -55,9 +55,9 @@ namespace Survivors.Enemy.Spawn.Spawners
             var currentTime = 0;
             foreach (var bossSpawn in bossSpawns)
             {
-                yield return new WaitForSeconds(ScopeUpdatable.Timer, bossSpawn.SpawnTime - currentTime - ALERT_SHOWING_DURATION);
+                yield return new WaitForSeconds(bossSpawn.SpawnTime - currentTime - ALERT_SHOWING_DURATION);
                 _messenger.Publish(new BossAlertShowingMessage(ALERT_SHOWING_DURATION));
-                yield return new WaitForSeconds(ScopeUpdatable.Timer, ALERT_SHOWING_DURATION);
+                yield return new WaitForSeconds(ALERT_SHOWING_DURATION);
                 DeleteAllEnemy();
                 SpawnBoss(bossSpawn);
                 currentTime = bossSpawn.SpawnTime;
@@ -67,7 +67,7 @@ namespace Survivors.Enemy.Spawn.Spawners
         
         private void DeleteAllEnemy()
         {
-            ScopeUpdatable.Pause = true;
+            ScopeUpdatable.IsPaused = true;
             _unitService.GetAllUnits(UnitType.ENEMY).ToList().ForEach(it => {
                 it.Kill(DeathCause.Removed);
             });
