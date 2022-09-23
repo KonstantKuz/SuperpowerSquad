@@ -59,7 +59,7 @@ namespace Survivors.Enemy.Spawn.Spawners
             var time = 0.0f;
             while (true) {
                 var timeToNextWave = Random.Range(_config.MinInterval, _config.MaxInterval);
-                yield return new WaitForSeconds(_scopeUpdatable.Timer, timeToNextWave);
+                yield return new WaitForSeconds(timeToNextWave);
                 time += timeToNextWave;
                 var health = timeToNextWave * (_config.StartingHPS + _config.HPSSpeed * time);
                 SpawnWave(health);

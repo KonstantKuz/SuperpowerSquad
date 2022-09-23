@@ -83,7 +83,7 @@ namespace Survivors.Enemy.Spawn.Spawners
             var currentTime = 0;
             foreach (var wave in _waves)
             {
-                yield return new WaitForSeconds(_scopeUpdatable.Timer, wave.SpawnTime - currentTime);
+                yield return new WaitForSeconds(wave.SpawnTime - currentTime);
                 currentTime = wave.SpawnTime; 
                 SpawnNextWave(wave);
             } 

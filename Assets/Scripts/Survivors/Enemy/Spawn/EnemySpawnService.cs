@@ -21,7 +21,7 @@ namespace Survivors.Enemy.Spawn
         private readonly UpdateManager _updateManager;
 
         public IScopeUpdatable ScopeUpdatable => _scopeUpdatable;
-        
+
         private EnemySpawnService(EnemyWavesSpawner enemyWavesSpawner,
                                   EnemyHpsSpawner enemyHpsSpawner,
                                   ConstantsConfig constantsConfig,

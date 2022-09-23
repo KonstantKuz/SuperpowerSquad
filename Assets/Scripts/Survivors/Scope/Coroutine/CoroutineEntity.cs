@@ -9,21 +9,21 @@ namespace Survivors.Scope.Coroutine
         
         private IEnumerator _currentCoroutine;
 
-        public bool IsComplete { get; private set; }
+        private bool _isComplete;
 
         public CoroutineEntity(IEnumerator coroutine)
         {
             _currentCoroutine = coroutine;
         }
-        public void Stop() => IsComplete = true;
+        public void Stop() => _isComplete = true;
 
         public bool MoveNext()
         {
-            if (IsComplete) {
+            if (_isComplete) {
                 return false;
             }
             if (_currentCoroutine == null) {
-                IsComplete = true;
+                _isComplete = true;
                 return false;
             }
             if (_currentCoroutine.MoveNext())
