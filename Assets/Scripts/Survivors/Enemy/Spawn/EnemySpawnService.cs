@@ -19,10 +19,10 @@ namespace Survivors.Enemy.Spawn
 
         public IScopeUpdatable ScopeUpdatable => _scopeUpdatable;
 
-        public bool Pause
+        public bool IsPaused
         {
-            get => _scopeUpdatable.Pause;
-            set => _scopeUpdatable.Pause = value;
+            get => _scopeUpdatable.IsPaused;
+            set => _scopeUpdatable.IsPaused = value;
         }
 
         private EnemySpawnService(EnemyWavesSpawner enemyWavesSpawner,

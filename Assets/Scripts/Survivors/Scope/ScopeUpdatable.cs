@@ -6,17 +6,17 @@ namespace Survivors.Scope
     public class ScopeUpdatable : IScopeUpdatable
     {
         private readonly UpdatableTimer _timer;
-        private bool _pause;
+        private bool _isPaused;
         public ITimer Timer => _timer;
         public ICoroutineRunner CoroutineRunner { get; }
 
-        public bool Pause
+        public bool IsPaused
         {
-            get => _pause;
+            get => _isPaused;
             set
             {
-                _pause = value;
-                _timer.SetPause(_pause);
+                _isPaused = value;
+                _timer.SetPause(_isPaused);
             }
         }
 
@@ -30,7 +30,7 @@ namespace Survivors.Scope
 
         public void Update(float deltaTime)
         {
-            if (Pause) return;
+            if (IsPaused) return;
             _timer.Update(deltaTime);
         }
     }
