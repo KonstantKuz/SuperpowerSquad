@@ -15,7 +15,7 @@ using Zenject;
 using Random = UnityEngine.Random;
 using WaitForSeconds = Survivors.Scope.WaitConditions.WaitForSeconds;
 
-namespace Survivors.Enemy.Spawn
+namespace Survivors.Enemy.Spawn.Spawners
 {
     public class EnemyHpsSpawner : IEnemySpawner
     {

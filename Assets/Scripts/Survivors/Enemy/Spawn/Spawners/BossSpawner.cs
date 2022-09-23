@@ -4,91 +4,90 @@ using System.Linq;
 using Feofun.Config;
 using ModestTree;
 using SuperMaxim.Core.Extensions;
-using Survivors.Enemy.Spawn;
+using SuperMaxim.Messaging;
+using Survivors.Enemy.Messages;
 using Survivors.Enemy.Spawn.Config;
 using Survivors.Scope;
 using Survivors.Scope.Coroutine;
 using Survivors.Scope.WaitConditions;
+using Survivors.Session.Messages;
 using Survivors.Units;
 using Survivors.Units.Enemy.Config;
 using Survivors.Units.Service;
 using Zenject;
 
-namespace Survivors.Enemy
+namespace Survivors.Enemy.Spawn.Spawners
 {
-    public class BossSpawner
+    public class BossSpawner : IEnemySpawner
     {
         [Inject]
         private EnemyWavesConfig _enemyWavesConfig;
         [Inject]
         private ConfigCollection<string, EnemyUnitConfig> _enemyUnitConfig;
         [Inject]
-        private EnemySpawnService _enemySpawnService;  
-        [Inject]
         private UnitService _unitService;      
         [Inject]
-        private EnemyWavesSpawner _enemyWavesSpawner;
+        private EnemyWavesSpawner _enemyWavesSpawner;      
+        [Inject]
+        private IMessenger _messenger;
         
-        private ICoroutine _timeCoroutine;
+        private IScopeUpdatable _scopeUpdatable;
+        private ICoroutine _spawnCoroutine;
 
-        private IScopeUpdatable ScopeUpdatable => _enemySpawnService.ScopeUpdatable;
+        private IScopeUpdatable ScopeUpdatable => _scopeUpdatable;
 
         private ICoroutineRunner CoroutineRunner => ScopeUpdatable.CoroutineRunner;
-
-        public BossSpawner(EnemyWavesConfig enemyWavesConfig, ConfigCollection<string, EnemyUnitConfig> enemyUnitConfig)
+        
+        public void Init(IScopeUpdatable scopeUpdatable)
         {
-            _enemyWavesConfig = enemyWavesConfig;
-            _enemyUnitConfig = enemyUnitConfig;
-            var bossSpawns = enemyWavesConfig.EnemySpawns.OrderBy(it => it.SpawnTime)
-                                             .Where(it => enemyUnitConfig.Get(it.EnemyId).IsBoss)
-                                             .ToList();
+            _scopeUpdatable = scopeUpdatable;
+            _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
+        }
+        public void StartSpawn()
+        {
+            Stop();
+            var bossSpawns = _enemyWavesConfig.EnemySpawns.OrderBy(it => it.SpawnTime)
+                                              .Where(it => _enemyUnitConfig.Get(it.EnemyId).IsBoss)
+                                              .ToList();
             if (bossSpawns.IsEmpty()) {
                 return;
             }
-            _timeCoroutine = CoroutineRunner.StartCoroutine(StartShowBossTimeout(bossSpawns));
+            _spawnCoroutine = CoroutineRunner.StartCoroutine(SpawnBosses(bossSpawns));
+            
         }
-        
-        private IEnumerator StartShowBossTimeout(IEnumerable<EnemyWaveConfig> bossSpawns)
+        private IEnumerator SpawnBosses(IEnumerable<EnemyWaveConfig> bossSpawns)
         {
             var currentTime = 0;
             foreach (var bossSpawn in bossSpawns)
             {
                 yield return new WaitForSeconds(ScopeUpdatable.Timer, bossSpawn.SpawnTime - currentTime - 5f);
-                ShowAllert();
+                _messenger.Publish(new BossAlertShowingMessage(5));
                 yield return new WaitForSeconds(ScopeUpdatable.Timer, 5f);
-                
                 DeleteAllEnemy();
                 SpawnBoss(bossSpawn);
-                currentTime = bossSpawn.SpawnTime; 
-
+                currentTime = bossSpawn.SpawnTime;
             }
             Stop();
         }
-
-        private void ShowAllert()
-        {
-            
-        }   
+        
         private void DeleteAllEnemy()
         {
-            _enemySpawnService.Pause = true;
+            ScopeUpdatable.Pause = true;
             _unitService.GetAllUnits(UnitType.ENEMY).ForEach(it => {
                 it.Kill(DeathCause.Removed);
             });
             
         }
-        
         private void SpawnBoss(EnemyWaveConfig bossSpawn)
         {
             _enemyWavesSpawner.SpawnWave(bossSpawn, _enemyWavesSpawner.GetPlaceForWave(bossSpawn));
         }
-        
-
+        private void OnSessionFinished(SessionEndMessage evn) => Stop();
         private void Stop()
         {
-            if (_timeCoroutine != null) {
-                CoroutineRunner.StopCoroutine(_timeCoroutine);
-                _timeCoroutine = null;
+            if (_spawnCoroutine != null) {
+                CoroutineRunner.StopCoroutine(_spawnCoroutine);
+                _spawnCoroutine = null;
             }
           
         }

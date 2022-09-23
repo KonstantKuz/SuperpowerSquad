@@ -1,6 +1,7 @@
 ﻿using System;
 using Feofun.Extension;
 using Survivors.Enemy.Spawn.Config;
+using Survivors.Enemy.Spawn.Spawners;
 using Survivors.Location;
 using UnityEngine;
 using Random = UnityEngine.Random;

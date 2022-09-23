@@ -1,5 +1,6 @@
 ﻿using Survivors.Camera.FrustrumCulling;
 using Survivors.Enemy.Spawn;
+using Survivors.Enemy.Spawn.Spawners;
 using Survivors.Location.ObjectFactory;
 using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Location.Service;

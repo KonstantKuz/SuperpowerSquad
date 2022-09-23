@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Survivors.UI.Screen.World.WorldEvent
 {
-    public class WorldEventWarningView : MonoBehaviour
+    public class AlertView : MonoBehaviour
     {
         [SerializeField]
         private int _showCount;
@@ -14,7 +14,7 @@ namespace Survivors.UI.Screen.World.WorldEvent
         
         private Sequence _textShowTween;
         private TMP_Text Text => _textLocalization.TextComponent;
-        public void Init(EventViewModel model)
+        public void Init(AlertViewModel model)
         {
             Dispose();
 
@@ -32,7 +32,7 @@ namespace Survivors.UI.Screen.World.WorldEvent
             Text.color = color;
         }
 
-        private void PlayShowText(EventViewModel model)
+        private void PlayShowText(AlertViewModel model)
         {
             var fadeDuration = model.ShowDuration / _showCount / 2;
             

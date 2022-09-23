@@ -1,6 +1,7 @@
 ﻿using SuperMaxim.Messaging;
 using Survivors.App;
 using Survivors.App.Config;
+using Survivors.Enemy.Spawn.Spawners;
 using Survivors.Location;
 using Survivors.Scope;
 using Survivors.Session.Messages;
@@ -13,28 +14,26 @@ namespace Survivors.Enemy.Spawn
         private readonly ScopeUpdatable _scopeUpdatable = new ScopeUpdatable();
 
         private readonly EnemyWavesSpawner _enemyWavesSpawner;
-        private readonly EnemyHpsSpawner _enemyHpsSpawner;
+        private readonly EnemyHpsSpawner _enemyHpsSpawner;     
+        private readonly BossSpawner _bossSpawner;
+        
         private readonly ConstantsConfig _constantsConfig;
         private readonly UpdateManager _updateManager;
 
         public IScopeUpdatable ScopeUpdatable => _scopeUpdatable;
-
-        public bool Pause
-        {
-            get => _scopeUpdatable.Pause;
-            set => _scopeUpdatable.Pause = value;
-        }
-
+        
         private EnemySpawnService(EnemyWavesSpawner enemyWavesSpawner,
                                   EnemyHpsSpawner enemyHpsSpawner,
                                   ConstantsConfig constantsConfig,
                                   UpdateManager updateManager,
-                                  IMessenger messenger)
+                                  IMessenger messenger,
+                                  BossSpawner bossSpawner)
         {
             _enemyWavesSpawner = enemyWavesSpawner;
             _enemyHpsSpawner = enemyHpsSpawner;
             _constantsConfig = constantsConfig;
             _updateManager = updateManager;
+            _bossSpawner = bossSpawner;
             messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
             InitSpawners();
         }
@@ -43,6 +42,7 @@ namespace Survivors.Enemy.Spawn
         {
             _enemyWavesSpawner.Init(_scopeUpdatable);
             _enemyHpsSpawner.Init(_scopeUpdatable);
+            _bossSpawner.Init(_scopeUpdatable);
         }
         
         public void OnWorldSetup() => _updateManager.StartUpdate(UpdateScope);

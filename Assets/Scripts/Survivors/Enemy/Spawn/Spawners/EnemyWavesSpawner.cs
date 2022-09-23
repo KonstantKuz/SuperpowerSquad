@@ -19,7 +19,7 @@ using UnityEngine.AI;
 using Zenject;
 using WaitForSeconds = Survivors.Scope.WaitConditions.WaitForSeconds;
 
-namespace Survivors.Enemy.Spawn
+namespace Survivors.Enemy.Spawn.Spawners
 {
     public class EnemyWavesSpawner : MonoBehaviour, IEnemySpawner
     {
