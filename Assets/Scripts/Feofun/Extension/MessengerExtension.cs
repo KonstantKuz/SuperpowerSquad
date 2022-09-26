@@ -3,7 +3,7 @@ using SuperMaxim.Messaging;
 
 namespace Feofun.Extension
 {
-    public static class DisposableExt
+    public static class MessengerExtension
     {
         public static IDisposable SubscribeWithDisposable<T>(this IMessenger messenger, Action<T> func)
         {
