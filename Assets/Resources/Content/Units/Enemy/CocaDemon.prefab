@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 7606489921268461171}
   - component: {fileID: 817811970232612325}
   - component: {fileID: 7586013564207719466}
+  - component: {fileID: 6035848698988650855}
   - component: {fileID: 6828866866986922698}
   - component: {fileID: 4491497861294361367}
   - component: {fileID: 8111980166562719412}
@@ -155,6 +156,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70fa05843c1c45d9a3e4d8b411bf6adc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6035848698988650855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047533565645016285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e03a747fc2384aa2aeba0ded6d87269b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _interval: 2
+  _additiveRadius: 0
 --- !u!114 &6828866866986922698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -395,6 +410,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7807515448616251854}
   - component: {fileID: 898774728298080932}
+  - component: {fileID: 7203812124507575820}
   m_Layer: 6
   m_Name: Weapon
   m_TagString: Untagged
@@ -434,6 +450,21 @@ MonoBehaviour:
   _supportShotCount: 0
   _ammo: {fileID: 460837788804016623, guid: 6a78c2ded359b8f4686b5ec6629e4e78, type: 3}
   _angleBetweenShots: 0
+--- !u!114 &7203812124507575820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8217310743306618948}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bc05b71fdfb48908536dabe25cf699e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawnHitVfx: 0
+  _hitVfxScale: 0
+  _hitVfx: {fileID: 0}
 --- !u!114 &1412917646764468633
 MonoBehaviour:
   m_ObjectHideFlags: 0
