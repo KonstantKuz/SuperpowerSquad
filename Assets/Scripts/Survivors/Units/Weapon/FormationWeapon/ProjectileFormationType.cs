@@ -2,8 +2,8 @@
 {
     public enum ProjectileFormationType
     {
-        Volley,
-        Wave,
-        Wedge,
+        Queue,
+        Circle,
+        Arrow,
     }
 }

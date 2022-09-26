@@ -9,6 +9,6 @@ namespace Survivors.Units.Weapon.FormationWeapon
 {
     public interface IFireFormation
     {
-        IEnumerator Fire(Func<Projectile> createProjectile, ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback);
+        IEnumerator Fire(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback);
     }
 }

@@ -12,10 +12,14 @@ namespace Survivors.Units.Weapon.FormationWeapon
     {
         [SerializeField] private GameObject _ammo;
         [SerializeField] private Transform _barrel;
+
+        [SerializeField] private float _queueSubInterval = 0.2f;
+        [SerializeField] private float _circleRadius = 3f;
+        [SerializeField] private float _arrowWidth = 2f;
+        [SerializeField] private float _arrowLength = 3f;
         
         private Coroutine _attackCoroutine;
         private int _attackNumber;
-
         private IFireFormation _currentFormation;
 
         [Inject]
@@ -24,7 +28,7 @@ namespace Survivors.Units.Weapon.FormationWeapon
         public void Fire(ProjectileFormationType formationType, ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             _currentFormation = CreateFormation(formationType);
-            _attackCoroutine = StartCoroutine(_currentFormation.Fire(CreateProjectile, target, projectileParams, hitCallback));
+            _attackCoroutine = StartCoroutine(_currentFormation.Fire(target, projectileParams, hitCallback));
             _attackNumber++;
         }
         
@@ -32,9 +36,9 @@ namespace Survivors.Units.Weapon.FormationWeapon
         {
             return attackType switch
             {
-                ProjectileFormationType.Volley => new Volley(_barrel, 0.2f),
-                ProjectileFormationType.Wave => new Wave(_barrel, _attackNumber, 3f),
-                ProjectileFormationType.Wedge => new Wedge(_barrel, 3,3),
+                ProjectileFormationType.Queue => new QueueFire(CreateProjectile, _barrel, _queueSubInterval),
+                ProjectileFormationType.Circle => new CircleFire(CreateProjectile, _barrel, _attackNumber, _circleRadius),
+                ProjectileFormationType.Arrow => new ArrowFire(CreateProjectile, _barrel, _arrowWidth, _arrowLength),
                 _ => throw new ArgumentOutOfRangeException(nameof(attackType), attackType, null)
             };
         }

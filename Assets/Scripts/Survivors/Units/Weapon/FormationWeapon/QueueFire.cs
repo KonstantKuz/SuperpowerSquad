@@ -7,22 +7,24 @@ using UnityEngine;
 
 namespace Survivors.Units.Weapon.FormationWeapon
 {
-    public class Volley : IFireFormation
+    public class QueueFire : IFireFormation
     {
+        private readonly Func<Projectile> _createProjectile;
         private readonly Transform _barrel;
         private readonly float _subInterval;
 
-        public Volley(Transform barrel, float subInterval)
+        public QueueFire(Func<Projectile> createProjectile, Transform barrel, float subInterval)
         {
+            _createProjectile = createProjectile;
             _barrel = barrel;
             _subInterval = subInterval;
         }
         
-        public IEnumerator Fire(Func<Projectile> createProjectile, ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
+        public IEnumerator Fire(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             for (int i = 0; i < projectileParams.Count; i++)
             {
-                var projectile = createProjectile.Invoke();
+                var projectile = _createProjectile.Invoke();
                 var shootRotation = RangedWeapon.GetShootRotation(_barrel.position, target.Center.position, true);
                 projectile.transform.SetPositionAndRotation(_barrel.position, shootRotation);
                 projectile.transform.localScale = Vector3.one * projectileParams.DamageRadius;

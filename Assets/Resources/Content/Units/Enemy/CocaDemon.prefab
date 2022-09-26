@@ -431,6 +431,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _ammo: {fileID: 8327978116598172927, guid: 6a78c2ded359b8f4686b5ec6629e4e78, type: 3}
   _barrel: {fileID: 5052820678281234989}
+  _queueSubInterval: 0.2
+  _circleRadius: 3
+  _arrowWidth: 2
+  _arrowLength: 3
 --- !u!114 &1412917646764468633
 MonoBehaviour:
   m_ObjectHideFlags: 0

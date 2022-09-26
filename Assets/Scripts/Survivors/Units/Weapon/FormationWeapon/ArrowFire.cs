@@ -8,38 +8,38 @@ using UnityEngine;
 
 namespace Survivors.Units.Weapon.FormationWeapon
 {
-    public class Wedge : IFireFormation
+    public class ArrowFire : IFireFormation
     {
+        private readonly Func<Projectile> _createProjectile;
         private readonly Transform _barrel;
-        private readonly float _wedgeWidth;
-        private readonly float _wedgeLength;
+        private readonly float _width;
+        private readonly float _length;
 
-        private Func<Projectile> _createProjectile;
         private ITarget _target;
         private IProjectileParams _projectileParams;
         private Action<GameObject> _hitCallback;
 
-        public Wedge(Transform barrel, float wedgeWidth, float wedgeLength)
-        {
-            _barrel = barrel;
-            _wedgeWidth = wedgeWidth;
-            _wedgeLength = wedgeLength;
-        }
-        
-        public IEnumerator Fire(Func<Projectile> createProjectile, ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
+        public ArrowFire(Func<Projectile> createProjectile, Transform barrel, float width, float length)
         {
             _createProjectile = createProjectile;
+            _barrel = barrel;
+            _width = width;
+            _length = length;
+        }
+        
+        public IEnumerator Fire(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
+        {
             _target = target;
             _projectileParams = projectileParams;
             _hitCallback = hitCallback;
 
-            var widthStep = _wedgeWidth / projectileParams.Count;
+            var widthStep = _width / projectileParams.Count;
             var forward = _barrel.forward.XZ();
             
             LaunchProjectile(_barrel.position, forward);
             
             var subWaveCount = (projectileParams.Count - 1) / 2;
-            var subLength = _wedgeLength / subWaveCount;
+            var subLength = _length / subWaveCount;
             var subInterval = subLength / projectileParams.Speed;
             for (int i = 1; i < subWaveCount + 1; i++)
             {

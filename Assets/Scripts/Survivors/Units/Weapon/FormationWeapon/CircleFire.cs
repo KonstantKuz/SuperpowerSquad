@@ -8,27 +8,29 @@ using UnityEngine;
 
 namespace Survivors.Units.Weapon.FormationWeapon
 {
-    public class Wave : IFireFormation
+    public class CircleFire : IFireFormation
     {
+        private readonly Func<Projectile> _createProjectile;
         private readonly Transform _barrel;
         private readonly int _attackNumber;
         private readonly float _initialRadius;
 
-        public Wave(Transform barrel, int attackNumber, float initialRadius)
+        public CircleFire(Func<Projectile> createProjectile, Transform barrel, int attackNumber, float initialRadius)
         {
+            _createProjectile = createProjectile;
             _barrel = barrel;
             _attackNumber = attackNumber;
             _initialRadius = initialRadius;
         }
         
-        public IEnumerator Fire(Func<Projectile> createProjectile, ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
+        public IEnumerator Fire(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             var angleBtwnProjectiles = 360f / projectileParams.Count;
             var currentAngle = angleBtwnProjectiles / 2 * _attackNumber;
             for (int i = 0; i < projectileParams.Count; i++)
             {
-                var projectile = createProjectile.Invoke();
-                projectile.transform.position = _barrel.transform.position + Quaternion.Euler(0, currentAngle, 0) * _barrel.transform.forward * _initialRadius;
+                var projectile = _createProjectile.Invoke();
+                projectile.transform.position = _barrel.transform.position + Quaternion.Euler(0, currentAngle, 0) * Vector3.forward * _initialRadius;
                 projectile.transform.forward = (projectile.transform.position - _barrel.transform.position).XZ();
                 projectile.transform.localScale = Vector3.one * projectileParams.DamageRadius;
                 projectile.Launch(target, projectileParams, hitCallback);
