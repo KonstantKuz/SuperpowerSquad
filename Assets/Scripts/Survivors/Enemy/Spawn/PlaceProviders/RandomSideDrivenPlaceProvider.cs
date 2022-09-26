@@ -8,59 +8,60 @@ using Random = UnityEngine.Random;
 
 namespace Survivors.Enemy.Spawn.PlaceProviders
 {
-    public class RandomDrivenPlaceProvider : ISpawnPlaceProvider
+    public class RandomSideDrivenPlaceProvider : ISpawnPlaceProvider
     {
-        private readonly EnemyWavesSpawner _wavesSpawner;
+        private readonly EnemyWaveSpawner _spawner;
         private readonly World _world;
 
-        public RandomDrivenPlaceProvider(EnemyWavesSpawner wavesSpawner, World world)
+        public RandomSideDrivenPlaceProvider(EnemyWaveSpawner spawner, World world)
         {
-            _wavesSpawner = wavesSpawner;
+            _spawner = spawner;
             _world = world;
         }
 
         public SpawnPlace GetSpawnPlace(EnemyWaveConfig waveConfig, float outOfViewOffset)
         {
             var position = GetRandomSpawnPosition(outOfViewOffset);
-            var isValid = _wavesSpawner.IsPlaceValid(position, waveConfig);
-            return new SpawnPlace {IsValid = isValid, Position = position};
+            var isValid = _spawner.IsPlaceValid(position, waveConfig);
+            return new SpawnPlace {
+                    IsValid = isValid,
+                    Position = position
+            };
+        }
+
+        public static Vector3 GetPositionWithOffset(Vector3 position, SpawnSide spawnSide, float outOfViewOffset, Transform ground)
+        {
+            var camera = UnityEngine.Camera.main.transform;
+            var directionToTopSide = Vector3.ProjectOnPlane(camera.forward, ground.up).normalized;
+            var directionToRightSide = Vector3.ProjectOnPlane(camera.right, ground.up).normalized;
+            position += spawnSide switch {
+                    SpawnSide.Top => directionToTopSide * outOfViewOffset,
+                    SpawnSide.Bottom => -directionToTopSide * outOfViewOffset,
+                    SpawnSide.Right => directionToRightSide * outOfViewOffset,
+                    SpawnSide.Left => -directionToRightSide * outOfViewOffset,
+                    _ => Vector3.zero
+            };
+            return position;
         }
 
         private Vector3 GetRandomSpawnPosition(float outOfViewOffset)
         {
             var spawnSide = EnumExt.GetRandom<SpawnSide>();
             var randomPosition = GetRandomPositionOnGround(spawnSide);
-            return GetPositionWithOffset(randomPosition, spawnSide, outOfViewOffset);
+            return GetPositionWithOffset(randomPosition, spawnSide, outOfViewOffset, _world.Ground);
         }
 
         private Vector3 GetRandomPositionOnGround(SpawnSide spawnSide)
         {
             var camera = UnityEngine.Camera.main;
             var randomViewportPoint = GetRandomPointOnViewportEdge(spawnSide);
-            var pointRay =  camera.ViewportPointToRay(randomViewportPoint);
+            var pointRay = camera.ViewportPointToRay(randomViewportPoint);
             return _world.GetGroundIntersection(pointRay);
-        }
-
-        private Vector3 GetPositionWithOffset(Vector3 position, SpawnSide spawnSide, float outOfViewOffset)
-        {
-            var camera = UnityEngine.Camera.main.transform;
-            var directionToTopSide = Vector3.ProjectOnPlane(camera.forward, _world.Ground.up).normalized;
-            var directionToRightSide = Vector3.ProjectOnPlane(camera.right, _world.Ground.up).normalized;
-            position += spawnSide switch
-            {
-                SpawnSide.Top => directionToTopSide * outOfViewOffset,
-                SpawnSide.Bottom => -directionToTopSide * outOfViewOffset,
-                SpawnSide.Right => directionToRightSide * outOfViewOffset,
-                SpawnSide.Left => -directionToRightSide * outOfViewOffset,
-                _ => Vector3.zero
-            };
-            return position;
         }
 
         private Vector2 GetRandomPointOnViewportEdge(SpawnSide spawnSide)
         {
-            switch (spawnSide)
-            {
+            switch (spawnSide) {
                 case SpawnSide.Top:
                     return new Vector2(Random.Range(0f, 1f), 1f);
                 case SpawnSide.Bottom:
@@ -73,6 +74,5 @@ namespace Survivors.Enemy.Spawn.PlaceProviders
                     throw new ArgumentException("Unexpected spawn side");
             }
         }
-
     }
 }

@@ -1,8 +1,6 @@
-﻿using System;
-using Survivors.Enemy.Spawn.Config;
+﻿using Survivors.Enemy.Spawn.Config;
 using Survivors.Enemy.Spawn.Spawners;
 using Survivors.Location;
-using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Survivors.Enemy.Spawn.PlaceProviders
@@ -14,10 +12,10 @@ namespace Survivors.Enemy.Spawn.PlaceProviders
         private readonly ISpawnPlaceProvider _randomDrivenProvider;
         private readonly ISpawnPlaceProvider _moveDirectionDrivenProvider;
 
-        public CompositeSpawnPlaceProvider(EnemyWavesSpawner wavesSpawner, World world)
+        public CompositeSpawnPlaceProvider(EnemyWaveSpawner spawner, World world)
         {
-            _randomDrivenProvider = new RandomDrivenPlaceProvider(wavesSpawner, world);
-            _moveDirectionDrivenProvider = new MoveDirectionDrivenPlaceProvider(wavesSpawner, world.Squad);
+            _randomDrivenProvider = new RandomSideDrivenPlaceProvider(spawner, world);
+            _moveDirectionDrivenProvider = new MoveDirectionDrivenPlaceProvider(spawner, world.Squad);
         }
         
         public SpawnPlace GetSpawnPlace(EnemyWaveConfig waveConfig, float outOfViewOffset)

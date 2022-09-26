@@ -1,5 +1,4 @@
-﻿using System;
-using Survivors.Enemy.Spawn.Config;
+﻿using Survivors.Enemy.Spawn.Config;
 
 namespace Survivors.Enemy.Spawn.PlaceProviders
 {

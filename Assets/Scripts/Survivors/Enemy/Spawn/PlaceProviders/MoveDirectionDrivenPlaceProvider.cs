@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Survivors.Enemy.Spawn.Config;
 using Survivors.Enemy.Spawn.Spawners;
 using Survivors.Extension;
@@ -13,12 +12,12 @@ namespace Survivors.Enemy.Spawn.PlaceProviders
         private const int VIEW_FRUSTUM_PLANES_COUNT = 4;
         private readonly Plane[] _frustumPlanes = new Plane[MAX_FRUSTUM_PLANES_COUNT];
         
-        private readonly EnemyWavesSpawner _wavesSpawner;
+        private readonly EnemyWaveSpawner _spawner;
         private readonly Squad.Squad _squad;
 
-        public MoveDirectionDrivenPlaceProvider(EnemyWavesSpawner wavesSpawner, Squad.Squad squad)
+        public MoveDirectionDrivenPlaceProvider(EnemyWaveSpawner spawner, Squad.Squad squad)
         {
-            _wavesSpawner = wavesSpawner;
+            _spawner = spawner;
             _squad = squad;
         }
 
@@ -34,7 +33,7 @@ namespace Survivors.Enemy.Spawn.PlaceProviders
             {
                 return SpawnPlace.INVALID;
             }
-            var isValid = _wavesSpawner.IsPlaceValid(position.Value, waveConfig);
+            var isValid = _spawner.IsPlaceValid(position.Value, waveConfig);
             return new SpawnPlace {IsValid = isValid, Position = position.Value};
         }
         
