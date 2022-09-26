@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Runtime.InteropServices;
-using Feofun.Config;
 using Feofun.Extension;
 using Feofun.UI.Dialog;
 using Feofun.UI.Screen;
@@ -14,19 +12,12 @@ using Survivors.Session.Service;
 using Survivors.UI.Dialog.PauseDialog;
 using Survivors.UI.Dialog.StartUnitDialog;
 using Survivors.UI.Dialog.StartUnitDialog.Model;
-using Survivors.UI.Hud.Unit;
 using Survivors.UI.Screen.Debriefing;
 using Survivors.UI.Screen.Debriefing.Model;
-using Survivors.Units;
-using Survivors.Units.Component;
-using Survivors.Units.Enemy.Config;
-using Survivors.Units.Messages;
 using Survivors.Upgrade;
 using UniRx;
-using UniRx.Triggers;
 using UnityEngine;
 using Zenject;
-using Unit = Survivors.Units.Unit;
 
 namespace Survivors.UI.Screen.World
 {
@@ -37,8 +28,6 @@ namespace Survivors.UI.Screen.World
         public override string Url => ScreenName;
 
         [SerializeField] private MissionProgressView _missionProgressView;
-        [SerializeField] private GameObject _squadProgressView;
-        [SerializeField] private HealthBarView _bossHealthBarView;
         [SerializeField] private float _afterSessionDelay = 2;
 
         private CompositeDisposable _disposable;
@@ -51,7 +40,6 @@ namespace Survivors.UI.Screen.World
         [Inject] private DialogManager _dialogManager;
         [Inject] private UpgradeService _upgradeService;
         [Inject] private ConstantsConfig _constants;
-        [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs; 
         
         [PublicAPI]
         public void Init()
@@ -63,7 +51,6 @@ namespace Survivors.UI.Screen.World
             InitProgressView();
 
             _joystick.Attach(transform);
-            _messenger.SubscribeWithDisposable<UnitSpawnedMessage>(OnUnitSpawned).AddTo(_disposable);
             _messenger.SubscribeWithDisposable<SessionEndMessage>(OnSessionFinished).AddTo(_disposable);
             
             if (_constants.ChooseFirstUnitEnabled)
@@ -79,26 +66,6 @@ namespace Survivors.UI.Screen.World
             _missionProgressView.Init(model);
         }
 
-        private void OnUnitSpawned(UnitSpawnedMessage msg)
-        {
-            var unit = msg.Unit;
-            if (unit.UnitType != UnitType.ENEMY || !_enemyUnitConfigs.Get(unit.Model.Id).IsBoss)
-            {
-                return;
-            }
-            var healthModel = new HealthBarModel(unit.GameObject.GetComponent<IHealthBarOwner>());
-            _bossHealthBarView.Init(healthModel);
-            SwitchToBossHealthBar(true);
-            unit.GameObject.OnDisableAsObservable().Subscribe(it => SwitchToBossHealthBar(false)).AddTo(_disposable);
-        }
-
-        private void SwitchToBossHealthBar(bool value)
-        {
-            _bossHealthBarView.gameObject.SetActive(value);
-            _missionProgressView.gameObject.SetActive(!value);
-            _squadProgressView.gameObject.SetActive(!value);
-        }
-        
         private void OnChangeStartUnit(StartUnitSelection startUnitSelection)
         {
             _sessionService.ChangeStartUnit(startUnitSelection.UnitId);
