@@ -2,7 +2,7 @@
 using UniRx;
 using UnityEngine;
 
-namespace Survivors.UI.Screen.World
+namespace Survivors.UI.Screen.World.Mission
 {
     public class MissionProgressView : MonoBehaviour
     {

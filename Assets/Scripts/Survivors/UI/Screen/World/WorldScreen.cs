@@ -15,6 +15,7 @@ using Survivors.UI.Dialog.StartUnitDialog;
 using Survivors.UI.Dialog.StartUnitDialog.Model;
 using Survivors.UI.Screen.Debriefing;
 using Survivors.UI.Screen.Debriefing.Model;
+using Survivors.UI.Screen.World.Mission;
 using Survivors.Units.Enemy.Config;
 using Survivors.Upgrade;
 using UnityEngine;

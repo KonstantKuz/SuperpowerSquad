@@ -6,7 +6,7 @@ using Survivors.Units.Enemy.Config;
 using Survivors.Util;
 using UnityEngine;
 
-namespace Survivors.UI.Screen.World
+namespace Survivors.UI.Screen.World.Mission
 {
     public class MissionEventModel
     {

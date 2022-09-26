@@ -5,7 +5,7 @@ using Survivors.Session.Config;
 using Survivors.Units.Enemy.Config;
 using UniRx;
 
-namespace Survivors.UI.Screen.World
+namespace Survivors.UI.Screen.World.Mission
 {
     public class MissionProgressModel
     {
