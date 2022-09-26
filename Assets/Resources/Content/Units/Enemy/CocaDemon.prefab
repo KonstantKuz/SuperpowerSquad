@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6629324333623088289}
   - component: {fileID: 3006564440288677136}
   - component: {fileID: 7606489921268461171}
+  - component: {fileID: 2972983764237015473}
   - component: {fileID: 817811970232612325}
   - component: {fileID: 7586013564207719466}
   - component: {fileID: 6828866866986922698}
@@ -127,6 +128,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a4bbdebdeb54fc8a772401a85c5e7a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2972983764237015473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047533565645016285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c9f3bc114c947029c44af757f3d9b36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speedMultiplier: 5
+  _accelerationDistanceToSquad: 20
 --- !u!114 &817811970232612325
 MonoBehaviour:
   m_ObjectHideFlags: 0
