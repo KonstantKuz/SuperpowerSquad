@@ -11,12 +11,12 @@ namespace Survivors.Scope.Coroutine
     public class CoroutineRunner : IDisposable, ICoroutineRunner
     {
         private readonly ISet<CoroutineEntity> _coroutines = new HashSet<CoroutineEntity>();
-        private readonly ITimer _timer;
+        private readonly IScopeTime _scopeTime;
 
-        public CoroutineRunner(ITimer timer)
+        public CoroutineRunner(IScopeTime scopeTime)
         {
-            _timer = timer;
-            _timer.OnUpdate += OnUpdate;
+            _scopeTime = scopeTime;
+            _scopeTime.OnTick += OnTick;
         }
 
         public ICoroutine StartCoroutine(IEnumerator coroutine)
@@ -35,12 +35,12 @@ namespace Survivors.Scope.Coroutine
 
         public void Dispose()
         {
-            _timer.OnUpdate -= OnUpdate;
+            _scopeTime.OnTick -= OnTick;
             _coroutines.ForEach(it => it.Stop());
             _coroutines.Clear();
         }
 
-        private void OnUpdate()
+        private void OnTick()
         {
             if (_coroutines.IsEmpty()) {
                 return;

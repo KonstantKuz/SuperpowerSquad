@@ -88,7 +88,7 @@ namespace Survivors.Enemy.Spawn
 
         private SpawnableEnemyConfig GetRandomEnemyConfig()
         {
-            var possibleEnemies = _spawnableEnemyConfigs.Where(it => it.Delay <= updatableScope.Timer.Time).ToList();
+            var possibleEnemies = _spawnableEnemyConfigs.Where(it => it.Delay <= updatableScope.ScopeTime.Time).ToList();
             var configsWithChance = possibleEnemies.Select(it => Tuple.Create(it, it.Chance)).ToList();
             return configsWithChance.SelectRandomWithChance();
         }

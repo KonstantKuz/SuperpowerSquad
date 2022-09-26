@@ -5,13 +5,13 @@ using Survivors.Scope.Timer;
 
 namespace Survivors.Scope
 {
-    public class UpdatableScope : IUpdatableScope, ICoroutineRunner, ITimer
+    public class UpdatableScope : IUpdatableScope, ICoroutineRunner, IScopeTime
     {
         public bool IsPaused { get; set; }
-        public ITimer Timer => this;
+        public IScopeTime ScopeTime => this;
         public ICoroutineRunner CoroutineRunner { get; }
         public float Time { get; private set; }
-        public event Action OnUpdate;
+        public event Action OnTick;
         public UpdatableScope()
         {
             CoroutineRunner = new CoroutineRunner(this);
@@ -26,7 +26,7 @@ namespace Survivors.Scope
         {
             if (IsPaused) return;
             Time += UnityEngine.Time.deltaTime;
-            OnUpdate?.Invoke();
+            OnTick?.Invoke();
         }
 
       

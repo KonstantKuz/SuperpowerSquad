@@ -5,7 +5,7 @@ namespace Survivors.Scope
 {
     public interface IUpdatableScope
     {
-        ITimer Timer { get; }
+        IScopeTime ScopeTime { get; }
         ICoroutineRunner CoroutineRunner { get; }
     }
 }
