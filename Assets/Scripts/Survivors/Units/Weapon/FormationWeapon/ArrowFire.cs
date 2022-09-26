@@ -14,17 +14,19 @@ namespace Survivors.Units.Weapon.FormationWeapon
         private readonly Transform _barrel;
         private readonly float _width;
         private readonly float _length;
+        private readonly float _spreadAngle;
 
         private ITarget _target;
         private IProjectileParams _projectileParams;
         private Action<GameObject> _hitCallback;
 
-        public ArrowFire(Func<Projectile> createProjectile, Transform barrel, float width, float length)
+        public ArrowFire(Func<Projectile> createProjectile, Transform barrel, float width, float length, float spreadAngle)
         {
             _createProjectile = createProjectile;
             _barrel = barrel;
             _width = width;
             _length = length;
+            _spreadAngle = spreadAngle;
         }
         
         public IEnumerator Fire(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
@@ -46,8 +48,8 @@ namespace Survivors.Units.Weapon.FormationWeapon
                 yield return new WaitForSeconds(subInterval);
                 var leftProjectilePosition = _barrel.position + i * widthStep * _barrel.right;
                 var rightProjectilePosition = _barrel.position - i * widthStep * _barrel.right;
-                LaunchProjectile(leftProjectilePosition, forward);
-                LaunchProjectile(rightProjectilePosition, forward);
+                LaunchProjectile(leftProjectilePosition, Quaternion.Euler(0, _spreadAngle * i, 0) * forward);
+                LaunchProjectile(rightProjectilePosition, Quaternion.Euler(0, -_spreadAngle * i, 0) * forward);
             }
         }
 

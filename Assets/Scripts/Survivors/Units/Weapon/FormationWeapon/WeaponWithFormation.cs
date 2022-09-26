@@ -17,6 +17,7 @@ namespace Survivors.Units.Weapon.FormationWeapon
         [SerializeField] private float _circleRadius = 3f;
         [SerializeField] private float _arrowWidth = 2f;
         [SerializeField] private float _arrowLength = 3f;
+        [SerializeField] private float _arrowSpread = 2f;
         
         private Coroutine _attackCoroutine;
         private int _attackNumber;
@@ -38,7 +39,7 @@ namespace Survivors.Units.Weapon.FormationWeapon
             {
                 ProjectileFormationType.Queue => new QueueFire(CreateProjectile, _barrel, _queueSubInterval),
                 ProjectileFormationType.Circle => new CircleFire(CreateProjectile, _barrel, _attackNumber, _circleRadius),
-                ProjectileFormationType.Arrow => new ArrowFire(CreateProjectile, _barrel, _arrowWidth, _arrowLength),
+                ProjectileFormationType.Arrow => new ArrowFire(CreateProjectile, _barrel, _arrowWidth, _arrowLength, _arrowSpread),
                 _ => throw new ArgumentOutOfRangeException(nameof(attackType), attackType, null)
             };
         }

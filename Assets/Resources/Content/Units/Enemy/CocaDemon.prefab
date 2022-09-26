@@ -435,6 +435,7 @@ MonoBehaviour:
   _circleRadius: 3
   _arrowWidth: 2
   _arrowLength: 3
+  _arrowSpread: 2
 --- !u!114 &1412917646764468633
 MonoBehaviour:
   m_ObjectHideFlags: 0
