@@ -4,25 +4,24 @@ using Survivors.App.Config;
 using Survivors.Location;
 using Survivors.Scope;
 using Survivors.Session.Messages;
-using UnityEngine;
 
 namespace Survivors.Enemy.Spawn
 {
     public class EnemySpawnService : IWorldScope
     {
-        private readonly ScopeUpdatable _scopeUpdatable = new ScopeUpdatable();
+        private readonly UpdatableScope _updatableScope = new UpdatableScope();
 
         private readonly EnemyWavesSpawner _enemyWavesSpawner;
         private readonly EnemyHpsSpawner _enemyHpsSpawner;
         private readonly ConstantsConfig _constantsConfig;
         private readonly UpdateManager _updateManager;
 
-        public IScopeUpdatable ScopeUpdatable => _scopeUpdatable;
+        public IUpdatableScope UpdatableScope => _updatableScope;
 
         public bool IsPaused
         {
-            get => _scopeUpdatable.IsPaused;
-            set => _scopeUpdatable.IsPaused = value;
+            get => _updatableScope.IsPaused;
+            set => _updatableScope.IsPaused = value;
         }
 
         private EnemySpawnService(EnemyWavesSpawner enemyWavesSpawner,
@@ -41,17 +40,17 @@ namespace Survivors.Enemy.Spawn
 
         private void InitSpawners()
         {
-            _enemyWavesSpawner.Init(_scopeUpdatable);
-            _enemyHpsSpawner.Init(_scopeUpdatable);
+            _enemyWavesSpawner.Init(_updatableScope);
+            _enemyHpsSpawner.Init(_updatableScope);
         }
         
         public void OnWorldSetup() => _updateManager.StartUpdate(UpdateScope);
         public void OnWorldCleanUp() => _updateManager.StopUpdate(UpdateScope);
-        private void UpdateScope() => _scopeUpdatable.Update(Time.deltaTime);
+        private void UpdateScope() => _updatableScope.Update();
 
         public void Spawn()
         {
-            _scopeUpdatable.Reset();
+            _updatableScope.Reset();
 
             _enemyWavesSpawner.StartSpawn();
             if (_constantsConfig.EnemyHpsSpawnerEnabled) {
@@ -61,7 +60,7 @@ namespace Survivors.Enemy.Spawn
         
         private void OnSessionFinished(SessionEndMessage obj)
         {
-            _scopeUpdatable.Reset();
+            _updatableScope.Reset();
             _updateManager.StopUpdate(UpdateScope);
         }
     }

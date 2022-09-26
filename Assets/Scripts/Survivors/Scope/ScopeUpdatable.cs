@@ -1,37 +1,34 @@
-﻿using Survivors.Scope.Coroutine;
+﻿using System;
+using System.Collections;
+using Survivors.Scope.Coroutine;
 using Survivors.Scope.Timer;
 
 namespace Survivors.Scope
 {
-    public class ScopeUpdatable : IScopeUpdatable
+    public class UpdatableScope : IUpdatableScope, ICoroutineRunner, ITimer
     {
-        private readonly UpdatableTimer _timer;
-        private bool _isPaused;
-        public ITimer Timer => _timer;
+        public bool IsPaused { get; set; }
+        public ITimer Timer => this;
         public ICoroutineRunner CoroutineRunner { get; }
-
-        public bool IsPaused
+        public float Time { get; private set; }
+        public event Action OnUpdate;
+        public UpdatableScope()
         {
-            get => _isPaused;
-            set
-            {
-                _isPaused = value;
-                _timer.SetPause(_isPaused);
-            }
+            CoroutineRunner = new CoroutineRunner(this);
         }
+        public ICoroutine StartCoroutine(IEnumerator coroutine) => CoroutineRunner.StartCoroutine(coroutine);
 
-        public ScopeUpdatable()
-        {
-            _timer = new UpdatableTimer();
-            CoroutineRunner = Timer.CreateCoroutineRunner();
-        }
-
-        public void Reset() => _timer.Reset();
-
-        public void Update(float deltaTime)
+        public void StopCoroutine(ICoroutine coroutine) => CoroutineRunner.StopCoroutine(coroutine);
+        
+        public void Reset() => Time = 0;
+        
+        public void Update()
         {
             if (IsPaused) return;
-            _timer.Update(deltaTime);
+            Time += UnityEngine.Time.deltaTime;
+            OnUpdate?.Invoke();
         }
+
+      
     }
 }

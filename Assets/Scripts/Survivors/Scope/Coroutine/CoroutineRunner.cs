@@ -40,7 +40,7 @@ namespace Survivors.Scope.Coroutine
             _coroutines.Clear();
         }
 
-        private void OnUpdate(float deltaTime)
+        private void OnUpdate()
         {
             if (_coroutines.IsEmpty()) {
                 return;

@@ -38,7 +38,7 @@ namespace Survivors.Enemy.Spawn
         [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
         [Inject] private EnemyWavesConfig _enemyWavesConfig;
         
-        private IScopeUpdatable _scopeUpdatable;
+        private IUpdatableScope updatableScope;
         private ISpawnPlaceProvider _placeProvider;
         private List<EnemyWaveConfig> _waves;
         private ICoroutine _spawnCoroutine;
@@ -47,12 +47,12 @@ namespace Survivors.Enemy.Spawn
         private SpawnerDebugger Debugger => _spawnerDebugger ??= gameObject.AddComponent<SpawnerDebugger>();
 
 
-        private ICoroutineRunner CoroutineRunner => _scopeUpdatable.CoroutineRunner;
+        private ICoroutineRunner CoroutineRunner => updatableScope.CoroutineRunner;
         
 
-        public void Init(IScopeUpdatable scopeUpdatable)
+        public void Init(IUpdatableScope updatableScope)
         {
-            _scopeUpdatable = scopeUpdatable;
+            this.updatableScope = updatableScope;
             ENEMY_LAYER = LayerMask.NameToLayer(ENEMY_LAYER_NAME);
             _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
  

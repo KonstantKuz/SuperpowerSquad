@@ -6,6 +6,6 @@ namespace Survivors.Scope.Timer
     { 
         bool IsPaused { get; } 
         float Time { get; }
-        event Action<float> OnUpdate;
+        event Action OnUpdate;
     }
 }

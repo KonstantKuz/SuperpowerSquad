@@ -3,7 +3,7 @@ using Survivors.Scope.Timer;
 
 namespace Survivors.Scope
 {
-    public interface IScopeUpdatable
+    public interface IUpdatableScope
     {
         ITimer Timer { get; }
         ICoroutineRunner CoroutineRunner { get; }

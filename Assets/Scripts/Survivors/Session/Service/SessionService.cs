@@ -135,7 +135,7 @@ namespace Survivors.Session.Service
 
         private void OnTick()
         {
-            _spawnTime.Value = _enemySpawnService.ScopeUpdatable.Timer.Time;
+            _spawnTime.Value = _enemySpawnService.UpdatableScope.Timer.Time;
             if (Session.IsMissionGoalReached()) {
                 EndSession(UnitType.PLAYER);
             }

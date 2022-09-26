@@ -4,7 +4,7 @@ namespace Survivors.Enemy.Spawn
 {
     public interface IEnemySpawner
     {
-        void Init(IScopeUpdatable scopeUpdatable);
+        void Init(IUpdatableScope updatableScope);
         void StartSpawn();
     }
 }
