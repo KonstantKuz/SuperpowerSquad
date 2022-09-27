@@ -35,21 +35,14 @@ namespace Survivors.UI.Hud
             Dispose();
             _disposable = new CompositeDisposable();
 
-            _unitService.GetEnemyUnits().ForEach(SubscribeOnDamageTaken);
-            _messenger.SubscribeWithDisposable<UnitSpawnedMessage>(it => SubscribeOnDamageTaken((Units.Unit) it.Unit)).AddTo(_disposable);
+            _messenger.SubscribeWithDisposable<EnemyDamagedMessage>(it => SpawnPopup(it.Unit, (int) it.Damage)).AddTo(_disposable);
             _messenger.SubscribeWithDisposable<SessionEndMessage>(it => Dispose()).AddTo(_disposable);
-        }
-
-        private void SubscribeOnDamageTaken(Units.Unit unit)
-        {
-            if(unit.UnitType == UnitType.PLAYER) return;
-
-            Assert.IsTrue(unit != null && unit.Health != null, "Unit must be enemy with health");
-            unit.Health.TakenDamage.Skip(1).Subscribe(it => SpawnPopup(unit, (int) it)).AddTo(_disposable);
         }
 
         public void SpawnPopup(Units.Unit unit, int takenDamage)
         {
+            if(!unit.SelfTarget.Center.position.IsInViewport()) return;
+            
             var popup = _objectPoolFactory.Create<DamagePopup>(_popupPrefab.gameObject.name, _popupPrefab.gameObject, _uiRoot.HudContainer);
             popup.Init(takenDamage.ToString(), unit.SelfTarget.Center.position);
             var popupTween = popup.PlayPopup();

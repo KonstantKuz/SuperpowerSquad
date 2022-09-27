@@ -18,11 +18,10 @@ namespace Survivors.Units.Component.Health
         public float StartingMaxValue => _healthModel.StartingMaxHealth;
         public IReadOnlyReactiveProperty<float> MaxValue => _healthModel.MaxHealth;
         public IReadOnlyReactiveProperty<float> CurrentValue => _currentHealth;
-        public IReadOnlyReactiveProperty<float> TakenDamage => _takenDamage;
         
         public bool DamageEnabled { get; set; }
         public event Action OnZeroHealth;
-        public event Action OnDamageTaken;
+        public event Action<float> OnDamageTaken;
         
         public void Init(IHealthModel health)
         {
@@ -46,7 +45,7 @@ namespace Survivors.Units.Component.Health
             ChangeHealth(-damage);
             LogDamage(damage);
             
-            OnDamageTaken?.Invoke();
+            OnDamageTaken?.Invoke(damage);
             _takenDamage.SetValueAndForceNotify(damage);
             if (_currentHealth.Value <= 0) {
                 OnZeroHealth?.Invoke();

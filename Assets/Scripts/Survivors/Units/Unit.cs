@@ -6,11 +6,13 @@ using Feofun.Modifiers;
 using JetBrains.Annotations;
 using Logger.Extension;
 using SuperMaxim.Core.Extensions;
+using SuperMaxim.Messaging;
 using Survivors.App;
 using Survivors.Location.Model;
 using Survivors.Units.Component;
 using Survivors.Units.Component.Death;
 using Survivors.Units.Component.Health;
+using Survivors.Units.Messages;
 using Survivors.Units.Service;
 using Survivors.Units.Target;
 using Zenject;
@@ -35,6 +37,8 @@ namespace Survivors.Units
         private float _spawnTime;
         private Collider _collider;
 
+        [Inject]
+        private IMessenger _messenger;
         [Inject]
         private UnitService _unitService;
         [Inject]
@@ -83,6 +87,7 @@ namespace Survivors.Units
             
             if (UnitType == UnitType.ENEMY)
             {
+                _damageable.OnDamageTaken += OnDamageTaken;
                 _damageable.OnZeroHealth += DieOnZeroHealth;
             }
 
@@ -95,6 +100,12 @@ namespace Survivors.Units
             _unitService.Add(this);
             _updateManager.StartUpdate(UpdateComponents);
         }
+
+        private void OnDamageTaken(float damage)
+        {
+            _messenger.Publish(new EnemyDamagedMessage(this, damage));
+        }
+
         public void Lock()
         {
             _lockCount++;
@@ -114,6 +125,7 @@ namespace Survivors.Units
         public void Kill(DeathCause deathCause)
         {
             _damageable.DamageEnabled = false;
+            _damageable.OnDamageTaken -= OnDamageTaken;
             _damageable.OnZeroHealth -= DieOnZeroHealth;
             IsActive = false;
             _deathEventReceivers.ForEach(it => it.OnDeath(deathCause));

@@ -29,6 +29,7 @@ namespace Survivors.UI.Hud
         [SerializeField] private TextMeshProUGUI _text;
         
         private Vector3 _stayPosition;
+        private UnityEngine.Camera _camera;
 
         [Inject] private UpdateManager _updateManager;
         
@@ -37,6 +38,7 @@ namespace Survivors.UI.Hud
             Dispose();
             _text.SetText(damage);
             _stayPosition = receiverPosition;
+            _camera = UnityEngine.Camera.main;
             _updateManager.StartUpdate(SetStayPosition);
         }
 
@@ -52,9 +54,7 @@ namespace Survivors.UI.Hud
 
         private void SetStayPosition()
         {
-            if (!_stayPosition.IsInViewport()) return;
-            
-            transform.position = UnityEngine.Camera.main.WorldToScreenPoint(_stayPosition) + Vector3.up * _heightOffset;
+            transform.position = _camera.WorldToScreenPoint(_stayPosition) + Vector3.up * _heightOffset;
         }
 
         private void OnDisable()
@@ -65,6 +65,11 @@ namespace Survivors.UI.Hud
         private void Dispose()
         {
             _updateManager.StopUpdate(SetStayPosition);
+            ResetText();
+        }
+
+        private void ResetText()
+        {
             _text.rectTransform.localScale = Vector3.zero;
             var color = _text.color;
             color.a = 1;
