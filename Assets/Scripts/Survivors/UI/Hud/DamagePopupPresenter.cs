@@ -35,12 +35,13 @@ namespace Survivors.UI.Hud
             Dispose();
             _disposable = new CompositeDisposable();
 
-            _messenger.SubscribeWithDisposable<EnemyDamagedMessage>(it => SpawnPopup(it.Unit, (int) it.Damage)).AddTo(_disposable);
+            _messenger.SubscribeWithDisposable<UnitDamagedMessage>(it => SpawnPopup(it.Unit, (int) it.Damage)).AddTo(_disposable);
             _messenger.SubscribeWithDisposable<SessionEndMessage>(it => Dispose()).AddTo(_disposable);
         }
 
         public void SpawnPopup(Units.Unit unit, int takenDamage)
         {
+            if(unit.UnitType != UnitType.ENEMY) return;
             if(!unit.SelfTarget.Center.position.IsInViewport()) return;
             
             var popup = _objectPoolFactory.Create<DamagePopup>(_popupPrefab.gameObject.name, _popupPrefab.gameObject, _uiRoot.HudContainer);

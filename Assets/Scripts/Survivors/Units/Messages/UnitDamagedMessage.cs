@@ -1,11 +1,11 @@
 ﻿namespace Survivors.Units.Messages
 {
-    public readonly struct EnemyDamagedMessage
+    public readonly struct UnitDamagedMessage
     {
         public readonly Unit Unit;
         public readonly float Damage;
 
-        public EnemyDamagedMessage(Unit unit, float damage)
+        public UnitDamagedMessage(Unit unit, float damage)
         {
             Unit = unit;
             Damage = damage;

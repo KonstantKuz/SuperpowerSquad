@@ -84,10 +84,10 @@ namespace Survivors.Units
         public void Init(IUnitModel model)
         {
             Model = model;
-            
+
+            _damageable.OnDamageTaken += OnDamageTaken;
             if (UnitType == UnitType.ENEMY)
             {
-                _damageable.OnDamageTaken += OnDamageTaken;
                 _damageable.OnZeroHealth += DieOnZeroHealth;
             }
 
@@ -103,7 +103,7 @@ namespace Survivors.Units
 
         private void OnDamageTaken(float damage)
         {
-            _messenger.Publish(new EnemyDamagedMessage(this, damage));
+            _messenger.Publish(new UnitDamagedMessage(this, damage));
         }
 
         public void Lock()

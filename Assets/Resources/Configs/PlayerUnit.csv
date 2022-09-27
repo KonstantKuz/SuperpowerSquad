@@ -9,5 +9,5 @@ CircularSawUnit,100,3,1,400,0,100
 BoomerangUnit,100,8,1,200,3,20
 LightningStrikeUnit,100,16,1,400,3,
 BallLightningUnit,100,8,2,200,3.5,2
-MeteorUnit,10000,8,10,200,5,30
+MeteorUnit,100,8,2,200,3.5,30
 IceWaveUnit,100,,1,200,3.5,1
