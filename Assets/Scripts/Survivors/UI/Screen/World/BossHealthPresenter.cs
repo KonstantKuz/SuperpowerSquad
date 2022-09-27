@@ -21,10 +21,9 @@ namespace Survivors.UI.Screen.World
         [SerializeField] private GameObject _squadProgressView;
 
         private CompositeDisposable _disposable;
-        private IUnit _currentBoss;
 
         [Inject] private IMessenger _messenger;
-        [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs; 
+        [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
 
         private void OnEnable()
         {
@@ -37,23 +36,30 @@ namespace Survivors.UI.Screen.World
             _disposable = new CompositeDisposable();
             _messenger.SubscribeWithDisposable<BossSpawnedMessage>(OnBossSpawned).AddTo(_disposable);
         }
-        
+
         private void OnBossSpawned(BossSpawnedMessage msg)
         {
-            if (msg.Unit.UnitType != UnitType.ENEMY || !_enemyUnitConfigs.Get(msg.Unit.Model.Id).IsBoss)
+            var unit = msg.Unit;
+            if (unit.UnitType != UnitType.ENEMY || !_enemyUnitConfigs.Get(unit.Model.Id).IsBoss)
             {
                 throw new ArgumentException($"Unit {msg.Unit.Model.Id} must be enemy boss.");
             }
-            
-            _currentBoss = msg.Unit;
-            InitHealthBar();
+
+            InitHealthBar(unit);
             SwitchToBossHealthBar(true);
-            _currentBoss.OnDeath += (it, cause) => SwitchToBossHealthBar(false);
+            unit.OnDeath += OnBossDeath;
+            Disposable.Create(() => unit.OnDeath -= OnBossDeath).AddTo(_disposable);
         }
 
-        private void InitHealthBar()
+        private void OnBossDeath(IUnit unit, DeathCause deathCause)
         {
-            var healthModel = new HealthBarModel(_currentBoss.GameObject.RequireComponent<IHealthBarOwner>());
+            unit.OnDeath -= OnBossDeath;
+            SwitchToBossHealthBar(false);
+        }
+
+    private void InitHealthBar(IUnit unit)
+        {
+            var healthModel = new HealthBarModel(unit.GameObject.RequireComponent<IHealthBarOwner>());
             _bossHealthBarView.Init(healthModel);
         }
         
@@ -71,12 +77,6 @@ namespace Survivors.UI.Screen.World
 
         private void Dispose()
         {
-            if (_currentBoss != null)
-            {
-                _currentBoss.OnDeath -= (it, cause) => SwitchToBossHealthBar(false);
-                _currentBoss = null;
-            }
-
             _disposable?.Dispose();
             _disposable = null;
         }
