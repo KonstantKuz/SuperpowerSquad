@@ -25,14 +25,14 @@ namespace Survivors.Enemy.Spawn
         [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
         [Inject] private StringKeyedConfigCollection<SpawnableEnemyConfig> _spawnableEnemyConfigs;
 
-        private IUpdatableScope updatableScope;
+        private IUpdatableScope _updatableScope;
         private ICoroutine _spawnCoroutine;
         
-        private ICoroutineRunner CoroutineRunner => updatableScope.CoroutineRunner;
+        private ICoroutineRunner CoroutineRunner => _updatableScope.CoroutineRunner;
         
         public void Init(IUpdatableScope updatableScope)
         {
-            this.updatableScope = updatableScope;
+            _updatableScope = updatableScope;
             _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
         }
         public void StartSpawn()
@@ -59,7 +59,7 @@ namespace Survivors.Enemy.Spawn
             var time = 0.0f;
             while (true) {
                 var timeToNextWave = Random.Range(_config.MinInterval, _config.MaxInterval);
-                yield return new WaitForSeconds(timeToNextWave);
+                yield return new WaitForSeconds(_updatableScope.ScopeTime, timeToNextWave);
                 time += timeToNextWave;
                 var health = timeToNextWave * (_config.StartingHPS + _config.HPSSpeed * time);
                 SpawnWave(health);
@@ -88,7 +88,7 @@ namespace Survivors.Enemy.Spawn
 
         private SpawnableEnemyConfig GetRandomEnemyConfig()
         {
-            var possibleEnemies = _spawnableEnemyConfigs.Where(it => it.Delay <= updatableScope.ScopeTime.Time).ToList();
+            var possibleEnemies = _spawnableEnemyConfigs.Where(it => it.Delay <= _updatableScope.ScopeTime.Time).ToList();
             var configsWithChance = possibleEnemies.Select(it => Tuple.Create(it, it.Chance)).ToList();
             return configsWithChance.SelectRandomWithChance();
         }

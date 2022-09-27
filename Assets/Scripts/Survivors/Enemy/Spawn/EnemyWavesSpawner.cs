@@ -38,7 +38,7 @@ namespace Survivors.Enemy.Spawn
         [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
         [Inject] private EnemyWavesConfig _enemyWavesConfig;
         
-        private IUpdatableScope updatableScope;
+        private IUpdatableScope _updatableScope;
         private ISpawnPlaceProvider _placeProvider;
         private List<EnemyWaveConfig> _waves;
         private ICoroutine _spawnCoroutine;
@@ -47,12 +47,12 @@ namespace Survivors.Enemy.Spawn
         private SpawnerDebugger Debugger => _spawnerDebugger ??= gameObject.AddComponent<SpawnerDebugger>();
 
 
-        private ICoroutineRunner CoroutineRunner => updatableScope.CoroutineRunner;
+        private ICoroutineRunner CoroutineRunner => _updatableScope.CoroutineRunner;
         
 
         public void Init(IUpdatableScope updatableScope)
         {
-            this.updatableScope = updatableScope;
+            _updatableScope = updatableScope;
             ENEMY_LAYER = LayerMask.NameToLayer(ENEMY_LAYER_NAME);
             _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
  
@@ -82,7 +82,7 @@ namespace Survivors.Enemy.Spawn
             var currentTime = 0;
             foreach (var wave in _waves)
             {
-                yield return new WaitForSeconds(wave.SpawnTime - currentTime);
+                yield return new WaitForSeconds(_updatableScope.ScopeTime, wave.SpawnTime - currentTime);
                 currentTime = wave.SpawnTime; 
                 SpawnNextWave(wave);
             } 

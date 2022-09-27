@@ -26,15 +26,20 @@ namespace Survivors.Scope.Coroutine
                 _isComplete = true;
                 return false;
             }
-            if (_currentCoroutine.MoveNext())
-            {
-                if (!(_currentCoroutine.Current is IEnumerator nestedCoroutine)) return true;
-                _enumerators.Push(_currentCoroutine);
-                _currentCoroutine = nestedCoroutine;
-       
-            } else {
-                _currentCoroutine = _enumerators.Count > 0 ? _enumerators.Pop() : null;
+            if (_currentCoroutine.MoveNext()) { 
+                return CheckNestedCoroutine();
             }
+            _currentCoroutine = _enumerators.Count > 0 ? _enumerators.Pop() : null;
+            return true;
+        }
+
+        private bool CheckNestedCoroutine()
+        {
+            if (!(_currentCoroutine.Current is IEnumerator nestedCoroutine)) {
+                return true;
+            }
+            _enumerators.Push(_currentCoroutine);
+            _currentCoroutine = nestedCoroutine;
             return true;
         }
 

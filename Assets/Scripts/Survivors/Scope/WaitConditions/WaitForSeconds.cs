@@ -1,28 +1,27 @@
 ﻿using System.Collections;
-using UnityEngine;
-
+using Survivors.Scope.Timer;
 
 namespace Survivors.Scope.WaitConditions
 {
     public class WaitForSeconds : IEnumerator
     {
-        private readonly float _timeout;
+        private readonly float _timeout;      
+        private readonly IScopeTime _scopeTime;
 
-        private float _leftTime;
-        public WaitForSeconds(float timeout)
+        private float _startTime;
+        public WaitForSeconds(IScopeTime scopeTime, float timeout)
         {
+            _scopeTime = scopeTime;
             _timeout = timeout;
+            _startTime = _scopeTime.Time;
         }
 
-        public bool MoveNext()
-        {
-            _leftTime += Time.deltaTime;
-            return _leftTime < _timeout;
-        }
+        public bool MoveNext() => _scopeTime.Time - _startTime < _timeout;
+
         public void Reset()
         {
-            _leftTime = 0;
+            _startTime = 0;
         }
-        public object Current => (object) null;
+        public object Current => null;
     }
 }
