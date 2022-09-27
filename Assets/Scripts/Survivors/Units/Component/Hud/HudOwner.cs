@@ -1,3 +1,4 @@
+using Feofun.Components;
 using Survivors.UI.Hud.Unit;
 using UniRx;
 using UnityEngine;
@@ -5,7 +6,7 @@ using Zenject;
 
 namespace Survivors.Units.Component.Hud
 {
-    public class HudOwner : MonoBehaviour
+    public abstract class HudOwner<T> : MonoBehaviour, IInitializable<T> where T : class
     {
         [SerializeField] private HudPresenter _hudPrefab;
         [SerializeField] private Transform _hudPlace;
@@ -21,6 +22,8 @@ namespace Survivors.Units.Component.Hud
         public float HudHeightOffset => _hudHeightOffset;
         public IHealthBarOwner HealthBarOwner => _healthBarOwner ??= GetComponent<IHealthBarOwner>();
 
+        public abstract void Init(T owner);
+        
         public void CreateHud()
         {
             CleanUp();

@@ -1,10 +1,8 @@
-﻿using Feofun.Components;
-
-namespace Survivors.Units.Component.Hud
+﻿namespace Survivors.Units.Component.Hud
 {
-    public class UnitHudOwner : HudOwner, IInitializable<IUnit>
+    public class UnitHudOwner : HudOwner<IUnit>
     {
-        public void Init(IUnit owner)
+        public override void Init(IUnit owner)
         {
             CreateHud();
         }
