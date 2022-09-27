@@ -17,7 +17,7 @@ namespace Survivors.Units.Enemy
 
         private ITarget _selfTarget;
         private CapsuleCollider _collider;
-        private IAttack _attack;
+        private IAimController _aimController;
         private EnemyTargetProvider _targetProvider;
         private EnemyMovement _movement;
 
@@ -45,7 +45,7 @@ namespace Survivors.Units.Enemy
         {
             _selfTarget = gameObject.RequireComponent<ITarget>();
             _collider = gameObject.RequireComponent<CapsuleCollider>();
-            _attack = gameObject.RequireComponent<IAttack>();
+            _aimController = gameObject.RequireComponent<IAimController>();
             _movement = gameObject.RequireComponent<EnemyMovement>();
             _targetProvider = new EnemyTargetProvider(gameObject.RequireComponent<ITargetSearcher>());
         }
@@ -60,7 +60,7 @@ namespace Survivors.Units.Enemy
         {
             if (!Active || _world.Squad == null) return;
             UpdateDestination();
-            if (_attack.CanAttack) {
+            if (_aimController.IsNeedAim) {
                 AimAtTarget();
             }
             _movement.UpdateAnimation();

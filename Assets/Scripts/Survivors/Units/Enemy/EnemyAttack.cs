@@ -12,7 +12,7 @@ using UnityEngine;
 namespace Survivors.Units.Enemy
 {
     [RequireComponent(typeof(EnemyAi))]
-    public class EnemyAttack : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent, IAttack
+    public class EnemyAttack : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent, IAimController
     {
         private EnemyAi _enemyAi;
         private BaseWeapon _weapon;
@@ -25,7 +25,7 @@ namespace Survivors.Units.Enemy
         private WeaponAnimationHandler _weaponAnimationHandler;
 
         private bool HasWeaponAnimationHandler => _weaponAnimationHandler != null;
-        public bool CanAttack => _enemyAi.CurrentTarget != null && 
+        public bool IsNeedAim => _enemyAi.CurrentTarget != null && 
                                  _enemyAi.DistanceToTarget <= _attackModel.AttackDistance;
         
         public void Init(IUnit unit)
@@ -56,7 +56,7 @@ namespace Survivors.Units.Enemy
 
         private void Attack()
         {
-            if (!CanAttack) {
+            if (!IsNeedAim) {
                 return;
             }
             enemyAnimationWrapper.PlayAttack();
@@ -67,7 +67,7 @@ namespace Survivors.Units.Enemy
 
         private void Fire()
         {
-            if (!CanAttack) {
+            if (!IsNeedAim) {
                 return;
             }
             _weapon.Fire(_enemyAi.CurrentTarget, _projectileParams, DoDamage);

@@ -16,7 +16,7 @@ using Zenject;
 
 namespace Survivors.Units.Enemy
 {
-    public class CocaDemonAttack : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent, IAttack
+    public class CocaDemonAttack : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent, IAimController
     {
         [SerializeField] private List<WeaponWithFormation> _weapons;
 
@@ -30,7 +30,7 @@ namespace Survivors.Units.Enemy
         [Inject]
         private ConfigCollection<ProjectileFormationType, BossAttackConfig> _attackConfigs;
         
-        public bool CanAttack => _enemyAi.CurrentTarget != null && 
+        public bool IsNeedAim => _enemyAi.CurrentTarget != null && 
                                  _enemyAi.DistanceToTarget <= _attackModel.AttackDistance;
         
         public void Init(IUnit unit)
@@ -57,7 +57,7 @@ namespace Survivors.Units.Enemy
 
         private void Attack()
         {
-            if (!CanAttack) return;
+            if (!IsNeedAim) return;
 
             StopAttack();
             _currentAttackConfig = GetNextRandomAttackConfig();
