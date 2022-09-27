@@ -1,6 +1,4 @@
 ﻿using System;
-using Feofun.Components;
-using Logger.Extension;
 using Survivors.Session.Config;
 using Survivors.Units;
 using UniRx;
