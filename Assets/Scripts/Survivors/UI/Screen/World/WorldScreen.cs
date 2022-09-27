@@ -66,7 +66,7 @@ namespace Survivors.UI.Screen.World
         {
             var model = new MissionProgressModel(_sessionService.LevelConfig, 
                 _sessionService.Kills, 
-                _sessionService.PlayTime,
+                _sessionService.SpawnTime,
                 _enemyWavesConfig,
                 _enemyUnitConfigs);
             _missionProgressView.Init(model);
@@ -97,6 +97,7 @@ namespace Survivors.UI.Screen.World
         private void Dispose()
         {
             _messenger.Unsubscribe<SessionEndMessage>(OnSessionFinished);
+            _missionProgressView.Dispose();
         }
     }
 }

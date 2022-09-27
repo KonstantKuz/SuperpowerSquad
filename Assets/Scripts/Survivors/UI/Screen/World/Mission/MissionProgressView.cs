@@ -45,15 +45,10 @@ namespace Survivors.UI.Screen.World.Mission
             _text.SetTextFormatted(_text.LocalizationId, content);
         }
         
-        private void Dispose()
+        public void Dispose()
         {
             _disposable?.Dispose();
             _disposable = null;
-        }
-
-        private void OnDisable()
-        {
-            Dispose();
         }
     }
 }

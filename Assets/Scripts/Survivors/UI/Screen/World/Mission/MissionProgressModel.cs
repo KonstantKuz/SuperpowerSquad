@@ -22,7 +22,7 @@ namespace Survivors.UI.Screen.World.Mission
 
         public MissionProgressModel(LevelMissionConfig levelConfig, 
             IReadOnlyReactiveProperty<int> killsCount, 
-            IReadOnlyReactiveProperty<float> playTime,
+            IReadOnlyReactiveProperty<float> spawnTime,
             EnemyWavesConfig wavesConfig, 
             ConfigCollection<string, EnemyUnitConfig> enemyUnitConfig)
         {
@@ -35,7 +35,7 @@ namespace Survivors.UI.Screen.World.Mission
                     InitForKillCountMission(killsCount);
                     break;
                 case LevelMissionType.Time:
-                    InitForTimeMission(playTime, wavesConfig, enemyUnitConfig);
+                    InitForTimeMission(spawnTime, wavesConfig, enemyUnitConfig);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException($"Unexpected mission type := {MissionType}");
@@ -49,13 +49,13 @@ namespace Survivors.UI.Screen.World.Mission
             LevelProgress = killsCount.Select(count => (float) count / _levelConfig.KillCount).ToReactiveProperty();
         }
 
-        private void InitForTimeMission(IReadOnlyReactiveProperty<float> playTime,
+        private void InitForTimeMission(IReadOnlyReactiveProperty<float> spawnTime,
             EnemyWavesConfig wavesConfig, 
             ConfigCollection<string, EnemyUnitConfig> enemyUnitConfig)
         {
             LabelId = SECONDS_LOCALIZATION_ID;
-            LabelContent = playTime.Select(time => (_levelConfig.Time - time).ToString()).ToReactiveProperty();
-            LevelProgress = playTime.Select(time => time / _levelConfig.Time).ToReactiveProperty();
+            LabelContent = spawnTime.Select(time =>  Convert.ToInt32(_levelConfig.Time - time).ToString()).ToReactiveProperty();
+            LevelProgress = spawnTime.Select(time => time / _levelConfig.Time).ToReactiveProperty();
             MissionEventModel = new MissionEventModel(wavesConfig, enemyUnitConfig, _levelConfig.Time);
         }
     }
