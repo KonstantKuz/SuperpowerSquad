@@ -2,10 +2,10 @@
 
 namespace Survivors.Scope.Timer
 {
-    public interface ITimer
+    public interface IScopeTime
     { 
         bool IsPaused { get; } 
         float Time { get; }
-        event Action<float> OnUpdate;
+        event Action OnTick;
     }
 }

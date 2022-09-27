@@ -1,18 +1,17 @@
 using Feofun.Components;
 using Survivors.UI.Hud.Unit;
-using Survivors.Units.Component;
 using UniRx;
 using UnityEngine;
 using Zenject;
 
-namespace Survivors.Squad.Component.Hud
+namespace Survivors.Units.Component.Hud
 {
-    public class HudOwner : MonoBehaviour, IInitializable<Squad>
+    public abstract class HudOwner<T> : MonoBehaviour, IInitializable<T> where T : class
     {
         [SerializeField] private HudPresenter _hudPrefab;
         [SerializeField] private Transform _hudPlace;
-        [SerializeField] private float _hudPlaceOffset;
-
+        [SerializeField] private float _hudHeightOffset;
+        
         private HudPresenter _hudPresenter;
         private IHealthBarOwner _healthBarOwner;
         private CompositeDisposable _disposable;
@@ -20,23 +19,25 @@ namespace Survivors.Squad.Component.Hud
         [Inject]
         private DiContainer _container;
 
-        public IHealthBarOwner HealthBarOwner => _healthBarOwner ?? GetComponent<IHealthBarOwner>();
+        public float HudHeightOffset => _hudHeightOffset;
+        public IHealthBarOwner HealthBarOwner => _healthBarOwner ??= GetComponent<IHealthBarOwner>();
 
-        public void Init(Squad squad)
+        public abstract void Init(T owner);
+        
+        public void CreateHud()
         {
             CleanUp();
             _disposable = new CompositeDisposable();
-            squad.UnitsCount.Subscribe(it => UpdateHudPlaceOffset(squad.SquadRadius)).AddTo(_disposable);
             _hudPresenter = _container.InstantiatePrefabForComponent<HudPresenter>(_hudPrefab);
             _hudPresenter.Init(this, _hudPlace);
         }
 
-        private void UpdateHudPlaceOffset(float radius)
+        private void OnDestroy()
         {
-            _hudPresenter.UpdateHudPlaceOffset(radius * _hudPlaceOffset);
+            CleanUp();
         }
 
-        private void OnDestroy()
+        private void OnDisable()
         {
             CleanUp();
         }

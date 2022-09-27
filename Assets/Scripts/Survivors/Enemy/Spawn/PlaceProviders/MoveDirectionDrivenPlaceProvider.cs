@@ -2,6 +2,7 @@
 using Survivors.Enemy.Spawn.Config;
 using Survivors.Enemy.Spawn.Spawners;
 using Survivors.Extension;
+using Survivors.Location;
 using UnityEngine;
 
 namespace Survivors.Enemy.Spawn.PlaceProviders
@@ -13,17 +14,17 @@ namespace Survivors.Enemy.Spawn.PlaceProviders
         private readonly Plane[] _frustumPlanes = new Plane[MAX_FRUSTUM_PLANES_COUNT];
         
         private readonly EnemyWaveSpawner _spawner;
-        private readonly Squad.Squad _squad;
+        private readonly World _world;
 
-        public MoveDirectionDrivenPlaceProvider(EnemyWaveSpawner spawner, Squad.Squad squad)
+        public MoveDirectionDrivenPlaceProvider(EnemyWaveSpawner spawner, World world)
         {
             _spawner = spawner;
-            _squad = squad;
+            _world = world;
         }
 
         public SpawnPlace GetSpawnPlace(EnemyWaveConfig waveConfig, float outOfViewOffset)
         {
-            var moveDirection = _squad.MoveDirection.XZ();
+            var moveDirection = _world.GetSquad().MoveDirection.XZ();
             if (moveDirection.magnitude < Mathf.Epsilon)
             {
                 return SpawnPlace.INVALID;
@@ -39,7 +40,7 @@ namespace Survivors.Enemy.Spawn.PlaceProviders
         
         private Vector3? GetSpawnPlaceByDestination(float outOfViewOffset, Vector3 moveDirection)
         {
-            var ray = new Ray(_squad.Destination.transform.position, moveDirection);
+            var ray = new Ray(_world.GetSquad().Destination.transform.position, moveDirection);
             var frustumIntersectionPoint = GetFrustumIntersectionPoint(ray);
 
             if (frustumIntersectionPoint == null)

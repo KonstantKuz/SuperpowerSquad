@@ -1,10 +1,13 @@
 ﻿using System;
 using System.Collections;
+using Feofun.Config;
 using Feofun.UI.Dialog;
 using Feofun.UI.Screen;
 using JetBrains.Annotations;
 using SuperMaxim.Messaging;
+using Survivors.Enemy.Spawn.Config;
 using Survivors.App.Config;
+using Survivors.Enemy.Spawn;
 using Survivors.Session.Messages;
 using Survivors.Session.Model;
 using Survivors.Session.Service;
@@ -13,6 +16,8 @@ using Survivors.UI.Dialog.StartUnitDialog;
 using Survivors.UI.Dialog.StartUnitDialog.Model;
 using Survivors.UI.Screen.Debriefing;
 using Survivors.UI.Screen.Debriefing.Model;
+using Survivors.UI.Screen.World.Mission;
+using Survivors.Units.Enemy.Config;
 using Survivors.Upgrade;
 using UnityEngine;
 using Zenject;
@@ -27,6 +32,7 @@ namespace Survivors.UI.Screen.World
 
         [SerializeField] private MissionProgressView _missionProgressView;
         [SerializeField] private float _afterSessionDelay = 2;
+        [SerializeField] private MissionEventView _missionEventView;
 
         [Inject] private SessionService _sessionService;
         [Inject] private IMessenger _messenger;
@@ -36,6 +42,7 @@ namespace Survivors.UI.Screen.World
         [Inject] private DialogManager _dialogManager;
         [Inject] private UpgradeService _upgradeService;
         [Inject] private ConstantsConfig _constants;
+        [Inject] private EnemySpawnService _enemySpawnService;
         
         [PublicAPI]
         public void Init()
@@ -57,8 +64,12 @@ namespace Survivors.UI.Screen.World
 
         private void InitProgressView()
         {
-            var model = new MissionProgressModel(_sessionService.LevelConfig, _sessionService.Kills, _sessionService.SpawnTime);
+            var model = new MissionProgressModel(_sessionService.LevelConfig, 
+                _sessionService.Kills, 
+                _sessionService.SpawnTime,
+                _enemySpawnService);
             _missionProgressView.Init(model);
+            _missionEventView.Init(model.MissionEventModel);
         }
 
         private void OnChangeStartUnit(StartUnitSelection startUnitSelection)
@@ -85,6 +96,7 @@ namespace Survivors.UI.Screen.World
         private void Dispose()
         {
             _messenger.Unsubscribe<SessionEndMessage>(OnSessionFinished);
+            _missionProgressView.Dispose();
         }
     }
 }

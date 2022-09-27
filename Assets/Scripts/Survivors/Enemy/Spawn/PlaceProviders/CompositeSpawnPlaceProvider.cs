@@ -15,7 +15,7 @@ namespace Survivors.Enemy.Spawn.PlaceProviders
         public CompositeSpawnPlaceProvider(EnemyWaveSpawner spawner, World world)
         {
             _randomDrivenProvider = new RandomSideDrivenPlaceProvider(spawner, world);
-            _moveDirectionDrivenProvider = new MoveDirectionDrivenPlaceProvider(spawner, world.Squad);
+            _moveDirectionDrivenProvider = new MoveDirectionDrivenPlaceProvider(spawner, world);
         }
         
         public SpawnPlace GetSpawnPlace(EnemyWaveConfig waveConfig, float outOfViewOffset)

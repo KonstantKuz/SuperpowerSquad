@@ -117,7 +117,7 @@ namespace Survivors.Session.Service
         {
             CheckSquad();
             CreatePlayerUnits(_world.Squad.Model.StartingUnitCount.Value);
-            _enemySpawnService.Spawn();
+            _enemySpawnService.StartSpawn();
         }
 
         private void ResetKills() => _kills.Value = 0;
@@ -135,7 +135,7 @@ namespace Survivors.Session.Service
 
         private void OnTick()
         {
-            _spawnTime.Value = _enemySpawnService.ScopeUpdatable.Timer.Time;
+            _spawnTime.Value = _enemySpawnService.UpdatableScope.ScopeTime.Time;
             if (Session.IsMissionGoalReached()) {
                 EndSession(UnitType.PLAYER);
             }
