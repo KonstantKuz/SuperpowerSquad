@@ -2,43 +2,31 @@
 using System.Collections;
 using Survivors.Extension;
 using Survivors.Units.Target;
-using Survivors.Units.Weapon.Projectiles;
 using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
 
 namespace Survivors.Units.Weapon.FormationWeapon
 {
-    public class ArrowFire : IFireFormation
+    public class ArrowFormationWeapon : WeaponWithFormation
     {
-        private readonly Func<Projectile> _createProjectile;
-        private readonly Transform _barrel;
-        private readonly float _width;
-        private readonly float _length;
-        private readonly float _spreadAngle;
-
+        [SerializeField] private float _width;
+        [SerializeField] private float _length;
+        [SerializeField] private float _spreadAngle;
+        
         private ITarget _target;
         private IProjectileParams _projectileParams;
         private Action<GameObject> _hitCallback;
-
-        public ArrowFire(Func<Projectile> createProjectile, Transform barrel, float width, float length, float spreadAngle)
-        {
-            _createProjectile = createProjectile;
-            _barrel = barrel;
-            _width = width;
-            _length = length;
-            _spreadAngle = spreadAngle;
-        }
         
-        public IEnumerator Fire(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
+        public override IEnumerator Fire(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             _target = target;
             _projectileParams = projectileParams;
             _hitCallback = hitCallback;
 
             var widthStep = _width / projectileParams.Count;
-            var forward = _barrel.forward.XZ();
+            var forward = Barrel.forward.XZ();
             
-            LaunchProjectile(_barrel.position, forward);
+            LaunchProjectile(Barrel.position, forward);
             
             var subWaveCount = (projectileParams.Count - 1) / 2;
             var subLength = _length / subWaveCount;
@@ -46,8 +34,8 @@ namespace Survivors.Units.Weapon.FormationWeapon
             for (int i = 1; i < subWaveCount + 1; i++)
             {
                 yield return new WaitForSeconds(subInterval);
-                var leftProjectilePosition = _barrel.position + i * widthStep * _barrel.right;
-                var rightProjectilePosition = _barrel.position - i * widthStep * _barrel.right;
+                var leftProjectilePosition = Barrel.position + i * widthStep * Barrel.right;
+                var rightProjectilePosition = Barrel.position - i * widthStep * Barrel.right;
                 LaunchProjectile(leftProjectilePosition, Quaternion.Euler(0, _spreadAngle * i, 0) * forward);
                 LaunchProjectile(rightProjectilePosition, Quaternion.Euler(0, -_spreadAngle * i, 0) * forward);
             }
@@ -55,7 +43,7 @@ namespace Survivors.Units.Weapon.FormationWeapon
 
         private void LaunchProjectile(Vector3 position, Vector3 forward)
         {
-            var projectile = _createProjectile.Invoke();
+            var projectile = CreateProjectile();
             projectile.transform.SetPositionAndRotation(position, Quaternion.LookRotation(forward));
             projectile.transform.localScale = Vector3.one * _projectileParams.DamageRadius;
             projectile.Launch(_target, _projectileParams, _hitCallback);

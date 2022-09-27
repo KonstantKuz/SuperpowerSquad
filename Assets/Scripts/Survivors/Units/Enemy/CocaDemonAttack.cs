@@ -1,4 +1,6 @@
 ﻿using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Feofun.Components;
 using Feofun.Config;
 using Feofun.Extension;
@@ -16,8 +18,9 @@ namespace Survivors.Units.Enemy
 {
     public class CocaDemonAttack : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent, IAttack
     {
+        [SerializeField] private List<WeaponWithFormation> _weapons;
+
         private EnemyAi _enemyAi;
-        private WeaponWithFormation _weapon;
         private WeaponTimer _weaponTimer;
         private EnemyAttackModel _attackModel;
         private BossAttackConfig _currentAttackConfig;
@@ -28,7 +31,8 @@ namespace Survivors.Units.Enemy
         private ConfigCollection<ProjectileFormationType, BossAttackConfig> _attackConfigs;
         
         public bool CanAttack => _enemyAi.CurrentTarget != null && 
-                                 _enemyAi.DistanceToTarget <= _attackModel.AttackDistance;        
+                                 _enemyAi.DistanceToTarget <= _attackModel.AttackDistance;
+        
         public void Init(IUnit unit)
         {
             Dispose();
@@ -41,7 +45,6 @@ namespace Survivors.Units.Enemy
         private void Awake()
         {
             _enemyAi = gameObject.RequireComponent<EnemyAi>();
-            _weapon = gameObject.RequireComponentInChildren<WeaponWithFormation>();
             _enemyAnimationWrapper = gameObject.RequireComponentInChildren<EnemyAnimationWrapper>();
         }
 
@@ -56,13 +59,15 @@ namespace Survivors.Units.Enemy
         {
             if (!CanAttack) return;
 
+            StopAttack();
             _currentAttackConfig = GetNextRandomAttackConfig();
             _currentAttack = StartCoroutine(Attack(_currentAttackConfig));
         }
 
         private BossAttackConfig GetNextRandomAttackConfig()
         {
-            var randomConfig = _attackConfigs.Get(EnumExt.GetRandom<ProjectileFormationType>());
+            var randomAvailableType = _weapons.Random().FormationType;
+            var randomConfig = _attackConfigs.Get(randomAvailableType);
             return randomConfig == _currentAttackConfig ? GetNextRandomAttackConfig() : randomConfig;
         }
         
@@ -70,18 +75,18 @@ namespace Survivors.Units.Enemy
         {
             for (int i = 0; i < attackConfig.Count; i++)
             {
-                Fire();
                 _enemyAnimationWrapper.PlayAttack();
+                yield return StartCoroutine(Fire());
                 yield return new WaitForSeconds(attackConfig.Interval);
             }
 
             _currentAttack = null;
         }
 
-        private void Fire()
+        private IEnumerator Fire()
         {
-            _weapon.Fire(_currentAttackConfig.Id,
-                _enemyAi.CurrentTarget, 
+            return _weapons.First(it => it.FormationType == _currentAttackConfig.Id)
+                .Fire(_enemyAi.CurrentTarget, 
                 _currentAttackConfig.CreateProjectileParams(), 
                 it => DoDamage(_currentAttackConfig.Damage, it));
         }
@@ -100,10 +105,19 @@ namespace Survivors.Units.Enemy
 
         private void Dispose()
         {
-            _weapon.StopAttack();
             if (_weaponTimer != null)
             {
                 _weaponTimer.OnAttackReady -= Attack;
+            }
+            StopAttack();
+        }
+
+        private void StopAttack()
+        {
+            if (_currentAttack != null)
+            {
+                StopCoroutine(_currentAttack);
+                _currentAttack = null;
             }
         }
     }
