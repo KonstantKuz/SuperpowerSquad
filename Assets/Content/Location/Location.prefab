@@ -463,6 +463,8 @@ MonoBehaviour:
   _angleAttemptCount: 3
   _rangeAttemptCount: 3
   _minOutOfViewOffset: 3
+  _insideViewOffset: 5
+  _onEdgeViewOffset: 1
 --- !u!114 &186752239828696303
 MonoBehaviour:
   m_ObjectHideFlags: 0
