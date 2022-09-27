@@ -20,6 +20,8 @@ namespace Survivors.Units.Enemy.Config
         public EnemyScaleConfig EnemyScaleConfig;
         [DataMember] 
         public int HealthStep;
+        [DataMember] 
+        public bool IsBoss;
         
         public string Id => _id; 
         

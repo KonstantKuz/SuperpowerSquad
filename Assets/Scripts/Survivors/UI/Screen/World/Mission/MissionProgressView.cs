@@ -1,14 +1,8 @@
-﻿using System;
-using Feofun.UI.Components;
-using SuperMaxim.Messaging;
-using Survivors.Session.Config;
-using Survivors.Session.Messages;
-using Survivors.Session.Service;
+﻿using Feofun.UI.Components;
 using UniRx;
 using UnityEngine;
-using Zenject;
 
-namespace Survivors.UI.Screen.World
+namespace Survivors.UI.Screen.World.Mission
 {
     public class MissionProgressView : MonoBehaviour
     {
@@ -51,15 +45,10 @@ namespace Survivors.UI.Screen.World
             _text.SetTextFormatted(_text.LocalizationId, content);
         }
         
-        private void Dispose()
+        public void Dispose()
         {
             _disposable?.Dispose();
             _disposable = null;
-        }
-
-        private void OnDisable()
-        {
-            Dispose();
         }
     }
 }

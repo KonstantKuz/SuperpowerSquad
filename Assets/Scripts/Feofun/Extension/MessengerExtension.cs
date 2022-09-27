@@ -9,7 +9,7 @@ namespace Feofun.Extension
         {
             return new MessageSubscription<T>(messenger, func);
         }
-
+        
         private class MessageSubscription<T> : IDisposable
         {
             private readonly IMessenger _messenger;
