@@ -261,10 +261,10 @@ GameObject:
   - component: {fileID: 1404112492156379236}
   - component: {fileID: 543859091421779963}
   - component: {fileID: 2270789672777925134}
-  - component: {fileID: 5461194849551246647}
   - component: {fileID: 4477187146966790282}
   - component: {fileID: 7958715525812945929}
   - component: {fileID: 7082385706931328798}
+  - component: {fileID: 3164319524234450891}
   m_Layer: 0
   m_Name: Squad
   m_TagString: Untagged
@@ -326,21 +326,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 050b63d35cc74eb1b1f7b4b3d0d8ad33, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5461194849551246647
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7626070557693701769}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b9c1dbc409d68794b856557412180aac, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _hudPrefab: {fileID: 2952826858694922931, guid: 60ee3281ab8997e478d99f0a185cdf69, type: 3}
-  _hudPlace: {fileID: 5330639236914749494}
-  _hudPlaceOffset: 1
 --- !u!114 &4477187146966790282
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -380,3 +365,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6b204d47d2f64e7287be18256191d9ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3164319524234450891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7626070557693701769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 149f62e1919645b4b86a80b36aa053a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _hudPrefab: {fileID: 2952826858694922931, guid: 60ee3281ab8997e478d99f0a185cdf69, type: 3}
+  _hudPlace: {fileID: 5330639236914749494}
+  _hudHeightOffset: 1

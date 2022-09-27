@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 6629324333623088289}
   - component: {fileID: 3006564440288677136}
   - component: {fileID: 7606489921268461171}
+  - component: {fileID: 2972983764237015473}
   - component: {fileID: 817811970232612325}
   - component: {fileID: 7572638229425917206}
   - component: {fileID: 6828866866986922698}
@@ -23,11 +24,11 @@ GameObject:
   - component: {fileID: 7094039851140565474}
   - component: {fileID: 5066505888642405458}
   - component: {fileID: 5316809173621734762}
-  - component: {fileID: 8473987040358760045}
   - component: {fileID: 442751807213895732}
   - component: {fileID: 1265837359138098205}
   - component: {fileID: 3651550046723161448}
   - component: {fileID: 2853900473995928057}
+  - component: {fileID: 718488961608674400}
   m_Layer: 6
   m_Name: CocaDemon
   m_TagString: Untagged
@@ -49,6 +50,7 @@ Transform:
   - {fileID: 7807515448616251854}
   - {fileID: 8734570159059168124}
   - {fileID: 1228820858336296983}
+  - {fileID: 4930251924234054188}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -127,6 +129,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2a4bbdebdeb54fc8a772401a85c5e7a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2972983764237015473
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047533565645016285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c9f3bc114c947029c44af757f3d9b36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _speedMultiplier: 5
+  _accelerationDistanceToSquad: 20
 --- !u!114 &817811970232612325
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -247,20 +263,6 @@ MonoBehaviour:
   _blinkColor: {r: 0.57602674, g: 0, b: 0.8490566, a: 1}
   _renderer: {fileID: 751447729089251593}
   _materialIndex: 1
---- !u!114 &8473987040358760045
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2047533565645016285}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c3be624bc40d495798e4573afb21839e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _jumpRotationAngle: 50
-  _jumpRotationTimeRatio: 0.9
 --- !u!54 &442751807213895732
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -325,6 +327,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _animatorBase: {fileID: 1412917646764468633}
+--- !u!114 &718488961608674400
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047533565645016285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55252224e40e4763a28781af20146451, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3753810788131279791
 GameObject:
   m_ObjectHideFlags: 0
@@ -384,6 +398,36 @@ Transform:
   m_Children: []
   m_Father: {fileID: 7807515448616251854}
   m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &7327751885119917492
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4930251924234054188}
+  m_Layer: 6
+  m_Name: HudPlace
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4930251924234054188
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7327751885119917492}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 5, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 3102595488552592063}
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &8217310743306618948
 GameObject:
