@@ -8,6 +8,8 @@ using SuperMaxim.Messaging;
 using Survivors.Enemy.Spawn.Config;
 using Survivors.Enemy.Spawn.PlaceProviders;
 using Survivors.Location;
+using Survivors.Scope;
+using Survivors.Scope.Coroutine;
 using Survivors.Session.Messages;
 using Survivors.Units.Enemy;
 using Survivors.Units.Enemy.Config;
@@ -15,6 +17,7 @@ using Survivors.Units.Service;
 using UnityEngine;
 using UnityEngine.AI;
 using Zenject;
+using WaitForSeconds = Survivors.Scope.WaitConditions.WaitForSeconds;
 
 namespace Survivors.Enemy.Spawn
 {
@@ -35,17 +38,24 @@ namespace Survivors.Enemy.Spawn
         [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
         [Inject] private EnemyWavesConfig _enemyWavesConfig;
         
+        private IUpdatableScope _updatableScope;
         private ISpawnPlaceProvider _placeProvider;
         private List<EnemyWaveConfig> _waves;
-        private Coroutine _spawnCoroutine;
+        private ICoroutine _spawnCoroutine;
         private SpawnerDebugger _spawnerDebugger;
         
         private SpawnerDebugger Debugger => _spawnerDebugger ??= gameObject.AddComponent<SpawnerDebugger>();
 
-        private void Awake()
+
+        private ICoroutineRunner CoroutineRunner => _updatableScope.CoroutineRunner;
+        
+
+        public void Init(IUpdatableScope updatableScope)
         {
+            _updatableScope = updatableScope;
             ENEMY_LAYER = LayerMask.NameToLayer(ENEMY_LAYER_NAME);
             _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
+ 
         }
 
         public void StartSpawn()
@@ -54,7 +64,8 @@ namespace Survivors.Enemy.Spawn
             InitPlaceProvider();
             var orderedConfigs = _enemyWavesConfig.EnemySpawns.OrderBy(it => it.SpawnTime);
             _waves = new List<EnemyWaveConfig>(orderedConfigs);
-            _spawnCoroutine = StartCoroutine(SpawnWaves());
+            
+            _spawnCoroutine = CoroutineRunner.StartCoroutine(SpawnWaves());
         }
 
         private void InitPlaceProvider()
@@ -71,7 +82,7 @@ namespace Survivors.Enemy.Spawn
             var currentTime = 0;
             foreach (var wave in _waves)
             {
-                yield return new WaitForSeconds(wave.SpawnTime - currentTime);
+                yield return new WaitForSeconds(_updatableScope.ScopeTime, wave.SpawnTime - currentTime);
                 currentTime = wave.SpawnTime; 
                 SpawnNextWave(wave);
             } 
@@ -165,11 +176,11 @@ namespace Survivors.Enemy.Spawn
 
         private void Stop()
         {
-            if (_spawnCoroutine != null)
-            {
-                StopCoroutine(_spawnCoroutine);
+            if (_spawnCoroutine != null) {
+                CoroutineRunner.StopCoroutine(_spawnCoroutine);
                 _spawnCoroutine = null;
             }
+          
         }
         private void OnDestroy()
         {
