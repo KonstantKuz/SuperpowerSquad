@@ -22,7 +22,7 @@ namespace Survivors.Units.Enemy.Config
         public int HealthStep;
         [DataMember] 
         public bool IsBoss;
-
+        
         public string Id => _id; 
         
         public int GetHealthForLevel(int level) => Health + (level - MIN_LEVEL) * HealthStep;
