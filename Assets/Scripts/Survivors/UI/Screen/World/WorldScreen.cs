@@ -97,6 +97,7 @@ namespace Survivors.UI.Screen.World
         private void Dispose()
         {
             _messenger.Unsubscribe<SessionEndMessage>(OnSessionFinished);
+            _missionProgressView.Dispose();
         }
     }
 }
