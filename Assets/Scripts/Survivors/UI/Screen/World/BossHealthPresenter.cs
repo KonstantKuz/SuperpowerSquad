@@ -1,16 +1,16 @@
-﻿using Feofun.Config;
+﻿using System;
+using Feofun.Config;
 using Feofun.Extension;
 using SuperMaxim.Messaging;
+using Survivors.Extension;
 using Survivors.UI.Hud.Unit;
 using Survivors.Units;
 using Survivors.Units.Component;
 using Survivors.Units.Enemy.Config;
 using Survivors.Units.Messages;
 using UniRx;
-using UniRx.Triggers;
 using UnityEngine;
 using Zenject;
-using Unit = Survivors.Units.Unit;
 
 namespace Survivors.UI.Screen.World
 {
@@ -35,14 +35,14 @@ namespace Survivors.UI.Screen.World
         {
             Dispose();
             _disposable = new CompositeDisposable();
-            _messenger.SubscribeWithDisposable<UnitSpawnedMessage>(OnUnitSpawned).AddTo(_disposable);
+            _messenger.SubscribeWithDisposable<BossSpawnedMessage>(OnBossSpawned).AddTo(_disposable);
         }
         
-        private void OnUnitSpawned(UnitSpawnedMessage msg)
+        private void OnBossSpawned(BossSpawnedMessage msg)
         {
             if (msg.Unit.UnitType != UnitType.ENEMY || !_enemyUnitConfigs.Get(msg.Unit.Model.Id).IsBoss)
             {
-                return;
+                throw new ArgumentException($"Unit {msg.Unit.Model.Id} must be enemy boss.");
             }
             
             _currentBoss = msg.Unit;
@@ -53,7 +53,7 @@ namespace Survivors.UI.Screen.World
 
         private void InitHealthBar()
         {
-            var healthModel = new HealthBarModel(_currentBoss.GameObject.GetComponent<IHealthBarOwner>());
+            var healthModel = new HealthBarModel(_currentBoss.GameObject.RequireComponent<IHealthBarOwner>());
             _bossHealthBarView.Init(healthModel);
         }
         
