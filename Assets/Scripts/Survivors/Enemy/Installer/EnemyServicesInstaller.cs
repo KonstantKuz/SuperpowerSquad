@@ -15,7 +15,7 @@ namespace Survivors.Enemy.Installer
            
             container.BindInterfacesAndSelfTo<EnemySpawnService>().AsSingle();
             container.Bind<EnemyWaveSpawner>().FromInstance(_enemyWaveSpawner).AsSingle();
-            container.Bind<TimeEnemySpawner>().AsSingle();
+            container.Bind<TimedEnemySpawner>().AsSingle();
             container.Bind<EnemyHpsSpawner>().AsSingle();     
             container.Bind<BossSpawner>().AsSingle();
         }

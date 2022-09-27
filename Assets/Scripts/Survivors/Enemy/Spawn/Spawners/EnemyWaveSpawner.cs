@@ -42,7 +42,7 @@ namespace Survivors.Enemy.Spawn.Spawners
 
         public void SpawnWave(EnemyWaveConfig wave, ISpawnPlaceProvider placeProvider)
         {
-            var place = GetPlaceForWave(wave, placeProvider);
+            var place = FindEmptyPlace(wave, placeProvider);
             SpawnWave(wave, place);
         }
 
@@ -58,13 +58,11 @@ namespace Survivors.Enemy.Spawn.Spawners
             }
         }
 
-        public SpawnPlace GetPlaceForWave(EnemyWaveConfig waveConfig, ISpawnPlaceProvider placeProvider) => FindEmptyPlace(waveConfig, placeProvider);
-        
         public bool IsPlaceValid(Vector3 place, EnemyWaveConfig waveConfig)
         {
             return IsPlaceOnNavMesh(place) && !IsPlaceBusy(place, waveConfig);
         }
-        private SpawnPlace FindEmptyPlace(EnemyWaveConfig waveConfig, ISpawnPlaceProvider placeProvider)
+        public SpawnPlace FindEmptyPlace(EnemyWaveConfig waveConfig, ISpawnPlaceProvider placeProvider)
         {
             for (int rangeTry = 1; rangeTry <= _rangeAttemptCount; rangeTry++) {
                 var outOfViewOffset = GetOutOfViewOffset(waveConfig, rangeTry);

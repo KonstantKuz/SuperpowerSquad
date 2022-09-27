@@ -15,7 +15,7 @@ using WaitForSeconds = Survivors.Scope.WaitConditions.WaitForSeconds;
 
 namespace Survivors.Enemy.Spawn.Spawners
 {
-    public class TimeEnemySpawner : IEnemySpawner
+    public class TimedEnemySpawner : IEnemySpawner
     {
         [Inject] private World _world;
         [Inject] private IMessenger _messenger;

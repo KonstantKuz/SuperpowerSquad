@@ -83,7 +83,7 @@ namespace Survivors.Enemy.Spawn.Spawners
         }
         private void SpawnBoss(EnemyWaveConfig bossSpawn)
         {
-            _enemySpawner.SpawnWave(bossSpawn, _enemySpawner.GetPlaceForWave(bossSpawn, _placeProvider));
+            _enemySpawner.SpawnWave(bossSpawn, _enemySpawner.FindEmptyPlace(bossSpawn, _placeProvider));
         }
         private void OnSessionFinished(SessionEndMessage evn) => Stop();
         private void Stop()

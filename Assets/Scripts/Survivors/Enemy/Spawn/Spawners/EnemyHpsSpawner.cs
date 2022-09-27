@@ -106,7 +106,7 @@ namespace Survivors.Enemy.Spawn.Spawners
 
         private SpawnPlace GetWavePlace(EnemyWaveConfig waveConfig)
         {
-            return _enemySpawner.GetPlaceForWave(waveConfig, _placeProvider);
+            return _enemySpawner.FindEmptyPlace(waveConfig, _placeProvider);
         }
 
         private void SpawnMixedWave(string enemyId, int count, float averageLevel)

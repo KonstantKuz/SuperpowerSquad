@@ -13,7 +13,7 @@ namespace Survivors.Enemy.Spawn
     {
         private readonly ScopeUpdatable _scopeUpdatable = new ScopeUpdatable();
 
-        private readonly TimeEnemySpawner _timeEnemySpawner;
+        private readonly TimedEnemySpawner _timedEnemySpawner;
         private readonly EnemyHpsSpawner _enemyHpsSpawner;     
         private readonly BossSpawner _bossSpawner;
         
@@ -22,14 +22,14 @@ namespace Survivors.Enemy.Spawn
 
         public IScopeUpdatable ScopeUpdatable => _scopeUpdatable;
 
-        private EnemySpawnService(TimeEnemySpawner timeEnemySpawner,
+        private EnemySpawnService(TimedEnemySpawner timedEnemySpawner,
                                   EnemyHpsSpawner enemyHpsSpawner,
                                   ConstantsConfig constantsConfig,
                                   UpdateManager updateManager,
                                   IMessenger messenger,
                                   BossSpawner bossSpawner)
         { 
-            _timeEnemySpawner = timeEnemySpawner;
+            this._timedEnemySpawner = timedEnemySpawner;
             _enemyHpsSpawner = enemyHpsSpawner;
             _constantsConfig = constantsConfig;
             _updateManager = updateManager;
@@ -40,7 +40,7 @@ namespace Survivors.Enemy.Spawn
 
         private void InitSpawners()
         {
-            _timeEnemySpawner.Init(_scopeUpdatable);
+            _timedEnemySpawner.Init(_scopeUpdatable);
             _enemyHpsSpawner.Init(_scopeUpdatable);
             _bossSpawner.Init(_scopeUpdatable);
         }
@@ -54,7 +54,7 @@ namespace Survivors.Enemy.Spawn
             _scopeUpdatable.Reset();
 
             _bossSpawner.StartSpawn();
-            _timeEnemySpawner.StartSpawn();
+            _timedEnemySpawner.StartSpawn();
             
             if (_constantsConfig.EnemyHpsSpawnerEnabled) {
                 _enemyHpsSpawner.StartSpawn();
