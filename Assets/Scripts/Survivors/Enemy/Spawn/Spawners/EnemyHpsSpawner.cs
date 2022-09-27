@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections;
 using System.Linq;
+using System.Runtime.InteropServices;
 using Feofun.Config;
 using Feofun.Extension;
 using Logger.Extension;
 using SuperMaxim.Messaging;
 using Survivors.Enemy.Spawn.Config;
+using Survivors.Enemy.Spawn.PlaceProviders;
+using Survivors.Location;
 using Survivors.Scope;
 using Survivors.Scope.Coroutine;
 using Survivors.Session.Messages;
@@ -19,11 +22,15 @@ namespace Survivors.Enemy.Spawn.Spawners
 {
     public class EnemyHpsSpawner : IEnemySpawner
     {
-        [Inject] private EnemyWavesSpawner _enemyWavesSpawner;
+        [Inject] private EnemyWaveSpawner _enemySpawner;
         [Inject] private HpsSpawnerConfig _config;
         [Inject] private IMessenger _messenger;
         [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
         [Inject] private StringKeyedConfigCollection<SpawnableEnemyConfig> _spawnableEnemyConfigs;
+        [Inject] private EnemyWaveSpawner _enemyWaveSpawner;
+        [Inject] private World _world;
+        
+        private ISpawnPlaceProvider _placeProvider;
 
         private IScopeUpdatable _scopeUpdatable;
         private ICoroutine _spawnCoroutine;
@@ -38,9 +45,13 @@ namespace Survivors.Enemy.Spawn.Spawners
         public void StartSpawn()
         {
             Stop();
+            InitPlaceProvider();
             _spawnCoroutine = CoroutineRunner.StartCoroutine(SpawnCoroutine());
         }
-
+        private void InitPlaceProvider()
+        {
+            _placeProvider = new CompositeSpawnPlaceProvider(_enemyWaveSpawner, _world);
+        }
         private void OnSessionFinished(SessionEndMessage evn)
         {
             Stop();
@@ -95,7 +106,7 @@ namespace Survivors.Enemy.Spawn.Spawners
 
         private SpawnPlace GetWavePlace(EnemyWaveConfig waveConfig)
         {
-            return _enemyWavesSpawner.GetPlaceForWave(waveConfig);
+            return _enemySpawner.FindEmptyPlace(waveConfig, _placeProvider);
         }
 
         private void SpawnMixedWave(string enemyId, int count, float averageLevel)
@@ -118,7 +129,7 @@ namespace Survivors.Enemy.Spawn.Spawners
         private void SpawnWave(EnemyWaveConfig waveConfig, SpawnPlace place)
         {
             Log($"Spawning wave of {waveConfig.Count} units of level {waveConfig.EnemyLevel}");
-            _enemyWavesSpawner.SpawnWave(waveConfig, place);
+            _enemySpawner.SpawnWave(waveConfig, place);
         }
 
         private void OnDestroy()

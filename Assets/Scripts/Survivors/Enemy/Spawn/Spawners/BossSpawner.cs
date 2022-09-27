@@ -6,6 +6,8 @@ using ModestTree;
 using SuperMaxim.Messaging;
 using Survivors.Enemy.Messages;
 using Survivors.Enemy.Spawn.Config;
+using Survivors.Enemy.Spawn.PlaceProviders;
+using Survivors.Location;
 using Survivors.Scope;
 using Survivors.Scope.Coroutine;
 using Survivors.Scope.WaitConditions;
@@ -23,12 +25,13 @@ namespace Survivors.Enemy.Spawn.Spawners
         [Inject] private EnemyWavesConfig _enemyWavesConfig;
         [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
         [Inject] private UnitService _unitService;      
-        [Inject] private EnemyWavesSpawner _enemyWavesSpawner;      
+        [Inject] private EnemyWaveSpawner _enemySpawner;      
         [Inject] private IMessenger _messenger;
+        [Inject] private World _world;
         
         private IScopeUpdatable _scopeUpdatable;
         private ICoroutine _spawnCoroutine;
-
+        private ISpawnPlaceProvider _placeProvider;
         private IScopeUpdatable ScopeUpdatable => _scopeUpdatable;
 
         private ICoroutineRunner CoroutineRunner => ScopeUpdatable.CoroutineRunner;
@@ -41,6 +44,7 @@ namespace Survivors.Enemy.Spawn.Spawners
         public void StartSpawn()
         {
             Stop();
+            InitPlaceProvider();
             var bossSpawns = _enemyWavesConfig.EnemySpawns.OrderBy(it => it.SpawnTime)
                                               .Where(it => _enemyUnitConfigs.Get(it.EnemyId).IsBoss)
                                               .ToList();
@@ -49,6 +53,10 @@ namespace Survivors.Enemy.Spawn.Spawners
             }
             _spawnCoroutine = CoroutineRunner.StartCoroutine(SpawnBosses(bossSpawns));
             
+        }
+        private void InitPlaceProvider()
+        {
+            _placeProvider = new SideDrivenPlaceProvider(_enemySpawner, _world, SpawnSide.Top);
         }
         private IEnumerator SpawnBosses(IEnumerable<EnemyWaveConfig> bossSpawns)
         {
@@ -75,7 +83,7 @@ namespace Survivors.Enemy.Spawn.Spawners
         }
         private void SpawnBoss(EnemyWaveConfig bossSpawn)
         {
-            _enemyWavesSpawner.SpawnWave(bossSpawn, _enemyWavesSpawner.GetPlaceForWave(bossSpawn));
+            _enemySpawner.SpawnWave(bossSpawn, _enemySpawner.FindEmptyPlace(bossSpawn, _placeProvider));
         }
         private void OnSessionFinished(SessionEndMessage evn) => Stop();
         private void Stop()

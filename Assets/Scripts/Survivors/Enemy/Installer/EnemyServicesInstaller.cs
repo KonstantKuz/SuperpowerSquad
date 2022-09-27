@@ -8,13 +8,14 @@ namespace Survivors.Enemy.Installer
     public class EnemyServicesInstaller : MonoBehaviour
     {
 
-        [SerializeField] private EnemyWavesSpawner _enemyWavesSpawner;
+        [SerializeField] private EnemyWaveSpawner _enemyWaveSpawner;
         
         public void Install(DiContainer container)
         {
            
             container.BindInterfacesAndSelfTo<EnemySpawnService>().AsSingle();
-            container.Bind<EnemyWavesSpawner>().FromInstance(_enemyWavesSpawner);
+            container.Bind<EnemyWaveSpawner>().FromInstance(_enemyWaveSpawner).AsSingle();
+            container.Bind<TimedEnemySpawner>().AsSingle();
             container.Bind<EnemyHpsSpawner>().AsSingle();     
             container.Bind<BossSpawner>().AsSingle();
         }
