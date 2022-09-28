@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using Feofun.Config;
 using Logger.Extension;
-using SuperMaxim.Messaging;
 using Survivors.Enemy.Spawn.Config;
 using Survivors.Enemy.Spawn.PlaceProviders;
 using Survivors.Location;
-using Survivors.Scope;
-using Survivors.Scope.Coroutine;
 using Survivors.Units.Enemy;
 using Survivors.Units.Enemy.Config;
 using Survivors.Units.Service;

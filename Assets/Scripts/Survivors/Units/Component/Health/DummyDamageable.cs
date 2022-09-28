@@ -10,7 +10,7 @@ namespace Survivors.Units.Component.Health
         }
 
         public event Action OnZeroHealth = delegate { };
-        public event Action OnDamageTaken = delegate { };
+        public event Action<float> OnDamageTaken = delegate { };
         public bool DamageEnabled { get; set; }
     }
 }

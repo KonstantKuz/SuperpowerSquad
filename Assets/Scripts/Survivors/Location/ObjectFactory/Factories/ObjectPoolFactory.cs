@@ -1,5 +1,5 @@
-﻿using JetBrains.Annotations;
-using Survivors.Extension;
+﻿using Feofun.Extension;
+using JetBrains.Annotations;
 using Survivors.Location.Service;
 using Survivors.ObjectPool;
 using Survivors.ObjectPool.Component;

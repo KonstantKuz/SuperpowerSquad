@@ -2,7 +2,6 @@
 using Feofun.Config;
 using Feofun.Extension;
 using SuperMaxim.Messaging;
-using Survivors.Extension;
 using Survivors.UI.Hud.Unit;
 using Survivors.Units;
 using Survivors.Units.Component;

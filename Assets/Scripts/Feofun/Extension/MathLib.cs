@@ -1,4 +1,4 @@
-﻿namespace Survivors.Extension
+﻿namespace Feofun.Extension
 {
     public static class MathLib
     {

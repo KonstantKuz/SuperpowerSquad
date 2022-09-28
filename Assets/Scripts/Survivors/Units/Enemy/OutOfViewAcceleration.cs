@@ -1,5 +1,5 @@
 ﻿using Feofun.Components;
-using Survivors.Extension;
+using Feofun.Extension;
 using Survivors.Location;
 using UnityEngine;
 using UnityEngine.AI;

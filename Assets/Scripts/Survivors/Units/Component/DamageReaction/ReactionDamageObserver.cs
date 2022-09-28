@@ -26,7 +26,7 @@ namespace Survivors.Units.Component.DamageReaction
             _damageable.OnDamageTaken += OnDamageTakenReaction;
         }
 
-        private void OnDamageTakenReaction()
+        private void OnDamageTakenReaction(float damage)
         {
             if (gameObject == null) {
                 return;

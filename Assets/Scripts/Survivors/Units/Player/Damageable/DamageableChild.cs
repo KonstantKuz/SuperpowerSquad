@@ -1,5 +1,5 @@
 ﻿using System;
-using Survivors.Extension;
+using Feofun.Extension;
 using Survivors.Units.Component.Health;
 using UnityEngine;
 
@@ -9,7 +9,7 @@ namespace Survivors.Units.Player.Damageable
     {
         private IDamageable _parentDamageable;
         public event Action OnZeroHealth;
-        public event Action OnDamageTaken;
+        public event Action<float> OnDamageTaken;
         public bool DamageEnabled { get; set; } = true;
         public IDamageable ParentDamageable
         {
@@ -33,7 +33,7 @@ namespace Survivors.Units.Player.Damageable
                 return;
             }
             ParentDamageable.TakeDamage(damage, units);
-            OnDamageTaken?.Invoke();
+            OnDamageTaken?.Invoke(damage);
         }
 
         private void OnDestroy()

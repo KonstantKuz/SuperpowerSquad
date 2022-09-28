@@ -26,7 +26,7 @@ namespace Survivors.Units.Component.Health
             _damageable.OnDamageTaken += OnDamageTakenReact;
         }
 
-        private void OnDamageTakenReact()
+        private void OnDamageTakenReact(float damage)
         {
             if(gameObject == null) { return; } 
             PlayScalePunch();

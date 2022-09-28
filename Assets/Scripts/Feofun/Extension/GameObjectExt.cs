@@ -1,7 +1,7 @@
 ﻿using ModestTree;
 using UnityEngine;
 
-namespace Survivors.Extension
+namespace Feofun.Extension
 {
     public static class GameObjectExt
     {
@@ -22,6 +22,13 @@ namespace Survivors.Extension
             var component = gameObject.GetComponent<T>();
             Assert.IsNotNull(component, $"{gameObject.name} gameObject is missing {typeof(T).Name} component in hierarchy");
             return component;
+        }
+        public static bool IsInViewport(this Vector3 position)
+        {
+            var viewportPosition = Camera.main.WorldToViewportPoint(position);
+            return viewportPosition.x >= 0 && viewportPosition.x <= 1 && 
+                   viewportPosition.y >= 0 && viewportPosition.y <= 1 && 
+                   viewportPosition.z > 0;
         }
     }
 }
