@@ -7,6 +7,8 @@ using JetBrains.Annotations;
 using SuperMaxim.Messaging;
 using Survivors.Enemy.Spawn.Config;
 using Survivors.App.Config;
+using Survivors.Enemy.Spawn;
+using Survivors.Enemy.Spawn.Service;
 using Survivors.Session.Messages;
 using Survivors.Session.Model;
 using Survivors.Session.Service;
@@ -15,6 +17,7 @@ using Survivors.UI.Dialog.StartUnitDialog;
 using Survivors.UI.Dialog.StartUnitDialog.Model;
 using Survivors.UI.Screen.Debriefing;
 using Survivors.UI.Screen.Debriefing.Model;
+using Survivors.UI.Screen.World.Mission;
 using Survivors.Units.Enemy.Config;
 using Survivors.Upgrade;
 using UnityEngine;
@@ -40,8 +43,7 @@ namespace Survivors.UI.Screen.World
         [Inject] private DialogManager _dialogManager;
         [Inject] private UpgradeService _upgradeService;
         [Inject] private ConstantsConfig _constants;
-        [Inject] private EnemyWavesConfig _enemyWavesConfig;
-        [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
+        [Inject] private EnemyWaves _enemyWaves;
         
         [PublicAPI]
         public void Init()
@@ -65,9 +67,8 @@ namespace Survivors.UI.Screen.World
         {
             var model = new MissionProgressModel(_sessionService.LevelConfig, 
                 _sessionService.Kills, 
-                _sessionService.PlayTime,
-                _enemyWavesConfig,
-                _enemyUnitConfigs);
+                _sessionService.SpawnTime,
+                _enemyWaves);
             _missionProgressView.Init(model);
             _missionEventView.Init(model.MissionEventModel);
         }
@@ -96,6 +97,7 @@ namespace Survivors.UI.Screen.World
         private void Dispose()
         {
             _messenger.Unsubscribe<SessionEndMessage>(OnSessionFinished);
+            _missionProgressView.Dispose();
         }
     }
 }

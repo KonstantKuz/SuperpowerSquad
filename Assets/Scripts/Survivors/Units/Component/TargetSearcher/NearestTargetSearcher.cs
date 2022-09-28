@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Feofun.Components;
+using Feofun.Extension;
 using JetBrains.Annotations;
-using Survivors.Extension;
 using Survivors.Units.Model;
 using Survivors.Units.Target;
 using UnityEngine;

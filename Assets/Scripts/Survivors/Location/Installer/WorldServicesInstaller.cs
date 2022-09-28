@@ -1,5 +1,6 @@
 ﻿using Survivors.Camera.FrustrumCulling;
 using Survivors.Enemy.Spawn;
+using Survivors.Enemy.Spawn.Spawners;
 using Survivors.Location.ObjectFactory;
 using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Location.Service;
@@ -14,10 +15,10 @@ namespace Survivors.Location.Installer
     public class WorldServicesInstaller : MonoBehaviour
     {
         [SerializeField] private World _world;
-        [SerializeField] private EnemyWavesSpawner _enemyWavesSpawner;
-        [SerializeField] private EnemyHpsSpawner _enemyHpsSpawner;
+        
         [SerializeField] private WorldEventFactory _worldEventFactory;
         [SerializeField] private FrustrumCullingSystem _frustrumCullingSystem;
+
         
         public void Install(DiContainer container)
         {
@@ -32,11 +33,8 @@ namespace Survivors.Location.Installer
             container.Bind<SessionRepository>().AsSingle();
             container.BindInterfacesAndSelfTo<ReviveService>().AsSingle();
             
-            container.Bind<EnemyWavesSpawner>().FromInstance(_enemyWavesSpawner);
-            container.Bind<EnemyHpsSpawner>().FromInstance(_enemyHpsSpawner).AsSingle();
-            container.Bind<IEnemySpawner>().To<CompositeEnemySpawner>().AsSingle();
-            container.BindInterfacesAndSelfTo<DroppingLootService>().AsSingle();
             
+            container.BindInterfacesAndSelfTo<DroppingLootService>().AsSingle();
             
             container.BindInterfacesAndSelfTo<WorldEventService>().AsSingle();  
             container.Bind<WorldEventFactory>().FromInstance(_worldEventFactory);

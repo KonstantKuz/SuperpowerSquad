@@ -10,22 +10,25 @@ namespace Survivors.Units.Component.Health
 {
     public class Health : MonoBehaviour, IDamageable, IHealthBarOwner
     {
-        
         private IHealthModel _healthModel;
         private ReactiveProperty<float> _currentHealth;
+        private ReactiveProperty<float> _takenDamage;
         private IDisposable _disposable;
 
         public float StartingMaxValue => _healthModel.StartingMaxHealth;
         public IReadOnlyReactiveProperty<float> MaxValue => _healthModel.MaxHealth;
         public IReadOnlyReactiveProperty<float> CurrentValue => _currentHealth;
+        
         public bool DamageEnabled { get; set; }
         public event Action OnZeroHealth;
-        public event Action OnDamageTaken;
+        public event Action<float> OnDamageTaken;
         
         public void Init(IHealthModel health)
         {
             _healthModel = health;
             _currentHealth = new FloatReactiveProperty(_healthModel.MaxHealth.Value);
+            _takenDamage = new FloatReactiveProperty();
+            
             DamageEnabled = true;
             _disposable = _healthModel.MaxHealth.Diff().Subscribe(OnMaxHealthChanged);
         }
@@ -42,7 +45,8 @@ namespace Survivors.Units.Component.Health
             ChangeHealth(-damage);
             LogDamage(damage);
             
-            OnDamageTaken?.Invoke();
+            OnDamageTaken?.Invoke(damage);
+            _takenDamage.SetValueAndForceNotify(damage);
             if (_currentHealth.Value <= 0) {
                 OnZeroHealth?.Invoke();
             }

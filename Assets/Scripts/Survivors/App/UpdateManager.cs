@@ -12,8 +12,8 @@ namespace Survivors.App
     
         private List<Action> _customUpdates;
         private List<Action> _customFixedUpdates;
-        private List<Action> _customLateUpdates;
-    
+        private List<Action> _customLateUpdates;     
+        
         private void Awake()
         {
             _customUpdates = new List<Action>(_reservedObjectsCount);
@@ -73,9 +73,8 @@ namespace Survivors.App
 
         private void InvokeAll(List<Action> actions)
         {
-            foreach (var action in actions)
-            {
-                action.Invoke();
+            for (int i = 0; i < actions.Count; i++) {
+                actions[i].Invoke();
             }
         }
     }
