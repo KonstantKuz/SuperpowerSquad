@@ -1,7 +1,8 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using Feofun.Extension;
 using Survivors.Enemy.Spawn.Config;
+using Survivors.Enemy.Spawn.Spawners;
+using Survivors.Location;
 using UnityEngine;
 
 namespace Survivors.Enemy.Spawn.PlaceProviders
@@ -12,18 +13,18 @@ namespace Survivors.Enemy.Spawn.PlaceProviders
         private const int VIEW_FRUSTUM_PLANES_COUNT = 4;
         private readonly Plane[] _frustumPlanes = new Plane[MAX_FRUSTUM_PLANES_COUNT];
         
-        private readonly EnemyWavesSpawner _wavesSpawner;
-        private readonly Squad.Squad _squad;
+        private readonly EnemyWaveSpawner _spawner;
+        private readonly World _world;
 
-        public MoveDirectionDrivenPlaceProvider(EnemyWavesSpawner wavesSpawner, Squad.Squad squad)
+        public MoveDirectionDrivenPlaceProvider(EnemyWaveSpawner spawner, World world)
         {
-            _wavesSpawner = wavesSpawner;
-            _squad = squad;
+            _spawner = spawner;
+            _world = world;
         }
 
         public SpawnPlace GetSpawnPlace(EnemyWaveConfig waveConfig, float outOfViewOffset)
         {
-            var moveDirection = _squad.MoveDirection.XZ();
+            var moveDirection = _world.GetSquad().MoveDirection.XZ();
             if (moveDirection.magnitude < Mathf.Epsilon)
             {
                 return SpawnPlace.INVALID;
@@ -33,13 +34,13 @@ namespace Survivors.Enemy.Spawn.PlaceProviders
             {
                 return SpawnPlace.INVALID;
             }
-            var isValid = _wavesSpawner.IsPlaceValid(position.Value, waveConfig);
+            var isValid = _spawner.IsPlaceValid(position.Value, waveConfig);
             return new SpawnPlace {IsValid = isValid, Position = position.Value};
         }
         
         private Vector3? GetSpawnPlaceByDestination(float outOfViewOffset, Vector3 moveDirection)
         {
-            var ray = new Ray(_squad.Destination.transform.position, moveDirection);
+            var ray = new Ray(_world.GetSquad().Destination.transform.position, moveDirection);
             var frustumIntersectionPoint = GetFrustumIntersectionPoint(ray);
 
             if (frustumIntersectionPoint == null)

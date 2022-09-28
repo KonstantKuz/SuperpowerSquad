@@ -55,8 +55,8 @@ namespace Survivors.UI.Screen.World
             unit.OnDeath -= OnBossDeath;
             SwitchToBossHealthBar(false);
         }
-
-    private void InitHealthBar(IUnit unit)
+        
+        private void InitHealthBar(IUnit unit)
         {
             var healthModel = new HealthBarModel(unit.GameObject.RequireComponent<IHealthBarOwner>());
             _bossHealthBarView.Init(healthModel);
