@@ -14,11 +14,8 @@ namespace Survivors.Units.Weapon.FormationWeapon
         {
             for (int i = 0; i < projectileParams.Count; i++)
             {
-                var projectile = CreateProjectile();
                 var shootRotation = RangedWeapon.GetShootRotation(Barrel.position, target.Center.position, true);
-                projectile.transform.SetPositionAndRotation(Barrel.position, shootRotation);
-                projectile.transform.localScale = Vector3.one * projectileParams.DamageRadius;
-                projectile.Launch(target, projectileParams, hitCallback);
+                LaunchProjectile(Barrel.position, shootRotation, target, projectileParams, hitCallback);
                 yield return new WaitForSeconds(_subInterval);
             }
         }

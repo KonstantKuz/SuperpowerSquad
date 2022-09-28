@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections;
-using System.Collections.Generic;
-using Feofun.Util.SerializableDictionary;
 using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles;
@@ -25,9 +23,16 @@ namespace Survivors.Units.Weapon.FormationWeapon
         public abstract IEnumerator Fire(ITarget target, IProjectileParams projectileParams,
             Action<GameObject> hitCallback);
 
-        protected Projectile CreateProjectile()
+        protected void LaunchProjectile(Vector3 position, 
+            Quaternion rotation, 
+            ITarget target,
+            IProjectileParams projectileParams,
+            Action<GameObject> hitCallback)
         {
-            return _objectFactory.Create<Projectile>(_ammo.gameObject);
+            var projectile =  _objectFactory.Create<Projectile>(_ammo.gameObject);
+            projectile.transform.SetPositionAndRotation(position, rotation);
+            projectile.transform.localScale = Vector3.one * projectileParams.DamageRadius;
+            projectile.Launch(target, projectileParams, hitCallback);
         }
     }
 }

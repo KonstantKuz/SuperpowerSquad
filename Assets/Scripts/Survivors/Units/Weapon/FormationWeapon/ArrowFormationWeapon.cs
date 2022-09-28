@@ -13,20 +13,12 @@ namespace Survivors.Units.Weapon.FormationWeapon
         [SerializeField] private float _length;
         [SerializeField] private float _spreadAngle;
         
-        private ITarget _target;
-        private IProjectileParams _projectileParams;
-        private Action<GameObject> _hitCallback;
-        
         public override IEnumerator Fire(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
-            _target = target;
-            _projectileParams = projectileParams;
-            _hitCallback = hitCallback;
-
             var widthStep = _width / projectileParams.Count;
             var forward = Barrel.forward.XZ();
             
-            LaunchProjectile(Barrel.position, forward);
+            LaunchProjectile(Barrel.position, Quaternion.LookRotation(forward), target, projectileParams, hitCallback);
             
             var subWaveCount = (projectileParams.Count - 1) / 2;
             var subLength = _length / subWaveCount;
@@ -35,18 +27,12 @@ namespace Survivors.Units.Weapon.FormationWeapon
             {
                 yield return new WaitForSeconds(subInterval);
                 var leftProjectilePosition = Barrel.position + i * widthStep * Barrel.right;
+                var leftProjectileForward = Quaternion.Euler(0, _spreadAngle * i, 0) * forward;
+                LaunchProjectile(leftProjectilePosition, Quaternion.LookRotation(leftProjectileForward), target, projectileParams, hitCallback);
                 var rightProjectilePosition = Barrel.position - i * widthStep * Barrel.right;
-                LaunchProjectile(leftProjectilePosition, Quaternion.Euler(0, _spreadAngle * i, 0) * forward);
-                LaunchProjectile(rightProjectilePosition, Quaternion.Euler(0, -_spreadAngle * i, 0) * forward);
+                var rightProjectileForward = Quaternion.Euler(0, -_spreadAngle * i, 0) * forward;
+                LaunchProjectile(rightProjectilePosition, Quaternion.LookRotation(rightProjectileForward), target, projectileParams, hitCallback);
             }
-        }
-
-        private void LaunchProjectile(Vector3 position, Vector3 forward)
-        {
-            var projectile = CreateProjectile();
-            projectile.transform.SetPositionAndRotation(position, Quaternion.LookRotation(forward));
-            projectile.transform.localScale = Vector3.one * _projectileParams.DamageRadius;
-            projectile.Launch(_target, _projectileParams, _hitCallback);
         }
     }
 }

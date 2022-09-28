@@ -20,11 +20,9 @@ namespace Survivors.Units.Weapon.FormationWeapon
             var currentAngle = angleBtwnProjectiles / 2 * _attackNumber;
             for (int i = 0; i < projectileParams.Count; i++)
             {
-                var projectile = CreateProjectile();
-                projectile.transform.position = Barrel.transform.position + Quaternion.Euler(0, currentAngle, 0) * Vector3.forward * _initialRadius;
-                projectile.transform.forward = (projectile.transform.position - Barrel.transform.position).XZ();
-                projectile.transform.localScale = Vector3.one * projectileParams.DamageRadius;
-                projectile.Launch(target, projectileParams, hitCallback);
+                var position = Barrel.transform.position + Quaternion.Euler(0, currentAngle, 0) * Vector3.forward * _initialRadius;
+                var rotation = Quaternion.LookRotation((position - Barrel.transform.position).XZ());
+                LaunchProjectile(position, rotation, target, projectileParams, hitCallback);
                 currentAngle += angleBtwnProjectiles;
             }
             yield break;
