@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using Survivors.Extension;
 using Survivors.Location.ObjectFactory;
 using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Units.Target;

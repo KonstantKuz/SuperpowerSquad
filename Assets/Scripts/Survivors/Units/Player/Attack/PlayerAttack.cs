@@ -1,8 +1,8 @@
 ﻿using System.Linq;
 using Feofun.Components;
+using Feofun.Extension;
 using JetBrains.Annotations;
 using Logger.Extension;
-using Survivors.Extension;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Component.TargetSearcher;
 using Survivors.Units.Player.Model;

@@ -1,7 +1,7 @@
 using System.Collections.Generic;
+using Feofun.Extension;
 using JetBrains.Annotations;
 using SuperMaxim.Core.Extensions;
-using Survivors.Extension;
 using Survivors.Location.Service;
 using UniRx;
 using UniRx.Triggers;

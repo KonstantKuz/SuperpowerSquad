@@ -1,6 +1,6 @@
 ﻿using System;
 using Feofun.Components;
-using Survivors.Extension;
+using Feofun.Extension;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Enemy.Model;
 using UniRx;

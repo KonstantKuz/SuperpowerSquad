@@ -1,6 +1,6 @@
 using System;
 using DG.Tweening;
-using Survivors.Extension;
+using Feofun.Extension;
 using Survivors.Location.ObjectFactory;
 using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Location.Service;

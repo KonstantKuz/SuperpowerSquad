@@ -5,7 +5,6 @@ using Feofun.Components;
 using Feofun.Config;
 using Feofun.Extension;
 using Logger.Extension;
-using Survivors.Extension;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Enemy.Config;
 using Survivors.Units.Enemy.Model;

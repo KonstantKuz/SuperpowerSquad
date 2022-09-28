@@ -1,7 +1,7 @@
 ﻿using System;
 using DG.Tweening;
+using Feofun.Extension;
 using Logger.Extension;
-using Survivors.Extension;
 using Survivors.Location.Model;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Player.Damageable;

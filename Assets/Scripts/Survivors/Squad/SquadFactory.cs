@@ -2,7 +2,6 @@
 using Feofun.Modifiers;
 using Survivors.App.Config;
 using Survivors.Config;
-using Survivors.Extension;
 using Survivors.Location;
 using Survivors.Location.ObjectFactory;
 using Survivors.Location.ObjectFactory.Factories;

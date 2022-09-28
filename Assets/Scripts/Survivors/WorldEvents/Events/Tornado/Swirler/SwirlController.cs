@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections;
-using Survivors.Extension;
+using Feofun.Extension;
 using Survivors.Units.Component;
 using UniRx;
 using UniRx.Triggers;

@@ -1,6 +1,6 @@
 ﻿using System;
+using Feofun.Extension;
 using JetBrains.Annotations;
-using Survivors.Extension;
 using UnityEngine;
 using UnityEngine.AI;
 
