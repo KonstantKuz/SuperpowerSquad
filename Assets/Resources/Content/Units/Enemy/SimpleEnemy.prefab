@@ -318,6 +318,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4157930728703469054, guid: 342bc01ee7016524fb4ab2cea92595be, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: cff21562e2edecc40bfd460d9e99af68, type: 2}
     - target: {fileID: 7262932878182143389, guid: 342bc01ee7016524fb4ab2cea92595be, type: 3}
       propertyPath: m_Name
       value: GiantEnemy_AnimatedMesh

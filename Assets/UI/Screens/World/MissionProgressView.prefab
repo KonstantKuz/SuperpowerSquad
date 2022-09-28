@@ -362,7 +362,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 30.65
+  m_fontSize: 40
   m_fontSizeBase: 32
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -427,6 +427,10 @@ PrefabInstance:
     - target: {fileID: 7309614170722667468, guid: 4c9ce1288629e4a42817d4fd8af27f92, type: 3}
       propertyPath: m_Name
       value: MissionEventIcon
+      objectReference: {fileID: 0}
+    - target: {fileID: 7309614170722667468, guid: 4c9ce1288629e4a42817d4fd8af27f92, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8883459152803031938, guid: 4c9ce1288629e4a42817d4fd8af27f92, type: 3}
       propertyPath: m_Pivot.x

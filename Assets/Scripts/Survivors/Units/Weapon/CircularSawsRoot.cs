@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Feofun.Components;
-using Survivors.Units.Weapon.Projectiles;
 using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
 
