@@ -1,17 +1,12 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Feofun.Config;
-using SuperMaxim.Messaging;
+﻿using SuperMaxim.Messaging;
 using Survivors.App;
 using Survivors.App.Config;
-using Survivors.Enemy.Spawn.Config;
 using Survivors.Enemy.Spawn.Spawners;
 using Survivors.Location;
 using Survivors.Scope;
 using Survivors.Session.Messages;
-using Survivors.Units.Enemy.Config;
 
-namespace Survivors.Enemy.Spawn
+namespace Survivors.Enemy.Spawn.Service
 {
     public class EnemySpawnService : IWorldScope, IEnemySpawner
     {
@@ -20,9 +15,8 @@ namespace Survivors.Enemy.Spawn
         private readonly TimedEnemySpawner _timedEnemySpawner;
         private readonly EnemyHpsSpawner _enemyHpsSpawner;     
         private readonly BossSpawner _bossSpawner;
+        private readonly EnemyWaves _enemyWaves;
         
-        private readonly StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
-        private readonly EnemyWavesConfig _enemyWavesConfig;   
         
         private readonly ConstantsConfig _constantsConfig;
         private readonly UpdateManager _updateManager;
@@ -37,33 +31,26 @@ namespace Survivors.Enemy.Spawn
                                   UpdateManager updateManager,
                                   IMessenger messenger,
                                   BossSpawner bossSpawner,
-                                  StringKeyedConfigCollection<EnemyUnitConfig> enemyUnitConfigs,
-                                  EnemyWavesConfig enemyWavesConfig)
+                                  EnemyWaves enemyWaves)
         { 
             _timedEnemySpawner = timedEnemySpawner;
             _enemyHpsSpawner = enemyHpsSpawner;
             _constantsConfig = constantsConfig;
             _updateManager = updateManager;
             _bossSpawner = bossSpawner;
-            _enemyUnitConfigs = enemyUnitConfigs;
-            _enemyWavesConfig = enemyWavesConfig;
+            _enemyWaves = enemyWaves;
             messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
             InitSpawners();
         }
 
         private void InitSpawners()
         {
-            _timedEnemySpawner.Init(_updatableScope, GetEnemyWavesConfig(false));
-            _bossSpawner.Init(_updatableScope, GetEnemyWavesConfig(true));
+            _timedEnemySpawner.Init(_updatableScope, _enemyWaves.GetWavesConfigs(false));
+            _bossSpawner.Init(_updatableScope, _enemyWaves.GetWavesConfigs(true));
             _enemyHpsSpawner.Init(_updatableScope);
     
         }
-        public IEnumerable<EnemyWaveConfig> GetEnemyWavesConfig(bool isBoss)
-        { 
-            return _enemyWavesConfig.EnemySpawns
-                                    .OrderBy(it => it.SpawnTime)
-                                    .Where(it => _enemyUnitConfigs.Get(it.EnemyId).IsBoss == isBoss);
-        }
+
         public void OnWorldSetup() => _updateManager.StartUpdate(UpdateScope);
         public void OnWorldCleanUp() => _updateManager.StopUpdate(UpdateScope);
         private void UpdateScope() => _updatableScope.Update();

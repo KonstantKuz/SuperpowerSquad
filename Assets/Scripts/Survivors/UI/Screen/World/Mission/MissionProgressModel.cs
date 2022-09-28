@@ -2,6 +2,7 @@
 using Feofun.Config;
 using Survivors.Enemy.Spawn;
 using Survivors.Enemy.Spawn.Config;
+using Survivors.Enemy.Spawn.Service;
 using Survivors.Session.Config;
 using Survivors.Units.Enemy.Config;
 using UniRx;
@@ -24,7 +25,7 @@ namespace Survivors.UI.Screen.World.Mission
         public MissionProgressModel(LevelMissionConfig levelConfig, 
             IReadOnlyReactiveProperty<int> killsCount, 
             IReadOnlyReactiveProperty<float> spawnTime,
-            EnemySpawnService enemySpawnService)
+            EnemyWaves enemyWaves)
         {
             _levelConfig = levelConfig;
             
@@ -35,7 +36,7 @@ namespace Survivors.UI.Screen.World.Mission
                     InitForKillCountMission(killsCount);
                     break;
                 case LevelMissionType.Time:
-                    InitForTimeMission(spawnTime, enemySpawnService);
+                    InitForTimeMission(spawnTime, enemyWaves);
                     break;
                 default:
                     throw new ArgumentOutOfRangeException($"Unexpected mission type := {MissionType}");
@@ -49,12 +50,12 @@ namespace Survivors.UI.Screen.World.Mission
             LevelProgress = killsCount.Select(count => (float) count / _levelConfig.KillCount).ToReactiveProperty();
         }
 
-        private void InitForTimeMission(IReadOnlyReactiveProperty<float> spawnTime, EnemySpawnService enemySpawnService)
+        private void InitForTimeMission(IReadOnlyReactiveProperty<float> spawnTime, EnemyWaves enemyWaves)
         {
             LabelId = SECONDS_LOCALIZATION_ID;
-            LabelContent = spawnTime.Select(time =>  Convert.ToInt32(_levelConfig.Time - time).ToString()).ToReactiveProperty();
+            LabelContent = spawnTime.Select(time => Convert.ToInt32(_levelConfig.Time - time).ToString()).ToReactiveProperty();
             LevelProgress = spawnTime.Select(time => time / _levelConfig.Time).ToReactiveProperty();
-            MissionEventModel = new MissionEventModel(enemySpawnService, _levelConfig.Time);
+            MissionEventModel = new MissionEventModel(enemyWaves, _levelConfig.Time);
         }
     }
 }

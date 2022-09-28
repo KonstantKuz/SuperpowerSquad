@@ -1,4 +1,4 @@
-﻿using Survivors.Enemy.Spawn;
+﻿using Survivors.Enemy.Spawn.Service;
 using Survivors.Enemy.Spawn.Spawners;
 using UnityEngine;
 using Zenject;
@@ -17,7 +17,9 @@ namespace Survivors.Enemy.Installer
             container.Bind<EnemyWaveSpawner>().FromInstance(_enemyWaveSpawner).AsSingle();
             container.Bind<TimedEnemySpawner>().AsSingle();
             container.Bind<EnemyHpsSpawner>().AsSingle();     
-            container.Bind<BossSpawner>().AsSingle();
+            container.Bind<BossSpawner>().AsSingle();      
+            
+            container.Bind<EnemyWaves>().AsSingle();
         }
         
     }

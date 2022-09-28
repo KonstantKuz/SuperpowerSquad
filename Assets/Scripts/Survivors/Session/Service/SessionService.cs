@@ -6,6 +6,7 @@ using Logger.Extension;
 using SuperMaxim.Messaging;
 using Survivors.App.Config;
 using Survivors.Enemy.Spawn;
+using Survivors.Enemy.Spawn.Service;
 using Survivors.Location;
 using Survivors.Player.Progress.Model;
 using Survivors.Player.Progress.Service;

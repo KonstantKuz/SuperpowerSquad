@@ -1,6 +1,7 @@
 ﻿using Feofun.Components;
 using SuperMaxim.Messaging;
 using Survivors.Enemy.Spawn;
+using Survivors.Enemy.Spawn.Service;
 using Survivors.Units.Messages;
 using UnityEngine;
 using Zenject;
