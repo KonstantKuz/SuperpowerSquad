@@ -20,15 +20,17 @@ namespace Survivors.Scope
 
         public void StopCoroutine(ICoroutine coroutine) => CoroutineRunner.StopCoroutine(coroutine);
         
-        public void Reset() => Time = 0;
-        
+        public void Reset()
+        {
+            IsPaused = false;
+            Time = 0;
+        }
+
         public void Update()
         {
             if (IsPaused) return;
             Time += UnityEngine.Time.deltaTime;
             OnTick?.Invoke();
         }
-
-      
     }
 }
