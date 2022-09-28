@@ -7,6 +7,8 @@ using JetBrains.Annotations;
 using SuperMaxim.Messaging;
 using Survivors.Enemy.Spawn.Config;
 using Survivors.App.Config;
+using Survivors.Enemy.Spawn;
+using Survivors.Enemy.Spawn.Service;
 using Survivors.Session.Messages;
 using Survivors.Session.Model;
 using Survivors.Session.Service;
@@ -41,8 +43,7 @@ namespace Survivors.UI.Screen.World
         [Inject] private DialogManager _dialogManager;
         [Inject] private UpgradeService _upgradeService;
         [Inject] private ConstantsConfig _constants;
-        [Inject] private EnemyWavesConfig _enemyWavesConfig;
-        [Inject] private StringKeyedConfigCollection<EnemyUnitConfig> _enemyUnitConfigs;
+        [Inject] private EnemyWaves _enemyWaves;
         
         [PublicAPI]
         public void Init()
@@ -67,8 +68,7 @@ namespace Survivors.UI.Screen.World
             var model = new MissionProgressModel(_sessionService.LevelConfig, 
                 _sessionService.Kills, 
                 _sessionService.SpawnTime,
-                _enemyWavesConfig,
-                _enemyUnitConfigs);
+                _enemyWaves);
             _missionProgressView.Init(model);
             _missionEventView.Init(model.MissionEventModel);
         }
