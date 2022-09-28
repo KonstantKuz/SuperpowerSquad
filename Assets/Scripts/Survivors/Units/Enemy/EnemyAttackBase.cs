@@ -14,6 +14,7 @@ namespace Survivors.Units.Enemy
     public abstract class EnemyAttackBase : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent
     {
         [SerializeField] private BaseWeapon _weapon;
+        [SerializeField] private bool _playAttackAnimation;
 
         protected EnemyAi _enemyAi;
         private EnemyAttackModel _attackModel;
@@ -58,7 +59,9 @@ namespace Survivors.Units.Enemy
             if (!CanAttack) {
                 return;
             }
-            _enemyAnimationWrapper.PlayAttack();
+            if (_playAttackAnimation) {
+                _enemyAnimationWrapper.PlayAttack();
+            }
             if (!HasWeaponAnimationHandler) {
                 Fire();
             }

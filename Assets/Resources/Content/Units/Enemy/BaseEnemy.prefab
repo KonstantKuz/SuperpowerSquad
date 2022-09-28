@@ -155,6 +155,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weapon: {fileID: 113737432540472073}
+  _playAttackAnimation: 1
 --- !u!114 &6828866866986922698
 MonoBehaviour:
   m_ObjectHideFlags: 0

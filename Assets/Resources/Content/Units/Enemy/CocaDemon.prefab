@@ -220,6 +220,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weapon: {fileID: 898774728298080932}
+  _playAttackAnimation: 1
 --- !u!114 &7577524044446936495
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -233,6 +234,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _weapon: {fileID: 2394792566308014941}
+  _playAttackAnimation: 0
   _damage: 20
   _interval: 2
   _additiveRadius: 0.5
