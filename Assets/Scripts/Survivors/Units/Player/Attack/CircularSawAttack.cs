@@ -41,6 +41,7 @@ namespace Survivors.Units.Player.Attack
             _squad = squad;
             _attackModel.ShotCount.Subscribe(CreateSaws).AddTo(_disposable);
             _squad.UnitsCount.Subscribe(UpdateRadius).AddTo(_disposable);
+            UpdateRadius(_squad.UnitsCount.Value);
         }
         
         private void CreateSaws(int count)
