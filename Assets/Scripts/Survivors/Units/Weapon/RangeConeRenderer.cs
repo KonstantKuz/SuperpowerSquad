@@ -1,6 +1,6 @@
 ﻿using System;
 using EasyButtons;
-using Survivors.Extension;
+using Feofun.Extension;
 using UnityEngine;
 
 namespace Survivors.Units.Weapon

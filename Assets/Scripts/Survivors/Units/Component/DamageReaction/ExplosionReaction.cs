@@ -1,6 +1,6 @@
 ﻿using System;
 using DG.Tweening;
-using Survivors.Extension;
+using Feofun.Extension;
 using UnityEngine;
 using UnityEngine.AI;
 

@@ -2,7 +2,7 @@
 using Feofun.Config;
 using Feofun.Extension;
 using SuperMaxim.Messaging;
-using Survivors.Extension;
+using Survivors.Session.Messages;
 using Survivors.UI.Hud.Unit;
 using Survivors.Units;
 using Survivors.Units.Component;
@@ -35,6 +35,7 @@ namespace Survivors.UI.Screen.World
             Dispose();
             _disposable = new CompositeDisposable();
             _messenger.SubscribeWithDisposable<BossSpawnedMessage>(OnBossSpawned).AddTo(_disposable);
+            _messenger.SubscribeWithDisposable<SessionEndMessage>(it => SwitchToBossHealthBar(false)).AddTo(_disposable);
         }
 
         private void OnBossSpawned(BossSpawnedMessage msg)
@@ -56,8 +57,8 @@ namespace Survivors.UI.Screen.World
             unit.OnDeath -= OnBossDeath;
             SwitchToBossHealthBar(false);
         }
-
-    private void InitHealthBar(IUnit unit)
+        
+        private void InitHealthBar(IUnit unit)
         {
             var healthModel = new HealthBarModel(unit.GameObject.RequireComponent<IHealthBarOwner>());
             _bossHealthBarView.Init(healthModel);

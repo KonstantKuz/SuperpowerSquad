@@ -1,11 +1,4 @@
-﻿using Feofun.Components;
-using Logger.Extension;
-using Survivors.Extension;
-using Survivors.Units.Component.Health;
-using Survivors.Units.Enemy.Model;
-using Survivors.Units.Player.Attack;
-using Survivors.Units.Weapon;
-using UniRx;
+﻿using Survivors.Units.Enemy.Model;
 using UnityEngine;
 
 namespace Survivors.Units.Enemy

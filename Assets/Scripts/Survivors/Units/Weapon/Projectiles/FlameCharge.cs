@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
+using Feofun.Extension;
 using SuperMaxim.Core.Extensions;
-using Survivors.Extension;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles.Params;

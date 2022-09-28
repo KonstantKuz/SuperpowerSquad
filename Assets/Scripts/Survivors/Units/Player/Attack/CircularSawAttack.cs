@@ -1,7 +1,7 @@
 using System;
 using Feofun.Components;
+using Feofun.Extension;
 using Logger.Extension;
-using Survivors.Extension;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Player.Model;
 using Survivors.Units.Weapon;

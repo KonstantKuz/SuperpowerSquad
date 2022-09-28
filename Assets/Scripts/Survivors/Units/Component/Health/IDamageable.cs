@@ -6,7 +6,7 @@ namespace Survivors.Units.Component.Health
     { 
         void TakeDamage(float damage, DamageUnits units = DamageUnits.Value);
         event Action OnZeroHealth;
-        event Action OnDamageTaken;
+        event Action<float> OnDamageTaken;
         bool DamageEnabled { get; set; } 
     }
 }

@@ -1,7 +1,7 @@
 ﻿using Feofun.Components;
+using Feofun.Extension;
 using JetBrains.Annotations;
 using Logger.Extension;
-using Survivors.Extension;
 using Survivors.Units.Component.Health;
 using Survivors.Units.Enemy.Model;
 using Survivors.Units.Player.Attack;
@@ -25,6 +25,8 @@ namespace Survivors.Units.Enemy
         [CanBeNull] private WeaponAnimationHandler _weaponAnimationHandler;
 
         private bool HasWeaponAnimationHandler => _weaponAnimationHandler != null;
+        private bool IsFireWithoutAnimation => HasWeaponAnimationHandler && !_playAttackAnimation;
+        
         protected bool CanAttack => _enemyAi.CurrentTarget != null &&
                                     _enemyAi.DistanceToTarget <= _attackModel.AttackDistance;
 
@@ -62,7 +64,7 @@ namespace Survivors.Units.Enemy
             if (_playAttackAnimation) {
                 _enemyAnimationWrapper.PlayAttack();
             }
-            if (!HasWeaponAnimationHandler) {
+            if (!HasWeaponAnimationHandler || IsFireWithoutAnimation) {
                 Fire();
             }
         }
