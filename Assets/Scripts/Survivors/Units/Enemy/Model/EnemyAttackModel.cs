@@ -18,6 +18,13 @@ namespace Survivors.Units.Enemy.Model
             ProjectileSpeed = config.ProjectileSpeed;
         }
 
+        public EnemyAttackModel(float attackDistance, float attackDamage, float attackInterval)
+        {
+            AttackDistance = attackDistance;
+            AttackDamage = attackDamage;
+            AttackInterval = new ReactiveProperty<float>(attackInterval);
+        }
+        
         public float TargetSearchRadius { get; }
         public float AttackDistance { get; }
         public float AttackDamage { get; }

@@ -401,6 +401,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70fa05843c1c45d9a3e4d8b411bf6adc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _weapon: {fileID: 898774728298080932}
+  _playAttackAnimation: 1
 --- !u!114 &6828866866986922698
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -10,6 +10,7 @@ using Survivors.Units.Enemy.Config;
 using Survivors.Units.Enemy.Model;
 using Survivors.Units.Player.Attack;
 using Survivors.Units.Weapon.FormationWeapon;
+using UniRx;
 using UnityEngine;
 using Zenject;
 
@@ -25,6 +26,7 @@ namespace Survivors.Units.Enemy
         private BossAttackConfig _currentAttackConfig;
         private Coroutine _currentAttack;
         private EnemyAnimationWrapper _enemyAnimationWrapper;
+        private CompositeDisposable _disposable;
 
         [Inject]
         private ConfigCollection<ProjectileFormationType, BossAttackConfig> _attackConfigs;
@@ -35,7 +37,7 @@ namespace Survivors.Units.Enemy
         public void Init(IUnit unit)
         {
             Dispose();
-            
+            _disposable = new CompositeDisposable();
             _attackModel = (EnemyAttackModel) unit.Model.AttackModel;
             _weaponTimer = new WeaponTimer(_attackModel.AttackInterval);
             _weaponTimer.OnAttackReady += Attack;
@@ -84,8 +86,12 @@ namespace Survivors.Units.Enemy
 
         private IEnumerator Fire()
         {
+            var target = _enemyAi.CurrentTarget; 
+            target.OnTargetInvalid += StopAttack;
+            Disposable.Create(() => target.OnTargetInvalid -= StopAttack).AddTo(_disposable);
+            
             return _weapons.First(it => it.FormationType == _currentAttackConfig.Id)
-                .Fire(_enemyAi.CurrentTarget, 
+                .Fire(target, 
                 _currentAttackConfig.CreateProjectileParams(), 
                 it => DoDamage(_currentAttackConfig.Damage, it));
         }
@@ -104,11 +110,15 @@ namespace Survivors.Units.Enemy
 
         private void Dispose()
         {
+            StopAttack();
+            
+            _disposable?.Dispose();
+            _disposable = null;
+
             if (_weaponTimer != null)
             {
                 _weaponTimer.OnAttackReady -= Attack;
             }
-            StopAttack();
         }
 
         private void StopAttack()
