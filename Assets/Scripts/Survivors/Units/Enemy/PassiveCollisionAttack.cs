@@ -19,7 +19,6 @@ namespace Survivors.Units.Enemy
         public override void Init(IUnit unit)
         {
             Dispose();
-            _weapon = gameObject.RequireComponentInChildren<MeleeWeapon>();
             InitFire(CreateAttackModel());
         }
 

@@ -13,8 +13,9 @@ namespace Survivors.Units.Enemy
 {
     public abstract class EnemyAttackBase : MonoBehaviour, IInitializable<IUnit>, IUpdatableComponent
     {
+        [SerializeField] private BaseWeapon _weapon;
+
         protected EnemyAi _enemyAi;
-        protected BaseWeapon _weapon;
         private EnemyAttackModel _attackModel;
         private IProjectileParams _projectileParams;
         private WeaponTimer _weaponTimer;
@@ -43,7 +44,6 @@ namespace Survivors.Units.Enemy
         private void Awake()
         {
             _enemyAi = gameObject.RequireComponent<EnemyAi>();
-            _weapon = gameObject.RequireComponentInChildren<BaseWeapon>();
             _enemyAnimationWrapper = gameObject.RequireComponentInChildren<EnemyAnimationWrapper>();
             _weaponAnimationHandler = gameObject.GetComponentInChildren<WeaponAnimationHandler>();
         }

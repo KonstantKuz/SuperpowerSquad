@@ -154,6 +154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70fa05843c1c45d9a3e4d8b411bf6adc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _weapon: {fileID: 113737432540472073}
 --- !u!114 &6828866866986922698
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -245,6 +246,7 @@ MonoBehaviour:
   _colorBlinkDuration: 0.05
   _blinkColor: {r: 0.57602674, g: 0, b: 0.8490566, a: 1}
   _renderer: {fileID: 0}
+  _materialIndex: 0
 --- !u!114 &1882541651497380570
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -393,7 +395,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 46bc9d1bb026472dbc0a254a9b7f3d7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _animator: {fileID: 9020020965588670684}
+  _animatorBase: {fileID: 0}
 --- !u!114 &9020020965588670684
 MonoBehaviour:
   m_ObjectHideFlags: 0
