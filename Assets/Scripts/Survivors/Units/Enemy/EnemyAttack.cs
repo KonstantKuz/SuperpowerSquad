@@ -10,8 +10,7 @@ namespace Survivors.Units.Enemy
         public override void Init(IUnit unit)
         {
             Dispose();
-            _attackModel = (EnemyAttackModel) unit.Model.AttackModel;
-            InitFire();
+            InitFire((EnemyAttackModel) unit.Model.AttackModel);
         }
     }
 }

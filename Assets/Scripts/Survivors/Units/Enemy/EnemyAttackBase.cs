@@ -15,7 +15,7 @@ namespace Survivors.Units.Enemy
     {
         protected EnemyAi _enemyAi;
         protected BaseWeapon _weapon;
-        protected EnemyAttackModel _attackModel;
+        private EnemyAttackModel _attackModel;
         private IProjectileParams _projectileParams;
         private WeaponTimer _weaponTimer;
 
@@ -29,8 +29,9 @@ namespace Survivors.Units.Enemy
         
         public abstract void Init(IUnit unit);
         
-        protected void InitFire()
+        protected void InitFire(EnemyAttackModel attackModel)
         {
+            _attackModel = attackModel;
             _projectileParams = _attackModel.CreateProjectileParams();
             _weaponTimer = new WeaponTimer(_attackModel.AttackInterval);
             _weaponTimer.OnAttackReady += Attack;

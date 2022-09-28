@@ -20,8 +20,7 @@ namespace Survivors.Units.Enemy
         {
             Dispose();
             _weapon = gameObject.RequireComponentInChildren<MeleeWeapon>();
-            _attackModel = CreateAttackModel();
-            InitFire();
+            InitFire(CreateAttackModel());
         }
 
         private EnemyAttackModel CreateAttackModel()
