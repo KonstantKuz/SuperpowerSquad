@@ -1,4 +1,4 @@
 Id,Count,Interval,Damage,ShotCount,DamageRadius,ProjectileSpeed
 Queue,3,2,30,3,1,7
-Circle,4,0.5,20,12,0.8,7
-Arrow,2,2,20,5,0.8,7
+Circle,4,0.5,20,12,0.8,9
+Arrow,2,1.8,20,5,0.8,11
