@@ -107,7 +107,7 @@ namespace Survivors.App
         private float GetAverageEnemyLifetime()
         {
             var enemies = _unitService.GetEnemyUnits().ToList();
-            return enemies.Average(it => it.LifeTime);
+            return enemies.Count == 0 ? 0 : enemies.Average(it => it.LifeTime);
         }
         
         private float GetStandRatio()

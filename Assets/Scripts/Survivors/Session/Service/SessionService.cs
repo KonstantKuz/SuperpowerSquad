@@ -93,7 +93,7 @@ namespace Survivors.Session.Service
         private void CreateSession()
         {
             var levelConfig = LevelConfig;
-            var newSession = Model.Session.Build(levelConfig);
+            var newSession = Model.Session.Build(levelConfig, _enemySpawnService.UpdatableScope.ScopeTime);
             _repository.Set(newSession);
         }
 
@@ -136,7 +136,7 @@ namespace Survivors.Session.Service
 
         private void OnTick()
         {
-            _spawnTime.Value = _enemySpawnService.UpdatableScope.ScopeTime.Time;
+            _spawnTime.Value = Session.SpawnTime.Time;
             if (Session.IsMissionGoalReached()) {
                 EndSession(UnitType.PLAYER);
             }
