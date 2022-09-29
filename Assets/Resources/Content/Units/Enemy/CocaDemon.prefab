@@ -114,7 +114,6 @@ GameObject:
   - component: {fileID: 3197138225804449430}
   - component: {fileID: 6828866866986922698}
   - component: {fileID: 4491497861294361367}
-  - component: {fileID: 8111980166562719412}
   - component: {fileID: 158354064725451873}
   - component: {fileID: 7094039851140565474}
   - component: {fileID: 5066505888642405458}
@@ -124,6 +123,7 @@ GameObject:
   - component: {fileID: 3651550046723161448}
   - component: {fileID: 2853900473995928057}
   - component: {fileID: 718488961608674400}
+  - component: {fileID: 6195830095957203356}
   m_Layer: 6
   m_Name: CocaDemon
   m_TagString: Untagged
@@ -315,18 +315,6 @@ MonoBehaviour:
   _unitType: 0
   _centerTarget: {fileID: 7807515448616251854}
   _rootTarget: {fileID: 1228820858336296983}
---- !u!114 &8111980166562719412
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2047533565645016285}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8fc2558860fce054fbdd443bfb74ad93, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &158354064725451873
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -456,6 +444,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55252224e40e4763a28781af20146451, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &6195830095957203356
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2047533565645016285}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 138fee8a578247e8a33d42c22fa14e0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _vfxPrefab: {fileID: 130848, guid: ad5072a3d0c3caa4ca69015e5a1c6f9f, type: 3}
 --- !u!1 &3753810788131279791
 GameObject:
   m_ObjectHideFlags: 0
