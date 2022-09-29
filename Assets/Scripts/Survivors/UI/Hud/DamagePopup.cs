@@ -25,8 +25,9 @@ namespace Survivors.UI.Hud
         [SerializeField]
         [Range(0f, 1f)]
         private float _fadeTimeRatio = 0.3f;
-        
-        [SerializeField] private TextMeshProUGUI _text;
+
+        [SerializeField] 
+        private TextMeshProUGUI _text;
         
         private Vector3 _stayPosition;
         private UnityEngine.Camera _camera;

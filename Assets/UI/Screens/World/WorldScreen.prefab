@@ -97,6 +97,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _popupPrefab: {fileID: 2037988915824908903, guid: b96edb8662a36854ba21492b95300fe6, type: 3}
+  _valueMultiplayer: 0.1
 --- !u!1 &7594123374163453228
 GameObject:
   m_ObjectHideFlags: 0
