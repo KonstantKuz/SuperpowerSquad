@@ -157,10 +157,10 @@ PlayerSettings:
     iPhone: com.feofunlimited.survivors
   buildNumber:
     Standalone: 0
-    iPhone: 45
+    iPhone: 46
     tvOS: 0
   overrideDefaultApplicationIdentifier: 1
-  AndroidBundleVersionCode: 45
+  AndroidBundleVersionCode: 46
   AndroidMinSdkVersion: 22
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
