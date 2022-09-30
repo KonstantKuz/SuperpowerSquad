@@ -4,10 +4,10 @@ SimpleEnemy,SmallExp,1,0.9
 ,Magnet,1,0.001
 DogEnemy,SmallExp,1,0.9
 ,SmallHealth,30,0.001
-,Magnet,1,0.003
+,Magnet,1,0.006
 GiantEnemy,SmallExp,3,1
 ,SmallHealth,30,0.001
-,Magnet,1,0.05
+,Magnet,1,0.1
 ShooterEnemy,SmallExp,1,1
-,SmallHealth,30,0.005
-,Magnet,1,0.005
+,SmallHealth,30,0.006
+,Magnet,1,0.006
