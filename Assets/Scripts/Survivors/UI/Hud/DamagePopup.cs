@@ -1,6 +1,4 @@
-﻿using System;
-using DG.Tweening;
-using Feofun.Extension;
+﻿using DG.Tweening;
 using Survivors.App;
 using TMPro;
 using UnityEngine;

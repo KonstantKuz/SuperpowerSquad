@@ -13,7 +13,7 @@ namespace Survivors.UI.Hud
 {
     public class DamagePopupPresenter : MonoBehaviour
     {
-        [SerializeField] private DamagePopup _popupPrefab;
+        [SerializeField] private string _popupPrefabId;
         [SerializeField] private float _valueMultiplayer = 1;
 
         private CompositeDisposable _disposable;
@@ -41,7 +41,7 @@ namespace Survivors.UI.Hud
             if(unit.UnitType != UnitType.ENEMY) return;
             if(!unit.SelfTarget.Center.position.IsInViewport()) return;
             
-            var popup = _objectPoolFactory.Create<DamagePopup>(_popupPrefab.gameObject.name, _popupPrefab.gameObject, _uiRoot.HudContainer);
+            var popup = _objectPoolFactory.Create<DamagePopup>(_popupPrefabId, _uiRoot.HudContainer);
             popup.Init(Mathf.CeilToInt(takenDamage * _valueMultiplayer).ToString(), unit.SelfTarget.Center.position);
             var popupTween = popup.PlayPopup();
             popupTween.onComplete = () => _objectPoolFactory.Destroy(popup.gameObject);

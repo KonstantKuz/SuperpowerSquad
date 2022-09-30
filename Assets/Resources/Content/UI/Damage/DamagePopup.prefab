@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4908704962530437816}
   - component: {fileID: 2037988915824908903}
   - component: {fileID: 3284128904399405747}
+  - component: {fileID: 7867337907630000831}
   m_Layer: 0
   m_Name: DamagePopup
   m_TagString: Untagged
@@ -78,12 +79,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6e82e6f051d748b4b639f27452a4ae87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _initialCapacity: 10
+  _initialCapacity: 150
   _detectInitialCapacityShortage: 1
   _maxCapacity: 3000
   _sizeIncrementStep: 1
-  _preparePoolOnInitScene: 0
+  _preparePoolOnInitScene: 1
   _poolId: DamagePopup
+--- !u!114 &7867337907630000831
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6601604778592222368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3f4b488b912d2a46b805e34201c024a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _objectId: DamagePopup
+  _objectType: 0
 --- !u!1 &7934746142864478301
 GameObject:
   m_ObjectHideFlags: 0

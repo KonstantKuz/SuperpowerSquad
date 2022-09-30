@@ -1,5 +1,7 @@
-﻿using Feofun.Extension;
+﻿using System;
+using Feofun.Extension;
 using JetBrains.Annotations;
+using Logger.Extension;
 using Survivors.Location.Service;
 using Survivors.ObjectPool;
 using Survivors.ObjectPool.Component;
@@ -11,8 +13,10 @@ namespace Survivors.Location.ObjectFactory.Factories
 {
     public class ObjectPoolFactory : IObjectFactory
     {
-        [Inject] private PoolManager _poolManager;
-        [Inject] private ObjectResourceService _objectResourceService;
+        [Inject]
+        private PoolManager _poolManager;
+        [Inject]
+        private ObjectResourceService _objectResourceService;
 
         public T Create<T>(string objectId, Transform container = null)
         {
@@ -24,9 +28,26 @@ namespace Survivors.Location.ObjectFactory.Factories
         {
             return GetPoolObject(objectId, prefab, container).RequireComponent<T>();
         }
-        public void Destroy(GameObject instance) => _poolManager.Release(instance);
-        public void DestroyAllObjects() => _poolManager.ReleaseAllActive();
-    
+
+        public void Destroy(GameObject instance)
+        {
+            try {
+                _poolManager.Release(instance);
+            } catch (Exception exception) {
+                this.Logger().Error($"Object release exception to the pool, obj:= {instance.name}", exception);
+            }
+        }
+
+        public void DestroyAllObjects()
+        {
+            try {
+                _poolManager.ReleaseAllActive();
+            } catch (Exception exception) {
+                this.Logger().Error("Objects release exception to the pool", exception);
+            }
+         
+        }
+
         private GameObject GetPoolObject(string objectId, GameObject prefab, [CanBeNull] Transform container = null)
         {
             var poolObject = _poolManager.Get(objectId, prefab, TryGetPoolParams(objectId, prefab));
@@ -35,6 +56,7 @@ namespace Survivors.Location.ObjectFactory.Factories
             }
             return poolObject;
         }
+
         [CanBeNull]
         private ObjectPoolParams TryGetPoolParams(string objectId, GameObject prefab)
         {
