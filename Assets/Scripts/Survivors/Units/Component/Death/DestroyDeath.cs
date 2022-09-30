@@ -8,10 +8,8 @@ namespace Survivors.Units.Component.Death
     {
         [Inject(Id = ObjectFactoryType.Pool)]
         private IObjectFactory _objectFactory;
-
-        private Unit _owner;
         
-        public void PlayDeath()
+        public virtual void PlayDeath()
         {
             _objectFactory.Destroy(gameObject);
         }
