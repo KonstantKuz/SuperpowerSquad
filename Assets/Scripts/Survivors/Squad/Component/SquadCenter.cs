@@ -2,7 +2,7 @@
 
 namespace Survivors.Squad.Component
 {
-    public class SquadDestination : MonoBehaviour
+    public class SquadCenter : MonoBehaviour
     {
         public void SwitchVisibility()
         {

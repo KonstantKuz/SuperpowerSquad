@@ -40,7 +40,7 @@ namespace Survivors.Squad.Component
 
         private void Update()
         {
-            var squadPos = _squad.Destination.transform.position;
+            var squadPos = _squad.Center.transform.position;
             _targets = _targetService.AllTargetsOfType(TargetType).Select(it => 
                 new TargetRecord
                 {

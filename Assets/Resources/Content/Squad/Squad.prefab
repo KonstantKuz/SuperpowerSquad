@@ -27,6 +27,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8671649382020092166}
   m_RootOrder: 1
@@ -55,7 +56,6 @@ GameObject:
   - component: {fileID: 8000265900877538078}
   - component: {fileID: 985594178036274187}
   - component: {fileID: 4451000122541164504}
-  - component: {fileID: 5876766219442737664}
   - component: {fileID: 2747964323612514369}
   - component: {fileID: 1172089039349224172}
   - component: {fileID: 2678132323682739517}
@@ -77,6 +77,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5330639236914749494}
   - {fileID: 7499699439782422385}
@@ -102,6 +103,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -144,22 +146,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 541a1f8acfe04ee4877ae94a5593a376, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &5876766219442737664
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6055223781889748532}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3904fda15694c55b18fbfbf180efa03, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _initialDistance: 26
-  _distanceIncreaseStep: 0.5
-  _shiftDownCoeff: 0
-  _cameraSwitchTime: 1
 --- !u!114 &2747964323612514369
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -246,6 +232,7 @@ Transform:
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 2.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 8671649382020092166}
   m_RootOrder: 0
@@ -259,11 +246,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8200542041956235311}
+  - component: {fileID: 4218657585239487335}
   - component: {fileID: 1404112492156379236}
+  - component: {fileID: 5366828314005131444}
   - component: {fileID: 543859091421779963}
   - component: {fileID: 2270789672777925134}
   - component: {fileID: 4477187146966790282}
-  - component: {fileID: 7958715525812945929}
   - component: {fileID: 7082385706931328798}
   - component: {fileID: 3164319524234450891}
   m_Layer: 0
@@ -283,11 +271,28 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8671649382020092166}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4218657585239487335
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7626070557693701769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e3904fda15694c55b18fbfbf180efa03, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _initialDistance: 26
+  _distanceIncreaseStep: 2
+  _shiftDownCoeff: 0
+  _cameraSwitchTime: 1
 --- !u!114 &1404112492156379236
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -300,8 +305,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 176f1a6c60e44e5196d4e5e25ee49a3a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _unitSize: 1.5
-  _destinationLimit: 900
+--- !u!114 &5366828314005131444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7626070557693701769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3ff249f12524067a7ad7f89a5c3afb5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _unitSize: 0.5
 --- !u!114 &543859091421779963
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -340,19 +356,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _objectId: Squad
   _objectType: 0
---- !u!114 &7958715525812945929
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7626070557693701769}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e1146f5b79ae4075b5321f379ae248d5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _standingThreshold: 0.2
 --- !u!114 &7082385706931328798
 MonoBehaviour:
   m_ObjectHideFlags: 0

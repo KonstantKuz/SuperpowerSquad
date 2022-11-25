@@ -33,7 +33,7 @@ namespace Survivors.Camera
             _disposable?.Dispose();
             _target = owner;
             _distanceToTarget = _initialDistance;
-            _disposable = _squadProgressService.Level.Subscribe(it => OnTargetRadiusChanged());
+            _disposable = _target.UnitsCount.Subscribe(it => OnTargetRadiusChanged());
         }
 
         private void Update()
@@ -66,6 +66,6 @@ namespace Survivors.Camera
             _animation.OnComplete(() => _animation = null);
         }
 
-        private float GetDistanceToTarget() => _initialDistance + _squadProgressService.Level.Value * _distanceIncreaseStep;
+        private float GetDistanceToTarget() => _initialDistance + _target.SquadRadius * _distanceIncreaseStep;
     }
 }

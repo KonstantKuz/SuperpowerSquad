@@ -27,7 +27,7 @@ namespace Survivors.WorldEvents.Events.Tornado
             _config = (TornadoEventConfig) config;
        
             var spawnParams = _config.SpawnParams;
-            spawnParams.MaxSpawnDistance = _world.GetSquad().Model.Speed.Value * _config.EventDuration;
+            spawnParams.MaxSpawnDistance = _config.EventDuration;
             
             var spawner = new CircleSpawner(spawnParams);
             spawner.Spawn(_world.GetSquad().Position, CreateTornado);

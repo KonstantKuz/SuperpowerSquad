@@ -11,14 +11,17 @@ namespace Survivors.Squad.Model
 {
     public class SquadModel : ModifiableParameterOwner
     {
-        private readonly FloatModifiableParameter _speed;
+        private readonly SquadConfig _squadConfig;
         private readonly FloatModifiableParameter _collectRadius;
         private readonly FloatModifiableParameter _startingUnitModifiableCount;
         private readonly IReadOnlyReactiveProperty<int> _startingUnitCount;
 
+        public float InitialRadius => _squadConfig.InitialRadius;
+        public float RadiusIncreaseStep => _squadConfig.RadiusIncreaseStep;
+        
         public SquadModel(SquadConfig config, float startingHealth, MetaParameterCalculator parameterCalculator)
         {
-            _speed = new FloatModifiableParameter(Parameters.SPEED, config.Speed, this);
+            _squadConfig = config;
             _collectRadius = new FloatModifiableParameter(Parameters.COLLECT_RADIUS, config.CollectRadius, this);
 
             _startingUnitModifiableCount = new FloatModifiableParameter(Parameters.STARTING_UNIT_COUNT, 1, this);
@@ -34,7 +37,7 @@ namespace Survivors.Squad.Model
             AddModifier(addHealthModifier);
         }
 
-        public void OnRemoveUnits()
+        public void ResetHealth()
         {
             var squadHealthModel = (SquadHealthModel) HealthModel;
             squadHealthModel.Reset();
@@ -43,7 +46,6 @@ namespace Survivors.Squad.Model
         public IHealthModel HealthModel { get; }
 
         public IReadOnlyReactiveProperty<int> StartingUnitCount => _startingUnitCount;
-        public IReadOnlyReactiveProperty<float> Speed => _speed.ReactiveValue;
         public IReadOnlyReactiveProperty<float> CollectRadius => _collectRadius.ReactiveValue;
     }
 }
