@@ -75,7 +75,7 @@ namespace Editor.Scripts.PreProcess
             PlayerSettings.iOS.iOSManualProvisioningProfileID = GetCmdLineArgumentValue("-provisionProfileId");
             PlayerSettings.iOS.buildNumber = PlayerSettings.Android.bundleVersionCode.ToString();
 
-            EditorUserBuildSettings.iOSBuildConfigType = iOSBuildType.Release;
+            EditorUserBuildSettings.iOSXcodeBuildConfig = XcodeBuildConfig.Release;
 
             var report = BuildPipeline.BuildPlayer(options);
             Report(report.summary);
