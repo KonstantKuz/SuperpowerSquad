@@ -26,8 +26,6 @@ namespace Survivors.Camera
         private IDisposable _disposable;
         private Tweener _animation;
 
-        [Inject] private SquadProgressService _squadProgressService;
-        
         public void Init(Squad.Squad owner)
         {
             _disposable?.Dispose();

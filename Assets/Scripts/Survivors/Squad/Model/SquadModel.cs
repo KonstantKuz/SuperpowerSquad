@@ -11,17 +11,12 @@ namespace Survivors.Squad.Model
 {
     public class SquadModel : ModifiableParameterOwner
     {
-        private readonly SquadConfig _squadConfig;
         private readonly FloatModifiableParameter _collectRadius;
         private readonly FloatModifiableParameter _startingUnitModifiableCount;
         private readonly IReadOnlyReactiveProperty<int> _startingUnitCount;
 
-        public float InitialRadius => _squadConfig.InitialRadius;
-        public float RadiusIncreaseStep => _squadConfig.RadiusIncreaseStep;
-        
         public SquadModel(SquadConfig config, float startingHealth, MetaParameterCalculator parameterCalculator)
         {
-            _squadConfig = config;
             _collectRadius = new FloatModifiableParameter(Parameters.COLLECT_RADIUS, config.CollectRadius, this);
 
             _startingUnitModifiableCount = new FloatModifiableParameter(Parameters.STARTING_UNIT_COUNT, 1, this);

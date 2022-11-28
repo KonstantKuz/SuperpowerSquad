@@ -2,8 +2,10 @@
 using System.Linq;
 using Feofun.Components;
 using Feofun.Extension;
+using Survivors.Squad.Config;
 using UniRx;
 using UnityEngine;
+using Zenject;
 
 namespace Survivors.Squad.Formation
 {
@@ -15,6 +17,8 @@ namespace Survivors.Squad.Formation
         private ISquadFormation _formation;
         private CompositeDisposable _disposable;
 
+        [Inject] private SquadConfig _squadConfig;
+        
         private void Awake()
         {
             _squad = gameObject.RequireComponent<Squad>();
@@ -25,7 +29,7 @@ namespace Survivors.Squad.Formation
             Dispose();
             _disposable = new CompositeDisposable();
             
-            _formation = new CircleFormation(_squad.Model.InitialRadius, _squad.Model.RadiusIncreaseStep);
+            _formation = new CircleFormation(_squadConfig.InitialRadius, _squadConfig.RadiusIncreaseStep);
             _squad.UnitsCount.Subscribe(UpdateFormation).AddTo(_disposable);
         }
 
