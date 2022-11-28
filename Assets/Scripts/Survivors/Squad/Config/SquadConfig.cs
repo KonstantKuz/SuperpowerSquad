@@ -12,5 +12,7 @@ namespace Survivors.Squad.Config
         public float InitialRadius;
         [DataMember] 
         public float RadiusIncreaseStep;
+        [DataMember] 
+        public float AttackDistance;
     }
 }

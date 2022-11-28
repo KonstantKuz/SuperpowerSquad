@@ -19,6 +19,7 @@ namespace Survivors.Squad.Component
 
         [Inject] private TargetService _targetService;
 
+        private float SearchDistance => _squad.Model.AttackDistance.Value + _squad.SquadRadius;
         public IEnumerable<ITarget> Targets => _targets;
 
         public void Init(Squad owner)
@@ -26,17 +27,15 @@ namespace Survivors.Squad.Component
             _squad = owner;
         }
 
-        public ITarget GetTargetBy(Vector3 position, float searchDistance)
+        public ITarget GetTargetBy(Vector3 position)
         {
             var targets = _targets.Take(SEARCH_COUNT_PER_UNIT);
-            return NearestTargetSearcher.Find(targets, position, searchDistance);
+            return NearestTargetSearcher.Find(targets, position, Mathf.Infinity);
         }
 
         private void Update()
         {
-            _targets = _targetService.AllTargetsOfType(TargetType)
-                .OrderBy(it => Vector3.Distance(_squad.Position, it.Root.position))
-                .ToList();
+            _targets = _targetService.GetTargetsInRadius(_squad.Position, TargetType, SearchDistance).ToList();
         }
     }
 }
