@@ -4,14 +4,20 @@ namespace Survivors.Squad.Formation
 {
     public class CircleFormation: ISquadFormation
     {
-        private const int SINGLE_UNIT_SQUAD = 1;        
+        private readonly float _initialRadius;
+        private readonly float _increaseStep;
+        
+        public CircleFormation(float initialRadius, float increaseStep)
+        {
+            _initialRadius = initialRadius;
+            _increaseStep = increaseStep;
+        }
         
         public Vector3 GetUnitOffset(int unitIdx, float unitRadius, int unitsCount)
         {
-            if (unitsCount == SINGLE_UNIT_SQUAD) return Vector3.zero;
-            var formationRadius = unitsCount * unitRadius / Mathf.PI / 2;
             var angle = 360 * unitIdx / unitsCount;
-            return Quaternion.AngleAxis(angle, Vector3.up) * Vector3.right * formationRadius;
+            var radius = _initialRadius + _increaseStep * unitsCount * unitRadius / Mathf.PI / 2;
+            return Quaternion.AngleAxis(angle, Vector3.up) * Vector3.right * radius;
         }
     }
 }

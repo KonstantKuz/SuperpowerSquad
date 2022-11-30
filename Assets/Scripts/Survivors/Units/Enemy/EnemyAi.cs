@@ -24,7 +24,7 @@ namespace Survivors.Units.Enemy
         [Inject] private World _world;
 
         public ITarget CurrentTarget => _targetProvider.CurrentTarget;
-        private Vector3 SquadPosition => _world.Squad.Destination.transform.position;
+        private Vector3 SquadPosition => _world.Squad.Position;
         public float Scale => transform.localScale.x;
         public float SelfRadius => _collider.radius * Scale;
         public float DistanceToSquad => Vector3.Distance(_selfTarget.Root.position, SquadPosition) - SelfRadius;

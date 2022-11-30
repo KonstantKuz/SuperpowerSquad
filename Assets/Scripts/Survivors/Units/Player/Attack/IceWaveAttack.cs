@@ -32,7 +32,7 @@ namespace Survivors.Units.Player.Attack
 
         private void OnAttackReady()
         {
-            var parent = _squad.Destination.transform;
+            var parent = _squad.Center.transform;
             var projectileParams = _playerAttackModel.CreateProjectileParams();
             var targetType = _owner.TargetUnitType;
             _iceWaveWeapon.Fire(parent, targetType, projectileParams, DoDamage);
