@@ -2,3 +2,4 @@ Speed,6.5
 CollectRadius,3
 InitialRadius,1
 RadiusIncreaseStep,2
+AttackDistance,5
