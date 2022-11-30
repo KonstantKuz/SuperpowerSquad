@@ -25,7 +25,7 @@ namespace Survivors.Squad.Model
             parameterCalculator.InitParam(_startingUnitModifiableCount, this);
             _startingUnitCount = _startingUnitModifiableCount.ReactiveValue.Select(it => (int) it).ToReactiveProperty();
 
-            HealthModel = new SquadHealthModel(this, startingHealth, parameterCalculator);
+            HealthModel = new SquadHealthModel(this, startingHealth, config.HealthRegeneration, parameterCalculator);
         }
 
         public void AddUnit(IUnitModel unitModel)
