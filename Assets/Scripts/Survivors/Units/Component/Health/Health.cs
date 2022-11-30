@@ -52,7 +52,7 @@ namespace Survivors.Units.Component.Health
             }
         }
 
-        private void ChangeHealth(float delta, bool allowOverMax = false)
+        protected void ChangeHealth(float delta, bool allowOverMax = false)
         {
             var newValue = Mathf.Max(0, _currentHealth.Value + delta);
             _currentHealth.Value = allowOverMax ?  newValue : Mathf.Min(newValue, MaxValue.Value);
