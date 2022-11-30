@@ -11,21 +11,15 @@ namespace Survivors.Squad.Component
 {
     public class SquadTargetProvider : MonoBehaviour, IInitializable<Squad>
     {
-        private struct TargetRecord
-        {
-            public ITarget Target;
-            public float DistanceToSquad;
-        }
-
         private const int SEARCH_COUNT_PER_UNIT = 20;
         private static UnitType TargetType => UnitType.ENEMY; 
 
         private Squad _squad;
-        private List<TargetRecord> _targets = new List<TargetRecord>();
+        private List<ITarget> _targets = new List<ITarget>();
 
         [Inject] private TargetService _targetService;
 
-        public IEnumerable<ITarget> Targets => _targets.Select(it => it.Target);
+        public IEnumerable<ITarget> Targets => _targets;
 
         public void Init(Squad owner)
         {
@@ -34,19 +28,14 @@ namespace Survivors.Squad.Component
 
         public ITarget GetTargetBy(Vector3 position, float searchDistance)
         {
-            var targets = _targets.Take(SEARCH_COUNT_PER_UNIT).Select(it => it.Target);
+            var targets = _targets.Take(SEARCH_COUNT_PER_UNIT);
             return NearestTargetSearcher.Find(targets, position, searchDistance);
         }
 
         private void Update()
         {
-            var squadPos = _squad.Destination.transform.position;
-            _targets = _targetService.AllTargetsOfType(TargetType).Select(it => 
-                new TargetRecord
-                {
-                    Target = it,
-                    DistanceToSquad = Vector3.Distance(squadPos, it.Root.position)
-                }).OrderBy(it => it.DistanceToSquad)
+            _targets = _targetService.AllTargetsOfType(TargetType)
+                .OrderBy(it => Vector3.Distance(_squad.Position, it.Root.position))
                 .ToList();
         }
     }

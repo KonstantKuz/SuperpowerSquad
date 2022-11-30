@@ -64,9 +64,7 @@ namespace Survivors.WorldEvents.Events.Avalanche
         
         private Vector3 GetRandomPlaceFor(Cobblestone stone)
         {
-            var direction = _world.Squad.IsMoving && Random.value < _config.MoveDirectionDrivenChance
-                ? _world.Squad.MoveDirection
-                : Random.onUnitSphere.XZ();
+            var direction = Random.onUnitSphere.XZ();
             var position = _world.Squad.Position + direction * Random.Range(_config.MinDistanceFromPlayer, _config.MaxDistanceFromPlayer);
             var offset = Vector3.up * stone.Radius;
             position += offset;

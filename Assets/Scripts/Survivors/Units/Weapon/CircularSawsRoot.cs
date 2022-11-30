@@ -15,7 +15,7 @@ namespace Survivors.Units.Weapon
 
         public void Init(Squad.Squad squad)
         {
-            _rotationCenter = squad.Destination.transform;
+            _rotationCenter = squad.Center.transform;
         }
 
         public void OnWeaponInit(CircularSawWeapon owner)

@@ -72,8 +72,7 @@ namespace Survivors.Loot
         private void Move(DroppingLoot loot)
         {
             var moveDirection = (transform.position - loot.transform.position).normalized;
-            var speed = _collectSpeed + _squad.Model.Speed.Value;
-            loot.transform.position +=  speed * Time.deltaTime * moveDirection;
+            loot.transform.position +=  _collectSpeed * Time.deltaTime * moveDirection;
         }
 
         private void TryCollect(DroppingLoot loot)
