@@ -13,5 +13,7 @@
         public const string SPEED = "Speed";    
         public const string COLLECT_RADIUS = "CollectRadius";   
         public const string STARTING_UNIT_COUNT = "StartingUnitCount";
+        public const string CRITICAL_MULTIPLIER = "CriticalMultiplier";
+        public const string CRITICAL_CHANCE = "CriticalChance";
     }
 }
