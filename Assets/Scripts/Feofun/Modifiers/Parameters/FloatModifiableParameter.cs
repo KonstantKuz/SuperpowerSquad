@@ -26,7 +26,10 @@ namespace Feofun.Modifiers.Parameters
         {
             Value += amount;
         }
-
+        public void RemoveValue(float amount)
+        {
+            Value -= amount;
+        }
         public void OverrideValue(float value)
         {
             Value = value;
@@ -49,5 +52,6 @@ namespace Feofun.Modifiers.Parameters
         }
 
 
+  
     }
 }

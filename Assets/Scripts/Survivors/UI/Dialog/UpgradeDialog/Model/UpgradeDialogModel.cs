@@ -73,7 +73,8 @@ namespace Survivors.UI.Dialog.UpgradeDialog.Model
         private string GetDescriptionValue(ModifierType modifierType, string value)
         {
             return modifierType switch {
-                    ModifierType.AddPercent => $"{AddSignPrefix(value)}%",
+                    ModifierType.AddPercent => $"+{value}%",
+                    ModifierType.RemovePercent => $"-{value}%",
                     ModifierType.AddValue => AddSignPrefix(value),
                     _ => throw new ArgumentOutOfRangeException(nameof(modifierType), modifierType, null)
             };
