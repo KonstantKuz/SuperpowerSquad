@@ -29,7 +29,7 @@ namespace Survivors.Squad.Component
             if (!IsAlive) return;
             if (CurrentValue.Value < MaxValue.Value) 
             {
-                ChangeHealth(_squadConfig.Regeneration * Time.deltaTime);
+                ChangeHealth(_squadConfig.HealthRegeneration * Time.deltaTime);
             }
         }
     }
