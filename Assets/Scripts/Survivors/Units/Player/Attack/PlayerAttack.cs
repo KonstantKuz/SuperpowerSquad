@@ -2,8 +2,6 @@
 using Feofun.Components;
 using Feofun.Extension;
 using JetBrains.Annotations;
-using Logger.Extension;
-using Survivors.Units.Component.Health;
 using Survivors.Units.Component.TargetSearcher;
 using Survivors.Units.Player.Model;
 using Survivors.Units.Player.Movement;
@@ -34,8 +32,8 @@ namespace Survivors.Units.Player.Attack
         private Unit _owner;
         private IWeaponTimerManager _timerManager;
         private CompositeDisposable _disposable;
-        
-        
+        private IDamager _damager;
+
         [CanBeNull]
         private WeaponAnimationHandler _weaponAnimationHandler;
         [CanBeNull]
@@ -50,6 +48,7 @@ namespace Survivors.Units.Player.Attack
             _disposable = new CompositeDisposable();
             _owner = (Unit) unit;
             _playerAttackModel = (PlayerAttackModel) unit.Model.AttackModel;
+            _damager = new PlayerDamager(_playerAttackModel);
             
             _playerAttackModel.AttackInterval.Subscribe(UpdateAnimationSpeed).AddTo(_disposable);
             if (HasWeaponAnimationHandler) {
@@ -121,14 +120,7 @@ namespace Survivors.Units.Player.Attack
             if (IsTargetInvalid) {
                 return;
             }
-            _weapon.Fire(_target, _playerAttackModel.CreateProjectileParams(), DoDamage);
-        }
-
-        private void DoDamage(GameObject target)
-        {
-            var damageable = target.RequireComponent<IDamageable>();
-            damageable.TakeDamage(_playerAttackModel.AttackDamage);
-            this.Logger().Trace($"Damage applied, target:= {target.name}");
+            _weapon.Fire(_target, _playerAttackModel.CreateProjectileParams(), _damager.Damage);
         }
 
         private void OnDestroy()

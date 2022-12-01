@@ -12,6 +12,7 @@ namespace Survivors.Enemy.Spawn.Service
     {
         private readonly UpdatableScope _updatableScope = new UpdatableScope();
 
+        private readonly SeparatedWavesSpawner _separatedWavesSpawner;
         private readonly TimedEnemySpawner _timedEnemySpawner;
         private readonly EnemyHpsSpawner _enemyHpsSpawner;     
         private readonly BossSpawner _bossSpawner;
@@ -24,15 +25,16 @@ namespace Survivors.Enemy.Spawn.Service
         public IUpdatableScope UpdatableScope => _updatableScope;
 
 
-        private EnemySpawnService(TimedEnemySpawner timedEnemySpawner,
-                                  
+        private EnemySpawnService(SeparatedWavesSpawner separatedWavesSpawner,
+                                  TimedEnemySpawner timedEnemySpawner,
                                   EnemyHpsSpawner enemyHpsSpawner,
                                   ConstantsConfig constantsConfig,
                                   UpdateManager updateManager,
                                   IMessenger messenger,
                                   BossSpawner bossSpawner,
                                   EnemyWaves enemyWaves)
-        { 
+        {
+            _separatedWavesSpawner = separatedWavesSpawner;
             _timedEnemySpawner = timedEnemySpawner;
             _enemyHpsSpawner = enemyHpsSpawner;
             _constantsConfig = constantsConfig;
@@ -45,10 +47,9 @@ namespace Survivors.Enemy.Spawn.Service
 
         private void InitSpawners()
         {
-            _timedEnemySpawner.Init(_updatableScope, _enemyWaves.GetWavesConfigs(false));
+            _separatedWavesSpawner.Init(_updatableScope, _timedEnemySpawner);
             _bossSpawner.Init(_updatableScope, _enemyWaves.GetWavesConfigs(true));
             _enemyHpsSpawner.Init(_updatableScope);
-    
         }
 
         public void OnWorldSetup() => _updateManager.StartUpdate(UpdateScope);
@@ -60,7 +61,7 @@ namespace Survivors.Enemy.Spawn.Service
             _updatableScope.Reset();
 
             _bossSpawner.StartSpawn();
-            _timedEnemySpawner.StartSpawn();
+            _separatedWavesSpawner.StartSpawn();
             
             if (_constantsConfig.EnemyHpsSpawnerEnabled) {
                 _enemyHpsSpawner.StartSpawn();

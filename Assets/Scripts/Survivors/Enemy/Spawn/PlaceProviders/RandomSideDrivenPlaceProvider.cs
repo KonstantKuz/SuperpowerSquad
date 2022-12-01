@@ -21,7 +21,8 @@ namespace Survivors.Enemy.Spawn.PlaceProviders
 
         public SpawnPlace GetSpawnPlace(EnemyWaveConfig waveConfig, float outOfViewOffset)
         {
-            var position = GetRandomSpawnPosition(outOfViewOffset);
+            var spawnSide = EnumExt.GetRandom<SpawnSide>();
+            var position = GetRandomSpawnPosition(spawnSide, outOfViewOffset);
             var isValid = _spawner.IsPlaceValid(position, waveConfig);
             return new SpawnPlace {
                     IsValid = isValid,
@@ -44,9 +45,8 @@ namespace Survivors.Enemy.Spawn.PlaceProviders
             return position;
         }
 
-        private Vector3 GetRandomSpawnPosition(float outOfViewOffset)
+        public Vector3 GetRandomSpawnPosition(SpawnSide spawnSide, float outOfViewOffset)
         {
-            var spawnSide = EnumExt.GetRandom<SpawnSide>();
             var randomPosition = GetRandomPositionOnGround(spawnSide);
             return GetPositionWithOffset(randomPosition, spawnSide, outOfViewOffset, _world.Ground);
         }
