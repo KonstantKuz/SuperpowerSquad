@@ -254,6 +254,7 @@ GameObject:
   - component: {fileID: 4477187146966790282}
   - component: {fileID: 7082385706931328798}
   - component: {fileID: 3164319524234450891}
+  - component: {fileID: 3973547649306913767}
   m_Layer: 0
   m_Name: Squad
   m_TagString: Untagged
@@ -383,3 +384,15 @@ MonoBehaviour:
   _hudPrefab: {fileID: 2952826858694922931, guid: 60ee3281ab8997e478d99f0a185cdf69, type: 3}
   _hudPlace: {fileID: 5330639236914749494}
   _hudHeightOffset: 1
+--- !u!114 &3973547649306913767
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7626070557693701769}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68ada1a252d14d7ab43ec904a730bbb2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

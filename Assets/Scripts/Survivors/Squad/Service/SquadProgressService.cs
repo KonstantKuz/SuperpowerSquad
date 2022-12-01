@@ -43,7 +43,20 @@ namespace Survivors.Squad.Service
             _resourceStorage.GetAsObservable(progressType.ToString());
 
         public int Get(SquadProgressType progressType) => _resourceStorage.Get(progressType.ToString());
-
+        public void Add(SquadProgressType progressType, int amount)
+        {
+            switch (progressType)
+            {
+                case SquadProgressType.Exp:
+                    AddExp(amount);
+                    return;
+                case SquadProgressType.Token:
+                    AddToken(amount);
+                    return;
+                default:
+                    throw new ArgumentException($"Unexpected progressType:= {progressType}");
+            }
+        }
         public void AddExp(int amount)
         {
             Assert.IsTrue(amount >= 0, $"Added amount of exp should be non-negative");
@@ -81,6 +94,5 @@ namespace Survivors.Squad.Service
         {
             _resourceStorage.Reset();
         }
-
     }
 }
