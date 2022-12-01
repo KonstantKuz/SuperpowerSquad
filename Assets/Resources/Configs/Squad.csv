@@ -4,3 +4,5 @@ InitialRadius,1
 RadiusIncreaseStep,2
 AttackDistance,5
 HealthRegeneration,5
+TokenRegeneration,0.5
+ExpRegeneration,0.5

@@ -18,6 +18,8 @@ namespace Survivors.Units.Player.Model
         private readonly FloatModifiableParameter _projectileSpeed;
         private readonly FloatModifiableParameter _damageRadius;
         private readonly FloatModifiableParameter _attackDistance;
+        private readonly FloatModifiableParameter _criticalMultiplier;
+        private readonly FloatModifiableParameter _criticalChance;
 
         public PlayerAttackModel(PlayerAttackConfig config, IModifiableParameterOwner parameterOwner, MetaParameterCalculator parameterCalculator)
         {
@@ -34,6 +36,9 @@ namespace Survivors.Units.Player.Model
             var shotCount = new FloatModifiableParameter(Parameters.SHOT_COUNT, 1, parameterOwner);
             parameterCalculator.InitParam(shotCount, parameterOwner);
             ShotCount = shotCount.ReactiveValue.Select(it => (int) it).ToReactiveProperty();
+            
+            _criticalMultiplier = new FloatModifiableParameter(Parameters.CRITICAL_MULTIPLIER, _config.CriticalMultiplier, parameterOwner);
+            _criticalChance = new FloatModifiableParameter(Parameters.CRITICAL_CHANCE, _config.CriticalChance, parameterOwner);
         }
 
         public float TargetSearchRadius => AttackDistance;
@@ -48,6 +53,8 @@ namespace Survivors.Units.Player.Model
         public float ProjectileSpeed => _projectileSpeed.Value;
         
         public IReadOnlyReactiveProperty<int> ShotCount { get; }
+        public float CriticalMultiplier => _criticalMultiplier.Value;
+        public float CriticalChance => _criticalChance.Value;
 
         public ProjectileParams CreateProjectileParams()
         {

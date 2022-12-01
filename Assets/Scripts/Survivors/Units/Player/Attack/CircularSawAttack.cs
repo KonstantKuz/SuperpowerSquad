@@ -1,8 +1,5 @@
 using System;
 using Feofun.Components;
-using Feofun.Extension;
-using Logger.Extension;
-using Survivors.Units.Component.Health;
 using Survivors.Units.Player.Model;
 using Survivors.Units.Weapon;
 using Survivors.Units.Weapon.Projectiles.Params;
@@ -20,6 +17,7 @@ namespace Survivors.Units.Player.Attack
         private Unit _ownerUnit;
         private Squad.Squad _squad;
         private PlayerAttackModel _attackModel;
+        private IDamager _damager;
         private CompositeDisposable _disposable;
         
         public void Init(IUnit unit)
@@ -33,6 +31,7 @@ namespace Survivors.Units.Player.Attack
                 throw new ArgumentException($"Unit must be a player unit, gameObj:= {gameObject.name}");
             }
             _attackModel = attackModel;
+            _damager = new PlayerDamager(_attackModel);
         }
         public void Init(Squad.Squad squad)
         {
@@ -48,7 +47,7 @@ namespace Survivors.Units.Player.Attack
         {
             var projectileParams = GetSawParamsForSquad();
             var targetType = _ownerUnit.TargetUnitType;
-            _circularSawWeapon.Init(targetType, projectileParams, DoDamage);
+            _circularSawWeapon.Init(targetType, projectileParams, _damager.Damage);
         }
 
         private void UpdateRadius(int squadCount)
@@ -67,13 +66,6 @@ namespace Survivors.Units.Player.Attack
         public void OnDeath(DeathCause deathCause)
         {
             Dispose();
-        }
-
-        private void DoDamage(GameObject target)
-        {
-            var damageable = target.RequireComponent<IDamageable>();
-            damageable.TakeDamage(_attackModel.AttackDamage);
-            this.Logger().Trace($"Damage applied, target:= {target.name}");
         }
 
         private void Dispose()

@@ -35,7 +35,7 @@ AttackDamage,AttackDamage {0},AttackDamage {0}
 CollectRadius,CollectRadius {0},CollectRadius {0}
 Speed,Speed {0},Speed {0}
 CriticalChance,CriticalChance {0},CriticalChance {0}
-CriticalDamage,CriticalDamage {0},CriticalDamage {0}
+CriticalMultiplier,CriticalDamage {0},CriticalDamage {0}
 DamageRadius,DamageRadius {0},DamageRadius {0}
 Health,Health {0},Health {0}
 weapon +1,weapon +1,weapon +1
