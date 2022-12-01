@@ -16,7 +16,7 @@ namespace Survivors.Enemy.Spawn.Service
         
         public IEnumerable<EnemyWaveConfig> GetWavesConfigs(bool isBoss)
         { 
-            return _enemyWavesConfig.EnemySpawns
+            return _enemyWavesConfig.EnemySpawns.SelectMany(it => it.Value)
                                     .OrderBy(it => it.SpawnTime)
                                     .Where(it => _enemyUnitConfigs.Get(it.EnemyId).IsBoss == isBoss);
         }

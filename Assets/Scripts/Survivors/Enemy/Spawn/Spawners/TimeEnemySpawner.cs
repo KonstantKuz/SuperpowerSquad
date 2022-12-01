@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using SuperMaxim.Messaging;
 using Survivors.Enemy.Spawn.Config;
 using Survivors.Enemy.Spawn.PlaceProviders;
-using Survivors.Location;
 using Survivors.Scope;
 using Survivors.Scope.Coroutine;
 using Survivors.Session.Messages;
@@ -14,7 +13,6 @@ namespace Survivors.Enemy.Spawn.Spawners
 {
     public class TimedEnemySpawner : IEnemySpawner
     {
-        [Inject] private World _world;
         [Inject] private IMessenger _messenger;
         [Inject] private EnemyWaveSpawner _enemyWaveSpawner;
 
@@ -25,25 +23,23 @@ namespace Survivors.Enemy.Spawn.Spawners
         private IUpdatableScope _updatableScope;
 
         private ICoroutineRunner CoroutineRunner => _updatableScope.CoroutineRunner;
+        public bool IsSpawnFinished { get; private set; }
 
-        public void Init(IUpdatableScope updatableScope, IEnumerable<EnemyWaveConfig> waves)
+        public void Init(IUpdatableScope updatableScope, ISpawnPlaceProvider placeProvider, IEnumerable<EnemyWaveConfig> waves)
         {
             _updatableScope = updatableScope;
             _waves = waves;
-            _placeProvider = new CompositeSpawnPlaceProvider(_enemyWaveSpawner, _world);
+            _placeProvider = placeProvider;
             _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
         }
 
         public void StartSpawn()
         {
             Stop();
+            IsSpawnFinished = false;
             _spawnCoroutine = CoroutineRunner.StartCoroutine(SpawnWaves());
         }
 
-        private void OnSessionFinished(SessionEndMessage evn)
-        {
-            Stop();
-        }
         private IEnumerator SpawnWaves()
         {
             var currentTime = 0;
@@ -53,8 +49,15 @@ namespace Survivors.Enemy.Spawn.Spawners
                 currentTime = wave.SpawnTime; 
                 _enemyWaveSpawner.SpawnWave(wave, _placeProvider);
             } 
+            IsSpawnFinished = true;
             Stop();
         }
+
+        private void OnSessionFinished(SessionEndMessage evn)
+        {
+            Stop();
+        }
+
         private void Stop()
         {
             if (_spawnCoroutine != null) {

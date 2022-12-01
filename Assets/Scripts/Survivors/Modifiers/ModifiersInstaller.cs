@@ -10,7 +10,8 @@ namespace Survivors.Modifiers
         {
             var modifierFactory = new ModifierFactory();
             modifierFactory.Register(ModifierType.AddValue.ToString(), cfg => new AddValueModifier(cfg.ParameterName, cfg.Value));
-            modifierFactory.Register(ModifierType.AddPercent.ToString(), cfg => new AddPercentModifier(cfg.ParameterName, cfg.Value));
+            modifierFactory.Register(ModifierType.AddPercent.ToString(), cfg => new PercentModifier(cfg.ParameterName, cfg.Value, true));
+            modifierFactory.Register(ModifierType.RemovePercent.ToString(), cfg => new PercentModifier(cfg.ParameterName, cfg.Value, false));
             container.Bind<ModifierFactory>().FromInstance(modifierFactory).AsSingle();            
         }
     }
