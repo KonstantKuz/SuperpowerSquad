@@ -3,3 +3,4 @@ CollectRadius,3
 InitialRadius,1
 RadiusIncreaseStep,2
 AttackDistance,5
+HealthRegeneration,5

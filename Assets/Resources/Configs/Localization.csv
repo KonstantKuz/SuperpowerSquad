@@ -5,12 +5,13 @@ Defeat,Defeat,Defeat
 Next,Next,Next
 Enemies left,Enemies left: {0},Enemies left: {0}
 Reload,Reload,Reload
-RocketUnit,Fireball,Fireball
+RocketUnit,Rocket ,Rocket
 PyroUnit,Fiery Flame,Fiery Flame
-SniperUnit,Ice Beam,Ice Beam
+SniperUnit,Sniper,Sniper
 BomberUnit,Bomb,Bomb
 CircularSawUnit,Electric Blades,Electric Blades
 BoomerangUnit,Boomerang,Boomerang
+MachineGunnerUnit,MachineGunner,MachineGunner
 LightningStrikeUnit,Lightning Strike,Lightning Strike
 BallLightningUnit,Ball Lightning,Ball Lightning
 MeteorUnit,Meteor,Meteor
@@ -22,6 +23,9 @@ CollectRadiusUpgrade,Collect radius,Collect radius
 SpeedSquadUpgrade,Move speed,Move speed
 AttackDamageUpgrade,Attack damage,Attack damage
 DamageRadiusUpgrade,Damage radius,Damage radius
+CriticalChanceUpgrade,Critical chance,Critical chance
+CriticalDamageUpgrade,Critical damage,Critical damage
+HealthUpgrade,Health,Health
 ShotCount,ShotCount {0},ShotCount {0}
 DamageAngle,DamageAngle {0},DamageAngle {0}
 DamageRadius,DamageRadius {0},DamageRadius {0}
@@ -30,6 +34,10 @@ AttackInterval,AttackInterval {0},AttackInterval {0}
 AttackDamage,AttackDamage {0},AttackDamage {0}
 CollectRadius,CollectRadius {0},CollectRadius {0}
 Speed,Speed {0},Speed {0}
+CriticalChance,CriticalChance {0},CriticalChance {0}
+CriticalDamage,CriticalDamage {0},CriticalDamage {0}
+DamageRadius,DamageRadius {0},DamageRadius {0}
+Health,Health {0},Health {0}
 weapon +1,weapon +1,weapon +1
 lvl,lvl {0},lvl {0}
 Level,Level {0},Level {0}

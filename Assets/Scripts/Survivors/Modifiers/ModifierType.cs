@@ -3,7 +3,8 @@
     public enum ModifierType
     {
         AddValue,
-        AddPercent,
+        AddPercent, 
+        RemovePercent,
         
     }
 }
