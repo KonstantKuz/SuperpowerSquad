@@ -13,9 +13,8 @@ namespace Survivors.Player.Installer
             container.Bind<PlayerProgressService>().AsSingle();
             container.Bind<PlayerProgressRepository>().AsSingle();    
             
-            container.Bind<WalletService>().AsSingle();            
-            container.Bind<WalletRepository>().AsSingle();
-            
+            container.Bind<WalletService>().AsSingle();
+
             container.Bind<InventoryService>().AsSingle();
             container.Bind<InventoryRepository>().AsSingle();       
             
