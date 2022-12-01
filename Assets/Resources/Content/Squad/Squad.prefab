@@ -60,6 +60,7 @@ GameObject:
   - component: {fileID: 1172089039349224172}
   - component: {fileID: 2678132323682739517}
   - component: {fileID: 2731381721065287126}
+  - component: {fileID: 1330733795673282996}
   m_Layer: 9
   m_Name: SquadDestination
   m_TagString: Untagged
@@ -159,7 +160,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _collectSpeed: 10
-  _collider: {fileID: 2678132323682739517}
 --- !u!54 &1172089039349224172
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -206,6 +206,19 @@ MonoBehaviour:
   _moveAngle: 90
   _distanceForSwirl: 1.7
   _timeoutAfterRelease: 1.5
+--- !u!114 &1330733795673282996
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6055223781889748532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6bf94fbaf8bc4685aa437132f11f67e4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _radius: 1.5
 --- !u!1 &6750970296098963895
 GameObject:
   m_ObjectHideFlags: 0

@@ -21,9 +21,6 @@ namespace Survivors.Loot
         
         [SerializeField]
         private float _collectSpeed = 1;
-        [SerializeField]
-        private SphereCollider _collider;
-
         [Inject]
         private DroppingLootService _lootService;     
         [Inject]
@@ -43,7 +40,6 @@ namespace Survivors.Loot
         {
             _disposable?.Dispose();
             _disposable = new CompositeDisposable();
-            squad.Model.CollectRadius.Subscribe(radius => _collider.radius = radius).AddTo(_disposable);
             _squadProgressService.GetAsObservable(SquadProgressType.Level).Diff().Subscribe(it => CollectAllLoot())
                 .AddTo(_disposable);
         } 
@@ -54,7 +50,7 @@ namespace Survivors.Loot
             _lootService.RemoveAll();
         }
 
-        private void OnTriggerEnter(Collider other)
+        public void TryCollect(Collider other)
         {
             if (_sessionService.SessionCompleted) {
                 return;
@@ -63,7 +59,6 @@ namespace Survivors.Loot
                 return;
             }
             if (_movingLoots.Contains(loot)) return;
-
             _lootService.Remove(loot);
             _movingLoots.Add(loot);
         }
@@ -72,7 +67,7 @@ namespace Survivors.Loot
         {
             var loots = _movingLoots.ToList();
             loots.ForEach(Move);
-            loots.ForEach(TryCollect);
+            loots.ForEach(Collect);
         }
 
         private void Move(DroppingLoot loot)
@@ -81,7 +76,7 @@ namespace Survivors.Loot
             loot.transform.position +=  _collectSpeed * Time.deltaTime * moveDirection;
         }
 
-        private void TryCollect(DroppingLoot loot)
+        private void Collect(DroppingLoot loot)
         {
             if (_world.IsPaused) return;            
             if (Vector3.Distance(loot.transform.position, transform.position) > LOOT_DESTROY_DISTANCE) {

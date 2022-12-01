@@ -7,8 +7,6 @@ namespace Survivors.Squad.Config
         [DataMember] 
         public float Speed;
         [DataMember]
-        public float CollectRadius;
-        [DataMember]
         public float InitialRadius;
         [DataMember] 
         public float RadiusIncreaseStep;

@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections;
-using Feofun.Config;
 using Feofun.UI.Dialog;
 using Feofun.UI.Screen;
 using JetBrains.Annotations;
 using SuperMaxim.Messaging;
-using Survivors.Enemy.Spawn.Config;
 using Survivors.App.Config;
-using Survivors.Enemy.Spawn;
 using Survivors.Enemy.Spawn.Service;
 using Survivors.Session.Messages;
 using Survivors.Session.Model;
@@ -18,7 +15,6 @@ using Survivors.UI.Dialog.StartUnitDialog.Model;
 using Survivors.UI.Screen.Debriefing;
 using Survivors.UI.Screen.Debriefing.Model;
 using Survivors.UI.Screen.World.Mission;
-using Survivors.Units.Enemy.Config;
 using Survivors.Upgrade;
 using UnityEngine;
 using Zenject;
@@ -39,7 +35,6 @@ namespace Survivors.UI.Screen.World
         [Inject] private IMessenger _messenger;
         [Inject] private ScreenSwitcher _screenSwitcher;     
         [Inject] private Location.World _world;
-        [Inject] private Joystick _joystick;
         [Inject] private DialogManager _dialogManager;
         [Inject] private UpgradeService _upgradeService;
         [Inject] private ConstantsConfig _constants;
@@ -52,8 +47,7 @@ namespace Survivors.UI.Screen.World
             
             _sessionService.Start();
             InitProgressView();
-
-            _joystick.Attach(transform);
+            
             _messenger.Subscribe<SessionEndMessage>(OnSessionFinished);
 
             if (_constants.ChooseFirstUnitEnabled)
