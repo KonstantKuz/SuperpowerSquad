@@ -4,7 +4,6 @@ using Feofun.Config;
 using Survivors.Location;
 using Survivors.Squad.Config;
 using Survivors.Squad.Data;
-using Survivors.Util;
 using Survivors.Util.Storage;
 using UniRx;
 using UnityEngine.Assertions;
