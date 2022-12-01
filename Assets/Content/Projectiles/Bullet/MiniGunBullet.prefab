@@ -7,9 +7,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 460837788804016623, guid: ee9d5b56f51a94240abb3f70fb881720, type: 3}
-      propertyPath: _hitVfx
-      value: 
+    - target: {fileID: 6558988286796770456, guid: ee9d5b56f51a94240abb3f70fb881720, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6558988286796770456, guid: ee9d5b56f51a94240abb3f70fb881720, type: 3}
+      propertyPath: InitialModule.startLifetime.minScalar
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 6558988286796776054, guid: ee9d5b56f51a94240abb3f70fb881720, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.01
+      objectReference: {fileID: 0}
+    - target: {fileID: 6558988286796806066, guid: ee9d5b56f51a94240abb3f70fb881720, type: 3}
+      propertyPath: InitialModule.startLifetime.scalar
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 6558988286811265020, guid: ee9d5b56f51a94240abb3f70fb881720, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8327978116598172915, guid: ee9d5b56f51a94240abb3f70fb881720, type: 3}
       propertyPath: m_RootOrder
