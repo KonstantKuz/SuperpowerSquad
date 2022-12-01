@@ -1,3 +1,5 @@
+
+
 namespace Survivors.Squad.Data
 {
     public enum SquadProgressType
@@ -6,4 +8,5 @@ namespace Survivors.Squad.Data
         Exp,
         Token,
     }
+    
 }

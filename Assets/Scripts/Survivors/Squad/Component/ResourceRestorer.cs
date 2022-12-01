@@ -46,7 +46,7 @@ namespace Survivors.Squad.Component
                 case SquadProgressType.Token:
                     return _squadModel.TokenRegeneration.Value;
                 default:
-                    throw new ArgumentException($"Unexpected squadProgressType:= {type}");
+                    throw new ArgumentOutOfRangeException($"Unexpected squadProgressType:= {type}");
             }
         }
 

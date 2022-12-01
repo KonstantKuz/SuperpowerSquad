@@ -54,7 +54,7 @@ namespace Survivors.Squad.Service
                     AddToken(amount);
                     return;
                 default:
-                    throw new ArgumentException($"Unexpected progressType:= {progressType}");
+                    throw new ArgumentOutOfRangeException($"Unexpected progressType:= {progressType}");
             }
         }
         public void AddExp(int amount)

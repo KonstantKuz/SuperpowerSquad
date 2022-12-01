@@ -5,6 +5,6 @@ CriticalChance10Percent,AddPercent,CriticalChance,10,Unit
 ShotCount1Value,AddValue,ShotCount,1,Unit
 AttackInterval25Percent,RemovePercent,AttackInterval,25,Unit
 AttackInterval50Percent,RemovePercent,AttackInterval,50,Unit
-CriticalDamage100Percent,AddPercent,CriticalDamage,100,Unit
+CriticalDamage100Percent,AddPercent,CriticalMultiplier,100,Unit
 DamageRadius1Value,AddValue,DamageRadius,1,Unit
 Health50Percent,AddPercent,Health,50,Squad
