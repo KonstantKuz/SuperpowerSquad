@@ -18,21 +18,15 @@ namespace Survivors.Units.Weapon
 
         public override void Fire(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
-            Assert.IsNotNull(projectileParams);
-            var rotationToTarget = GetShootRotation(BarrelPos, target.Center.position, AimInXZPlane);
-            Action singleFireAction = () => FireSingleShot(rotationToTarget, target, projectileParams, hitCallback);
-            Action multipleFireAction = () => FireMultipleShots(rotationToTarget, target, projectileParams, hitCallback);
-
-            _fireCoroutine = SupportShotCount
-                ? StartCoroutine(FireQueue(singleFireAction))
-                : StartCoroutine(FireQueue(multipleFireAction));
+            _fireCoroutine = StartCoroutine(FireQueue(target, projectileParams, hitCallback));
         }
 
-        private IEnumerator FireQueue(Action fire)
+        private IEnumerator FireQueue(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             for (int i = 0; i < _queueSize; i++)
             {
-                fire?.Invoke();
+                var rotationToTarget = GetShootRotation(BarrelPos, target.Center.position, AimInXZPlane);
+                FireSingleShot(rotationToTarget, target, projectileParams, hitCallback);
                 yield return WaitForFixedSubInterval();
             }
         }

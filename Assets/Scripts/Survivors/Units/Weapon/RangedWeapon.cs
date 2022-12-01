@@ -35,7 +35,6 @@ namespace Survivors.Units.Weapon
         protected bool AimInXZPlane => _aimInXZPlane;
         protected Projectile Ammo => _ammo;
         protected float AngleBetweenShots => _angleBetweenShots;
-        public bool SupportShotCount => _supportShotCount;
 
         public override void Fire(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
@@ -58,7 +57,7 @@ namespace Survivors.Units.Weapon
             projectile.Launch(target, projectileParams, hitCallback);
         }
 
-        protected void FireMultipleShots(Quaternion rotationToTarget, ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
+        private void FireMultipleShots(Quaternion rotationToTarget, ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             var spreadAngles = GetSpreadInAngle(projectileParams.Count).ToList();
             for (int i = 0; i < projectileParams.Count; i++) {
