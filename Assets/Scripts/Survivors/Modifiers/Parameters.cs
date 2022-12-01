@@ -12,6 +12,9 @@
         public const string SHOT_COUNT = "ShotCount";
         public const string SPEED = "Speed";    
         public const string COLLECT_RADIUS = "CollectRadius";   
-        public const string STARTING_UNIT_COUNT = "StartingUnitCount";
+        public const string STARTING_UNIT_COUNT = "StartingUnitCount";       
+        
+        public const string TOKEN_REGENERATION = "TokenRegeneration";
+        public const string EXP_REGENERATION = "ExpRegeneration";
     }
 }
