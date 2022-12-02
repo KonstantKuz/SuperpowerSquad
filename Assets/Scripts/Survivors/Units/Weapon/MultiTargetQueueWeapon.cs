@@ -48,7 +48,7 @@ namespace Survivors.Units.Weapon
                     continue;
                 }
                 
-                yield return WaitForFixedSubInterval();
+                yield return new WaitForSecondsRealtime(_subInterval);
                 base.Fire(initialTarget, singleShotParams, hitCallback);
             }
         }
@@ -62,15 +62,6 @@ namespace Survivors.Units.Weapon
                 DamageRadius = projectileParams.DamageRadius,
                 AttackDistance = projectileParams.AttackDistance
             };
-        }
-
-        private IEnumerator WaitForFixedSubInterval()
-        {
-            var fixedFramesCount = Mathf.RoundToInt(_subInterval / Time.fixedDeltaTime);
-            for (int i = 0; i < fixedFramesCount; i++)
-            {
-                yield return new WaitForFixedUpdate();
-            }
         }
 
         private void OnDisable()
