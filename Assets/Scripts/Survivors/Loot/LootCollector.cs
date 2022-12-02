@@ -78,11 +78,9 @@ namespace Survivors.Loot
         private void TryCollect(DroppingLoot loot)
         {
             if (_world.IsPaused) return;            
-            if (Vector3.Distance(loot.transform.position, transform.position) > LOOT_DESTROY_DISTANCE)
-            {
+            if (Vector3.Distance(loot.transform.position, transform.position) > LOOT_DESTROY_DISTANCE) {
                 return;
             }
-            
             _lootService.OnLootCollected(loot.LootType, loot.Config);
             _movingLoots.Remove(loot);
             _objectFactory.Destroy(loot.gameObject);

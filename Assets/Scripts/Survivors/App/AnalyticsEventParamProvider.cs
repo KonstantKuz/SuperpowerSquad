@@ -8,6 +8,7 @@ using Survivors.Player.Progress.Service;
 using Survivors.Session.Config;
 using Survivors.Session.Service;
 using Survivors.Squad.Component;
+using Survivors.Squad.Data;
 using Survivors.Squad.Service;
 using Survivors.Units.Service;
 using Survivors.Upgrade;
@@ -51,7 +52,7 @@ namespace Survivors.App
                 EventParams.LEVEL_ID => _sessionService.LevelId,
                 EventParams.LEVEL_NUMBER => GetLevelNumber(),
                 EventParams.LEVEL_LOOP => GetLevelLoop(),
-                EventParams.SQUAD_LEVEL => _squadProgressService.Level.Value,
+                EventParams.SQUAD_LEVEL => _squadProgressService.Get(SquadProgressType.Level),
                 EventParams.ENEMY_KILLED => _sessionService.Kills.Value,
                 EventParams.TIME_SINCE_LEVEL_START => _sessionService.SessionTime,
                 EventParams.PASS_NUMBER => GetPassNumber(),

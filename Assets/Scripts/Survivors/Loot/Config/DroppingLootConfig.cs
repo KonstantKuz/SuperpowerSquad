@@ -6,10 +6,12 @@ namespace Survivors.Loot.Config
     public class DroppingLootConfig
     {
         [DataMember]
-        public string LootId;
+        public DroppingLootType LootType;
         [DataMember]
         public int Amount;
         [DataMember]
-        public float DropChance;
+        public float DropChance;    
+        [DataMember]
+        public bool AutomaticAccrual;
     }
 }

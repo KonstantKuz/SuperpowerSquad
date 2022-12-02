@@ -1,4 +1,3 @@
-using Survivors.Squad.Progress;
 using Survivors.Squad.Service;
 using Survivors.Upgrade;
 using Survivors.Upgrade.MetaUpgrade;
@@ -13,9 +12,7 @@ namespace Survivors.Squad.Installer
         {
             container.Bind<SquadFactory>().AsSingle();
             container.BindInterfacesAndSelfTo<SquadProgressService>().AsSingle();
-            container.Bind<SquadProgressRepository>().AsSingle();       
-            
-            
+
             container.BindInterfacesAndSelfTo<UpgradeService>().AsSingle();
             container.Bind<SquadUpgradeRepository>().AsSingle();  
             

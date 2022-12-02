@@ -15,11 +15,17 @@ namespace Survivors.Squad.Model
         private readonly FloatModifiableParameter _collectRadius;
         private readonly FloatModifiableParameter _startingUnitModifiableCount;
         private readonly IReadOnlyReactiveProperty<int> _startingUnitCount;
+        
+        private readonly FloatModifiableParameter _tokenRegeneration;   
+        private readonly FloatModifiableParameter _expRegeneration;
 
         public SquadModel(SquadConfig config, float startingHealth, MetaParameterCalculator parameterCalculator)
         {
             _attackDistance = new FloatModifiableParameter(Parameters.ATTACK_DISTANCE, config.AttackDistance, this);
             _collectRadius = new FloatModifiableParameter(Parameters.COLLECT_RADIUS, config.CollectRadius, this);
+            _tokenRegeneration = new FloatModifiableParameter(Parameters.TOKEN_REGENERATION, config.TokenRegeneration, this);
+            _expRegeneration = new FloatModifiableParameter(Parameters.EXP_REGENERATION, config.ExpRegeneration, this);
+            
 
             _startingUnitModifiableCount = new FloatModifiableParameter(Parameters.STARTING_UNIT_COUNT, 1, this);
             parameterCalculator.InitParam(_startingUnitModifiableCount, this);
@@ -44,5 +50,8 @@ namespace Survivors.Squad.Model
         public IReadOnlyReactiveProperty<float> AttackDistance => _attackDistance.ReactiveValue;
         public IReadOnlyReactiveProperty<int> StartingUnitCount => _startingUnitCount;
         public IReadOnlyReactiveProperty<float> CollectRadius => _collectRadius.ReactiveValue;
+        
+        public IReadOnlyReactiveProperty<float> TokenRegeneration => _tokenRegeneration.ReactiveValue;       
+        public IReadOnlyReactiveProperty<float> ExpRegeneration => _expRegeneration.ReactiveValue;
     }
 }

@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 8464070402915899788}
   - component: {fileID: 4842332899313086891}
   m_Layer: 10
-  m_Name: SmallExp
+  m_Name: Token
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,6 +29,7 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2334919432034911155}
   m_Father: {fileID: 0}
@@ -46,9 +47,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec07452c884d4cf2a3c8eea9f33b7299, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _objectId: SmallExp
+  _objectId: Token
   _objectType: 2
-  _lootType: 0
+  _lootType: 1
   _randomRotation: 1
 --- !u!135 &8464070402915899788
 SphereCollider:
@@ -109,6 +110,7 @@ Transform:
   m_LocalRotation: {x: -0.5, y: 0, z: 0, w: 0.8660254}
   m_LocalPosition: {x: -6.04285e-10, y: 0.55, z: -0.000000025026}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 4722960005787595987}
   m_RootOrder: 0
@@ -132,6 +134,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 0
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1

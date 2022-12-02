@@ -10,10 +10,8 @@ using Survivors.Loot.Config;
 using Survivors.Squad.Service;
 using Survivors.Units;
 using Survivors.Units.Service;
-using Survivors.Units.Target;
 using UnityEngine;
 using Zenject;
-using Random = UnityEngine.Random;
 
 namespace Survivors.Loot.Service
 {
@@ -32,7 +30,7 @@ namespace Survivors.Loot.Service
 
         public void OnWorldSetup()
         {
-            _unitService.OnEnemyUnitDeath += TrySpawnLoot;
+            _unitService.OnEnemyUnitDeath += OnEnemyUnitDeath;
         }
 
         public void RemoveAll()
@@ -40,18 +38,22 @@ namespace Survivors.Loot.Service
             _loots.Clear();
         }
 
-        private void TrySpawnLoot(IUnit unit, DeathCause deathCause)
+        private void OnEnemyUnitDeath(IUnit unit, DeathCause deathCause)
         {
             if (deathCause != DeathCause.Killed) return;
-            
-            var possibleLoot = _lootConfig.FindPossibleLootsFor(unit.Model.Id);
-            if (possibleLoot == null)
-            {
+            var possibleLoots = _lootConfig.FindPossibleLootsFor(unit.Model.Id);
+            if (possibleLoots == null) {
                 this.Logger().Trace($"There is no loot config for enemy with id {unit.Model.Id}.");
                 return;
             }
+            possibleLoots.Where(config=>config.AutomaticAccrual).ForEach(config => OnLootCollected(config.LootType, config));
 
-            var configsWithChance = possibleLoot.Select(it => Tuple.Create(it, it.DropChance)).ToList();
+            TrySpawnLoot(unit, possibleLoots.Where(config => !config.AutomaticAccrual));
+        }
+
+        private void TrySpawnLoot(IUnit unit, IEnumerable<DroppingLootConfig> possibleLoots)
+        {
+            var configsWithChance = possibleLoots.Select(it => Tuple.Create(it, it.DropChance)).ToList();
             var loot = SpawnLoot(unit.SelfTarget.Root.position, configsWithChance.SelectRandomWithChance());
             _loots.Add(loot);
         }
@@ -63,33 +65,20 @@ namespace Survivors.Loot.Service
 
         private DroppingLoot SpawnLoot(Vector3 position, DroppingLootConfig config)
         {
-            var loot = _objectFactory.Create<DroppingLoot>(config.LootId, _world.Spawn.transform);
+            var loot = _objectFactory.Create<DroppingLoot>(config.LootType.ToString(), _world.Spawn.transform);
             loot.transform.position = position;
             loot.Init(config);
             return loot;
         }
-        
+
         public void OnLootCollected(DroppingLootType lootType, DroppingLootConfig collectedLoot)
         {
-            switch (lootType)
-            {
-                case DroppingLootType.Exp:
-                    _squadProgressService.AddExp(collectedLoot.Amount);
-                    break;
-                case DroppingLootType.Health:
-                    _world.GetSquad().AddHealthPercent(collectedLoot.Amount);
-                    break;
-                case DroppingLootType.Magnet:
-                    _world.GetSquad().CollectAllLoot();
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
+            _squadProgressService.Add(lootType.ToSquadProgressType(), collectedLoot.Amount);
         }
-        
+
         public void OnWorldCleanUp()
         {
-            _unitService.OnEnemyUnitDeath -= TrySpawnLoot;
+            _unitService.OnEnemyUnitDeath -= OnEnemyUnitDeath;
         }
     }
 }

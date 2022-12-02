@@ -24,7 +24,7 @@ namespace Survivors.UI.Screen.Header
             _disposable = new CompositeDisposable();
 
             foreach (var pair in _moneyViews) {
-                _walletService.GetMoneyAsObservable(pair.Key).Subscribe(it => pair.Value.SetData(it)).AddTo(_disposable);
+                _walletService.GetAsObservable(pair.Key).Subscribe(it => pair.Value.SetData(it)).AddTo(_disposable);
             }
         }
 

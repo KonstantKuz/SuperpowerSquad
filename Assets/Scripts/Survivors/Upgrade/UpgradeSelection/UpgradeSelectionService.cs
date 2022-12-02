@@ -5,6 +5,7 @@ using Feofun.UI.Dialog;
 using Logger.Extension;
 using ModestTree;
 using Survivors.Location;
+using Survivors.Squad.Data;
 using Survivors.Squad.Service;
 using Survivors.UI.Dialog.PauseDialog;
 using Survivors.UI.Dialog.UpgradeDialog;
@@ -45,7 +46,7 @@ namespace Survivors.Upgrade.UpgradeSelection
         {
             _disposable?.Dispose();
             _disposable = new CompositeDisposable();
-            _squadProgressService.Level.Subscribe(OnSquadLevelUpgrade).AddTo(_disposable);
+            _squadProgressService.GetAsObservable(SquadProgressType.Level).Subscribe(OnSquadLevelUpgrade).AddTo(_disposable);
         }
         
         private void OnSquadLevelUpgrade(int level)
