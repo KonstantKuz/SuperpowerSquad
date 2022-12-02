@@ -2,6 +2,7 @@
 using System.Collections;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles.Params;
+using Survivors.Util;
 using UnityEngine;
 
 namespace Survivors.Units.Weapon
@@ -26,7 +27,7 @@ namespace Survivors.Units.Weapon
             {
                 var rotationToTarget = GetShootRotation(BarrelPos, target.Center.position, AimInXZPlane);
                 FireSingleShot(rotationToTarget, target, projectileParams, hitCallback);
-                yield return new WaitForSecondsRealtime(_subInterval);
+                yield return CoroutineUtil.WaitForSecondsFixedTime(_subInterval);
             }
         }
 

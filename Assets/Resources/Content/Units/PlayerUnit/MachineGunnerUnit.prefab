@@ -130,7 +130,7 @@ MonoBehaviour:
   _ammo: {fileID: 4435820416196087832, guid: 77db9cf498ded2e4dbb0fa2e73956bc8, type: 3}
   _angleBetweenShots: 3
   _queueSize: 3
-  _subInterval: 0.05
+  _subInterval: 0.06
 --- !u!4 &3275197300719610305 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3502657725505718819, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
