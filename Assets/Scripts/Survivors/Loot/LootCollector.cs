@@ -1,11 +1,14 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using Feofun.Components;
+using Feofun.Extension;
 using SuperMaxim.Core.Extensions;
 using Survivors.Location;
 using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Loot.Service;
 using Survivors.Session.Service;
+using Survivors.Squad.Data;
+using Survivors.Squad.Service;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -18,37 +21,36 @@ namespace Survivors.Loot
         
         [SerializeField]
         private float _collectSpeed = 1;
-        [SerializeField]
-        private SphereCollider _collider;
-
         [Inject]
         private DroppingLootService _lootService;     
         [Inject]
         private ObjectPoolFactory _objectFactory;
         [Inject]
-        private SessionService _sessionService;
+        private SessionService _sessionService;    
+        [Inject]
+        private SquadProgressService _squadProgressService;
         [Inject] 
         private World _world;
-
-        private Squad.Squad _squad;
+        
         private CompositeDisposable _disposable;
+        
         private readonly ISet<DroppingLoot> _movingLoots = new HashSet<DroppingLoot>();
         
         public void Init(Squad.Squad squad)
         {
-            _squad = squad;
             _disposable?.Dispose();
             _disposable = new CompositeDisposable();
-            squad.Model.CollectRadius.Subscribe(radius => _collider.radius = radius).AddTo(_disposable);
-        }
-
-        public void CollectAllLoot()
+            _squadProgressService.GetAsObservable(SquadProgressType.Level).Diff().Subscribe(it => CollectAllLoot())
+                .AddTo(_disposable);
+        } 
+        
+        private void CollectAllLoot()
         {
             _lootService.AllLoot.ForEach(it => _movingLoots.Add(it));
             _lootService.RemoveAll();
         }
 
-        private void OnTriggerEnter(Collider other)
+        public void TryCollect(Collider other)
         {
             if (_sessionService.SessionCompleted) {
                 return;
@@ -57,7 +59,6 @@ namespace Survivors.Loot
                 return;
             }
             if (_movingLoots.Contains(loot)) return;
-
             _lootService.Remove(loot);
             _movingLoots.Add(loot);
         }
@@ -66,7 +67,7 @@ namespace Survivors.Loot
         {
             var loots = _movingLoots.ToList();
             loots.ForEach(Move);
-            loots.ForEach(TryCollect);
+            loots.ForEach(Collect);
         }
 
         private void Move(DroppingLoot loot)
@@ -75,7 +76,7 @@ namespace Survivors.Loot
             loot.transform.position +=  _collectSpeed * Time.deltaTime * moveDirection;
         }
 
-        private void TryCollect(DroppingLoot loot)
+        private void Collect(DroppingLoot loot)
         {
             if (_world.IsPaused) return;            
             if (Vector3.Distance(loot.transform.position, transform.position) > LOOT_DESTROY_DISTANCE) {

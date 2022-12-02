@@ -163,17 +163,6 @@ namespace Survivors.Squad
         {
             Health.Restore();
         }
-
-        public void AddHealthPercent(int percentFromMax)
-        {
-            Health.Add(Health.MaxValue.Value * percentFromMax / 100);
-        }
-
-        public void CollectAllLoot()
-        {
-            _lootCollector.CollectAllLoot();
-        }
-        
         [Button]
         /*
          * This functions just tests formation change when new units are added

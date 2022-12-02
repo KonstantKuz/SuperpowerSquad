@@ -11,8 +11,7 @@ namespace Survivors.UI.Dialog.PauseDialog
     public class PauseDialog : BaseDialog
     {
         [Inject] private DialogManager _dialogManager;    
-        [Inject] private World _world;      
-        [Inject] private Joystick _joystick;
+        [Inject] private World _world;
         
         private IDisposable _disposable;
         private readonly Subject<Unit> _closeEvent = new Subject<Unit>();
@@ -23,7 +22,7 @@ namespace Survivors.UI.Dialog.PauseDialog
         {
             Dispose();
             _world.Pause();
-            var uiBehaviour = _joystick.GetComponent<UIBehaviour>();
+            var uiBehaviour = GetComponent<UIBehaviour>();
             _disposable = uiBehaviour.OnDragAsObservable().Merge(uiBehaviour.OnPointerClickAsObservable()).First().Subscribe(it => OnClick());
         }
         private void OnClick()

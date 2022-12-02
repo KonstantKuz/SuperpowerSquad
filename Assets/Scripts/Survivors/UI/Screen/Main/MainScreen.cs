@@ -30,8 +30,7 @@ namespace Survivors.UI.Screen.Main
         [Inject] private PlayerProgressService _playerProgressService;
         [Inject] private ScreenSwitcher _screenSwitcher;     
         [Inject] private Location.World _world;
-        [Inject] private Joystick _joystick;
-
+        
         [PublicAPI]
         public void Init()
         {
@@ -40,7 +39,6 @@ namespace Survivors.UI.Screen.Main
             
             _world.Setup();
             
-            _joystick.Attach(transform); // todo: can be replaced by adding to the parent screen
             _levelProgressBar.Init(_playerProgressService.Progress.WinCount);
             
             StartCoroutine(WaitForAnimationUpdateBeforePause());
@@ -55,7 +53,7 @@ namespace Survivors.UI.Screen.Main
 
         private void WaitForClickOrDrag()
         {
-            var startGameArea = _joystick.GetComponent<UIBehaviour>();
+            var startGameArea = GetComponent<UIBehaviour>();
             var areaDrag = startGameArea.OnDragAsObservable();
             var areaClick = startGameArea.OnPointerClickAsObservable();
             areaDrag.Merge(areaClick).First().Subscribe(StartSession).AddTo(_disposable);
