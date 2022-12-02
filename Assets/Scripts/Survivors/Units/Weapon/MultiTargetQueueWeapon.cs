@@ -3,9 +3,11 @@ using System.Collections;
 using System.Linq;
 using Feofun.Extension;
 using ModestTree;
+using SuperMaxim.Core.Extensions;
 using Survivors.Units.Component.TargetSearcher;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles.Params;
+using Survivors.Util;
 using UnityEngine;
 
 namespace Survivors.Units.Weapon
@@ -30,29 +32,23 @@ namespace Survivors.Units.Weapon
 
         private IEnumerator FireQueue(ITarget target, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
-            var initialTarget = target;
             var singleShotParams = BuildSingleShotParams(projectileParams);
             var targets = MultiTargetRangedWeapon.FindAdditionalTargets(
                 _targetSearcher,
-                initialTarget,
+                target,
                 projectileParams.Count,
-                projectileParams.DamageRadius);
+                projectileParams.DamageRadius)
+                .Except(target).ToList();
             
-            for (int i = 0; i < projectileParams.Count; i++)
+            targets.ForEach(it => base.Fire(it, singleShotParams, hitCallback));
+            
+            for (int i = 0; i < projectileParams.Count - targets.Count; i++)
             {
-                if (targets.Count != 0)
-                {
-                    var nextTarget = targets.First();
-                    targets.Remove(nextTarget);
-                    base.Fire(nextTarget, singleShotParams, hitCallback);
-                    continue;
-                }
-                
-                yield return new WaitForSecondsRealtime(_subInterval);
-                base.Fire(initialTarget, singleShotParams, hitCallback);
+                base.Fire(target, singleShotParams, hitCallback);
+                yield return CoroutineUtil.WaitForSecondsFixedTime(_subInterval);
             }
         }
-
+        
         private IProjectileParams BuildSingleShotParams(IProjectileParams projectileParams)
         {
             return new ProjectileParams
