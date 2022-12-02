@@ -99,8 +99,38 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 4331444546958184133, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
+--- !u!4 &1312274636268225353 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 1143356745896943787, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
+  m_PrefabInstance: {fileID: 2155014422790022114}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2058353209681895259 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 106005451642109113, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
+  m_PrefabInstance: {fileID: 2155014422790022114}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3317537527170018699
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2058353209681895259}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 294a8d6f608e46c5bd8f51bd7fa1ec04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _barrel: {fileID: 1312274636268225353}
+  _aimInXZPlane: 0
+  _supportShotCount: 1
+  _ammo: {fileID: 4435820416196087832, guid: 77db9cf498ded2e4dbb0fa2e73956bc8, type: 3}
+  _angleBetweenShots: 3
+  _queueSize: 3
+  _subInterval: 0.06
 --- !u!4 &3275197300719610305 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3502657725505718819, guid: e941e00e31fae4848b0fc15355a186eb, type: 3}
@@ -191,7 +221,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8052761560828572269, guid: d50cdd8c135d83a4dbeb82eef7348a43, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8413246961715827640, guid: d50cdd8c135d83a4dbeb82eef7348a43, type: 3}
       propertyPath: m_Materials.Array.data[0]

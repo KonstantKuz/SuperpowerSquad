@@ -22,7 +22,7 @@ namespace Survivors.Units.Weapon
         public override void Fire(ITarget firstTarget, IProjectileParams projectileParams, Action<GameObject> hitCallback)
         {
             Assert.IsNotNull(projectileParams);
-            var targets = FindAdditionalTargets(firstTarget, projectileParams.Count, projectileParams.DamageRadius);
+            var targets = FindAdditionalTargets(_targetSearcher, firstTarget, projectileParams.Count, projectileParams.DamageRadius);
             var singleShotParams = new ProjectileParams
             {
                 Count = 1,
@@ -36,10 +36,10 @@ namespace Survivors.Units.Weapon
             }
         }
 
-        private List<ITarget> FindAdditionalTargets(ITarget initialTarget, int targetCount, float minDistanceBetweenTargets)
+        public static List<ITarget> FindAdditionalTargets(ITargetSearcher targetSearcher, ITarget initialTarget, int targetCount, float minDistanceBetweenTargets)
         {
             var selectedTargets = new List<ITarget> { initialTarget };            
-            var possibleTargets = _targetSearcher
+            var possibleTargets = targetSearcher
                 .GetAllOrderedByDistance()
                 .Where(it => it != null && it.IsAlive)
                 .Except(selectedTargets)                

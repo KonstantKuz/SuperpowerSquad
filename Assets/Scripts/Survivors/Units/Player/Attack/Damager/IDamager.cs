@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Survivors.Units.Player.Attack
+namespace Survivors.Units.Player.Attack.Damager
 {
     public interface IDamager
     {

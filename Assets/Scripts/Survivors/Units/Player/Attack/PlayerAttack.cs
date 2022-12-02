@@ -3,6 +3,7 @@ using Feofun.Components;
 using Feofun.Extension;
 using JetBrains.Annotations;
 using Survivors.Units.Component.TargetSearcher;
+using Survivors.Units.Player.Attack.Damager;
 using Survivors.Units.Player.Model;
 using Survivors.Units.Player.Movement;
 using Survivors.Units.Target;
@@ -48,7 +49,7 @@ namespace Survivors.Units.Player.Attack
             _disposable = new CompositeDisposable();
             _owner = (Unit) unit;
             _playerAttackModel = (PlayerAttackModel) unit.Model.AttackModel;
-            _damager = new PlayerDamager(_playerAttackModel);
+            _damager = DamagerFactory.CreateForPlayer(_playerAttackModel, _weapon);
             
             _playerAttackModel.AttackInterval.Subscribe(UpdateAnimationSpeed).AddTo(_disposable);
             if (HasWeaponAnimationHandler) {
