@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections;
-using ModestTree;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles.Params;
 using UnityEngine;
@@ -27,16 +26,7 @@ namespace Survivors.Units.Weapon
             {
                 var rotationToTarget = GetShootRotation(BarrelPos, target.Center.position, AimInXZPlane);
                 FireSingleShot(rotationToTarget, target, projectileParams, hitCallback);
-                yield return WaitForFixedSubInterval();
-            }
-        }
-
-        private IEnumerator WaitForFixedSubInterval()
-        {
-            var fixedFramesCount = Mathf.RoundToInt(_subInterval / Time.fixedDeltaTime);
-            for (int i = 0; i < fixedFramesCount; i++)
-            {
-                yield return new WaitForFixedUpdate();
+                yield return new WaitForSecondsRealtime(_subInterval);
             }
         }
 
