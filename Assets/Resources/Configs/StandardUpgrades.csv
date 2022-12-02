@@ -1,0 +1,5 @@
+Id,Modifier,ParameterName,Target,Value,Cost
+AttackDamage,AddPercent,AttackDamage,Unit,0.1,100
+,,,,0.1,200
+,,,,0.1,300
+,,,,0.1,400

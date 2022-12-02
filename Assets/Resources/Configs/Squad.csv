@@ -1,5 +1,5 @@
 Speed,6.5
-CollectRadius,0
+CollectRadius,1
 InitialRadius,1
 RadiusIncreaseStep,2
 AttackDistance,50
