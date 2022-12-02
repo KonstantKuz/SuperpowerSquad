@@ -3,7 +3,7 @@ using Survivors.Units.Weapon;
 
 namespace Survivors.Units.Player.Attack.Damager
 {
-    public class DamagerBuilder
+    public class DamagerFactory
     {
         public static IDamager CreateForPlayer(PlayerAttackModel attackModel, BaseWeapon weapon)
         {
