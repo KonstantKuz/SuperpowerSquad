@@ -27,9 +27,9 @@ namespace Survivors.Squad.Component
         {
             _squadModel = owner.Model;
         }
-        public void Update() => _increments.Keys.ToList().ForEach(Regeneration);
+        public void Update() => _increments.Keys.ToList().ForEach(Regenerate);
 
-        private void Regeneration(SquadProgressType type)
+        private void Regenerate(SquadProgressType type)
         {
             _increments[type] += GetRegenerationValue(type) * Time.deltaTime;
             if (_increments[type] < 1) return;

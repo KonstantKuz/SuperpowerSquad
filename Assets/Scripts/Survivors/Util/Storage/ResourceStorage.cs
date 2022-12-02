@@ -11,15 +11,15 @@ namespace Survivors.Util.Storage
     {
         private readonly ISingleModelRepository<Dictionary<string, int>> _repository;
 
-        private readonly Dictionary<string, int> _initialResources;
+        private readonly Dictionary<string, int> _minResources;
 
         private Dictionary<string, ReactiveProperty<int>> _resources;
 
         public ResourceStorage(ISingleModelRepository<Dictionary<string, int>> repository,
-            Dictionary<string, int> initialResources)
+            Dictionary<string, int> minResources)
         {
             _repository = repository;
-            _initialResources = initialResources;
+            _minResources = minResources;
             Load();
         }
 
@@ -38,7 +38,7 @@ namespace Survivors.Util.Storage
             if (!TryRemove(resource, amount))
             {
                 throw new Exception(
-                    $"Resource removing  error, {resource} can't be < initial value:= {_initialResources[resource]}");
+                    $"Resource removing  error, {resource} can't be < initial value:= {_minResources[resource]}");
             }
         }
 
@@ -50,15 +50,15 @@ namespace Survivors.Util.Storage
 
         public void Set(string resource, int amount)
         {
-            Assert.IsTrue(amount >= _initialResources[resource],
-                $"Should add >= {_initialResources[resource]} amount of resource");
+            Assert.IsTrue(amount >= _minResources[resource],
+                $"Should add >= {_minResources[resource]} amount of resource");
             _resources[resource].Value = amount;
             Save();
         }
 
         public void Reset()
         {
-            foreach (var pair in _initialResources) {
+            foreach (var pair in _minResources) {
                 _resources[pair.Key].Value = pair.Value;
             }
             Save();
@@ -67,7 +67,7 @@ namespace Survivors.Util.Storage
         private bool TryChange(string resource, int delta)
         {
             var amount = _resources[resource].Value;
-            if (amount + delta < _initialResources[resource]) return false;
+            if (amount + delta < _minResources[resource]) return false;
             _resources[resource].Value = amount + delta;
             Save();
             return true;
@@ -75,7 +75,7 @@ namespace Survivors.Util.Storage
 
         private void Load()
         {
-            var data = _repository.Get() ?? _initialResources;
+            var data = _repository.Get() ?? _minResources;
             _resources = data.ToDictionary(pair => pair.Key, pair => new ReactiveProperty<int>(pair.Value));
         }
 

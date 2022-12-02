@@ -15,10 +15,10 @@ namespace Survivors.Player.Wallet
 
         public WalletService()
         {
-            var initialResources = Enum.GetValues(typeof(Currency))
+            var minResources = Enum.GetValues(typeof(Currency))
                 .OfType<Currency>()
                 .ToDictionary(currency => currency.ToString(), currency => 0);
-            _resourceStorage = new ResourceStorage(new WalletRepository(), initialResources);
+            _resourceStorage = new ResourceStorage(new WalletRepository(), minResources);
         }
 
         public bool HasEnoughCurrency(Currency currency, int count) => Get(currency) >= count;

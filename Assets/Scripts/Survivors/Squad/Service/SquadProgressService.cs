@@ -15,7 +15,7 @@ namespace Survivors.Squad.Service
     {
         private const int DEFAULT_LEVEL = 1;
 
-        private readonly ResourceStorage _resourceStorage;
+        private readonly IResourceStorage<string, int> _resourceStorage;
 
         [Inject] private StringKeyedConfigCollection<SquadLevelConfig> _levelConfig;
 
@@ -60,8 +60,9 @@ namespace Survivors.Squad.Service
 
         public void AddExp(int amount)
         {
-            Assert.IsTrue(amount >= 0, $"Added amount of exp should be non-negative");
-            RecalculateExp(amount);
+            Assert.IsTrue(amount >= 0, "Added amount of exp should be non-negative");
+            AddToResource(SquadProgressType.Exp, amount);
+            CalculateLevel();
         }
 
         public void AddToken(int amount) => AddToResource(SquadProgressType.Token, amount);
@@ -72,9 +73,8 @@ namespace Survivors.Squad.Service
             AddExp(ExpToNextLevel);
         }
 
-        private void RecalculateExp(int amount)
+        private void CalculateLevel()
         {
-            AddToResource(SquadProgressType.Exp, amount);
             while (Get(SquadProgressType.Exp) >= MaxExpForCurrentLevel && !IsMaxCurrentLevel)
             {
                 RemoveFromResource(SquadProgressType.Exp, MaxExpForCurrentLevel);
