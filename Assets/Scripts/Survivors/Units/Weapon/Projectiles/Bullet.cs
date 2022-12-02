@@ -40,7 +40,6 @@ namespace Survivors.Units.Weapon.Projectiles
         private void Update()
         {
             _timeLeft -= Time.deltaTime;
-            UpdatePosition();
             if (_timeLeft > 0) {
                 return;
             }
@@ -48,10 +47,16 @@ namespace Survivors.Units.Weapon.Projectiles
             Destroy();
         }
 
+        private void FixedUpdate()
+        {
+            UpdatePosition();
+        }
+
         private void UpdatePosition()
         {
-            transform.position += transform.forward * Speed * Time.deltaTime;
+            transform.position += transform.forward * Speed * Time.fixedDeltaTime * Time.timeScale;
         }
+        
         private void Destroy()
         {
             gameObject.SetActive(false);
