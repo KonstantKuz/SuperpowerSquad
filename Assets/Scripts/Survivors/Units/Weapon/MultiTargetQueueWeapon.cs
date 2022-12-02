@@ -45,7 +45,7 @@ namespace Survivors.Units.Weapon
             for (int i = 0; i < projectileParams.Count - targets.Count; i++)
             {
                 base.Fire(target, singleShotParams, hitCallback);
-                yield return CoroutineUtil.WaitForSecondsFixedTime(_subInterval);
+                yield return CoroutineUtil.WaitForSecondsFixedTime(_subInterval, true);
             }
         }
         

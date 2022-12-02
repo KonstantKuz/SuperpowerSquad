@@ -27,7 +27,7 @@ namespace Survivors.Units.Weapon
             {
                 var rotationToTarget = GetShootRotation(BarrelPos, target.Center.position, AimInXZPlane);
                 FireSingleShot(rotationToTarget, target, projectileParams, hitCallback);
-                yield return CoroutineUtil.WaitForSecondsFixedTime(_subInterval);
+                yield return CoroutineUtil.WaitForSecondsFixedTime(_subInterval, true);
             }
         }
 
