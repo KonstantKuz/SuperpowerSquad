@@ -1,5 +1,4 @@
 ﻿using System;
-using Survivors.Location.ObjectFactory;
 using Survivors.Location.ObjectFactory.Factories;
 using Survivors.Units.Target;
 using Survivors.Units.Weapon.Projectiles.Params;
@@ -41,17 +40,23 @@ namespace Survivors.Units.Weapon.Projectiles
         private void Update()
         {
             _timeLeft -= Time.deltaTime;
-            UpdatePosition();
             if (_timeLeft > 0) {
                 return;
             }
             
             Destroy();
         }
+
+        private void FixedUpdate()
+        {
+            UpdatePosition();
+        }
+
         private void UpdatePosition()
         {
-            transform.position += transform.forward * Speed * Time.deltaTime;
+            transform.position += transform.forward * Speed * Time.fixedDeltaTime * Time.timeScale;
         }
+        
         private void Destroy()
         {
             gameObject.SetActive(false);

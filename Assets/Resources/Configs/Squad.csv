@@ -2,7 +2,7 @@ Speed,6.5
 CollectRadius,3
 InitialRadius,1
 RadiusIncreaseStep,2
-AttackDistance,5
+AttackDistance,50
 HealthRegeneration,5
 TokenRegeneration,0.5
 ExpRegeneration,0.5

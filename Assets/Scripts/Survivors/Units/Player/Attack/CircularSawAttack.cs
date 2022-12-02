@@ -1,5 +1,6 @@
 using System;
 using Feofun.Components;
+using Survivors.Units.Player.Attack.Damager;
 using Survivors.Units.Player.Model;
 using Survivors.Units.Weapon;
 using Survivors.Units.Weapon.Projectiles.Params;
