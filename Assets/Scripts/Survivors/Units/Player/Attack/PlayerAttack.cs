@@ -49,7 +49,7 @@ namespace Survivors.Units.Player.Attack
             _disposable = new CompositeDisposable();
             _owner = (Unit) unit;
             _playerAttackModel = (PlayerAttackModel) unit.Model.AttackModel;
-            _damager = DamagerBuilder.CreateForPlayer(_playerAttackModel, _weapon);
+            _damager = DamagerFactory.CreateForPlayer(_playerAttackModel, _weapon);
             
             _playerAttackModel.AttackInterval.Subscribe(UpdateAnimationSpeed).AddTo(_disposable);
             if (HasWeaponAnimationHandler) {

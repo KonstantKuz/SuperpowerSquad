@@ -55,7 +55,7 @@ namespace Survivors.Units.Weapon.Projectiles
 
         private void UpdatePosition()
         {
-            transform.position += transform.forward * Speed * Time.fixedDeltaTime;
+            transform.position += transform.forward * Speed * Time.fixedDeltaTime * Time.timeScale;
         }
         private void Destroy()
         {
